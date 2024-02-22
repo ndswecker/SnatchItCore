@@ -1,0 +1,18 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+Type=notify
+DynamicUser=yes
+RuntimeDirectory=gunicorn
+WorkingDirectory=/srv/web/
+ExecStart=/srv/web/venv/bin/gunicorn --chdir /srv/web/app/ core.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
