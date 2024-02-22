@@ -1,4 +1,4 @@
-"""
+from django.conf import settings
 URL configuration for core project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,5 +19,5 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path(settings.ADMIN_URL, admin.site.urls),
 ]
