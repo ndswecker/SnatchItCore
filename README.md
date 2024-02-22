@@ -17,11 +17,49 @@ SnatchItCore offers a comprehensive suite of features to support bird banders, i
 
 ### Prerequisites
 
-
+1. Python >= 3.10
+1. Node >= 20.11.1
 
 ### Installation
 
+Execute the appropriate `install` script for your machine:
 
+Powershell:
+
+```shell
+.\scripts\install
+```
+
+Command Prompt:
+
+```shell
+scripts\install
+```
+
+Bash:
+
+```shell
+./scripts/install.sh
+```
 
 ### Building & running the Application
 
+Execute the appropriate `run` script for your machine:
+
+Powershell:
+
+```shell
+.\scripts\run
+```
+
+Command Prompt:
+
+```shell
+scripts\run
+```
+
+Bash:
+
+```shell
+./scripts/run.sh
+```
