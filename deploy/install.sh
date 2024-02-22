@@ -5,25 +5,7 @@ apt update
 apt upgrade -y
 
 # Install dependencies
-apt install nginx postgresql python3-venv ufw -y
-
-# Configure UFW
-ufw --force disable
-ufw --force reset
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow ssh
-ufw allow http
-ufw allow https
-sed -i "s/IPV6=no/IPV6=yes/" /etc/default/ufw
-ufw --force disable
-ufw --force enable
-systemctl restart ufw
-
-# Create database
-sudo -u postgres psql -c "CREATE USER web WITH ENCRYPTED PASSWORD 'pass';"
-sudo -u postgres psql -c "CREATE DATABASE web;"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE web TO web;"
+apt install nginx python3-venv -y
 
 # Install application
 python3 -m venv /srv/web/venv
