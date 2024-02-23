@@ -1,0 +1,12 @@
+{% extends 'maps/base.html' %}
+
+{% block title %}All Capture Records{% endblock %}
+
+{% block content %}
+    <h1>View All Capture Records</h1>
+    <ul>
+        {% for record in capture_records %}
+            <li>{{record.pk}} <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
