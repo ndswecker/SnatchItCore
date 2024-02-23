@@ -63,3 +63,7 @@ Bash:
 ```shell
 ./scripts/run.sh
 ```
+
+## Deploy
+
+See the deployment [README.md](./deploy/README.md)
