@@ -1,0 +1,8 @@
+[Unit]
+Description=Example Service
+
+[Service]
+ExecStart=/srv/web/venv/bin/python3 /srv/web/app/manage.py example_command
+
+[Install]
+WantedBy=multi-user.target
