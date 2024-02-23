@@ -5,4 +5,4 @@ class CaptureRecordForm(forms.ModelForm):
     class Meta:
         model = CaptureRecord
         fields = '__all__'
-        exclude = []
+        exclude = ['discrepancies', 'is_flagged_for_review']

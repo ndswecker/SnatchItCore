@@ -43,3 +43,7 @@ class CaptureRecord(BaseModel):
     band_size = models.CharField(max_length=2)
     scribe = models.CharField(max_length=3)
     location = models.CharField(max_length=4)
+
+    ## Fields not to be submitted by the user
+    discrepancies = models.TextField()
+    is_flagged_for_review = models.BooleanField(default=False)
