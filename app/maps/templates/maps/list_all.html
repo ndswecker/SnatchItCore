@@ -3,10 +3,12 @@
 {% block title %}All Capture Records{% endblock %}
 
 {% block content %}
-    <h1>View All Capture Records</h1>
+  <div class="container">
+    <h1 class="text-center">View All Capture Records</h1>
     <ul>
-        {% for record in capture_records %}
-            <li>{{record.pk}} <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a></li>
-        {% endfor %}
+      {% for record in capture_records %}
+        <li>{{record.pk}} <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a></li>
+      {% endfor %}
     </ul>
+  </div>
 {% endblock %}
