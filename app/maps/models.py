@@ -38,7 +38,7 @@ class CaptureRecord(BaseModel):
     station = models.CharField(max_length=4)
     net = models.CharField(max_length=4)
     disposition = models.CharField(max_length=1)
-    note_number = models.IntegerField()
+    note_number = models.CharField(max_length=2) # Allow use of NM for not MAPS record
     note = models.TextField()
     band_size = models.CharField(max_length=2)
     scribe = models.CharField(max_length=3)
