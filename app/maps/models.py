@@ -22,15 +22,15 @@ class CaptureRecord(BaseModel):
     body_molt = models.IntegerField()
     ff_molt = models.CharField(max_length=1)
     ff_wear = models.IntegerField()
-    juv_body_plumage = models.IntegerField()
-    primary_coverts = models.CharField(max_length=1)
-    secondary_coverts = models.CharField(max_length=1)
-    primaries = models.CharField(max_length=1)
-    rectrices = models.CharField(max_length=1)
-    secondaries = models.CharField(max_length=1)
-    tertials = models.CharField(max_length=1)
-    body_plumage = models.CharField(max_length=1)
-    non_feather = models.CharField(max_length=1)
+    juv_body_plumage = models.IntegerField(null=True, blank=True)  # Allow null and blank
+    primary_coverts = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    secondary_coverts = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    primaries = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    rectrices = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    secondaries = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    tertials = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    body_plumage = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+    non_feather = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
     wing_chord = models.IntegerField()
     body_mass = models.DecimalField(max_digits=4, decimal_places=1)
     status = models.IntegerField()
