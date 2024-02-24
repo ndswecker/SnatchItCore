@@ -1,0 +1,9 @@
+[Unit]
+Description=Example Service
+
+[Timer]
+OnCalendar=Tue 11:20:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
