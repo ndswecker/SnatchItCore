@@ -1,2 +1,3 @@
+Crispy-Bootstrap5
 Django
 Django-Environ
