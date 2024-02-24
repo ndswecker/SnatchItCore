@@ -8,11 +8,12 @@ Type=notify
 DynamicUser=yes
 RuntimeDirectory=gunicorn
 WorkingDirectory=/srv/web/
-ExecStart=/srv/web/venv/bin/gunicorn --chdir /srv/web/app/ core.wsgi:application
+ExecStart=/srv/web/venv/bin/gunicorn --config /srv/web/gunicorn.conf.py --chdir /srv/web/app/ core.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
 PrivateTmp=true
+User=www-data
 
 [Install]
 WantedBy=multi-user.target
