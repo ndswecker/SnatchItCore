@@ -1,12 +1,17 @@
-{% extends 'maps/base.html' %}
+{% extends "maps/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}Enter Bird{% endblock %}
 
 {% block content %}
-    <h1>Enter Bird Record</h1>
-    <form method='post'>
+  <div class="container">
+    <div class="p-5 w-50 m-auto">
+      <form method="post">
+        <h1 class="text-center">Enter Bird Record</h1>
         {% csrf_token %}
-        {{ form }}
-        <button type='submit'>Submit</button>
-    </form>
+        {{ form|crispy }}
+        <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
+      </form>
+    </div>
+  </div>
 {% endblock %}
