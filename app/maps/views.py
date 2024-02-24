@@ -7,7 +7,7 @@ class CreateCaptureRecordView(CreateView):
     template_name = 'maps/enter_bird.html'
     form_class = CaptureRecordForm
     success_url = '/maps/'
-
+    
 class DetailCaptureRecordView(DetailView):
     template_name = 'maps/detail.html'
     model = CaptureRecord

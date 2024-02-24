@@ -1,0 +1,10 @@
+[
+    {
+        "bander_initials": {
+          "name": "Bander's Initials",
+          "min_length": 3,
+          "max_length": 3
+        }
+      }
+      
+]
