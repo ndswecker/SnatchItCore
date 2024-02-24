@@ -1,22 +1,18 @@
 from django.db import models
 from common.models import BaseModel
-from pathlib import Path
-import json
+from .banding_data_fields import CAPTURE_CODES
 
-current_directory = Path(__file__).resolve().parent
-codes_file = current_directory / 'data_field_optons.JSON'
 
-with open(codes_file, 'r') as file:
-    data = json.load(file)
-    CODES = [(code['abbreviation'], code['description']) for code in data['CODES']]
 
 # Create your models here.
 class CaptureRecord(BaseModel): 
-    bander_initials = models.CharField(
-        max_length=3,
-        choices=CODES)
+    bander_initials = models.CharField(max_length=3)
     
-    record_code = models.CharField(max_length=1)
+    capture_code = models.CharField(
+        max_length=1,
+        choices=CAPTURE_CODES,
+        default='N')
+    
     band_number = models.IntegerField()
     species_name = models.CharField(max_length=50)
     alpha_code = models.CharField(max_length=4)
