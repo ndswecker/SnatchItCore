@@ -15,7 +15,7 @@ class CaptureRecord(BaseModel):
     
     capture_code = models.CharField(
         max_length=1,
-        choices=CAPTURE_CODES,
+        choices=CAPTURE_CODE_OPTIONS,
         default='N')
     
     band_number = models.IntegerField(
@@ -31,7 +31,7 @@ class CaptureRecord(BaseModel):
             MinValueValidator(1000, message="Species number must be at least 4 digits long."),
             MaxValueValidator(9999, message="Species number must be less than 5 digits.")
         ],
-        choices=SPECIES,
+        choices=SPECIES_OPTIONS,
         default=5810
     )
 
@@ -62,7 +62,7 @@ class CaptureRecord(BaseModel):
     
     sex = models.CharField(
         max_length=1,
-        choices=SEXES,
+        choices=SEX_OPTIONS,
         default='U')
     
     how_sexed_1 = models.CharField(
@@ -102,79 +102,79 @@ class CaptureRecord(BaseModel):
     )
 
     body_molt = models.IntegerField(
-        choices=BODY_MOLTS,
+        choices=BODY_MOLT_OPTIONS,
         null=True,
         blank=True,
     )
 
     ff_molt = models.CharField(
         max_length=1,
-        choices=FLIGHT_FEATHER_MOLTS,
+        choices=FLIGHT_FEATHER_MOLT_OPTIONS,
         null=True,
         blank=True,
     )
 
     ff_wear = models.IntegerField(
-        choices=FLIGHT_FEATHER_WEARS,
+        choices=FLIGHT_FEATHER_WEAR_SCORES,
         null=True,
         blank=True,
     )
 
     juv_body_plumage = models.IntegerField(
-        choices=JUVENILE_BODY_PLUMAGES,
+        choices=JUVENILE_BODY_PLUMAGE_OPTIONS,
         null=True, 
         blank=True)
 
     primary_coverts = models.CharField(
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         max_length=1,
         null=True,
         blank=True) 
     
     secondary_coverts = models.CharField(
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         max_length=1,
         null=True,
         blank=True)
     
     primaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     rectrices = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     secondaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     tertials = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     body_plumage = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     non_feather = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
@@ -213,7 +213,7 @@ class CaptureRecord(BaseModel):
 
     station = models.CharField(
         max_length=4,
-        choices=STATIONS,
+        choices=STATION_OPTIONS,
         default='MORS'
     )
 
@@ -224,7 +224,7 @@ class CaptureRecord(BaseModel):
 
     disposition = models.CharField(
         max_length=1,
-        choices=DISPOSITIONS,
+        choices=DISPOSITION_OPTIONS,
         null=True,
         blank=True,    
     )
@@ -242,7 +242,7 @@ class CaptureRecord(BaseModel):
 
     band_size = models.CharField(
         max_length=2,
-        choices=BAND_SIZES,
+        choices=BAND_SIZE_OPTIONS,
         default='1B'
     )
 
