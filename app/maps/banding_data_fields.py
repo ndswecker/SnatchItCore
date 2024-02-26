@@ -10,19 +10,13 @@ CAPTURE_CODES = [
     ('A', '(A) Added Band'),
 ]
 
-SPECIES_NAMES = [
-    ('SOSP', 'SOSP Song Sparrow'),
-    ('AMCR', 'AMCR American Crow'),
-    ('BRCR', 'BRCR Brown Creeper'),
-    ('BCCH', 'BCCH Black-capped Chickadee'),
-    ('BUSH', 'BUSH Bushtit'),
-    ('CBCH', 'CBCH Chestnut-backed Chickadee'),
-    ('ANHU', 'ANHU Anna\'s Hummingbird'),
-    ('BEWR', 'BEWR Bewick\'s Wren'),
-    ('SWTH', 'SWTH Swainson\'s Thrush'),
-    ('WETA', 'WETA Western Tanager'),
-    ('WIFL', 'WIFL Willow Flycatcher'),
-    ('HUVI', 'Hutton\'s Vireo'),
+SPECIES = [
+    (5810, 'SOSP Song Sparrow'),
+    (6460, 'OCWA Orange-crowned Warbler'),
+    (5880, 'SPTO Spotted Towhee'),
+    (7580, 'SWTH Swainson\'s Thrush'),
+    (4124, 'Northern Flicker'),
+    (4310, 'Anna\'s Hummingbird'),
 ]
 AGE_ANNUAL_OPTIONS = [
     ('4', '4 - Local (incapable of sustained flight)'),

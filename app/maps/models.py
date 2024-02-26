@@ -26,10 +26,13 @@ class CaptureRecord(BaseModel):
         default=123456789
     )
 
-    species_name = models.CharField(
-        max_length=50,
-        choices=SPECIES_NAMES,
-        default='SOSP'
+    species_number = models.IntegerField(
+        validators=[
+            MinValueValidator(1000, message="Species number must be at least 4 digits long."),
+            MaxValueValidator(9999, message="Species number must be less than 5 digits.")
+        ],
+        choices=SPECIES,
+        default=5810
     )
 
     alpha_code = models.CharField(max_length=4)
@@ -264,7 +267,7 @@ class CaptureRecord(BaseModel):
         self.validate_species_to_wing()
             
     def validate_species_to_wing(self):
-        species_info = REFERENCE_GUIDE.get(self.species_name)
+        species_info = REFERENCE_GUIDE.get(self.species_number)
 
         if species_info and self.wing_chord is not None:
             wing_chord_range = species_info.get('wing_chord_range', (0, 0))
