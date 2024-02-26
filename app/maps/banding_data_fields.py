@@ -23,7 +23,7 @@ SPECIES_NAMES = [
     ('WIFL', 'WIFL Willow Flycatcher'),
     ('HUVI', 'Hutton\'s Vireo'),
 ]
-AGE_ANNUAL = [
+AGE_ANNUAL_OPTIONS = [
     ('4', '4 - Local (incapable of sustained flight)'),
     ('2', '2 - Hatch Year (HY)'),
     ('1', '1 - After Hatch Year (AHY)'),
@@ -35,7 +35,7 @@ AGE_ANNUAL = [
     ('9', '9 - Not attempted')
 ]
 
-AGE_WRP = [
+AGE_WRP_OPTIONS = [
     ('FPJ', '(FPJ) First prejuvenile molt'),
     ('FCJ', '(FCJ) First cycle juvenile plumage'),
     ('FPF', '(FPF) First preformative molt'),
@@ -58,7 +58,7 @@ AGE_WRP = [
 ]
 
 
-HOW_AGED_SEXED = [
+HOW_AGED_SEXED_OPTIONS = [
     ('S', 'S - Skull'),
     ('C', 'C - Cloacal Protuberance'),
     ('B', 'B - Brood Patch'),
@@ -76,13 +76,13 @@ HOW_AGED_SEXED = [
     ('O', 'O - Other (specify in notes)'),
 ]
 
-SEX = [
+SEXES = [
     ('M', 'Male'),
     ('F', 'Female'),
     ('U', 'Unknown'),
 ]
 
-SKULL = [
+SKULL_SCORES = [
     (0, '0 - None'),
     (1, '1 - Trace'),
     (2, '2 - < 1/3'),
@@ -93,14 +93,14 @@ SKULL = [
     (8, '8 - Unable to Determine'),
 ]
 
-CLOACAL_PROTUBERANCE = [
+CLOACAL_PROTUBERANCE_SCORES = [
     (0, '0 - None'),
     (1, '1 - Small (pyramidal)'),
     (2, '2 - Medium (columnar)'),
     (3, '3 - Large (bulbous)'),
 ]
 
-BROOD_PATCH = [
+BROOD_PATCH_SCORES = [
     (0, '0 - None'),
     (1, '1 - Smooth'),
     (2, '2 - Vascularized'),
@@ -109,7 +109,7 @@ BROOD_PATCH = [
     (5, '5 - Molting in'),
 ]
 
-FAT = [
+FAT_SCORES = [
     (0, '0 - None'),
     (1, '1 - Trace (<5%)'),
     (2, '2 - Light (<1/3)'),
@@ -120,7 +120,7 @@ FAT = [
     (7, '7 - Excessive (Over almost all ventral surfaces)'),
 ]
 
-BODY_MOLT = [
+BODY_MOLTS = [
     (0, '0 - None'),
     (1, '1 - Trace'),
     (2, '2 - Light'),
@@ -128,14 +128,14 @@ BODY_MOLT = [
     (4, '4 - Heavy'),
 ]
 
-FLIGHT_FEATHER_MOLT = [
+FLIGHT_FEATHER_MOLTS = [
     ('N', 'N - None'),
     ('A', 'A - Adventitious'),
     ('S', 'S - Symmetric'),
     ('J', 'J - Juvenile'),
 ]
 
-FLIGHT_FEATHER_WEAR = [
+FLIGHT_FEATHER_WEARS = [
     (0, '0 - None (pale halo)'),
     (1, '1 - Slight'),
     (2, '2 - Light (little fraying & vey nicks)'),
@@ -144,14 +144,14 @@ FLIGHT_FEATHER_WEAR = [
     (5, '5 - Excessive (ragged, torn, broken rachis)'),
 ]
 
-JUVENILE_BODY_PLUMAGE = [
+JUVENILE_BODY_PLUMAGES = [
     (3, '3 - All body feather juv, FCJ.'),
     (2, '2 - Greater than 1/2 juv body plumage remains, start FPF.'),
     (1, '1 - Less than 1/2 juv body plamage remains, FPF.'),
     (0, '0 - HY bird with no juv body plumage, FCF'),
 ]
 
-MOLT_LIMITS_PLUMAGE = [
+MOLT_LIMITS_PLUMAGES = [
     ('J', 'J - Juvenile (OR Juv & Alternate)'),
     ('L', 'L - Limit of Juv & Formative'),
     ('F', 'F - Formative (OR Formative & Alternate)'),
@@ -180,4 +180,27 @@ BAND_SIZES = [
     ('3B', '3B'),
     ('4', '4'),
     ('R', 'Recap')
+]
+
+DISPOSITIONS = [
+    ('B', 'B - Body Injury'),
+    ('D', 'Death (not from predation)'),
+    ('E', 'E - Eye Injury'),
+    ('F', 'F - Fouled feathers'),
+    ('I', 'I - Ill or diseased'),
+    ('L', 'L - Leg Injury'),
+    ('M', 'M - Malformed (i.e. crossed bill)'),
+    ('O', 'O - Old healed injury'),
+    ('P', 'P - Predation'),
+    ('B', 'B - Band removed'),
+    ('S', 'S - Stress or shock'),
+    ('T', 'T - Tongue injury'),
+    ('W', 'W - Wing injury'),
+]
+
+STATUS_OPTIONS = [
+    (300, '300 - Normal, banded, released'),
+    (301, '301 - Color banded'),
+    (500, '500 - injured, see Disposition'),
+    (000, '000 - Unbanded OR Died prior to release')
 ]
