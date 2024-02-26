@@ -192,14 +192,21 @@ class CaptureRecord(BaseModel):
         blank=True
     )
 
-    note = models.TextField()
+    note = models.TextField(
+        null=True,
+        blank=True
+    )
 
     band_size = models.CharField(
         max_length=2,
         choices=banding_data_fields.BAND_SIZES
     )
 
-    scribe = models.CharField(max_length=3)
+    scribe = models.CharField(
+        max_length=3,
+        null=True,
+        blank=True
+    )
     
     location = models.CharField(max_length=4)
 
