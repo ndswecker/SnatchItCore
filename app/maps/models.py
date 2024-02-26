@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import BaseModel
-from .banding_data_fields import CAPTURE_CODES
+from django.core.validators import MinValueValidator, MaxValueValidator
+from .banding_data_fields import CAPTURE_CODES, SPECIES_NAMES, AGE_ANNUAL, AGE_WRP, HOW_AGED_SEXED, SEX
 
 
 
@@ -13,16 +14,60 @@ class CaptureRecord(BaseModel):
         choices=CAPTURE_CODES,
         default='N')
     
-    band_number = models.IntegerField()
-    species_name = models.CharField(max_length=50)
+    band_number = models.IntegerField(
+        validators=[
+            MinValueValidator(100000000, message="Band number must be at least 9 digits long."),
+            MaxValueValidator(999999999, message="Band number must be less than 10 digits.")
+        ]
+    )
+
+    species_name = models.CharField(
+        max_length=50,
+        choices=SPECIES_NAMES,
+        default='AMCR')
+    
     alpha_code = models.CharField(max_length=4)
-    age_annual = models.CharField(max_length=1)
-    how_aged_1 = models.CharField(max_length=1)
-    how_aged_2 = models.CharField(max_length=1)
-    age_WRP = models.CharField(max_length=4)
-    sex = models.CharField(max_length=1)
-    how_sexed_1 = models.CharField(max_length=1)
-    how_sexed_2 = models.CharField(max_length=1)
+    
+    age_annual = models.CharField(
+        max_length=1,
+        choices=AGE_ANNUAL,
+        default='1')
+    
+    how_aged_1 = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True,
+        choices=HOW_AGED_SEXED)
+    
+    how_aged_2 = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True,
+        choices=HOW_AGED_SEXED
+    )
+
+    age_WRP = models.CharField(
+        max_length=4,
+        choices=AGE_WRP,
+        default='MFCF')
+    
+    sex = models.CharField(
+        max_length=1,
+        choices=SEX,
+        default='U')
+    
+    how_sexed_1 = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True,
+        choices=HOW_AGED_SEXED
+    )
+    how_sexed_2 = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True,
+        choices=HOW_AGED_SEXED
+    )
     skull = models.IntegerField()
     cloacal_protuberance = models.IntegerField()
     brood_patch = models.IntegerField()
@@ -31,7 +76,12 @@ class CaptureRecord(BaseModel):
     ff_molt = models.CharField(max_length=1)
     ff_wear = models.IntegerField()
     juv_body_plumage = models.IntegerField(null=True, blank=True)  # Allow null and blank
-    primary_coverts = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
+
+    primary_coverts = models.CharField(
+        max_length=1,
+        null=True,
+        blank=True)  # Allow null and blank
+    
     secondary_coverts = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
     primaries = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
     rectrices = models.CharField(max_length=1, null=True, blank=True)  # Allow null and blank
