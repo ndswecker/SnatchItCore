@@ -14,12 +14,12 @@
                 {{ form.non_field_errors }}
             </div>
             {% endif %}
-            {{ form|crispy }}
             {% if form.wing_chord.errors %}
             <div class="alert alert-danger" role="alert">
-                {{ form.wing_chord.errors.as_text }}
+              {{ form.wing_chord.errors.as_text }}
             </div>
             {% endif %}
+            {{ form|crispy }}
             <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
         </form>
     </div>

@@ -1,8 +1,9 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from common.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
 from maps.banding_data_fields import *
-
+from .birds_info import REFERENCE_GUIDE
 
 
 # Create your models here.
@@ -257,3 +258,17 @@ class CaptureRecord(BaseModel):
     ## Fields not to be submitted by the user
     discrepancies = models.TextField()
     is_flagged_for_review = models.BooleanField(default=False)
+
+    def clean(self):
+        super().clean()
+        self.validate_species_to_wing()
+            
+    def validate_species_to_wing(self):
+        species_info = REFERENCE_GUIDE.get(self.species_name)
+
+        if species_info and self.wing_chord is not None:
+            wing_chord_range = species_info.get('wing_chord_range', (0, 0))
+            if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
+                raise ValidationError({
+                    'wing_chord': f'Wing chord for {species_info["common_name"]} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.'
+                })
