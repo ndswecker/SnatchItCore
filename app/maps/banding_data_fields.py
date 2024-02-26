@@ -99,3 +99,84 @@ CLOACAL_PROTUBERANCE = [
     (2, '2 - Medium (columnar)'),
     (3, '3 - Large (bulbous)'),
 ]
+
+BROOD_PATCH = [
+    (0, '0 - None'),
+    (1, '1 - Smooth'),
+    (2, '2 - Vascularized'),
+    (3, '3 - Heavy'),
+    (4, '4 - Wrinkled'),
+    (5, '5 - Molting in'),
+]
+
+FAT = [
+    (0, '0 - None'),
+    (1, '1 - Trace (<5%)'),
+    (2, '2 - Light (<1/3)'),
+    (3, '3 - Moderate (half)'),
+    (4, '4 - Filled (full)'),
+    (5, '5 - Bulging'),
+    (6, '6 - Fat under wings & on abdomen'),
+    (7, '7 - Excessive (Over almost all ventral surfaces)'),
+]
+
+BODY_MOLT = [
+    (0, '0 - None'),
+    (1, '1 - Trace'),
+    (2, '2 - Light'),
+    (3, '3 - Medium'),
+    (4, '4 - Heavy'),
+]
+
+FLIGHT_FEATHER_MOLT = [
+    ('N', 'N - None'),
+    ('A', 'A - Adventitious'),
+    ('S', 'S - Symmetric'),
+    ('J', 'J - Juvenile'),
+]
+
+FLIGHT_FEATHER_WEAR = [
+    (0, '0 - None (pale halo)'),
+    (1, '1 - Slight'),
+    (2, '2 - Light (little fraying & vey nicks)'),
+    (3, '3 - Moderate (some fraying & chipping)'),
+    (4, '4 - Heavy (worn & frayed, tips worn off)'),
+    (5, '5 - Excessive (ragged, torn, broken rachis)'),
+]
+
+JUVENILE_BODY_PLUMAGE = [
+    (3, '3 - All body feather juv, FCJ.'),
+    (2, '2 - Greater than 1/2 juv body plumage remains, start FPF.'),
+    (1, '1 - Less than 1/2 juv body plamage remains, FPF.'),
+    (0, '0 - HY bird with no juv body plumage, FCF'),
+]
+
+MOLT_LIMITS_PLUMAGE = [
+    ('J', 'J - Juvenile (OR Juv & Alternate)'),
+    ('L', 'L - Limit of Juv & Formative'),
+    ('F', 'F - Formative (OR Formative & Alternate)'),
+    ('B', 'B - Basic (OR Basic & Alternate)'),
+    ('R', 'R - Retained (Juv & Basic)'),
+    ('M', 'M - Mixed Basic (woodpecker generally)'),
+    ('A', 'A - Alternate (some or all)'),
+    ('N', 'N - Non-juv (definitely no juv feathers, but Formative or Basic)'),
+    ('U', 'U - Unknown'),
+]
+
+STATIONS = [
+    ('MORS', 'MORS - Morse Preserve MAPS'),
+    ('GHPR', 'Glacial Heritage Preserve MAPS'),
+]
+
+BAND_SIZES = [
+    ('0A', '0A'),
+    ('0', '0'),
+    ('1', '1'),
+    ('1A', '1A'),
+    ('1B', '1B'),
+    ('2', '2'),
+    ('3', '3'),
+    ('3A', '3A'),
+    ('3B', '3B'),
+    ('4', '4'),
+]
