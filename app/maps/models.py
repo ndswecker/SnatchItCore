@@ -1,7 +1,7 @@
 from django.db import models
 from common.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
-from .  import banding_data_fields
+from maps.banding_data_fields import *
 
 
 
@@ -11,7 +11,7 @@ class CaptureRecord(BaseModel):
     
     capture_code = models.CharField(
         max_length=1,
-        choices=banding_data_fields.CAPTURE_CODES,
+        choices=CAPTURE_CODES,
         default='N')
     
     band_number = models.IntegerField(
@@ -23,149 +23,150 @@ class CaptureRecord(BaseModel):
 
     species_name = models.CharField(
         max_length=50,
-        choices=banding_data_fields.SPECIES_NAMES,
-        default='AMCR')
-    
+        choices=SPECIES_NAMES,
+        default='AMCR'
+    )
+
     alpha_code = models.CharField(max_length=4)
     
     age_annual = models.CharField(
         max_length=1,
-        choices=banding_data_fields.AGE_ANNUAL,
+        choices=AGE_ANNUAL,
         default='1')
     
     how_aged_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=banding_data_fields.HOW_AGED_SEXED)
+        choices=HOW_AGED_SEXED)
     
     how_aged_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=banding_data_fields.HOW_AGED_SEXED
+        choices=HOW_AGED_SEXED
     )
 
     age_WRP = models.CharField(
         max_length=4,
-        choices=banding_data_fields.AGE_WRP,
+        choices=AGE_WRP,
         default='MFCF')
     
     sex = models.CharField(
         max_length=1,
-        choices=banding_data_fields.SEX,
+        choices=SEX,
         default='U')
     
     how_sexed_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=banding_data_fields.HOW_AGED_SEXED
+        choices=HOW_AGED_SEXED
     )
     how_sexed_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=banding_data_fields.HOW_AGED_SEXED
+        choices=HOW_AGED_SEXED
     )
     skull = models.IntegerField(
-        choices=banding_data_fields.SKULL,
+        choices=SKULL,
         null=True,
         blank=True,
     )
 
     cloacal_protuberance = models.IntegerField(
-        choices=banding_data_fields.CLOACAL_PROTUBERANCE,
+        choices=CLOACAL_PROTUBERANCE,
         null=True,
         blank=True,
     )
 
     brood_patch = models.IntegerField(
-        choices=banding_data_fields.BROOD_PATCH,
+        choices=BROOD_PATCH,
         null=True,
         blank=True,
     )
 
     fat = models.IntegerField(
-        choices=banding_data_fields.FAT,
+        choices=FAT,
         null=True,
         blank=True,
     )
 
     body_molt = models.IntegerField(
-        choices=banding_data_fields.BODY_MOLT,
+        choices=BODY_MOLT,
         null=True,
         blank=True,
     )
 
     ff_molt = models.CharField(
         max_length=1,
-        choices=banding_data_fields.FLIGHT_FEATHER_MOLT,
+        choices=FLIGHT_FEATHER_MOLT,
         null=True,
         blank=True,
     )
 
     ff_wear = models.IntegerField(
-        choices=banding_data_fields.FLIGHT_FEATHER_WEAR,
+        choices=FLIGHT_FEATHER_WEAR,
         null=True,
         blank=True,
     )
 
     juv_body_plumage = models.IntegerField(
-        choices=banding_data_fields.JUVENILE_BODY_PLUMAGE,
+        choices=JUVENILE_BODY_PLUMAGE,
         null=True, 
         blank=True)
 
     primary_coverts = models.CharField(
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         max_length=1,
         null=True,
         blank=True)  # Allow null and blank
     
     secondary_coverts = models.CharField(
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         max_length=1,
         null=True,
         blank=True)
     
     primaries = models.CharField(
         max_length=1,
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         null=True,
         blank=True
     )
 
     rectrices = models.CharField(
         max_length=1,
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         null=True,
         blank=True
     )
 
     secondaries = models.CharField(
         max_length=1,
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         null=True,
         blank=True
     )
 
     tertials = models.CharField(
         max_length=1,
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         null=True,
         blank=True
     )
 
     body_plumage = models.CharField(
         max_length=1,
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         null=True,
         blank=True
     )
 
     non_feather = models.CharField(
         max_length=1,
-        choices=banding_data_fields.MOLT_LIMITS_PLUMAGE,
+        choices=MOLT_LIMITS_PLUMAGE,
         null=True,
         blank=True
     )
@@ -180,7 +181,7 @@ class CaptureRecord(BaseModel):
 
     station = models.CharField(
         max_length=4,
-        choices=banding_data_fields.STATIONS,)
+        choices=STATIONS,)
 
     net = models.CharField(max_length=4)
 
@@ -199,7 +200,7 @@ class CaptureRecord(BaseModel):
 
     band_size = models.CharField(
         max_length=2,
-        choices=banding_data_fields.BAND_SIZES
+        choices=BAND_SIZES
     )
 
     scribe = models.CharField(
