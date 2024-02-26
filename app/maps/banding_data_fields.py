@@ -11,6 +11,7 @@ CAPTURE_CODES = [
 ]
 
 SPECIES_NAMES = [
+    ('SOSP', 'SOSP Song Sparrow'),
     ('AMCR', 'AMCR American Crow'),
     ('BRCR', 'BRCR Brown Creeper'),
     ('BCCH', 'BCCH Black-capped Chickadee'),
