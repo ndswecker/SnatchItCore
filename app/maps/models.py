@@ -1,7 +1,7 @@
 from django.db import models
 from common.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
-from .banding_data_fields import CAPTURE_CODES, SPECIES_NAMES, AGE_ANNUAL, AGE_WRP, HOW_AGED_SEXED, SEX
+from .  import banding_data_fields
 
 
 
@@ -11,7 +11,7 @@ class CaptureRecord(BaseModel):
     
     capture_code = models.CharField(
         max_length=1,
-        choices=CAPTURE_CODES,
+        choices=banding_data_fields.CAPTURE_CODES,
         default='N')
     
     band_number = models.IntegerField(
@@ -23,52 +23,61 @@ class CaptureRecord(BaseModel):
 
     species_name = models.CharField(
         max_length=50,
-        choices=SPECIES_NAMES,
+        choices=banding_data_fields.SPECIES_NAMES,
         default='AMCR')
     
     alpha_code = models.CharField(max_length=4)
     
     age_annual = models.CharField(
         max_length=1,
-        choices=AGE_ANNUAL,
+        choices=banding_data_fields.AGE_ANNUAL,
         default='1')
     
     how_aged_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED)
+        choices=banding_data_fields.HOW_AGED_SEXED)
     
     how_aged_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED
+        choices=banding_data_fields.HOW_AGED_SEXED
     )
 
     age_WRP = models.CharField(
         max_length=4,
-        choices=AGE_WRP,
+        choices=banding_data_fields.AGE_WRP,
         default='MFCF')
     
     sex = models.CharField(
         max_length=1,
-        choices=SEX,
+        choices=banding_data_fields.SEX,
         default='U')
     
     how_sexed_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED
+        choices=banding_data_fields.HOW_AGED_SEXED
     )
     how_sexed_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED
+        choices=banding_data_fields.HOW_AGED_SEXED
     )
-    skull = models.IntegerField()
+    skull = models.IntegerField(
+        choices=banding_data_fields.SKULL,
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(0, "Skull must be at least 0."),
+            MaxValueValidator(8, "Skull must be a single digit.")
+        ]
+    )
+
     cloacal_protuberance = models.IntegerField()
     brood_patch = models.IntegerField()
     fat = models.IntegerField()

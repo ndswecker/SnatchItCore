@@ -92,3 +92,10 @@ SKULL = [
     (6, '6 - Fully Complete'),
     (8, '8 - Unable to Determine'),
 ]
+
+CLOACAL_PROTUBERANCE = [
+    (0, '0 - None'),
+    (1, '1 - Small (pyramidal)'),
+    (2, '2 - Medium (columnar)'),
+    (3, '3 - Large (bulbous)'),
+]
