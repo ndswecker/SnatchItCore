@@ -4,14 +4,24 @@
 {% block title %}Enter Bird{% endblock %}
 
 {% block content %}
-  <div class="container">
+<div class="container">
     <div class="p-5 w-50 m-auto">
-      <form method="post">
-        <h1 class="text-center">Enter Bird Record</h1>
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
-      </form>
+        <form method="post">
+            <h1 class="text-center">Enter Bird Record</h1>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            {{ form|crispy }}
+            {% if form.wing_chord.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.wing_chord.errors.as_text }}
+            </div>
+            {% endif %}
+            <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
+        </form>
     </div>
-  </div>
+</div>
 {% endblock %}

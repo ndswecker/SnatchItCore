@@ -14,7 +14,7 @@ class CaptureRecordForm(forms.ModelForm):
         wing_chord = cleaned_data.get('wing_chord')
 
         species_info = REFERENCE_GUIDE.get(species_name)
-        if species_info:
+        if species_info and wing_chord is not None:  # Check if wing_chord is not None
             wing_chord_range = species_info['wing_chord_range']
             if not (wing_chord_range[0] <= wing_chord <= wing_chord_range[1]):
                 self.add_error('wing_chord', f'Wing chord for {species_info["common_name"]} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.')
