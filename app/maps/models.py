@@ -277,7 +277,7 @@ class CaptureRecord(BaseModel):
     )
 
     # Fields not to be submitted by the user
-    discrepancies = models.TextField(default=None)
+    discrepancies = models.TextField(null=True, blank=True)
     is_flagged_for_review = models.BooleanField(default=False)
 
     def clean(self):
