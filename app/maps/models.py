@@ -265,6 +265,7 @@ class CaptureRecord(BaseModel):
     def clean(self):
         super().clean()
         self.validate_species_to_wing()
+        self.validate_bander_initials()
             
     def validate_species_to_wing(self):
         species_info = REFERENCE_GUIDE.get(self.species_number)
@@ -275,3 +276,10 @@ class CaptureRecord(BaseModel):
                 raise ValidationError({
                     'wing_chord': f'Wing chord for {species_info["common_name"]} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.'
                 })
+    
+    def validate_bander_initials(self):
+        self.bander_initials = self.bander_initials.upper()  # Convert to uppercase automatically
+        if len(self.bander_initials) != 3 or not self.bander_initials.isalpha():
+            raise ValidationError({
+                'bander_initials': 'User must have a three-letter initial.'
+            })
