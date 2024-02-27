@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.core.exceptions import ValidationError
 from common.models import BaseModel
@@ -5,6 +6,11 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from maps.banding_data_fields import *
 from .birds_info import REFERENCE_GUIDE
 
+def rounded_down_datetime():
+    now = datetime.datetime.now()
+    rounding_down = (now.minute // 10) * 10
+    rounded_minute = now.replace(minute=rounding_down, second=0, microsecond=0)
+    return rounded_minute
 
 # Create your models here.
 class CaptureRecord(BaseModel): 
@@ -209,7 +215,7 @@ class CaptureRecord(BaseModel):
     )
 
     date_time = models.DateTimeField(
-        default='2024-02-26 02:53:08',
+        default=rounded_down_datetime,
     )
 
     station = models.CharField(
@@ -310,3 +316,4 @@ class CaptureRecord(BaseModel):
         # Automatically convert to uppercase if validation passes
         if field_value:
             setattr(self, field_name, field_value.upper())
+        
