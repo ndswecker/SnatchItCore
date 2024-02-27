@@ -280,6 +280,9 @@ class CaptureRecord(BaseModel):
     discrepancies = models.TextField(null=True, blank=True)
     is_flagged_for_review = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
+
     def clean(self):
         super().clean()
 
