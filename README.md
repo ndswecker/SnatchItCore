@@ -66,3 +66,11 @@ Bash:
 ## Deploy
 
 See the deployment [README.md](./deploy/README.md)
+
+## Code Quality
+
+This project uses pre-commit to enforce style and standards 
+
+```shell
+pre-commit run --all-files
+```
