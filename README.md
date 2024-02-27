@@ -18,7 +18,6 @@ SnatchItCore offers a comprehensive suite of features to support bird banders, i
 ### Prerequisites
 
 1. Python >= 3.10
-1. Node >= 20.11.1
 
 ### Installation
 
