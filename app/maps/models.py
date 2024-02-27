@@ -264,8 +264,12 @@ class CaptureRecord(BaseModel):
 
     def clean(self):
         super().clean()
+        self.validate_initials(self.bander_initials, 'bander_initials', mandatory=True)
+        # `scribe` is optional
+        if self.scribe:  # Only validate if `scribe` is provided
+            self.validate_initials(self.scribe, 'scribe', mandatory=False)
         self.validate_species_to_wing()
-        self.validate_bander_initials()
+            
             
     def validate_species_to_wing(self):
         species_info = REFERENCE_GUIDE.get(self.species_number)
@@ -277,9 +281,27 @@ class CaptureRecord(BaseModel):
                     'wing_chord': f'Wing chord for {species_info["common_name"]} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.'
                 })
     
-    def validate_bander_initials(self):
-        self.bander_initials = self.bander_initials.upper()  # Convert to uppercase automatically
-        if len(self.bander_initials) != 3 or not self.bander_initials.isalpha():
-            raise ValidationError({
-                'bander_initials': 'User must have a three-letter initial.'
-            })
+    def validate_initials(self, field_value, field_name, mandatory=True):
+        """
+        Validates that a field value is exactly 3 letters long and all characters are alphabetic for mandatory fields.
+        For optional fields, it validates the condition only if a value is provided.
+        Automatically converts to uppercase.
+        :param field_value: The value of the field to validate.
+        :param field_name: The name of the field (for error messages).
+        :param mandatory: Boolean indicating if the field is mandatory.
+        :raises: ValidationError if the field does not meet the criteria and is mandatory.
+        """
+        if mandatory:
+            if not field_value or len(field_value) != 3 or not field_value.isalpha():
+                raise ValidationError({
+                    field_name: f'{field_name.replace("_", " ").capitalize()} must be exactly three letters long.'
+                })
+        else:
+            if field_value and (len(field_value) != 3 or not field_value.isalpha()):
+                raise ValidationError({
+                    field_name: f'{field_name.replace("_", " ").capitalize()} must be exactly three letters long.'
+                })
+        
+        # Automatically convert to uppercase if validation passes
+        if field_value:
+            setattr(self, field_name, field_value.upper())
