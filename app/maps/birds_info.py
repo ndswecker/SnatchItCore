@@ -9,7 +9,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (50, 90),
             "WRP_groups": [3, 4],
             "male_brood_patch": False,
-            "pye_second_edition_page": 527
+            "pye_second_edition_page": 527,
         },
         6460: {
             "common_name": "Orange-crowned Warbler",
@@ -20,7 +20,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (50, 70),
             "WRP_groups": [3, 8],
             "male_brood_patch": False,
-            "pye_second_edition_page": 589
+            "pye_second_edition_page": 589,
         },
         5880: {
             "common_name": "Spotted Towhee",
@@ -31,7 +31,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (76, 95),
             "WRP_groups": [3],
             "male_brood_patch": False,
-            "pye_second_edition_page": 538
+            "pye_second_edition_page": 538,
         },
         7580: {
             "common_name": "Swainson's Thrush",
@@ -42,7 +42,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (80, 110),
             "WRP_groups": [3],
             "male_brood_patch": False,
-            "pye_second_edition_page": 422
+            "pye_second_edition_page": 422,
         },
         4310: {
             "common_name": "Anna's Hummingbird",
@@ -53,7 +53,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (46, 52),
             "WRP_groups": [3, 5, 6],
             "male_brood_patch": False,
-            "pye_second_edition_page": 104
+            "pye_second_edition_page": 104,
         },
         4124: {
             "common_name": "Northern Flicker",
@@ -64,8 +64,8 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (110, 130),
             "WRP_groups": [3, 5],
             "male_brood_patch": True,
-            "pyle_second_edition_page": 202
-        }
+            "pyle_second_edition_page": 202,
+        },
     },
     "wrp_groups": {
         # Define the WRP groups here
@@ -73,5 +73,5 @@ REFERENCE_GUIDE = {
         "Group1": {"description": "Group 1 Description", "species": [5810, 6460]},
         "Group2": {"description": "Group 2 Description", "species": [5880, 7580]},
         # Add additional groups as needed
-    }
+    },
 }

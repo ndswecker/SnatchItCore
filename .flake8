@@ -1,6 +1,16 @@
 [flake8]
 count = True
-exclude = .git,.idea,.venv,__pycache__,build,dist,migrations
+exclude =
+    .git
+    .idea
+    .local
+    .static
+    .venv
+    __pycache__
+    envs
+    migrations
+    requirements
+    scripts
 ignore = E203
 max-complexity = 10
 max-line-length = 120
