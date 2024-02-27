@@ -294,6 +294,8 @@ class CaptureRecord(BaseModel):
 
         self.validate_species_to_wing()
 
+        self.validate_wrp_to_species()
+
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
         species_info = REFERENCE_GUIDE["species"].get(self.species_number)
@@ -335,3 +337,28 @@ class CaptureRecord(BaseModel):
         # Automatically convert to uppercase if validation passes
         if field_value:
             setattr(self, field_name, field_value.upper())
+    
+    def validate_wrp_to_species(self):
+        """
+        Validates that the age_WRP input field is within the allowed codes for the species_number.
+        """
+        species_info = REFERENCE_GUIDE["species"].get(self.species_number)
+        if not species_info:
+            raise ValidationError({"species_number": "Species number is not valid or not found in REFERENCE_GUIDE."})
+
+        # Retrieve the list of WRP groups for the species from the species_info
+        wrp_groups = species_info.get("WRP_groups", [])
+
+        allowed_codes = []
+        for group in wrp_groups:
+            # Fetch allowed codes for each WRP_group the species is a part of
+            # Directly reference the 'codes_allowed' from the 'wrp_groups' in REFERENCE_GUIDE
+            group_info = REFERENCE_GUIDE["wrp_groups"].get(group)
+            if group_info:  # Check if group_info is found to prevent errors
+                allowed_codes += group_info.get("codes_allowed", [])
+
+        # Validate if age_WRP is in the allowed_codes
+        if self.age_WRP not in allowed_codes:
+            raise ValidationError({
+                "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{species_info['common_name']}' with WRP_groups {wrp_groups}."
+            })

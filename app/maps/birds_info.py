@@ -86,7 +86,7 @@ REFERENCE_GUIDE = {
         },
         8: {
             "description": "Group 8 - Preformative molt less than complete, prebasic molt complete, and prealternate molt occur in both first and definative cycles.", 
-            "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB"]
+            "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"]
         },
     },
 }
