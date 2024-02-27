@@ -2,3 +2,4 @@
 
 Black
 Flake8
+pre-commit
