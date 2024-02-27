@@ -8,6 +8,7 @@ from .birds_info import REFERENCE_GUIDE
 
 # Create your models here.
 class CaptureRecord(BaseModel): 
+
     bander_initials = models.CharField(
         max_length=3,
         default='JSM'
@@ -264,15 +265,19 @@ class CaptureRecord(BaseModel):
 
     def clean(self):
         super().clean()
+
         self.validate_initials(self.bander_initials, 'bander_initials', mandatory=True)
+
         # `scribe` is optional
         if self.scribe:  # Only validate if `scribe` is provided
             self.validate_initials(self.scribe, 'scribe', mandatory=False)
+
         self.validate_species_to_wing()
             
             
     def validate_species_to_wing(self):
-        species_info = REFERENCE_GUIDE.get(self.species_number)
+        # Adjusted to access species information under the "species" key
+        species_info = REFERENCE_GUIDE["species"].get(self.species_number)
 
         if species_info and self.wing_chord is not None:
             wing_chord_range = species_info.get('wing_chord_range', (0, 0))
@@ -280,7 +285,7 @@ class CaptureRecord(BaseModel):
                 raise ValidationError({
                     'wing_chord': f'Wing chord for {species_info["common_name"]} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.'
                 })
-    
+        
     def validate_initials(self, field_value, field_name, mandatory=True):
         """
         Validates that a field value is exactly 3 letters long and all characters are alphabetic for mandatory fields.
