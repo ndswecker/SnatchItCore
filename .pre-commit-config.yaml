@@ -1,0 +1,74 @@
+exclude: 'env/.*|fixtures/.*|migrations/.*|requirements/.*|scripts/.*|tests/.*'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: debug-statements
+      - id: check-docstring-first
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: detect-private-key
+      - id: debug-statements
+      - id: end-of-file-fixer
+        exclude_types: ["html", "json"]
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: https://github.com/asottile/reorder-python-imports
+    rev: v3.12.0
+    hooks:
+      - id: reorder-python-imports
+        args: [
+          --application-directories, 'app',
+          --py38-plus,
+        ]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        exclude: env|migrations|requirements|scripts
+        args: [--max-line-length=120, --ignore=E203, --max-complexity=10]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.1
+    hooks:
+      - id: pyupgrade
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+      - id: codespell
+        exclude_types: [json]
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.7
+    hooks:
+      - id: bandit
+        files: ^app/
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v0.971"
+    hooks:
+      - id: mypy
+        args: [--no-strict-optional, --ignore-missing-imports]
+        additional_dependencies: [tokenize-rt==3.2.0]
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-no-eval
+      - id: python-no-log-warn
+      - id: python-use-type-annotations
+      - id: text-unicode-replacement-char
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+      - id: add-trailing-comma
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.0.4
+    hooks:
+      - id: autopep8
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 24.2.0
+    hooks:
+      - id: black
+        language_version: python3.10
+        args: ["--line-length=120"]
