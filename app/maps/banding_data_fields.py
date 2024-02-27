@@ -11,12 +11,12 @@ CAPTURE_CODE_OPTIONS = [
 ]
 
 SPECIES_OPTIONS = [
-    (5810, 'SOSP Song Sparrow'),
-    (6460, 'OCWA Orange-crowned Warbler'),
-    (5880, 'SPTO Spotted Towhee'),
-    (7580, 'SWTH Swainson\'s Thrush'),
-    (4124, 'Northern Flicker'),
-    (4310, 'Anna\'s Hummingbird'),
+    (5810, 'SOSP - Song Sparrow'),
+    (6460, 'OCWA - Orange-crowned Warbler'),
+    (5880, 'SPTO - Spotted Towhee'),
+    (7580, 'SWTH - Swainson\'s Thrush'),
+    (4124, 'NOFL - Northern Flicker'),
+    (4310, 'ANHU - Anna\'s Hummingbird'),
 ]
 AGE_ANNUAL_OPTIONS = [
     ('4', '4 - Local (incapable of sustained flight)'),
