@@ -29,8 +29,7 @@ repos:
     rev: 7.0.0
     hooks:
       - id: flake8
-        exclude: env|migrations|requirements|scripts
-        args: [--max-line-length=120, --ignore=E203, --max-complexity=10]
+        args: [--max-line-length=120, --ignore=E203,F405, --max-complexity=10]
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.1
     hooks:
