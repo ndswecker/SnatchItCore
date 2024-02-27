@@ -1,12 +1,20 @@
+import datetime
 from django.db import models
+from django.core.exceptions import ValidationError
 from common.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
 from maps.banding_data_fields import *
+from .birds_info import REFERENCE_GUIDE
 
-
+def rounded_down_datetime():
+    now = datetime.datetime.now()
+    rounding_down = (now.minute // 10) * 10
+    rounded_minute = now.replace(minute=rounding_down, second=0, microsecond=0)
+    return rounded_minute
 
 # Create your models here.
 class CaptureRecord(BaseModel): 
+
     bander_initials = models.CharField(
         max_length=3,
         default='JSM'
@@ -14,7 +22,7 @@ class CaptureRecord(BaseModel):
     
     capture_code = models.CharField(
         max_length=1,
-        choices=CAPTURE_CODES,
+        choices=CAPTURE_CODE_OPTIONS,
         default='N')
     
     band_number = models.IntegerField(
@@ -25,10 +33,13 @@ class CaptureRecord(BaseModel):
         default=123456789
     )
 
-    species_name = models.CharField(
-        max_length=50,
-        choices=SPECIES_NAMES,
-        default='SOSP'
+    species_number = models.IntegerField(
+        validators=[
+            MinValueValidator(1000, message="Species number must be at least 4 digits long."),
+            MaxValueValidator(9999, message="Species number must be less than 5 digits.")
+        ],
+        choices=SPECIES_OPTIONS,
+        default=5810
     )
 
     alpha_code = models.CharField(max_length=4)
@@ -58,7 +69,7 @@ class CaptureRecord(BaseModel):
     
     sex = models.CharField(
         max_length=1,
-        choices=SEXES,
+        choices=SEX_OPTIONS,
         default='U')
     
     how_sexed_1 = models.CharField(
@@ -98,79 +109,79 @@ class CaptureRecord(BaseModel):
     )
 
     body_molt = models.IntegerField(
-        choices=BODY_MOLTS,
+        choices=BODY_MOLT_OPTIONS,
         null=True,
         blank=True,
     )
 
     ff_molt = models.CharField(
         max_length=1,
-        choices=FLIGHT_FEATHER_MOLTS,
+        choices=FLIGHT_FEATHER_MOLT_OPTIONS,
         null=True,
         blank=True,
     )
 
     ff_wear = models.IntegerField(
-        choices=FLIGHT_FEATHER_WEARS,
+        choices=FLIGHT_FEATHER_WEAR_SCORES,
         null=True,
         blank=True,
     )
 
     juv_body_plumage = models.IntegerField(
-        choices=JUVENILE_BODY_PLUMAGES,
+        choices=JUVENILE_BODY_PLUMAGE_OPTIONS,
         null=True, 
         blank=True)
 
     primary_coverts = models.CharField(
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         max_length=1,
         null=True,
         blank=True) 
     
     secondary_coverts = models.CharField(
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         max_length=1,
         null=True,
         blank=True)
     
     primaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     rectrices = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     secondaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     tertials = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     body_plumage = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
 
     non_feather = models.CharField(
         max_length=1,
-        choices=MOLT_LIMITS_PLUMAGES,
+        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
         null=True,
         blank=True
     )
@@ -204,12 +215,12 @@ class CaptureRecord(BaseModel):
     )
 
     date_time = models.DateTimeField(
-        default='2024-02-26 02:53:08',
+        default=rounded_down_datetime,
     )
 
     station = models.CharField(
         max_length=4,
-        choices=STATIONS,
+        choices=STATION_OPTIONS,
         default='MORS'
     )
 
@@ -220,7 +231,7 @@ class CaptureRecord(BaseModel):
 
     disposition = models.CharField(
         max_length=1,
-        choices=DISPOSITIONS,
+        choices=DISPOSITION_OPTIONS,
         null=True,
         blank=True,    
     )
@@ -238,7 +249,7 @@ class CaptureRecord(BaseModel):
 
     band_size = models.CharField(
         max_length=2,
-        choices=BAND_SIZES,
+        choices=BAND_SIZE_OPTIONS,
         default='1B'
     )
 
@@ -257,3 +268,52 @@ class CaptureRecord(BaseModel):
     ## Fields not to be submitted by the user
     discrepancies = models.TextField()
     is_flagged_for_review = models.BooleanField(default=False)
+
+    def clean(self):
+        super().clean()
+
+        self.validate_initials(self.bander_initials, 'bander_initials', mandatory=True)
+
+        # `scribe` is optional
+        if self.scribe:  # Only validate if `scribe` is provided
+            self.validate_initials(self.scribe, 'scribe', mandatory=False)
+
+        self.validate_species_to_wing()
+            
+            
+    def validate_species_to_wing(self):
+        # Adjusted to access species information under the "species" key
+        species_info = REFERENCE_GUIDE["species"].get(self.species_number)
+
+        if species_info and self.wing_chord is not None:
+            wing_chord_range = species_info.get('wing_chord_range', (0, 0))
+            if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
+                raise ValidationError({
+                    'wing_chord': f'Wing chord for {species_info["common_name"]} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.'
+                })
+        
+    def validate_initials(self, field_value, field_name, mandatory=True):
+        """
+        Validates that a field value is exactly 3 letters long and all characters are alphabetic for mandatory fields.
+        For optional fields, it validates the condition only if a value is provided.
+        Automatically converts to uppercase.
+        :param field_value: The value of the field to validate.
+        :param field_name: The name of the field (for error messages).
+        :param mandatory: Boolean indicating if the field is mandatory.
+        :raises: ValidationError if the field does not meet the criteria and is mandatory.
+        """
+        if mandatory:
+            if not field_value or len(field_value) != 3 or not field_value.isalpha():
+                raise ValidationError({
+                    field_name: f'{field_name.replace("_", " ").capitalize()} must be exactly three letters long.'
+                })
+        else:
+            if field_value and (len(field_value) != 3 or not field_value.isalpha()):
+                raise ValidationError({
+                    field_name: f'{field_name.replace("_", " ").capitalize()} must be exactly three letters long.'
+                })
+        
+        # Automatically convert to uppercase if validation passes
+        if field_value:
+            setattr(self, field_name, field_value.upper())
+        

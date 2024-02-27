@@ -1,6 +1,6 @@
 # banding_data_fields.py
 
-CAPTURE_CODES = [
+CAPTURE_CODE_OPTIONS = [
     ('N', '(N) New Bird'),
     ('R', '(R) Recaptured Bird'),
     ('L', '(L) Lost Band'),
@@ -10,18 +10,13 @@ CAPTURE_CODES = [
     ('A', '(A) Added Band'),
 ]
 
-SPECIES_NAMES = [
-    ('AMCR', 'AMCR American Crow'),
-    ('BRCR', 'BRCR Brown Creeper'),
-    ('BCCH', 'BCCH Black-capped Chickadee'),
-    ('BUSH', 'BUSH Bushtit'),
-    ('CBCH', 'CBCH Chestnut-backed Chickadee'),
-    ('ANHU', 'ANHU Anna\'s Hummingbird'),
-    ('BEWR', 'BEWR Bewick\'s Wren'),
-    ('SWTH', 'SWTH Swainson\'s Thrush'),
-    ('WETA', 'WETA Western Tanager'),
-    ('WIFL', 'WIFL Willow Flycatcher'),
-    ('HUVI', 'Hutton\'s Vireo'),
+SPECIES_OPTIONS = [
+    (5810, 'SOSP - Song Sparrow'),
+    (6460, 'OCWA - Orange-crowned Warbler'),
+    (5880, 'SPTO - Spotted Towhee'),
+    (7580, 'SWTH - Swainson\'s Thrush'),
+    (4124, 'NOFL - Northern Flicker'),
+    (4310, 'ANHU - Anna\'s Hummingbird'),
 ]
 AGE_ANNUAL_OPTIONS = [
     ('4', '4 - Local (incapable of sustained flight)'),
@@ -47,6 +42,9 @@ AGE_WRP_OPTIONS = [
     ('FCA', '(FCA) First cycle alternate plumage'),
     ('MFCA', '(MFCA) Minimum first cycle alternate'),
     ('SPB', '(SPB) Second prebasic molt'),
+    ('MSPB', '(MSPB) Minimum second prebasic molt'),
+    ('SCB', '(SCB) Second cycle basic plumage'),
+    ('TPB', '(TPB) Third prebasic molt'),
     ('MSPB', '(MSPB) Minimum second prebasic molt'),
     ('DCB', '(DCB) Definitive cycle basic plumage'),
     ('DPA', '(DPA) Definitive prealternate molt'),
@@ -76,7 +74,7 @@ HOW_AGED_SEXED_OPTIONS = [
     ('O', 'O - Other (specify in notes)'),
 ]
 
-SEXES = [
+SEX_OPTIONS = [
     ('M', 'Male'),
     ('F', 'Female'),
     ('U', 'Unknown'),
@@ -120,7 +118,7 @@ FAT_SCORES = [
     (7, '7 - Excessive (Over almost all ventral surfaces)'),
 ]
 
-BODY_MOLTS = [
+BODY_MOLT_OPTIONS = [
     (0, '0 - None'),
     (1, '1 - Trace'),
     (2, '2 - Light'),
@@ -128,14 +126,14 @@ BODY_MOLTS = [
     (4, '4 - Heavy'),
 ]
 
-FLIGHT_FEATHER_MOLTS = [
+FLIGHT_FEATHER_MOLT_OPTIONS = [
     ('N', 'N - None'),
     ('A', 'A - Adventitious'),
     ('S', 'S - Symmetric'),
     ('J', 'J - Juvenile'),
 ]
 
-FLIGHT_FEATHER_WEARS = [
+FLIGHT_FEATHER_WEAR_SCORES = [
     (0, '0 - None (pale halo)'),
     (1, '1 - Slight'),
     (2, '2 - Light (little fraying & vey nicks)'),
@@ -144,14 +142,14 @@ FLIGHT_FEATHER_WEARS = [
     (5, '5 - Excessive (ragged, torn, broken rachis)'),
 ]
 
-JUVENILE_BODY_PLUMAGES = [
+JUVENILE_BODY_PLUMAGE_OPTIONS = [
     (3, '3 - All body feather juv, FCJ.'),
     (2, '2 - Greater than 1/2 juv body plumage remains, start FPF.'),
     (1, '1 - Less than 1/2 juv body plamage remains, FPF.'),
     (0, '0 - HY bird with no juv body plumage, FCF'),
 ]
 
-MOLT_LIMITS_PLUMAGES = [
+MOLT_LIMIT_PLUMAGE_OPTIONS = [
     ('J', 'J - Juvenile (OR Juv & Alternate)'),
     ('L', 'L - Limit of Juv & Formative'),
     ('F', 'F - Formative (OR Formative & Alternate)'),
@@ -163,12 +161,12 @@ MOLT_LIMITS_PLUMAGES = [
     ('U', 'U - Unknown'),
 ]
 
-STATIONS = [
+STATION_OPTIONS = [
     ('MORS', 'MORS - Morse Preserve MAPS'),
     ('GHPR', 'Glacial Heritage Preserve MAPS'),
 ]
 
-BAND_SIZES = [
+BAND_SIZE_OPTIONS = [
     ('0A', '0A'),
     ('0', '0'),
     ('1', '1'),
@@ -182,7 +180,7 @@ BAND_SIZES = [
     ('R', 'Recap')
 ]
 
-DISPOSITIONS = [
+DISPOSITION_OPTIONS = [
     ('B', 'B - Body Injury'),
     ('D', 'Death (not from predation)'),
     ('E', 'E - Eye Injury'),
