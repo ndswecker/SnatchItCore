@@ -294,6 +294,8 @@ class CaptureRecord(BaseModel):
 
         self.validate_species_to_wing()
 
+        self.validate_wrp_to_species()
+
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
         species_info = REFERENCE_GUIDE["species"].get(self.species_number)
@@ -335,3 +337,32 @@ class CaptureRecord(BaseModel):
         # Automatically convert to uppercase if validation passes
         if field_value:
             setattr(self, field_name, field_value.upper())
+
+    def validate_wrp_to_species(self):
+        """
+        Validates the age_WRP input against allowed codes for the given species_number.
+        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number. 
+        The allowed codes are determined based on the WRP_groups the species belongs to, as defined in REFERENCE_GUIDE.
+        Raises:
+            ValidationError: If the age_WRP code is not allowed for the species, 
+            indicating either an invalid code or a mismatch between the species and its typical age classification codes.
+        """
+        # Retrieve species information from REFERENCE_GUIDE using the species_number.
+        target_species = REFERENCE_GUIDE["species"][self.species_number]
+
+        # Extract WRP_groups for the species, which define the valid age_WRP codes.
+        wrp_groups = target_species["WRP_groups"]
+
+        # Compile a list of all allowed codes for the species, based on its WRP_groups.
+        allowed_codes = []
+        for group_number in wrp_groups:
+            # Append allowed codes from each relevant WRP_group to the allowed_codes list.
+            allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group_number]["codes_allowed"])
+
+        # Validate if the provided age_WRP is in the list of allowed codes.
+        if self.age_WRP not in allowed_codes:
+            # If not, raise a ValidationError with a detailed error message.
+            raise ValidationError({
+                "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
+            })
+
