@@ -79,7 +79,6 @@ class CaptureRecord(BaseModel):
         choices=SEX_OPTIONS,
         default="U",
     )
-
     how_sexed_1 = models.CharField(
         max_length=1,
         null=True,
@@ -92,6 +91,7 @@ class CaptureRecord(BaseModel):
         blank=True,
         choices=HOW_AGED_SEXED_OPTIONS,
     )
+
     skull = models.IntegerField(
         choices=SKULL_SCORES,
         null=True,
@@ -296,6 +296,10 @@ class CaptureRecord(BaseModel):
 
         self.validate_wrp_to_species()
 
+        self.validate_how_sexed_order()
+        self.validate_sex_how_sexed()
+
+
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
         species_info = REFERENCE_GUIDE["species"].get(self.species_number)
@@ -365,4 +369,46 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
+        
+    def validate_how_sexed_order(self):
+        """
+        Automatically adjust how_sexed_1 and how_sexed_2 fields to ensure logical data consistency.
+        """
+        # If how_sexed_1 is blank but how_sexed_2 is not, assign how_sexed_2 to how_sexed_1 and clear how_sexed_2.
+        if not self.how_sexed_1 and self.how_sexed_2:
+            self.how_sexed_1 = self.how_sexed_2
+            self.how_sexed_2 = None  # or '' if you prefer to set it to an empty string
+
+    def validate_sex_how_sexed(self):
+        """
+        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate options
+        for the sex of the bird. Raises a ValidationError if the criteria are not met.
+        """
+
+        # Check if the bird is identified as male or female and validate the methods
+        if self.sex == "M":
+            allowed_methods = {"C", "P", "W", "E", "O"}
+        elif self.sex == "F":
+            allowed_methods = {"B", "P", "E", "W", "O"}
+        else:
+            # If sex is unknown or not attempted, skip further validation
+            return
+
+        # Ensure how_sexed_1 is filled for birds with specified sex
+        if not self.how_sexed_1:
+            raise ValidationError({
+                "how_sexed_1": "A method of determination is required for birds with specified sex."
+            })
+
+        # Validate how_sexed_1 and how_sexed_2 against the allowed methods
+        invalid_methods = []
+        if self.how_sexed_1 and self.how_sexed_1 not in allowed_methods:
+            invalid_methods.append("how_sexed_1")
+        if self.how_sexed_2 and self.how_sexed_2 not in allowed_methods:
+            invalid_methods.append("how_sexed_2")
+
+        # Raise ValidationError if any method is invalid
+        if invalid_methods:
+            raise ValidationError({method: "Invalid method selected for the bird's sex." for method in invalid_methods})
+
 
