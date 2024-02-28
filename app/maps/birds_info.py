@@ -9,7 +9,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (50, 90),
             "WRP_groups": [3, 4],
             "male_brood_patch": False,
-            "pye_second_edition_page": 527,
+            "pyle_second_edition_page": 527,
         },
         6460: {
             "common_name": "Orange-crowned Warbler",
@@ -20,7 +20,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (50, 70),
             "WRP_groups": [3, 8],
             "male_brood_patch": False,
-            "pye_second_edition_page": 589,
+            "pyle_second_edition_page": 589,
         },
         5880: {
             "common_name": "Spotted Towhee",
@@ -31,7 +31,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (76, 95),
             "WRP_groups": [3],
             "male_brood_patch": False,
-            "pye_second_edition_page": 538,
+            "pyle_second_edition_page": 538,
         },
         7580: {
             "common_name": "Swainson's Thrush",
@@ -42,7 +42,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (80, 110),
             "WRP_groups": [3],
             "male_brood_patch": False,
-            "pye_second_edition_page": 422,
+            "pyle_second_edition_page": 422,
         },
         4310: {
             "common_name": "Anna's Hummingbird",
@@ -53,7 +53,7 @@ REFERENCE_GUIDE = {
             "wing_chord_range": (46, 52),
             "WRP_groups": [3, 5, 6],
             "male_brood_patch": False,
-            "pye_second_edition_page": 104,
+            "pyle_second_edition_page": 104,
         },
         4124: {
             "common_name": "Northern Flicker",
