@@ -299,6 +299,8 @@ class CaptureRecord(BaseModel):
         self.validate_how_sexed_order()
         self.validate_sex_how_sexed()
 
+        self.validate_band_size_to_species()
+
 
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
@@ -411,4 +413,24 @@ class CaptureRecord(BaseModel):
         if invalid_methods:
             raise ValidationError({method: "Invalid method selected for the bird's sex." for method in invalid_methods})
 
+    def validate_band_size_to_species(self):
+        """
+        Validates the band_size input against allowed sizes for the given species_number.
+        This method checks if the provided band_size is within the list of allowed sizes for the species identified by species_number. 
+        The allowed sizes are determined based on the band_sizes the species belongs to, as defined in REFERENCE_GUIDE.
+        Raises:
+            ValidationError: If the band_size is not allowed for the species, 
+            indicating either an invalid size or a mismatch between the species and its typical band sizes.
+        """
+        # Retrieve species information from REFERENCE_GUIDE using the species_number.
+        target_species = REFERENCE_GUIDE["species"][self.species_number]
 
+        # Extract band_sizes for the species, which define the valid band_size codes.
+        band_sizes = target_species["band_sizes"]
+
+        # Validate if the provided band_size is in the list of allowed sizes.
+        if self.band_size not in band_sizes:
+            # If not, raise a ValidationError with a detailed error message.
+            raise ValidationError({
+                "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
+            })
