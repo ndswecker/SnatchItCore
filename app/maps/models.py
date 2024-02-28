@@ -79,7 +79,6 @@ class CaptureRecord(BaseModel):
         choices=SEX_OPTIONS,
         default="U",
     )
-
     how_sexed_1 = models.CharField(
         max_length=1,
         null=True,
@@ -92,6 +91,7 @@ class CaptureRecord(BaseModel):
         blank=True,
         choices=HOW_AGED_SEXED_OPTIONS,
     )
+
     skull = models.IntegerField(
         choices=SKULL_SCORES,
         null=True,
@@ -296,6 +296,9 @@ class CaptureRecord(BaseModel):
 
         self.validate_wrp_to_species()
 
+        self.validate_how_sexed_order()
+        
+
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
         species_info = REFERENCE_GUIDE["species"].get(self.species_number)
@@ -365,4 +368,14 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
+        
+    def validate_how_sexed_order(self):
+        """
+        Automatically adjust how_sexed_1 and how_sexed_2 fields to ensure logical data consistency.
+        """
+        # If how_sexed_1 is blank but how_sexed_2 is not, assign how_sexed_2 to how_sexed_1 and clear how_sexed_2.
+        if not self.how_sexed_1 and self.how_sexed_2:
+            self.how_sexed_1 = self.how_sexed_2
+            self.how_sexed_2 = None  # or '' if you prefer to set it to an empty string
+
 
