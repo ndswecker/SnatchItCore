@@ -298,9 +298,7 @@ class CaptureRecord(BaseModel):
 
         self.validate_how_sexed_order()
         self.validate_sex_how_sexed()
-
         self.validate_band_size_to_species()
-
 
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
@@ -347,10 +345,10 @@ class CaptureRecord(BaseModel):
     def validate_wrp_to_species(self):
         """
         Validates the age_WRP input against allowed codes for the given species_number.
-        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number. 
+        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number.
         The allowed codes are determined based on the WRP_groups the species belongs to, as defined in REFERENCE_GUIDE.
         Raises:
-            ValidationError: If the age_WRP code is not allowed for the species, 
+            ValidationError: If the age_WRP code is not allowed for the species,
             indicating either an invalid code or a mismatch between the species and its typical age classification codes.
         """
         # Retrieve species information from REFERENCE_GUIDE using the species_number.
@@ -371,7 +369,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
-        
+
     def validate_how_sexed_order(self):
         """
         Automatically adjust how_sexed_1 and how_sexed_2 fields to ensure logical data consistency.
@@ -416,10 +414,10 @@ class CaptureRecord(BaseModel):
     def validate_band_size_to_species(self):
         """
         Validates the band_size input against allowed sizes for the given species_number.
-        This method checks if the provided band_size is within the list of allowed sizes for the species identified by species_number. 
+        This method checks if the provided band_size is within the list of allowed sizes for the species identified by species_number.
         The allowed sizes are determined based on the band_sizes the species belongs to, as defined in REFERENCE_GUIDE.
         Raises:
-            ValidationError: If the band_size is not allowed for the species, 
+            ValidationError: If the band_size is not allowed for the species,
             indicating either an invalid size or a mismatch between the species and its typical band sizes.
         """
         # Retrieve species information from REFERENCE_GUIDE using the species_number.
@@ -434,3 +432,11 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
             })
+
+    def serialize_usgs(self):
+        # Your playground
+        return dict(
+            year=self.date_time.year,
+            month=self.date_time.month,
+            day=self.date_time.day,
+        )
