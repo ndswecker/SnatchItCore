@@ -281,7 +281,8 @@ class CaptureRecord(BaseModel):
     is_flagged_for_review = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
+        common_name = REFERENCE_GUIDE["species"][self.species_number]["common_name"]
+        return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
 
     def clean(self):
         super().clean()
