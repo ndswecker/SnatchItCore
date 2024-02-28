@@ -380,11 +380,35 @@ class CaptureRecord(BaseModel):
             self.how_sexed_2 = None  # or '' if you prefer to set it to an empty string
 
     def validate_sex_how_sexed(self):
-        if self.sex in ["M", "F"]:
-            if not self.how_sexed_1:
-                raise ValidationError(
-                    {
-                        "how_sexed_1": "How sexed 1 is required for sexed birds.",
-                    },
-                )
+        """
+        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate options
+        for the sex of the bird. Raises a ValidationError if the criteria are not met.
+        """
+
+        # Check if the bird is identified as male or female and validate the methods
+        if self.sex == "M":
+            allowed_methods = {"C", "P", "W", "E", "O"}
+        elif self.sex == "F":
+            allowed_methods = {"B", "P", "E", "W", "O"}
+        else:
+            # If sex is unknown or not attempted, skip further validation
+            return
+
+        # Ensure how_sexed_1 is filled for birds with specified sex
+        if not self.how_sexed_1:
+            raise ValidationError({
+                "how_sexed_1": "A method of determination is required for birds with specified sex."
+            })
+
+        # Validate how_sexed_1 and how_sexed_2 against the allowed methods
+        invalid_methods = []
+        if self.how_sexed_1 and self.how_sexed_1 not in allowed_methods:
+            invalid_methods.append("how_sexed_1")
+        if self.how_sexed_2 and self.how_sexed_2 not in allowed_methods:
+            invalid_methods.append("how_sexed_2")
+
+        # Raise ValidationError if any method is invalid
+        if invalid_methods:
+            raise ValidationError({method: "Invalid method selected for the bird's sex." for method in invalid_methods})
+
 
