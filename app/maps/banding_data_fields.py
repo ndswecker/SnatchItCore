@@ -78,6 +78,7 @@ SEX_OPTIONS = [
     ("M", "Male"),
     ("F", "Female"),
     ("U", "Unknown"),
+    ("X", "Not Attempted"),
 ]
 
 SKULL_SCORES = [

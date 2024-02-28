@@ -297,7 +297,8 @@ class CaptureRecord(BaseModel):
         self.validate_wrp_to_species()
 
         self.validate_how_sexed_order()
-        
+        self.validate_sex_how_sexed()
+
 
     def validate_species_to_wing(self):
         # Adjusted to access species information under the "species" key
@@ -378,4 +379,12 @@ class CaptureRecord(BaseModel):
             self.how_sexed_1 = self.how_sexed_2
             self.how_sexed_2 = None  # or '' if you prefer to set it to an empty string
 
+    def validate_sex_how_sexed(self):
+        if self.sex in ["M", "F"]:
+            if not self.how_sexed_1:
+                raise ValidationError(
+                    {
+                        "how_sexed_1": "How sexed 1 is required for sexed birds.",
+                    },
+                )
 
