@@ -340,48 +340,29 @@ class CaptureRecord(BaseModel):
 
     def validate_wrp_to_species(self):
         """
-        Validates that the age_WRP input field is within the allowed codes for the species_number.
+        Validates the age_WRP input against allowed codes for the given species_number.
+        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number. 
+        The allowed codes are determined based on the WRP_groups the species belongs to, as defined in REFERENCE_GUIDE.
+        Raises:
+            ValidationError: If the age_WRP code is not allowed for the species, 
+            indicating either an invalid code or a mismatch between the species and its typical age classification codes.
         """
-        # species_info = REFERENCE_GUIDE["species"].get(self.species_number)
-        # if not species_info:
-        #     raise ValidationError({"species_number": "Species number is not valid or not found in REFERENCE_GUIDE."})
-        #
-        # # Retrieve the list of WRP groups for the species from the species_info
-        # wrp_groups = species_info.get("WRP_groups", [])
-        #
-        # allowed_codes = []
-        # for group in wrp_groups:
-        #     # Fetch allowed codes for each WRP_group the species is a part of
-        #     # Directly reference the 'codes_allowed' from the 'wrp_groups' in REFERENCE_GUIDE
-        #     group_info = REFERENCE_GUIDE["wrp_groups"].get(group)
-        #     if group_info:  # Check if group_info is found to prevent errors
-        #         allowed_codes += group_info.get("codes_allowed", [])
+        # Retrieve species information from REFERENCE_GUIDE using the species_number.
+        target_species = REFERENCE_GUIDE["species"][self.species_number]
 
-        # # Validate if age_WRP is in the allowed_codes
-        # if self.age_WRP not in allowed_codes:
-        #     raise ValidationError({
-        #         "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{species_info['common_name']}' with WRP_groups {wrp_groups}."
-        #     })
+        # Extract WRP_groups for the species, which define the valid age_WRP codes.
+        wrp_groups = target_species["WRP_groups"]
 
-        species_info = REFERENCE_GUIDE["species"][self.species_number]
-        wrp_groups = species_info["WRP_groups"]
-
+        # Compile a list of all allowed codes for the species, based on its WRP_groups.
         allowed_codes = []
-        for group in wrp_groups:
-            allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group]["codes_allowed"])
+        for group_number in wrp_groups:
+            # Append allowed codes from each relevant WRP_group to the allowed_codes list.
+            allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group_number]["codes_allowed"])
 
+        # Validate if the provided age_WRP is in the list of allowed codes.
         if self.age_WRP not in allowed_codes:
+            # If not, raise a ValidationError with a detailed error message.
             raise ValidationError({
-                "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{species_info['common_name']}' with WRP_groups {wrp_groups}."
+                "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
 
-        # valid_groups = REFERENCE_GUIDE["species"][self.species_number]["WRP_groups"]  # [3, 4]
-        #
-        # allowed_codes = []  # ["FPJ", "FCJ", ..., "MFCF", "MSPB"]
-        # for group in valid_groups:  # [3, 4]
-        #     allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group]["codes_allowed"])
-        #
-        # if self.age_WRP not in allowed_codes:
-        #     raise ValidationError({
-        #         "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{self.species_number}' with WRP_groups {valid_groups}."
-        #     })
