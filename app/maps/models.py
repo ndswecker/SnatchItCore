@@ -451,6 +451,13 @@ class CaptureRecord(BaseModel):
         
         # Get the "usgs" sub-dictionary
         return target_how_aged["usgs"]["code"]
+    
+    def get_usgs_sex_code(self):
+        # Look up the sex code in the REFERENCE_GUIDE's "sex" section
+        target_sex = REFERENCE_GUIDE["sex"][self.sex]
+
+        # Get the "usgs" sub-dictionary
+        return target_sex["usgs"]["code"]
         
 
     def serialize_usgs(self):
@@ -465,4 +472,5 @@ class CaptureRecord(BaseModel):
             day=self.date_time.day,
             age=self.age_annual,
             how_aged=self.get_usgs_how_aged_code(),
+            sex=self.get_usgs_sex_code(),
         )

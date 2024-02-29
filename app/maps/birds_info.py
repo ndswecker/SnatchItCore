@@ -368,5 +368,47 @@ REFERENCE_GUIDE = {
                 "description": "Other"
             }
         },
+    },
+    "sex": {
+        "M": {
+            "maps": {
+                "code": "M",
+                "description": "Male"
+            },
+            "usgs": {
+                "code": "M",
+                "description": "Male"
+            }
+        },
+        "F": {
+            "maps": {
+                "code": "F",
+                "description": "Female"
+            },
+            "usgs": {
+                "code": "F",
+                "description": "Female"
+            }
+        },
+        "U": {
+            "maps": {
+                "code": "U",
+                "description": "Unknown"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown"
+            }
+        },
+        "X": {
+            "maps": {
+                "code": "X",
+                "description": "Not Attempted"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unkown"
+            }
+        },
     }
 }
