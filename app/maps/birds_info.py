@@ -147,4 +147,96 @@ REFERENCE_GUIDE = {
             },
         },
     },
+    "age_annual": {
+        "4": {
+            "maps": {
+                "code": "4",
+                "description": "Local (incapable of sustained flight)"
+            },
+            "usgs": {
+                "code": "L",
+                "description": "Local"
+            }
+        },
+        "2": {
+            "maps": {
+                "code": "2",
+                "description": "Hatch Year (HY)"
+            },
+            "usgs": {
+                "code": "HY",
+                "description": "Hatching Year"
+            }
+        },
+        "1": {
+            "maps": {
+                "code": "1",
+                "description": "After Hatch Year (AHY)"
+            },
+            "usgs": {
+                "code": "AHY",
+                "description": "After Hatching Year"
+            }
+        },
+        "5": {
+            "maps": {
+                "code": "5",
+                "description": "Second Year (SY)"
+            },
+            "usgs": {
+                "code": "SY",
+                "description": "Second Year"
+            }
+        },
+        "6": {
+            "maps": {
+                "code": "6",
+                "description": "After Second Year (ASY)"
+            },
+            "usgs": {
+                "code": "ASY",
+                "description": "After Second Year"
+            }
+        },
+        "7": {
+            "maps": {
+                "code": "7",
+                "description": "Third Year (TY)"
+            },
+            "usgs": {
+                "code": "TY",
+                "description": "Third Year"
+            }
+        },
+        "8": {
+            "maps": {
+                "code": "8",
+                "description": "After Third Year (ATY)"
+            },
+            "usgs": {
+                "code": "ATY",
+                "description": "After Third Year"
+            }
+        },
+        "0": {
+            "maps": {
+                "code": "0",
+                "description": "Indeterminable Age"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown"
+            }
+        },
+        "9": {
+            "maps": {
+                "code": "9",
+                "description": "Not attempted"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown"  # Assuming 'U' is equivalent to 'Not attempted'
+            }
+        },
+    },
 }

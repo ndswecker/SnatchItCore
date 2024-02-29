@@ -454,4 +454,5 @@ class CaptureRecord(BaseModel):
             year=self.date_time.year,
             month=self.date_time.month,
             day=self.date_time.day,
+            age=self.age_annual,
         )
