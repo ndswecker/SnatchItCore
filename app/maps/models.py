@@ -436,7 +436,10 @@ class CaptureRecord(BaseModel):
 
     def serialize_usgs(self):
         # Your playground
+        target_species_alpha = REFERENCE_GUIDE["species"][self.species_number]["alpha_code"]
         return dict(
+            band_number=self.band_number,
+            species=target_species_alpha,
             year=self.date_time.year,
             month=self.date_time.month,
             day=self.date_time.day,

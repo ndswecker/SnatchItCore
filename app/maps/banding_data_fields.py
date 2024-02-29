@@ -4,7 +4,7 @@ CAPTURE_CODE_OPTIONS = [
     ("N", "(N) New Bird"),
     ("R", "(R) Recaptured Bird"),
     ("L", "(L) Lost Band"),
-    ("D", "(D) Destroyed Band"),
+    ("D", "(D) Destroyed Band (and or dead)"),
     ("U", "(U) Unbanded Bird"),
     ("C", "(C) Changed band"),
     ("A", "(A) Added Band"),

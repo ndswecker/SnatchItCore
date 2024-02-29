@@ -89,4 +89,62 @@ REFERENCE_GUIDE = {
             "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"]
         },
     },
+    "dispositions": {
+        "N": {
+            "maps": {
+                "description": "New Bird",
+                "code": "N",
+            },
+            "usgs": {
+                "description": "Add (New Band)",
+                "code": "1",
+            },
+        },
+        "R": {
+            "maps": {
+                "description": "Recaptured Bird",
+                "code": "R",
+            },
+            "usgs": {
+                "description": "Added-To",
+                "code": "6",
+            },
+        },
+        "L": {
+            "maps": {
+                "description": "Lost Band",
+                "code": "L",
+            },
+            "usgs": {
+                "description": "Band Lost",
+                "code": "8",
+            },
+        },
+        "D": {
+            "maps": {
+                "description": "Destroyed Band (and or dead)",
+                "code": "D",
+            },
+            "usgs": {
+                "description": "Destroyed",
+                "code": ["4", "X"],
+            },
+        },
+        "U": {
+            "maps": {
+                "description": "Unbanded Bird",
+                "code": "U",
+            },
+        },
+        "C": {
+            "maps": {
+                "description": "Changed Band",
+                "code": "C",
+            },
+            "usgs": {
+                "description": "Replacing Band",
+                "code": "5",
+            },
+        },
+    },
 }

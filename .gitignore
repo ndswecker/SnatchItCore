@@ -7,3 +7,5 @@ logs/
 
 .env
 db.sqlite3
+
+resources/~$Banding_Data_Upload_Template_NO_MARKERS_07202023.xlsx
