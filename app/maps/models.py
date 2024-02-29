@@ -433,6 +433,16 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
             })
+    
+    def get_usgs_code(self):
+        # Look up the capture_code in the REFERENCE_GUIDE's "dispositions" section
+        target_disposition = REFERENCE_GUIDE["dispositions"][self.capture_code]
+        
+        # Get the "usgs" sub-dictionary
+        usgs_code = target_disposition["usgs"]["code"]
+        
+        # Return the USGS code
+        return usgs_code
 
     def serialize_usgs(self):
         # Your playground
@@ -440,6 +450,7 @@ class CaptureRecord(BaseModel):
         return dict(
             band_number=self.band_number,
             species=target_species_alpha,
+            dispostion=self.get_usgs_code(),
             year=self.date_time.year,
             month=self.date_time.month,
             day=self.date_time.day,
