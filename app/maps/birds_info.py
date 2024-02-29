@@ -239,4 +239,134 @@ REFERENCE_GUIDE = {
             }
         },
     },
+    "how_aged": {
+        "S": {
+            "maps": {
+                "code": "S",
+                "description": "Skull"
+            },
+            "usgs": {
+                "code": "SK",
+                "description": "Skull"
+            }
+        },
+        "C": {
+            "maps": {
+                "code": "C",
+                "description": "Cloacal Protuberance"
+            },
+            "usgs": {
+                "code": "CL",
+                "description": "Cloacal Protuberance"
+            }
+        },
+        "B": {
+            "maps": {
+                "code": "B",
+                "description": "Brood Patch"
+            },
+            "usgs": {
+                "code": "BP",
+                "description": "Brood Patch"
+            }
+        },
+        "F": {
+            "maps": {
+                "code": "F",
+                "description": "Feather Wear"
+            },
+            "usgs": {
+                "code": "FF",
+                "description": "Flight feathers (remiges), condition or color"
+            }
+        },
+        "J": {
+            "maps": {
+                "code": "J",
+                "description": "Juvenile Body Plumage"
+            },
+            "usgs": {
+                "code": "PL",
+                "description": "Body Plumage"
+            }
+        },
+        "M": {
+            "maps": {
+                "code": "M",
+                "description": "Molt"
+            },
+            "usgs": {
+                "code": "MR",
+                "description": "Flight feathers (remiges), condition or color"
+            }
+        },
+        "P": {
+            "maps": {
+                "code": "P",
+                "description": "Plumage (non-juvenile)"
+            },
+            "usgs": {
+                "code": "PL",
+                "description": "Body Plumage"
+            }
+        },
+        "N": {
+            "maps": {
+                "code": "N",
+                "description": "Non-feather"
+            },
+        },
+        "L": {
+            "maps": {
+                "code": "L",
+                "description": "Molt Limit"
+            },
+            "usgs": {
+                "code": "LP",
+                "description": "Molt limit present"
+            }
+        },
+        "I": {
+            "maps": {
+                "code": "I",
+                "description": "Mouth/Bill"
+            },
+            "usgs": {
+                "code": "MB",
+                "description": "Mouth/Bill"
+            }
+        },
+        "E": {
+            "maps": {
+                "code": "E",
+                "description": "Eye color"
+            },
+            "usgs": {
+                "code": "EY",
+                "description": "Eye color"
+            }
+        },
+        "W": {
+            "maps": {
+                "code": "W",
+                "description": "Wing length"
+            },
+        },
+        "T": {
+            "maps": {
+                "code": "T",
+                "description": "Tail length"
+            },
+        },
+        "O": {
+            "maps": {
+                "code": "O",
+                "description": "Other (specify in notes)"
+            },
+            "usgs": {
+                "code": "OT",
+                "description": "Other"
+            }
+        },
+    }
 }
