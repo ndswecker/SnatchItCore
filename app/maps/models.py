@@ -440,6 +440,17 @@ class CaptureRecord(BaseModel):
         
         # Get the "usgs" sub-dictionary
         return target_disposition["usgs"]["code"]
+    
+    def get_usgs_how_aged_code(self):
+        # If how_aged_1 is not set, return a blank string
+        if not self.how_aged_1:
+            return ""
+        
+        # Look up the how_aged_1 code in the REFERENCE_GUIDE's "how_aged" section
+        target_how_aged = REFERENCE_GUIDE["how_aged"][self.how_aged_1]
+        
+        # Get the "usgs" sub-dictionary
+        return target_how_aged["usgs"]["code"]
         
 
     def serialize_usgs(self):
@@ -453,4 +464,5 @@ class CaptureRecord(BaseModel):
             month=self.date_time.month,
             day=self.date_time.day,
             age=self.age_annual,
+            how_aged=self.get_usgs_how_aged_code(),
         )
