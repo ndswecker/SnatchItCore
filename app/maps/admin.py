@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from maps.models import CaptureRecord
+from maps.serializers import USGSSerializer
 
 
 class CaptureRecordAdmin(admin.ModelAdmin):
@@ -29,7 +30,8 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         writer.writerow(queryset.first().serialize_usgs().keys())
         for obj in queryset:
-            writer.writerow(obj.serialize_usgs().values())
+            serializer = USGSSerializer(obj)
+            writer.writerow(serializer.serialize().values())
         return response
 
 
