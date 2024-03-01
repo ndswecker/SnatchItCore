@@ -266,13 +266,13 @@ class CaptureRecord(BaseModel):
 
     scribe = models.CharField(
         max_length=3,
-        choices=STATION_OPTIONS,
         null=True,
         blank=True,
     )
 
     location = models.CharField(
         max_length=4,
+        choices=STATION_OPTIONS,
         null=True,
         blank=True,
     )
