@@ -422,5 +422,5 @@ REFERENCE_GUIDE = {
                 "description": "Unkown"
             }
         },
-    }
+    },
 }

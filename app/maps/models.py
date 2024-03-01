@@ -478,5 +478,6 @@ class CaptureRecord(BaseModel):
             age=self.age_annual,
             how_aged=self.get_usgs_how_aged_code(),
             sex=self.get_usgs_sex_code(),
+            status=self.status,
             location=self.get_bbl_location_id(),
         )
