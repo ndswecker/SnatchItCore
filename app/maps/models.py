@@ -222,6 +222,7 @@ class CaptureRecord(BaseModel):
             MinValueValidator(0, message="Status must be at least 000."),
             MaxValueValidator(999, message="Status must be less than 1000."),
         ],
+        choices=STATUS_OPTIONS,
         default=300,
     )
 
@@ -453,6 +454,17 @@ class CaptureRecord(BaseModel):
         # Get the "usgs" sub-dictionary
         return target_how_aged["usgs"]["code"]
     
+    def get_usgs_how_sexed_code(self):
+        # If how_sexed_1 is not set, return a blank string
+        if not self.how_sexed_1:
+            return ""
+        
+        # Look up the how_sexed_1 code in the REFERENCE_GUIDE's "how_sexed" section
+        target_how_sexed = REFERENCE_GUIDE["how_aged"][self.how_sexed_1]
+        
+        # Get the "usgs" sub-dictionary
+        return target_how_sexed["usgs"]["code"]
+    
     def get_usgs_sex_code(self):
         # Look up the sex code in the REFERENCE_GUIDE's "sex" section
         target_sex = REFERENCE_GUIDE["sex"][self.sex]
@@ -463,7 +475,28 @@ class CaptureRecord(BaseModel):
     def get_bbl_location_id(self):
         # Look up the station code in the REFERENCE_GUIDE's "stations" section
         return REFERENCE_GUIDE["site_locations"][self.station]["BBL_location_id"]
+    
+    def get_notes(self):
+        return self.note or ""
+    
+    def get_capture_method(self):
+        # Will support other methods in the future
+        return "Mist net"
+    
+    def get_capture_time(self):
+        return self.date_time.strftime("%H:%M")
+    
+    def get_banded_leg(self):
+        # Currently default to left leg for all birds. May support either leg in the future.
+        return "L"
         
+    def get_fat_score(self):
+        # If fat is not set, return a blank string
+        return self.fat or ""
+    
+    def get_skull_score(self):
+        # If skull is not set, return a blank string
+        return self.skull or ""
 
     def serialize_usgs(self):
         # Your playground
@@ -478,6 +511,26 @@ class CaptureRecord(BaseModel):
             age=self.age_annual,
             how_aged=self.get_usgs_how_aged_code(),
             sex=self.get_usgs_sex_code(),
+            how_sexed=self.get_usgs_how_sexed_code(),
             status=self.status,
             location=self.get_bbl_location_id(),
+            remarks=self.get_notes(),
+            replaced_band_number=None,
+            reward_band_number=None,
+            bander_id=self.bander_initials,
+            scribe_id=self.scribe,
+            how_capture=self.get_capture_method(),
+            capture_time=self.get_capture_time(),
+            banded_leg=self.get_banded_leg(),
+            wing_chord=self.wing_chord,
+            tail_length=None,
+            tarsus_length=None,
+            culmen_length=None,
+            bill_length=None,
+            bill_height=None,
+            bird_weight=self.body_mass,
+            weight_time=None,
+            eye_color=None,
+            fat_score=self.get_fat_score(),
+            skull=self.get_skull_score(),
         )
