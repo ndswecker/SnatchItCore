@@ -497,6 +497,14 @@ class CaptureRecord(BaseModel):
     def get_skull_score(self):
         # If skull is not set, return a blank string
         return self.skull or ""
+    
+    def get_body_molt(self):
+        # If body_molt is not set, return a blank string
+        return self.body_molt or ""
+    
+    def get_ff_molt(self):
+        # If ff_molt is not set, return a blank string
+        return self.ff_molt or ""
 
     def serialize_usgs(self):
         # Your playground
@@ -533,4 +541,9 @@ class CaptureRecord(BaseModel):
             eye_color=None,
             fat_score=self.get_fat_score(),
             skull=self.get_skull_score(),
+            brood_patch=self.brood_patch,
+            cloacal_protuberance=self.cloacal_protuberance,
+            body_molt=self.get_body_molt(),
+            ff_molt=self.get_ff_molt(),
+            molt_cycle=self.age_WRP,
         )
