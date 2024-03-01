@@ -266,6 +266,7 @@ class CaptureRecord(BaseModel):
 
     scribe = models.CharField(
         max_length=3,
+        choices=STATION_OPTIONS,
         null=True,
         blank=True,
     )
@@ -458,6 +459,10 @@ class CaptureRecord(BaseModel):
 
         # Get the "usgs" sub-dictionary
         return target_sex["usgs"]["code"]
+    
+    def get_bbl_location_id(self):
+        # Look up the station code in the REFERENCE_GUIDE's "stations" section
+        return REFERENCE_GUIDE["site_locations"][self.station]["BBL_location_id"]
         
 
     def serialize_usgs(self):
@@ -473,4 +478,5 @@ class CaptureRecord(BaseModel):
             age=self.age_annual,
             how_aged=self.get_usgs_how_aged_code(),
             sex=self.get_usgs_sex_code(),
+            location=self.get_bbl_location_id(),
         )

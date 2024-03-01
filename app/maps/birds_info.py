@@ -1,4 +1,16 @@
 REFERENCE_GUIDE = {
+    "site_locations": {
+        "MORS": {
+            "name": "Morse Preserve MAPS",
+            "code": "MORS",
+            "BBL_location_id": 223665
+        },
+        "GHPR": {
+            "name": "Glacial Heritage Preserve MAPS",
+            "code": "GHPR",
+            "BBL_location_id": 0
+        },
+    },
     "species": {
         5810: {
             "common_name": "Song Sparrow",
