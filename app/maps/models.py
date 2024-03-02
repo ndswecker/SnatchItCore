@@ -287,6 +287,8 @@ class CaptureRecord(BaseModel):
     def clean(self):
         super().clean()
 
+        self.fill_in_alpha_code()
+
         self.validate_initials(self.bander_initials, "bander_initials", mandatory=True)
         self.validate_how_aged_order()
         self.validate_species_to_wing()
@@ -297,6 +299,9 @@ class CaptureRecord(BaseModel):
 
         if self.scribe:
             self.validate_initials(self.scribe, "scribe", mandatory=False)
+    
+    def fill_in_alpha_code(self):
+        self.alpha_code = SPECIES[self.species_number]["alpha_code"]
 
     def validate_species_to_wing(self):
         species_info = SPECIES[self.species_number]

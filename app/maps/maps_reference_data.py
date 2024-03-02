@@ -1,4 +1,4 @@
-
+# Description: Reference data for MAPS and USGS banding codes and descriptions
 
 SITE_LOCATIONS = {
     "MORS": {
