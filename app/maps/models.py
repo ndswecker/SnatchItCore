@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from common.models import BaseModel
-from maps.banding_data_fields import *
+from maps.choice_definitions import *
 from maps.birds_info import REFERENCE_GUIDE
 
 
@@ -25,7 +25,7 @@ class CaptureRecord(BaseModel):
 
     capture_code = models.CharField(
         max_length=1,
-        choices=CAPTURE_CODE_OPTIONS,
+        choices=CAPTURE_CODE_CHOICES,
         default="N",
     )
 
@@ -42,7 +42,7 @@ class CaptureRecord(BaseModel):
             MinValueValidator(1000, message="Species number must be at least 4 digits long."),
             MaxValueValidator(9999, message="Species number must be less than 5 digits."),
         ],
-        choices=SPECIES_OPTIONS,
+        choices=SPECIES_CHOICES,
         default=5810,
     )
 
@@ -50,7 +50,7 @@ class CaptureRecord(BaseModel):
 
     age_annual = models.CharField(
         max_length=1,
-        choices=AGE_ANNUAL_OPTIONS,
+        choices=AGE_ANNUAL_CHOICES,
         default="1",
     )
 
@@ -58,98 +58,98 @@ class CaptureRecord(BaseModel):
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
 
     how_aged_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
 
     age_WRP = models.CharField(
         max_length=4,
-        choices=AGE_WRP_OPTIONS,
+        choices=AGE_WRP_CHOICES,
         default="MFCF",
     )
 
     sex = models.CharField(
         max_length=1,
-        choices=SEX_OPTIONS,
+        choices=SEX_CHOICES,
         default="U",
     )
     how_sexed_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
     how_sexed_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
 
     skull = models.IntegerField(
-        choices=SKULL_SCORES,
+        choices=SKULL_CHOICES,
         null=True,
         blank=True,
     )
 
     cloacal_protuberance = models.IntegerField(
-        choices=CLOACAL_PROTUBERANCE_SCORES,
+        choices=CLOACAL_PROTUBERANCE_CHOICES,
         null=True,
         blank=True,
     )
 
     brood_patch = models.IntegerField(
-        choices=BROOD_PATCH_SCORES,
+        choices=BROOD_PATCH_CHOICES,
         null=True,
         blank=True,
     )
 
     fat = models.IntegerField(
-        choices=FAT_SCORES,
+        choices=FAT_CHOICES,
         null=True,
         blank=True,
     )
 
     body_molt = models.IntegerField(
-        choices=BODY_MOLT_OPTIONS,
+        choices=BODY_MOLT_CHOICES,
         null=True,
         blank=True,
     )
 
     ff_molt = models.CharField(
         max_length=1,
-        choices=FLIGHT_FEATHER_MOLT_OPTIONS,
+        choices=FLIGHT_FEATHER_MOLT_CHOICES,
         null=True,
         blank=True,
     )
 
     ff_wear = models.IntegerField(
-        choices=FLIGHT_FEATHER_WEAR_SCORES,
+        choices=FLIGHT_FEATHER_WEAR_CHOICES,
         null=True,
         blank=True,
     )
 
     juv_body_plumage = models.IntegerField(
-        choices=JUVENILE_BODY_PLUMAGE_OPTIONS,
+        choices=JUVENILE_BODY_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     primary_coverts = models.CharField(
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         max_length=1,
         null=True,
         blank=True,
     )
 
     secondary_coverts = models.CharField(
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         max_length=1,
         null=True,
         blank=True,
@@ -157,42 +157,42 @@ class CaptureRecord(BaseModel):
 
     primaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     rectrices = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     secondaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     tertials = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     body_plumage = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     non_feather = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
@@ -222,7 +222,7 @@ class CaptureRecord(BaseModel):
             MinValueValidator(0, message="Status must be at least 000."),
             MaxValueValidator(999, message="Status must be less than 1000."),
         ],
-        choices=STATUS_OPTIONS,
+        choices=STATUS_CHOICES,
         default=300,
     )
 
@@ -232,7 +232,7 @@ class CaptureRecord(BaseModel):
 
     station = models.CharField(
         max_length=4,
-        choices=STATION_OPTIONS,
+        choices=STATION_CHOICES,
         default="MORS",
     )
 
@@ -243,7 +243,7 @@ class CaptureRecord(BaseModel):
 
     disposition = models.CharField(
         max_length=1,
-        choices=DISPOSITION_OPTIONS,
+        choices=DISPOSITION_CHOICES,
         null=True,
         blank=True,
     )
@@ -261,7 +261,7 @@ class CaptureRecord(BaseModel):
 
     band_size = models.CharField(
         max_length=2,
-        choices=BAND_SIZE_OPTIONS,
+        choices=BAND_SIZE_CHOICES,
         default="1B",
     )
 
@@ -273,7 +273,7 @@ class CaptureRecord(BaseModel):
 
     location = models.CharField(
         max_length=4,
-        choices=STATION_OPTIONS,
+        choices=STATION_CHOICES,
         null=True,
         blank=True,
     )
@@ -371,7 +371,7 @@ class CaptureRecord(BaseModel):
 
     def validate_sex_how_sexed(self):
         """
-        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate options
+        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate CHOICES
         for the sex of the bird. Raises a ValidationError if the criteria are not met.
         """
 
