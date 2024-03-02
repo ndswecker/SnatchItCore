@@ -28,10 +28,9 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = f"attachment; filename={datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}_USGS.csv"
         writer = csv.writer(response)
-        writer.writerow(queryset.first().serialize_usgs().keys())
+        writer.writerow(USGSSerializer(queryset.first()).serialize().keys())
         for obj in queryset:
-            serializer = USGSSerializer(obj)
-            writer.writerow(serializer.serialize().values())
+            writer.writerow(USGSSerializer(obj).serialize().values())
         return response
 
 
