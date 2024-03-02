@@ -7,7 +7,7 @@ from django.db import models
 
 from common.models import BaseModel
 from maps.choice_definitions import *
-from maps.birds_info import REFERENCE_GUIDE
+from maps.maps_reference_data import REFERENCE_GUIDE
 
 
 def rounded_down_datetime():

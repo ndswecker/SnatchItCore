@@ -1,5 +1,5 @@
 from maps.models import CaptureRecord
-from maps.birds_info import REFERENCE_GUIDE
+from maps.maps_reference_data import REFERENCE_GUIDE
 
 
 class USGSSerializer:
