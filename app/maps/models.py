@@ -7,7 +7,7 @@ from django.db import models
 
 from common.models import BaseModel
 from maps.choice_definitions import *
-from maps.maps_reference_data import REFERENCE_GUIDE
+from maps.maps_reference_data import *
 
 
 def rounded_down_datetime():
@@ -274,21 +274,21 @@ class CaptureRecord(BaseModel):
     location = models.CharField(
         max_length=4,
         choices=STATION_CHOICES,
-        null=True,
-        blank=True,
+        default="MORS",
     )
 
     discrepancies = models.TextField(null=True, blank=True)
     is_flagged_for_review = models.BooleanField(default=False)
 
     def __str__(self):
-        common_name = REFERENCE_GUIDE["species"][self.species_number]["common_name"]
+        common_name = SPECIES[self.species_number]["common_name"]
         return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
 
     def clean(self):
         super().clean()
 
         self.validate_initials(self.bander_initials, "bander_initials", mandatory=True)
+        self.validate_how_aged_order()
         self.validate_species_to_wing()
         self.validate_wrp_to_species()
         self.validate_how_sexed_order()
@@ -299,7 +299,7 @@ class CaptureRecord(BaseModel):
             self.validate_initials(self.scribe, "scribe", mandatory=False)
 
     def validate_species_to_wing(self):
-        species_info = REFERENCE_GUIDE["species"].get(self.species_number)
+        species_info = SPECIES[self.species_number]
         if species_info and self.wing_chord is not None:
             wing_chord_range = species_info.get("wing_chord_range", (0, 0))
             if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
@@ -348,17 +348,26 @@ class CaptureRecord(BaseModel):
             indicating either an invalid code or a mismatch between the species and its typical age classification codes.
         """
 
-        target_species = REFERENCE_GUIDE["species"][self.species_number]
+        target_species = SPECIES[self.species_number]
         wrp_groups = target_species["WRP_groups"]
 
         allowed_codes = []
         for group_number in wrp_groups:
-            allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group_number]["codes_allowed"])
+            allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
 
         if self.age_WRP not in allowed_codes:
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
+        
+    def validate_how_aged_order(self):
+        """
+        Automatically adjust how_aged_1 and how_aged_2 fields to ensure logical data consistency.
+        """
+
+        if not self.how_aged_1 and self.how_aged_2:
+            self.how_aged_1 = self.how_aged_2
+            self.how_aged_2 = None
 
     def validate_how_sexed_order(self):
         """
@@ -404,7 +413,7 @@ class CaptureRecord(BaseModel):
             indicating either an invalid size or a mismatch between the species and its typical band sizes.
         """
 
-        target_species = REFERENCE_GUIDE["species"][self.species_number]
+        target_species = SPECIES[self.species_number]
         band_sizes = target_species["band_sizes"]
         if self.band_size not in band_sizes:
             raise ValidationError({

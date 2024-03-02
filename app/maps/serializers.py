@@ -1,5 +1,5 @@
 from maps.models import CaptureRecord
-from maps.maps_reference_data import REFERENCE_GUIDE
+from maps.maps_reference_data import *
 
 
 class USGSSerializer:
@@ -7,26 +7,26 @@ class USGSSerializer:
         self.capture_record = capture_record
 
     def get_species(self):
-        return REFERENCE_GUIDE["species"][self.capture_record.species_number]["alpha_code"]
+        return SPECIES[self.capture_record.species_number]["alpha_code"]
 
     def get_condition_code(self):
-        return REFERENCE_GUIDE["dispositions"][self.capture_record.capture_code]["usgs"]["code"]
+        return DISPOSTIONS[self.capture_record.capture_code]["usgs"]["code"]
 
     def get_how_aged(self):
         if not self.capture_record.how_aged_1:
             return ""
-        return REFERENCE_GUIDE["how_aged"][self.capture_record.how_aged_1]["usgs"]["code"]
+        return HOW_AGE_DETERMINED[self.capture_record.how_aged_1]["usgs"]["code"]
 
     def get_usgs_how_sexed_code(self):
         if not self.capture_record.how_sexed_1:
             return ""
-        return REFERENCE_GUIDE["how_aged"][self.capture_record.how_sexed_1]["usgs"]["code"]
+        return HOW_AGE_DETERMINED[self.capture_record.how_sexed_1]["usgs"]["code"]
 
     def get_sex(self):
-        return REFERENCE_GUIDE["sex"][self.capture_record.sex]["usgs"]["code"]
+        return SEXES[self.capture_record.sex]["usgs"]["code"]
 
     def get_bbl_location_id(self):
-        return REFERENCE_GUIDE["site_locations"][self.capture_record.station]["BBL_location_id"]
+        return SITE_LOCATIONS[self.capture_record.station]["BBL_location_id"]
 
     def get_notes(self):
         return self.capture_record.note or ""
