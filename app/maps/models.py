@@ -48,10 +48,10 @@ class CaptureRecord(BaseModel):
 
     alpha_code = models.CharField(max_length=4)
 
-    age_annual = models.CharField(
+    age_annual = models.IntegerField(
         max_length=1,
         choices=AGE_ANNUAL_CHOICES,
-        default="1",
+        default=1,
     )
 
     how_aged_1 = models.CharField(
@@ -291,6 +291,8 @@ class CaptureRecord(BaseModel):
 
         self.validate_initials(self.bander_initials, "bander_initials", mandatory=True)
         self.validate_how_aged_order()
+        self.validate_juv_aging()
+        self.validate_status_disposition()
         self.validate_species_to_wing()
         self.validate_wrp_to_species()
         self.validate_how_sexed_order()
@@ -423,4 +425,24 @@ class CaptureRecord(BaseModel):
         if self.band_size not in band_sizes:
             raise ValidationError({
                 "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
+            })
+        
+    def validate_status_disposition(self):
+        # validate that if status is 000, then disposition must be D or P
+        if self.status == 000 and self.disposition not in ["D", "P"]:
+            raise ValidationError({
+                "disposition": "Disposition must be D or P if status is 000."
+            })
+        
+        # validate that if dispostion is B, L, S, T, or W, than status cannot be 300
+        if self.disposition in ["B", "L", "S", "T", "W"] and self.status == 300:
+            raise ValidationError({
+                "status": "Status cannot be 300 if disposition is B, L, S, T, or W. Chose 500"
+            })
+
+    def validate_juv_aging(self):
+        # validate that if age is 4 or 2, then how_aged_1 must not be P
+        if self.age_annual in [4, 2] and self.how_aged_1 == "P":
+            raise ValidationError({
+                "how_aged_1": "How aged cannot be P for HY or Local birds. Please choose J."
             })

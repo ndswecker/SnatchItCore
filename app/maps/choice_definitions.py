@@ -19,15 +19,15 @@ SPECIES_CHOICES = [
 ]
 
 AGE_ANNUAL_CHOICES = [
-    ("4", "4 - Local (incapable of sustained flight)"),
-    ("2", "2 - Hatch Year (HY)"),
-    ("1", "1 - After Hatch Year (AHY)"),
-    ("5", "5 - Second Year (SY)"),
-    ("6", "6 - After Second Year (ASY)"),
-    ("7", "7 - Third Year (TY)"),
-    ("8", "8 - After Third Year (ATY)"),
-    ("0", "0 - Inderterminable Age"),
-    ("9", "9 - Not attempted"),
+    (4, "4 - Local (incapable of sustained flight)"),
+    (2, "2 - Hatch Year (HY)"),
+    (1, "1 - After Hatch Year (AHY)"),
+    (5, "5 - Second Year (SY)"),
+    (6, "6 - After Second Year (ASY)"),
+    (7, "7 - Third Year (TY)"),
+    (8, "8 - After Third Year (ATY)"),
+    (0, "0 - Inderterminable Age"),
+    (9, "9 - Not attempted"),
 ]
 
 AGE_WRP_CHOICES = [
