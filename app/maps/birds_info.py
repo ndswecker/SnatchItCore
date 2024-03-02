@@ -1,4 +1,16 @@
 REFERENCE_GUIDE = {
+    "site_locations": {
+        "MORS": {
+            "name": "Morse Preserve MAPS",
+            "code": "MORS",
+            "BBL_location_id": 223665
+        },
+        "GHPR": {
+            "name": "Glacial Heritage Preserve MAPS",
+            "code": "GHPR",
+            "BBL_location_id": 0
+        },
+    },
     "species": {
         5810: {
             "common_name": "Song Sparrow",
@@ -87,6 +99,328 @@ REFERENCE_GUIDE = {
         8: {
             "description": "Group 8 - Preformative molt less than complete, prebasic molt complete, and prealternate molt occur in both first and definative cycles.", 
             "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"]
+        },
+    },
+    "dispositions": {
+        "N": {
+            "maps": {
+                "description": "New Bird",
+                "code": "N",
+            },
+            "usgs": {
+                "description": "Add (New Band)",
+                "code": "1",
+            },
+        },
+        "R": {
+            "maps": {
+                "description": "Recaptured Bird",
+                "code": "R",
+            },
+            "usgs": {
+                "description": "Added-To",
+                "code": "6",
+            },
+        },
+        "L": {
+            "maps": {
+                "description": "Lost Band",
+                "code": "L",
+            },
+            "usgs": {
+                "description": "Band Lost",
+                "code": "8",
+            },
+        },
+        "D": {
+            "maps": {
+                "description": "Destroyed Band (and or dead)",
+                "code": "D",
+            },
+            "usgs": {
+                "description": "Destroyed",
+                "code": ["4", "X"],
+            },
+        },
+        "U": {
+            "maps": {
+                "description": "Unbanded Bird",
+                "code": "U",
+            },
+        },
+        "C": {
+            "maps": {
+                "description": "Changed Band",
+                "code": "C",
+            },
+            "usgs": {
+                "description": "Replacing Band",
+                "code": "5",
+            },
+        },
+    },
+    "age_annual": {
+        "4": {
+            "maps": {
+                "code": "4",
+                "description": "Local (incapable of sustained flight)"
+            },
+            "usgs": {
+                "code": "L",
+                "description": "Local"
+            }
+        },
+        "2": {
+            "maps": {
+                "code": "2",
+                "description": "Hatch Year (HY)"
+            },
+            "usgs": {
+                "code": "HY",
+                "description": "Hatching Year"
+            }
+        },
+        "1": {
+            "maps": {
+                "code": "1",
+                "description": "After Hatch Year (AHY)"
+            },
+            "usgs": {
+                "code": "AHY",
+                "description": "After Hatching Year"
+            }
+        },
+        "5": {
+            "maps": {
+                "code": "5",
+                "description": "Second Year (SY)"
+            },
+            "usgs": {
+                "code": "SY",
+                "description": "Second Year"
+            }
+        },
+        "6": {
+            "maps": {
+                "code": "6",
+                "description": "After Second Year (ASY)"
+            },
+            "usgs": {
+                "code": "ASY",
+                "description": "After Second Year"
+            }
+        },
+        "7": {
+            "maps": {
+                "code": "7",
+                "description": "Third Year (TY)"
+            },
+            "usgs": {
+                "code": "TY",
+                "description": "Third Year"
+            }
+        },
+        "8": {
+            "maps": {
+                "code": "8",
+                "description": "After Third Year (ATY)"
+            },
+            "usgs": {
+                "code": "ATY",
+                "description": "After Third Year"
+            }
+        },
+        "0": {
+            "maps": {
+                "code": "0",
+                "description": "Indeterminable Age"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown"
+            }
+        },
+        "9": {
+            "maps": {
+                "code": "9",
+                "description": "Not attempted"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown"  # Assuming 'U' is equivalent to 'Not attempted'
+            }
+        },
+    },
+    "how_aged": {
+        "S": {
+            "maps": {
+                "code": "S",
+                "description": "Skull"
+            },
+            "usgs": {
+                "code": "SK",
+                "description": "Skull"
+            }
+        },
+        "C": {
+            "maps": {
+                "code": "C",
+                "description": "Cloacal Protuberance"
+            },
+            "usgs": {
+                "code": "CL",
+                "description": "Cloacal Protuberance"
+            }
+        },
+        "B": {
+            "maps": {
+                "code": "B",
+                "description": "Brood Patch"
+            },
+            "usgs": {
+                "code": "BP",
+                "description": "Brood Patch"
+            }
+        },
+        "F": {
+            "maps": {
+                "code": "F",
+                "description": "Feather Wear"
+            },
+            "usgs": {
+                "code": "FF",
+                "description": "Flight feathers (remiges), condition or color"
+            }
+        },
+        "J": {
+            "maps": {
+                "code": "J",
+                "description": "Juvenile Body Plumage"
+            },
+            "usgs": {
+                "code": "PL",
+                "description": "Body Plumage"
+            }
+        },
+        "M": {
+            "maps": {
+                "code": "M",
+                "description": "Molt"
+            },
+            "usgs": {
+                "code": "MR",
+                "description": "Flight feathers (remiges), condition or color"
+            }
+        },
+        "P": {
+            "maps": {
+                "code": "P",
+                "description": "Plumage (non-juvenile)"
+            },
+            "usgs": {
+                "code": "PL",
+                "description": "Body Plumage"
+            }
+        },
+        "N": {
+            "maps": {
+                "code": "N",
+                "description": "Non-feather"
+            },
+        },
+        "L": {
+            "maps": {
+                "code": "L",
+                "description": "Molt Limit"
+            },
+            "usgs": {
+                "code": "LP",
+                "description": "Molt limit present"
+            }
+        },
+        "I": {
+            "maps": {
+                "code": "I",
+                "description": "Mouth/Bill"
+            },
+            "usgs": {
+                "code": "MB",
+                "description": "Mouth/Bill"
+            }
+        },
+        "E": {
+            "maps": {
+                "code": "E",
+                "description": "Eye color"
+            },
+            "usgs": {
+                "code": "EY",
+                "description": "Eye color"
+            }
+        },
+        "W": {
+            "maps": {
+                "code": "W",
+                "description": "Wing length"
+            },
+        },
+        "T": {
+            "maps": {
+                "code": "T",
+                "description": "Tail length"
+            },
+        },
+        "O": {
+            "maps": {
+                "code": "O",
+                "description": "Other (specify in notes)"
+            },
+            "usgs": {
+                "code": "OT",
+                "description": "Other"
+            }
+        },
+    },
+    "sex": {
+        "M": {
+            "maps": {
+                "code": "M",
+                "description": "Male"
+            },
+            "usgs": {
+                "code": "M",
+                "description": "Male"
+            }
+        },
+        "F": {
+            "maps": {
+                "code": "F",
+                "description": "Female"
+            },
+            "usgs": {
+                "code": "F",
+                "description": "Female"
+            }
+        },
+        "U": {
+            "maps": {
+                "code": "U",
+                "description": "Unknown"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown"
+            }
+        },
+        "X": {
+            "maps": {
+                "code": "X",
+                "description": "Not Attempted"
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unkown"
+            }
         },
     },
 }

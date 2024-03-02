@@ -1,6 +1,5 @@
 from django import forms
 
-from .birds_info import REFERENCE_GUIDE
 from .models import CaptureRecord
 
 

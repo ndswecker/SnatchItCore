@@ -222,6 +222,7 @@ class CaptureRecord(BaseModel):
             MinValueValidator(0, message="Status must be at least 000."),
             MaxValueValidator(999, message="Status must be less than 1000."),
         ],
+        choices=STATUS_OPTIONS,
         default=300,
     )
 
@@ -272,11 +273,11 @@ class CaptureRecord(BaseModel):
 
     location = models.CharField(
         max_length=4,
+        choices=STATION_OPTIONS,
         null=True,
         blank=True,
     )
 
-    # Fields not to be submitted by the user
     discrepancies = models.TextField(null=True, blank=True)
     is_flagged_for_review = models.BooleanField(default=False)
 
@@ -288,25 +289,17 @@ class CaptureRecord(BaseModel):
         super().clean()
 
         self.validate_initials(self.bander_initials, "bander_initials", mandatory=True)
-
-        # `scribe` is optional
-        if self.scribe:  # Only validate if `scribe` is provided
-            self.validate_initials(self.scribe, "scribe", mandatory=False)
-
         self.validate_species_to_wing()
-
         self.validate_wrp_to_species()
-
         self.validate_how_sexed_order()
         self.validate_sex_how_sexed()
-
         self.validate_band_size_to_species()
 
+        if self.scribe:
+            self.validate_initials(self.scribe, "scribe", mandatory=False)
 
     def validate_species_to_wing(self):
-        # Adjusted to access species information under the "species" key
         species_info = REFERENCE_GUIDE["species"].get(self.species_number)
-
         if species_info and self.wing_chord is not None:
             wing_chord_range = species_info.get("wing_chord_range", (0, 0))
             if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
@@ -326,6 +319,7 @@ class CaptureRecord(BaseModel):
         :param mandatory: Boolean indicating if the field is mandatory.
         :raises: ValidationError if the field does not meet the criteria and is mandatory.
         """
+
         if mandatory:
             if not field_value or len(field_value) != 3 or not field_value.isalpha():
                 raise ValidationError(
@@ -341,46 +335,39 @@ class CaptureRecord(BaseModel):
                     },
                 )
 
-        # Automatically convert to uppercase if validation passes
         if field_value:
             setattr(self, field_name, field_value.upper())
 
     def validate_wrp_to_species(self):
         """
         Validates the age_WRP input against allowed codes for the given species_number.
-        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number. 
+        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number.
         The allowed codes are determined based on the WRP_groups the species belongs to, as defined in REFERENCE_GUIDE.
         Raises:
-            ValidationError: If the age_WRP code is not allowed for the species, 
+            ValidationError: If the age_WRP code is not allowed for the species,
             indicating either an invalid code or a mismatch between the species and its typical age classification codes.
         """
-        # Retrieve species information from REFERENCE_GUIDE using the species_number.
-        target_species = REFERENCE_GUIDE["species"][self.species_number]
 
-        # Extract WRP_groups for the species, which define the valid age_WRP codes.
+        target_species = REFERENCE_GUIDE["species"][self.species_number]
         wrp_groups = target_species["WRP_groups"]
 
-        # Compile a list of all allowed codes for the species, based on its WRP_groups.
         allowed_codes = []
         for group_number in wrp_groups:
-            # Append allowed codes from each relevant WRP_group to the allowed_codes list.
             allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group_number]["codes_allowed"])
 
-        # Validate if the provided age_WRP is in the list of allowed codes.
         if self.age_WRP not in allowed_codes:
-            # If not, raise a ValidationError with a detailed error message.
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
-        
+
     def validate_how_sexed_order(self):
         """
         Automatically adjust how_sexed_1 and how_sexed_2 fields to ensure logical data consistency.
         """
-        # If how_sexed_1 is blank but how_sexed_2 is not, assign how_sexed_2 to how_sexed_1 and clear how_sexed_2.
+
         if not self.how_sexed_1 and self.how_sexed_2:
             self.how_sexed_1 = self.how_sexed_2
-            self.how_sexed_2 = None  # or '' if you prefer to set it to an empty string
+            self.how_sexed_2 = None
 
     def validate_sex_how_sexed(self):
         """
@@ -388,50 +375,38 @@ class CaptureRecord(BaseModel):
         for the sex of the bird. Raises a ValidationError if the criteria are not met.
         """
 
-        # Check if the bird is identified as male or female and validate the methods
         if self.sex == "M":
             allowed_methods = {"C", "P", "W", "E", "O"}
         elif self.sex == "F":
             allowed_methods = {"B", "P", "E", "W", "O"}
         else:
-            # If sex is unknown or not attempted, skip further validation
             return
-
-        # Ensure how_sexed_1 is filled for birds with specified sex
         if not self.how_sexed_1:
             raise ValidationError({
                 "how_sexed_1": "A method of determination is required for birds with specified sex."
             })
 
-        # Validate how_sexed_1 and how_sexed_2 against the allowed methods
         invalid_methods = []
         if self.how_sexed_1 and self.how_sexed_1 not in allowed_methods:
             invalid_methods.append("how_sexed_1")
         if self.how_sexed_2 and self.how_sexed_2 not in allowed_methods:
             invalid_methods.append("how_sexed_2")
-
-        # Raise ValidationError if any method is invalid
         if invalid_methods:
             raise ValidationError({method: "Invalid method selected for the bird's sex." for method in invalid_methods})
 
     def validate_band_size_to_species(self):
         """
         Validates the band_size input against allowed sizes for the given species_number.
-        This method checks if the provided band_size is within the list of allowed sizes for the species identified by species_number. 
+        This method checks if the provided band_size is within the list of allowed sizes for the species identified by species_number.
         The allowed sizes are determined based on the band_sizes the species belongs to, as defined in REFERENCE_GUIDE.
         Raises:
-            ValidationError: If the band_size is not allowed for the species, 
+            ValidationError: If the band_size is not allowed for the species,
             indicating either an invalid size or a mismatch between the species and its typical band sizes.
         """
-        # Retrieve species information from REFERENCE_GUIDE using the species_number.
+
         target_species = REFERENCE_GUIDE["species"][self.species_number]
-
-        # Extract band_sizes for the species, which define the valid band_size codes.
         band_sizes = target_species["band_sizes"]
-
-        # Validate if the provided band_size is in the list of allowed sizes.
         if self.band_size not in band_sizes:
-            # If not, raise a ValidationError with a detailed error message.
             raise ValidationError({
                 "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
             })
