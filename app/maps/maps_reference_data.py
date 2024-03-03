@@ -13,11 +13,6 @@ SITE_LOCATIONS = {
     },
 }
 
-Certainly! I'll add each of the birds you've listed to the `SPECIES` dictionary. Given the data format you've provided, I'll incorporate each entry into the dictionary format you're using, assuming the other attributes (like `band_sizes`, `wing_chord_range`, `WRP_groups`, `male_brood_patch`, and `pyle_second_edition_page`) are not specified for these new entries and would need to be updated based on your data.
-
-Here's your expanded `SPECIES` dictionary with all the new birds added:
-
-```python
 SPECIES = {
     5810: {
         "common_name": "Song Sparrow",
