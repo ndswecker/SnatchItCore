@@ -923,6 +923,7 @@ WRP_GROUPS = {
         "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"]
     },
 }
+
 DISPOSTIONS = {
     "N": {
         "maps": {
@@ -1205,6 +1206,7 @@ HOW_AGE_DETERMINED = {
         }
     },
 }
+
 SEXES = {
     "M": {
         "maps": {
