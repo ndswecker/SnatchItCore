@@ -23,7 +23,7 @@ class USGSSerializer:
         return HOW_AGE_DETERMINED[self.capture_record.how_sexed_1]["usgs"]["code"]
 
     def get_sex(self):
-        return SEXES[self.capture_record.sex]["usgs"]["code"]
+        return self.capture_record.sex
 
     def get_bbl_location_id(self):
         return SITE_LOCATIONS[self.capture_record.station]["BBL_location_id"]
