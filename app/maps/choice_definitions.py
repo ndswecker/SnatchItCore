@@ -1,6 +1,5 @@
-# banding_data_fields.py
 
-CAPTURE_CODE_OPTIONS = [
+CAPTURE_CODE_CHOICES = [
     ("N", "(N) New Bird"),
     ("R", "(R) Recaptured Bird"),
     ("L", "(L) Lost Band"),
@@ -10,7 +9,7 @@ CAPTURE_CODE_OPTIONS = [
     ("A", "(A) Added Band"),
 ]
 
-SPECIES_OPTIONS = [
+SPECIES_CHOICES = [
     (5810, "SOSP - Song Sparrow"),
     (6460, "OCWA - Orange-crowned Warbler"),
     (5880, "SPTO - Spotted Towhee"),
@@ -19,19 +18,19 @@ SPECIES_OPTIONS = [
     (4310, "ANHU - Anna's Hummingbird"),
 ]
 
-AGE_ANNUAL_OPTIONS = [
-    ("4", "4 - Local (incapable of sustained flight)"),
-    ("2", "2 - Hatch Year (HY)"),
-    ("1", "1 - After Hatch Year (AHY)"),
-    ("5", "5 - Second Year (SY)"),
-    ("6", "6 - After Second Year (ASY)"),
-    ("7", "7 - Third Year (TY)"),
-    ("8", "8 - After Third Year (ATY)"),
-    ("0", "0 - Inderterminable Age"),
-    ("9", "9 - Not attempted"),
+AGE_ANNUAL_CHOICES = [
+    (4, "4 - Local (incapable of sustained flight)"),
+    (2, "2 - Hatch Year (HY)"),
+    (1, "1 - After Hatch Year (AHY)"),
+    (5, "5 - Second Year (SY)"),
+    (6, "6 - After Second Year (ASY)"),
+    (7, "7 - Third Year (TY)"),
+    (8, "8 - After Third Year (ATY)"),
+    (0, "0 - Inderterminable Age"),
+    (9, "9 - Not attempted"),
 ]
 
-AGE_WRP_OPTIONS = [
+AGE_WRP_CHOICES = [
     ("FPJ", "(FPJ) First prejuvenile molt"),
     ("FCJ", "(FCJ) First cycle juvenile plumage"),
     ("FPF", "(FPF) First preformative molt"),
@@ -56,7 +55,7 @@ AGE_WRP_OPTIONS = [
     ("UCU", "(UCU) Unknown cycle unknown plumage"),
 ]
 
-HOW_AGED_SEXED_OPTIONS = [
+HOW_AGED_SEXED_CHOICES = [
     ("S", "S - Skull"),
     ("C", "C - Cloacal Protuberance"),
     ("B", "B - Brood Patch"),
@@ -74,14 +73,14 @@ HOW_AGED_SEXED_OPTIONS = [
     ("O", "O - Other (specify in notes)"),
 ]
 
-SEX_OPTIONS = [
+SEX_CHOICES = [
     ("M", "Male"),
     ("F", "Female"),
     ("U", "Unknown"),
     ("X", "Not Attempted"),
 ]
 
-SKULL_SCORES = [
+SKULL_CHOICES = [
     (0, "0 - None"),
     (1, "1 - Trace"),
     (2, "2 - < 1/3"),
@@ -92,14 +91,14 @@ SKULL_SCORES = [
     (8, "8 - Unable to Determine"),
 ]
 
-CLOACAL_PROTUBERANCE_SCORES = [
+CLOACAL_PROTUBERANCE_CHOICES = [
     (0, "0 - None"),
     (1, "1 - Small (pyramidal)"),
     (2, "2 - Medium (columnar)"),
     (3, "3 - Large (bulbous)"),
 ]
 
-BROOD_PATCH_SCORES = [
+BROOD_PATCH_CHOICES = [
     (0, "0 - None"),
     (1, "1 - Smooth"),
     (2, "2 - Vascularized"),
@@ -108,7 +107,7 @@ BROOD_PATCH_SCORES = [
     (5, "5 - Molting in"),
 ]
 
-FAT_SCORES = [
+FAT_CHOICES = [
     (0, "0 - None"),
     (1, "1 - Trace (<5%)"),
     (2, "2 - Light (<1/3)"),
@@ -119,7 +118,7 @@ FAT_SCORES = [
     (7, "7 - Excessive (Over almost all ventral surfaces)"),
 ]
 
-BODY_MOLT_OPTIONS = [
+BODY_MOLT_CHOICES = [
     (0, "0 - None"),
     (1, "1 - Trace"),
     (2, "2 - Light"),
@@ -127,14 +126,14 @@ BODY_MOLT_OPTIONS = [
     (4, "4 - Heavy"),
 ]
 
-FLIGHT_FEATHER_MOLT_OPTIONS = [
+FLIGHT_FEATHER_MOLT_CHOICES = [
     ("N", "N - None"),
     ("A", "A - Adventitious"),
     ("S", "S - Symmetric"),
     ("J", "J - Juvenile"),
 ]
 
-FLIGHT_FEATHER_WEAR_SCORES = [
+FLIGHT_FEATHER_WEAR_CHOICES = [
     (0, "0 - None (pale halo)"),
     (1, "1 - Slight"),
     (2, "2 - Light (little fraying & vey nicks)"),
@@ -143,14 +142,14 @@ FLIGHT_FEATHER_WEAR_SCORES = [
     (5, "5 - Excessive (ragged, torn, broken rachis)"),
 ]
 
-JUVENILE_BODY_PLUMAGE_OPTIONS = [
+JUVENILE_BODY_PLUMAGE_CHOICES = [
     (3, "3 - All body feather juv, FCJ."),
     (2, "2 - Greater than 1/2 juv body plumage remains, start FPF."),
     (1, "1 - Less than 1/2 juv body plamage remains, FPF."),
     (0, "0 - HY bird with no juv body plumage, FCF"),
 ]
 
-MOLT_LIMIT_PLUMAGE_OPTIONS = [
+MOLT_LIMIT_PLUMAGE_CHOICES = [
     ("J", "J - Juvenile (OR Juv & Alternate)"),
     ("L", "L - Limit of Juv & Formative"),
     ("F", "F - Formative (OR Formative & Alternate)"),
@@ -162,12 +161,12 @@ MOLT_LIMIT_PLUMAGE_OPTIONS = [
     ("U", "U - Unknown"),
 ]
 
-STATION_OPTIONS = [
+STATION_CHOICES = [
     ("MORS", "MORS - Morse Preserve MAPS"),
     ("GHPR", "Glacial Heritage Preserve MAPS"),
 ]
 
-BAND_SIZE_OPTIONS = [
+BAND_SIZE_CHOICES = [
     ("0A", "0A"),
     ("0", "0"),
     ("1", "1"),
@@ -182,7 +181,7 @@ BAND_SIZE_OPTIONS = [
     ("R", "Recap"),
 ]
 
-DISPOSITION_OPTIONS = [
+DISPOSITION_CHOICES = [
     ("B", "B - Body Injury"),
     ("D", "Death (not from predation)"),
     ("E", "E - Eye Injury"),
@@ -198,7 +197,7 @@ DISPOSITION_OPTIONS = [
     ("W", "W - Wing injury"),
 ]
 
-STATUS_OPTIONS = [
+STATUS_CHOICES = [
     (300, "300 - Normal, banded, released"),
     (301, "301 - Color banded"),
     (500, "500 - injured, see Disposition"),

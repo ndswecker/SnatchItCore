@@ -6,8 +6,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from common.models import BaseModel
-from maps.banding_data_fields import *
-from maps.birds_info import REFERENCE_GUIDE
+from maps.choice_definitions import *
+from maps.maps_reference_data import *
 
 
 def rounded_down_datetime():
@@ -25,7 +25,7 @@ class CaptureRecord(BaseModel):
 
     capture_code = models.CharField(
         max_length=1,
-        choices=CAPTURE_CODE_OPTIONS,
+        choices=CAPTURE_CODE_CHOICES,
         default="N",
     )
 
@@ -42,114 +42,114 @@ class CaptureRecord(BaseModel):
             MinValueValidator(1000, message="Species number must be at least 4 digits long."),
             MaxValueValidator(9999, message="Species number must be less than 5 digits."),
         ],
-        choices=SPECIES_OPTIONS,
+        choices=SPECIES_CHOICES,
         default=5810,
     )
 
     alpha_code = models.CharField(max_length=4)
 
-    age_annual = models.CharField(
+    age_annual = models.IntegerField(
         max_length=1,
-        choices=AGE_ANNUAL_OPTIONS,
-        default="1",
+        choices=AGE_ANNUAL_CHOICES,
+        default=1,
     )
 
     how_aged_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
 
     how_aged_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
 
     age_WRP = models.CharField(
         max_length=4,
-        choices=AGE_WRP_OPTIONS,
+        choices=AGE_WRP_CHOICES,
         default="MFCF",
     )
 
     sex = models.CharField(
         max_length=1,
-        choices=SEX_OPTIONS,
+        choices=SEX_CHOICES,
         default="U",
     )
     how_sexed_1 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
     how_sexed_2 = models.CharField(
         max_length=1,
         null=True,
         blank=True,
-        choices=HOW_AGED_SEXED_OPTIONS,
+        choices=HOW_AGED_SEXED_CHOICES,
     )
 
     skull = models.IntegerField(
-        choices=SKULL_SCORES,
+        choices=SKULL_CHOICES,
         null=True,
         blank=True,
     )
 
     cloacal_protuberance = models.IntegerField(
-        choices=CLOACAL_PROTUBERANCE_SCORES,
+        choices=CLOACAL_PROTUBERANCE_CHOICES,
         null=True,
         blank=True,
     )
 
     brood_patch = models.IntegerField(
-        choices=BROOD_PATCH_SCORES,
+        choices=BROOD_PATCH_CHOICES,
         null=True,
         blank=True,
     )
 
     fat = models.IntegerField(
-        choices=FAT_SCORES,
+        choices=FAT_CHOICES,
         null=True,
         blank=True,
     )
 
     body_molt = models.IntegerField(
-        choices=BODY_MOLT_OPTIONS,
+        choices=BODY_MOLT_CHOICES,
         null=True,
         blank=True,
     )
 
     ff_molt = models.CharField(
         max_length=1,
-        choices=FLIGHT_FEATHER_MOLT_OPTIONS,
+        choices=FLIGHT_FEATHER_MOLT_CHOICES,
         null=True,
         blank=True,
     )
 
     ff_wear = models.IntegerField(
-        choices=FLIGHT_FEATHER_WEAR_SCORES,
+        choices=FLIGHT_FEATHER_WEAR_CHOICES,
         null=True,
         blank=True,
     )
 
     juv_body_plumage = models.IntegerField(
-        choices=JUVENILE_BODY_PLUMAGE_OPTIONS,
+        choices=JUVENILE_BODY_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     primary_coverts = models.CharField(
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         max_length=1,
         null=True,
         blank=True,
     )
 
     secondary_coverts = models.CharField(
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         max_length=1,
         null=True,
         blank=True,
@@ -157,42 +157,42 @@ class CaptureRecord(BaseModel):
 
     primaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     rectrices = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     secondaries = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     tertials = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     body_plumage = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
 
     non_feather = models.CharField(
         max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_OPTIONS,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
         blank=True,
     )
@@ -222,7 +222,7 @@ class CaptureRecord(BaseModel):
             MinValueValidator(0, message="Status must be at least 000."),
             MaxValueValidator(999, message="Status must be less than 1000."),
         ],
-        choices=STATUS_OPTIONS,
+        choices=STATUS_CHOICES,
         default=300,
     )
 
@@ -232,7 +232,7 @@ class CaptureRecord(BaseModel):
 
     station = models.CharField(
         max_length=4,
-        choices=STATION_OPTIONS,
+        choices=STATION_CHOICES,
         default="MORS",
     )
 
@@ -243,7 +243,7 @@ class CaptureRecord(BaseModel):
 
     disposition = models.CharField(
         max_length=1,
-        choices=DISPOSITION_OPTIONS,
+        choices=DISPOSITION_CHOICES,
         null=True,
         blank=True,
     )
@@ -261,7 +261,7 @@ class CaptureRecord(BaseModel):
 
     band_size = models.CharField(
         max_length=2,
-        choices=BAND_SIZE_OPTIONS,
+        choices=BAND_SIZE_CHOICES,
         default="1B",
     )
 
@@ -273,33 +273,47 @@ class CaptureRecord(BaseModel):
 
     location = models.CharField(
         max_length=4,
-        choices=STATION_OPTIONS,
-        null=True,
-        blank=True,
+        choices=STATION_CHOICES,
+        default="MORS",
     )
 
     discrepancies = models.TextField(null=True, blank=True)
     is_flagged_for_review = models.BooleanField(default=False)
 
     def __str__(self):
-        common_name = REFERENCE_GUIDE["species"][self.species_number]["common_name"]
+        common_name = SPECIES[self.species_number]["common_name"]
         return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
 
     def clean(self):
         super().clean()
 
+        self.fill_in_alpha_code()
+
         self.validate_initials(self.bander_initials, "bander_initials", mandatory=True)
+
+        self.validate_how_aged_order()
+        self.validate_juv_aging()
+        self.validate_MLP_to_age()
+        self.validate_skull_to_age()
+
+        self.validate_status_disposition()
         self.validate_species_to_wing()
         self.validate_wrp_to_species()
+
         self.validate_how_sexed_order()
         self.validate_sex_how_sexed()
+
         self.validate_band_size_to_species()
+
 
         if self.scribe:
             self.validate_initials(self.scribe, "scribe", mandatory=False)
+    
+    def fill_in_alpha_code(self):
+        self.alpha_code = SPECIES[self.species_number]["alpha_code"]
 
     def validate_species_to_wing(self):
-        species_info = REFERENCE_GUIDE["species"].get(self.species_number)
+        species_info = SPECIES[self.species_number]
         if species_info and self.wing_chord is not None:
             wing_chord_range = species_info.get("wing_chord_range", (0, 0))
             if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
@@ -348,17 +362,26 @@ class CaptureRecord(BaseModel):
             indicating either an invalid code or a mismatch between the species and its typical age classification codes.
         """
 
-        target_species = REFERENCE_GUIDE["species"][self.species_number]
+        target_species = SPECIES[self.species_number]
         wrp_groups = target_species["WRP_groups"]
 
         allowed_codes = []
         for group_number in wrp_groups:
-            allowed_codes.extend(REFERENCE_GUIDE["wrp_groups"][group_number]["codes_allowed"])
+            allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
 
         if self.age_WRP not in allowed_codes:
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
+        
+    def validate_how_aged_order(self):
+        """
+        Automatically adjust how_aged_1 and how_aged_2 fields to ensure logical data consistency.
+        """
+
+        if not self.how_aged_1 and self.how_aged_2:
+            self.how_aged_1 = self.how_aged_2
+            self.how_aged_2 = None
 
     def validate_how_sexed_order(self):
         """
@@ -371,7 +394,7 @@ class CaptureRecord(BaseModel):
 
     def validate_sex_how_sexed(self):
         """
-        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate options
+        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate CHOICES
         for the sex of the bird. Raises a ValidationError if the criteria are not met.
         """
 
@@ -393,6 +416,31 @@ class CaptureRecord(BaseModel):
             invalid_methods.append("how_sexed_2")
         if invalid_methods:
             raise ValidationError({method: "Invalid method selected for the bird's sex." for method in invalid_methods})
+        
+        # validate that if how_sexed_1 or how_sexed_2 is C, then cloacal protuberance must be filled in
+        if (self.how_sexed_1 == "C" or self.how_sexed_2 == "C") and not self.cloacal_protuberance:
+            raise ValidationError({
+                "cloacal_protuberance": "Cloacal protuberance must be filled in for birds aged by cloacal protuberance."
+            })
+
+        # validate that if cloacal protuberance is greater than 0, then sex must be M
+        if self.cloacal_protuberance and (self.cloacal_protuberance > 0 and self.sex != "M"):
+            raise ValidationError({
+                "sex": "Only males may have a cloacal protuberance greater than 0"
+            })
+        
+        # Validate that if sex is female, then cloacal protuberance must be 0 or None
+        if self.sex == "F" and self.cloacal_protuberance not in [None, 0]:
+            raise ValidationError({
+                "cloacal_protuberance": "Cloacal protuberance must be left blank or set to zero for females."
+            })
+
+        
+        # validate that if how_sexed_1 or how_sexed_2 is B, then brood patch must be filled in
+        if (self.how_sexed_1 == "B" or self.how_sexed_2 == "B") and not self.brood_patch:
+            raise ValidationError({
+                "brood_patch": "Brood patch must be filled in for birds aged by brood patch."
+            })
 
     def validate_band_size_to_species(self):
         """
@@ -404,9 +452,70 @@ class CaptureRecord(BaseModel):
             indicating either an invalid size or a mismatch between the species and its typical band sizes.
         """
 
-        target_species = REFERENCE_GUIDE["species"][self.species_number]
+        target_species = SPECIES[self.species_number]
         band_sizes = target_species["band_sizes"]
         if self.band_size not in band_sizes:
             raise ValidationError({
                 "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
             })
+        
+    def validate_status_disposition(self):
+        # validate that if status is 000, then disposition must be D or P
+        if self.status == 000 and self.disposition not in ["D", "P"]:
+            raise ValidationError({
+                "disposition": "Disposition must be D or P if status is 000."
+            })
+        
+        # validate that if dispostion is B, L, S, T, or W, than status cannot be 300
+        if self.disposition in ["B", "L", "S", "T", "W"] and self.status == 300:
+            raise ValidationError({
+                "status": "Status cannot be 300 if disposition is B, L, S, T, or W. Chose 500"
+            })
+
+    def validate_juv_aging(self):
+        # validate that if age is 4 or 2, then how_aged_1 must not be P
+        if self.age_annual in [4, 2] and self.how_aged_1 == "P":
+            raise ValidationError({
+                "how_aged_1": "How aged cannot be P for HY or Local birds. Please choose J."
+            })
+        
+    def validate_MLP_to_age(self):
+        # validate that if age is not 1, then how_aged_1 must be filled in
+        if self.age_annual != 1 and not self.how_aged_1:
+            raise ValidationError({
+                "how_aged_1": "How aged must be filled in for birds not of age 1."
+            })
+        
+        # validate that if age is 5, and how_aged_1 is L, then how_aged_2 must be filled in
+        if self.age_annual == 5 and self.how_aged_1 == "L" and not self.how_aged_2:
+            raise ValidationError({
+                "how_aged_2": "How aged must further separate HY from SY birds. Please fill in how_aged_2."
+            })
+
+        # validate that if either how_aged_1 or how_aged_2 is L or P, then one of the following fields must be filled in
+        # primary_coverts, secondary_coverts, primaries, rectrices, secondaries, tertials, body_plumage, non_feather
+        if self.how_aged_1 in ["L", "P"] or self.how_aged_2 in ["L", "P"]:
+            if not any([self.primary_coverts, self.secondary_coverts, self.primaries, self.rectrices, self.secondaries, self.tertials, self.body_plumage, self.non_feather]):
+                raise ValidationError({
+                    "age_annual": "At least one of the Molt Limits and Plumage fields must be filled in "
+                })
+            
+    def validate_skull_to_age(self):
+        # validate that if how_aged_1 or how_aged_2 is S, then skull must be filled in
+        if (self.how_aged_1 == "S" or self.how_aged_2 == "S") and not self.skull:
+            raise ValidationError({
+                "skull": "Skull must be filled in for birds aged by skull."
+            })
+        
+        # validate that if skull is less than 5, then age_annual must be 2 or 4
+        if self.skull and (self.skull < 5 and self.age_annual not in [2, 4]):
+            raise ValidationError({
+                "age_annual": "Age must be HY or L for birds with skull score less than 5."
+            })
+        
+        # validate that if skull is 5 or 6, then age_annual must not be 2 or 4
+        if self.skull in [5, 6] and self.age_annual in [2, 4]:
+            raise ValidationError({
+                "age_annual": "Age must be SY or ASY for birds with skull score of 5 or 6."
+            })
+        
