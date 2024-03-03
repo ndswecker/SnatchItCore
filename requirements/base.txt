@@ -1,4 +1,5 @@
 Crispy-Bootstrap5
 Django
+Django-Allauth
 Django-Environ
 Django-Select2
