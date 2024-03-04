@@ -1267,7 +1267,7 @@ SEXES = (
             },
             "usgs": {
                 "code": "U",
-                "description": "Unkown",
+                "description": "Unknown",
             },
         },
     },
