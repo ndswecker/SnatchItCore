@@ -320,11 +320,9 @@ class CaptureRecord(BaseModel):
     def validate_wrp_to_species(self):
         """
         Validates the age_WRP input against allowed codes for the given species_number.
-        This method checks if the provided age_WRP code is within the list of allowed codes for the species identified by species_number.
-        The allowed codes are determined based on the WRP_groups the species belongs to, as defined in REFERENCE_GUIDE.
-        Raises:
-            ValidationError: If the age_WRP code is not allowed for the species,
-            indicating either an invalid code or a mismatch between the species and its typical age classification codes.
+        Checks if the provided age_WRP code is within the list of allowed codes for the species.
+        Allowed codes are based on the WRP_groups the species belongs to, as defined in REFERENCE_GUIDE.
+        Raises ValidationError if the age_WRP code is not allowed, indicating an invalid code or a mismatch.
         """
 
         target_species = SPECIES[self.species_number]
@@ -335,26 +333,18 @@ class CaptureRecord(BaseModel):
             allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
 
         if self.age_WRP not in allowed_codes:
-            raise ValidationError(
-                {
-                    "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}.",
-                },
-            )
+            raise ValidationError({
+                "age_WRP": ("The age_WRP '{self.age_WRP}' is not allowed for the species "
+                            f"'{target_species['common_name']}' with WRP_groups {wrp_groups}.")
+            })
+
 
     def validate_how_aged_order(self):
-        """
-        Automatically adjust how_aged_1 and how_aged_2 fields to ensure logical data consistency.
-        """
-
         if not self.how_aged_1 and self.how_aged_2:
             self.how_aged_1 = self.how_aged_2
             self.how_aged_2 = None
 
     def validate_how_sexed_order(self):
-        """
-        Automatically adjust how_sexed_1 and how_sexed_2 fields to ensure logical data consistency.
-        """
-
         if not self.how_sexed_1 and self.how_sexed_2:
             self.how_sexed_1 = self.how_sexed_2
             self.how_sexed_2 = None
@@ -421,11 +411,14 @@ class CaptureRecord(BaseModel):
     def validate_band_size_to_species(self):
         """
         Validates the band_size input against allowed sizes for the given species_number.
-        This method checks if the provided band_size is within the list of allowed sizes for the species identified by species_number.
-        The allowed sizes are determined based on the band_sizes the species belongs to, as defined in REFERENCE_GUIDE.
+        This method checks if the provided band_size is within the list of allowed 
+        sizes for the species identified by species_number.
+        The allowed sizes are determined based on the band_sizes the species belongs to, 
+        as defined in REFERENCE_GUIDE.
         Raises:
             ValidationError: If the band_size is not allowed for the species,
-            indicating either an invalid size or a mismatch between the species and its typical band sizes.
+            indicating either an invalid size or a mismatch between the species and
+             its typical band sizes.
         """
 
         target_species = SPECIES[self.species_number]
