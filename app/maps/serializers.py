@@ -1,5 +1,5 @@
-from maps.models import CaptureRecord
 from maps.maps_reference_data import *
+from maps.models import CaptureRecord
 
 
 class USGSSerializer:

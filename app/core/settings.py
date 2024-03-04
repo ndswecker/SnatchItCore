@@ -180,5 +180,5 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = None
 
 ACCOUNT_FORMS = {
-    "signup": "users.forms.FirstLastSignupForm"
+    "signup": "users.forms.FirstLastSignupForm",
 }

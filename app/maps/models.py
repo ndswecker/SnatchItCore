@@ -51,7 +51,6 @@ class CaptureRecord(BaseModel):
     alpha_code = models.CharField(max_length=4)
 
     age_annual = models.IntegerField(
-        max_length=1,
         choices=AGE_ANNUAL_CHOICES,
         default=1,
     )
@@ -310,7 +309,7 @@ class CaptureRecord(BaseModel):
 
         if self.scribe:
             self.validate_initials(self.scribe, "scribe", mandatory=False)
-    
+
     def fill_in_alpha_code(self):
         self.alpha_code = SPECIES[self.species_number]["alpha_code"]
 
@@ -375,7 +374,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}."
             })
-        
+
     def validate_how_aged_order(self):
         """
         Automatically adjust how_aged_1 and how_aged_2 fields to ensure logical data consistency.
@@ -418,7 +417,7 @@ class CaptureRecord(BaseModel):
             invalid_methods.append("how_sexed_2")
         if invalid_methods:
             raise ValidationError({method: "Invalid method selected for the bird's sex." for method in invalid_methods})
-        
+
         # validate that if how_sexed_1 or how_sexed_2 is C, then cloacal protuberance must be filled in
         if (self.how_sexed_1 == "C" or self.how_sexed_2 == "C") and not self.cloacal_protuberance:
             raise ValidationError({
@@ -430,14 +429,14 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "sex": "Only males may have a cloacal protuberance greater than 0"
             })
-        
+
         # Validate that if sex is female, then cloacal protuberance must be 0 or None
         if self.sex == "F" and self.cloacal_protuberance not in [None, 0]:
             raise ValidationError({
                 "cloacal_protuberance": "Cloacal protuberance must be left blank or set to zero for females."
             })
 
-        
+
         # validate that if how_sexed_1 or how_sexed_2 is B, then brood patch must be filled in
         if (self.how_sexed_1 == "B" or self.how_sexed_2 == "B") and not self.brood_patch:
             raise ValidationError({
@@ -460,14 +459,14 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}."
             })
-        
+
     def validate_status_disposition(self):
         # validate that if status is 000, then disposition must be D or P
         if self.status == 000 and self.disposition not in ["D", "P"]:
             raise ValidationError({
                 "disposition": "Disposition must be D or P if status is 000."
             })
-        
+
         # validate that if dispostion is B, L, S, T, or W, than status cannot be 300
         if self.disposition in ["B", "L", "S", "T", "W"] and self.status == 300:
             raise ValidationError({
@@ -480,14 +479,14 @@ class CaptureRecord(BaseModel):
             raise ValidationError({
                 "how_aged_1": "How aged cannot be P for HY or Local birds. Please choose J."
             })
-        
+
     def validate_MLP_to_age(self):
         # validate that if age is not 1, then how_aged_1 must be filled in
         if self.age_annual != 1 and not self.how_aged_1:
             raise ValidationError({
                 "how_aged_1": "How aged must be filled in for birds not of age 1."
             })
-        
+
         # validate that if age is 5, and how_aged_1 is L, then how_aged_2 must be filled in
         if self.age_annual == 5 and self.how_aged_1 == "L" and not self.how_aged_2:
             raise ValidationError({
@@ -501,23 +500,23 @@ class CaptureRecord(BaseModel):
                 raise ValidationError({
                     "age_annual": "At least one of the Molt Limits and Plumage fields must be filled in "
                 })
-            
+
     def validate_skull_to_age(self):
         # validate that if how_aged_1 or how_aged_2 is S, then skull must be filled in
         if (self.how_aged_1 == "S" or self.how_aged_2 == "S") and not self.skull:
             raise ValidationError({
                 "skull": "Skull must be filled in for birds aged by skull."
             })
-        
+
         # validate that if skull is less than 5, then age_annual must be 2 or 4
         if self.skull and (self.skull < 5 and self.age_annual not in [2, 4]):
             raise ValidationError({
                 "age_annual": "Age must be HY or L for birds with skull score less than 5."
             })
-        
+
         # validate that if skull is 5 or 6, then age_annual must not be 2 or 4
         if self.skull in [5, 6] and self.age_annual in [2, 4]:
             raise ValidationError({
                 "age_annual": "Age must be SY or ASY for birds with skull score of 5 or 6."
             })
-        
+
