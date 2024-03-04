@@ -8,6 +8,7 @@ from django.db import models
 from common.models import BaseModel
 from maps.choice_definitions import *
 from maps.maps_reference_data import *
+from users.models import User
 
 
 def rounded_down_datetime():
@@ -18,6 +19,7 @@ def rounded_down_datetime():
 
 
 class CaptureRecord(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     bander_initials = models.CharField(
         max_length=3,
         default="JSM",
