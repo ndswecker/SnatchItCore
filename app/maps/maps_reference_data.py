@@ -4,12 +4,12 @@ SITE_LOCATIONS = {
     "MORS": {
         "name": "Morse Preserve MAPS",
         "code": "MORS",
-        "BBL_location_id": 223665
+        "BBL_location_id": 223665,
     },
     "GHPR": {
         "name": "Glacial Heritage Preserve MAPS",
         "code": "GHPR",
-        "BBL_location_id": 0
+        "BBL_location_id": 0,
     },
 }
 
@@ -642,7 +642,7 @@ SPECIES = {
         "male_brood_patch": None,
         "pyle_second_edition_page": None,
     },
-        5140: {
+    5140: {
         "common_name": "Evening Grosbeak",
         "scientific_name": "Coccothraustes vespertinus",
         "alpha_code": "EVGR",
@@ -862,7 +862,7 @@ SPECIES = {
         "male_brood_patch": None,
         "pyle_second_edition_page": None,
     },
-        7670: {
+    7670: {
         "common_name": "Western Bluebird",
         "scientific_name": "Sialia mexicana",
         "alpha_code": "WEBL",
@@ -894,33 +894,29 @@ SPECIES = {
         "WRP_groups": [],
         "male_brood_patch": None,
         "pyle_second_edition_page": None,
-    }
-
-
-
-
+    },
 }
 
 WRP_GROUPS = {
     3: {
-        "description": "Group 3 - Preformative molt less than complete, prebasic molt complete, and no prealternate molts occur.", 
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "DCB", "DPB", "MFCF", "MSPB"]
+        "description": "Group 3 - Preformative molt less than complete, prebasic molt complete, and no prealternate molts occur.",
+        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "DCB", "DPB", "MFCF", "MSPB"],
     },
     4: {
-        "description": "Group 4 - Preformative and prebasic molts complete, and no prealternate molts occur.", 
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "MFCF", "MSPB"]
+        "description": "Group 4 - Preformative and prebasic molts complete, and no prealternate molts occur.",
+        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "MFCF", "MSPB"],
     },
     5: {
-        "description": "Group 5 - Preformative and prebasic molts less than complet and no prealternate molts occur.", 
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "SCB", "TPB", "DCB", "DPB", "TCB", "4PB"]
+        "description": "Group 5 - Preformative and prebasic molts less than complet and no prealternate molts occur.",
+        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "SCB", "TPB", "DCB", "DPB", "TCB", "4PB"],
     },
     6: {
-        "description": "Group 6 - Preformative molt less than complete, prebasic molt less than complete or complete. Prealternate molt occurs in the definative but not the first cylce.", 
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "DPA", "DCA", "DPB", "DCB", "SCB", "SPA", "SCA", "TPB"]
+        "description": "Group 6 - Preformative molt less than complete, prebasic molt less than complete or complete. Prealternate molt occurs in the definative but not the first cylce.",
+        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "DPA", "DCA", "DPB", "DCB", "SCB", "SPA", "SCA", "TPB"],
     },
     8: {
-        "description": "Group 8 - Preformative molt less than complete, prebasic molt complete, and prealternate molt occur in both first and definative cycles.", 
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"]
+        "description": "Group 8 - Preformative molt less than complete, prebasic molt complete, and prealternate molt occur in both first and definative cycles.",
+        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"],
     },
 }
 
@@ -987,92 +983,92 @@ AGES_ANNUAL = {
     "4": {
         "maps": {
             "code": "4",
-            "description": "Local (incapable of sustained flight)"
+            "description": "Local (incapable of sustained flight)",
         },
         "usgs": {
             "code": "L",
-            "description": "Local"
-        }
+            "description": "Local",
+        },
     },
     "2": {
         "maps": {
             "code": "2",
-            "description": "Hatch Year (HY)"
+            "description": "Hatch Year (HY)",
         },
         "usgs": {
             "code": "HY",
-            "description": "Hatching Year"
-        }
+            "description": "Hatching Year",
+        },
     },
     "1": {
         "maps": {
             "code": "1",
-            "description": "After Hatch Year (AHY)"
+            "description": "After Hatch Year (AHY)",
         },
         "usgs": {
             "code": "AHY",
-            "description": "After Hatching Year"
-        }
+            "description": "After Hatching Year",
+        },
     },
     "5": {
         "maps": {
             "code": "5",
-            "description": "Second Year (SY)"
+            "description": "Second Year (SY)",
         },
         "usgs": {
             "code": "SY",
-            "description": "Second Year"
-        }
+            "description": "Second Year",
+        },
     },
     "6": {
         "maps": {
             "code": "6",
-            "description": "After Second Year (ASY)"
+            "description": "After Second Year (ASY)",
         },
         "usgs": {
             "code": "ASY",
-            "description": "After Second Year"
-        }
+            "description": "After Second Year",
+        },
     },
     "7": {
         "maps": {
             "code": "7",
-            "description": "Third Year (TY)"
+            "description": "Third Year (TY)",
         },
         "usgs": {
             "code": "TY",
-            "description": "Third Year"
-        }
+            "description": "Third Year",
+        },
     },
     "8": {
         "maps": {
             "code": "8",
-            "description": "After Third Year (ATY)"
+            "description": "After Third Year (ATY)",
         },
         "usgs": {
             "code": "ATY",
-            "description": "After Third Year"
-        }
+            "description": "After Third Year",
+        },
     },
     "0": {
         "maps": {
             "code": "0",
-            "description": "Indeterminable Age"
+            "description": "Indeterminable Age",
         },
         "usgs": {
             "code": "U",
-            "description": "Unknown"
-        }
+            "description": "Unknown",
+        },
     },
     "9": {
         "maps": {
             "code": "9",
-            "description": "Not attempted"
+            "description": "Not attempted",
         },
         "usgs": {
             "code": "U",
-            "description": "Unknown"  # Assuming 'U' is equivalent to 'Not attempted'
-        }
+            "description": "Unknown",  # Assuming 'U' is equivalent to 'Not attempted'
+        },
     },
 }
 
@@ -1080,172 +1076,174 @@ HOW_AGE_DETERMINED = {
     "S": {
         "maps": {
             "code": "S",
-            "description": "Skull"
+            "description": "Skull",
         },
         "usgs": {
             "code": "SK",
-            "description": "Skull"
-        }
+            "description": "Skull",
+        },
     },
     "C": {
         "maps": {
             "code": "C",
-            "description": "Cloacal Protuberance"
+            "description": "Cloacal Protuberance",
         },
         "usgs": {
             "code": "CL",
-            "description": "Cloacal Protuberance"
-        }
+            "description": "Cloacal Protuberance",
+        },
     },
     "B": {
         "maps": {
             "code": "B",
-            "description": "Brood Patch"
+            "description": "Brood Patch",
         },
         "usgs": {
             "code": "BP",
-            "description": "Brood Patch"
-        }
+            "description": "Brood Patch",
+        },
     },
     "F": {
         "maps": {
             "code": "F",
-            "description": "Feather Wear"
+            "description": "Feather Wear",
         },
         "usgs": {
             "code": "FF",
-            "description": "Flight feathers (remiges), condition or color"
-        }
+            "description": "Flight feathers (remiges), condition or color",
+        },
     },
     "J": {
         "maps": {
             "code": "J",
-            "description": "Juvenile Body Plumage"
+            "description": "Juvenile Body Plumage",
         },
         "usgs": {
             "code": "PL",
-            "description": "Body Plumage"
-        }
+            "description": "Body Plumage",
+        },
     },
     "M": {
         "maps": {
             "code": "M",
-            "description": "Molt"
+            "description": "Molt",
         },
         "usgs": {
             "code": "MR",
-            "description": "Flight feathers (remiges), condition or color"
-        }
+            "description": "Flight feathers (remiges), condition or color",
+        },
     },
     "P": {
         "maps": {
             "code": "P",
-            "description": "Plumage (non-juvenile)"
+            "description": "Plumage (non-juvenile)",
         },
         "usgs": {
             "code": "PL",
-            "description": "Body Plumage"
-        }
+            "description": "Body Plumage",
+        },
     },
     "N": {
         "maps": {
             "code": "N",
-            "description": "Non-feather"
+            "description": "Non-feather",
         },
     },
     "L": {
         "maps": {
             "code": "L",
-            "description": "Molt Limit"
+            "description": "Molt Limit",
         },
         "usgs": {
             "code": "LP",
-            "description": "Molt limit present"
-        }
+            "description": "Molt limit present",
+        },
     },
     "I": {
         "maps": {
             "code": "I",
-            "description": "Mouth/Bill"
+            "description": "Mouth/Bill",
         },
         "usgs": {
             "code": "MB",
-            "description": "Mouth/Bill"
-        }
+            "description": "Mouth/Bill",
+        },
     },
     "E": {
         "maps": {
             "code": "E",
-            "description": "Eye color"
+            "description": "Eye color",
         },
         "usgs": {
             "code": "EY",
-            "description": "Eye color"
-        }
+            "description": "Eye color",
+        },
     },
     "W": {
         "maps": {
             "code": "W",
-            "description": "Wing length"
+            "description": "Wing length",
         },
     },
     "T": {
         "maps": {
             "code": "T",
-            "description": "Tail length"
+            "description": "Tail length",
         },
     },
     "O": {
         "maps": {
             "code": "O",
-            "description": "Other (specify in notes)"
+            "description": "Other (specify in notes)",
         },
         "usgs": {
             "code": "OT",
-            "description": "Other"
-        }
+            "description": "Other",
+        },
     },
 }
 
-SEXES = {
-    "M": {
-        "maps": {
-            "code": "M",
-            "description": "Male"
+SEXES = (
+    {
+        "M": {
+            "maps": {
+                "code": "M",
+                "description": "Male",
+            },
+            "usgs": {
+                "code": "M",
+                "description": "Male",
+            },
         },
-        "usgs": {
-            "code": "M",
-            "description": "Male"
-        }
-    },
-    "F": {
-        "maps": {
-            "code": "F",
-            "description": "Female"
+        "F": {
+            "maps": {
+                "code": "F",
+                "description": "Female",
+            },
+            "usgs": {
+                "code": "F",
+                "description": "Female",
+            },
         },
-        "usgs": {
-            "code": "F",
-            "description": "Female"
-        }
-    },
-    "U": {
-        "maps": {
-            "code": "U",
-            "description": "Unknown"
+        "U": {
+            "maps": {
+                "code": "U",
+                "description": "Unknown",
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unknown",
+            },
         },
-        "usgs": {
-            "code": "U",
-            "description": "Unknown"
-        }
-    },
-    "X": {
-        "maps": {
-            "code": "X",
-            "description": "Not Attempted"
+        "X": {
+            "maps": {
+                "code": "X",
+                "description": "Not Attempted",
+            },
+            "usgs": {
+                "code": "U",
+                "description": "Unkown",
+            },
         },
-        "usgs": {
-            "code": "U",
-            "description": "Unkown"
-        }
     },
-},
+)
