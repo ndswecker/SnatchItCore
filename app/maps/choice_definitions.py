@@ -10,11 +10,7 @@ CAPTURE_CODE_CHOICES = [
     ("A", "(A) Added Band"),
 ]
 
-# Dynamically generate the choices for the species_number field
-SPECIES_CHOICES = [
-    (species_number, f"{details['alpha_code']} - {details['common_name']}")
-    for species_number, details in REFERENCE_DATA.SPECIES.items()
-]
+SPECIES_CHOICES = [(k, f"{v['alpha_code']} - {v['common_name']}") for k, v in REFERENCE_DATA.SPECIES.items()]
 
 AGE_ANNUAL_CHOICES = [
     (4, "4 - Local (incapable of sustained flight)"),
