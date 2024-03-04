@@ -1,7 +1,13 @@
 {% extends "users/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-  <h1>Profile</h1>
+  <div class="container">
+    <h1>Profile</h1>
+    <p>Welcome, {{ user.first_name }} {{ user.last_name }}!</p>
+    <p><a href="{% url 'account_email' %}">Update Email</a></p>
+    <p><a href="{% url 'account_change_password' %}">Change Password</a></p>
+  </div>
 {% endblock %}
