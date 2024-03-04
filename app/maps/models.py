@@ -281,7 +281,7 @@ class CaptureRecord(BaseModel):
     is_flagged_for_review = models.BooleanField(default=False)
 
     def __str__(self):
-        common_name = SPECIES[self.species_number]["common_name"]
+        common_name = SPECIES[self.species]["common_name"]
         return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
 
     def clean(self):
@@ -310,10 +310,10 @@ class CaptureRecord(BaseModel):
             self.validate_initials(self.scribe, "scribe", mandatory=False)
     
     def fill_in_alpha_code(self):
-        self.alpha_code = SPECIES[self.species_number]["alpha_code"]
+        self.alpha_code = SPECIES[self.species]["alpha_code"]
 
     def validate_species_to_wing(self):
-        species_info = SPECIES[self.species_number]
+        species_info = SPECIES[self.species]
         if species_info and self.wing_chord is not None:
             wing_chord_range = species_info.get("wing_chord_range", (0, 0))
             if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
@@ -362,7 +362,7 @@ class CaptureRecord(BaseModel):
             indicating either an invalid code or a mismatch between the species and its typical age classification codes.
         """
 
-        target_species = SPECIES[self.species_number]
+        target_species = SPECIES[self.species]
         wrp_groups = target_species["WRP_groups"]
 
         allowed_codes = []
@@ -452,7 +452,7 @@ class CaptureRecord(BaseModel):
             indicating either an invalid size or a mismatch between the species and its typical band sizes.
         """
 
-        target_species = SPECIES[self.species_number]
+        target_species = SPECIES[self.species]
         band_sizes = target_species["band_sizes"]
         if self.band_size not in band_sizes:
             raise ValidationError({
