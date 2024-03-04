@@ -872,23 +872,19 @@ WRP_GROUPS = {
         ],
     },
     4: {
-        "description": (
-            "Group 4 - Preformative and prebasic molts complete, "
-            "and no prealternate molts occur."
-        ),
+        "description": ("Group 4 - Preformative and prebasic molts complete, " "and no prealternate molts occur."),
         "codes_allowed": [
-            "FPJ", 
-            "FCJ", 
-            "FPF", 
-            "FCF", 
-            "MFCF", 
-            "MSPB"
+            "FPJ",
+            "FCJ",
+            "FPF",
+            "FCF",
+            "MFCF",
+            "MSPB",
         ],
     },
     5: {
         "description": (
-            "Group 5 - Preformative and prebasic molts less than complete "
-            "and no prealternate molts occur."
+            "Group 5 - Preformative and prebasic molts less than complete " "and no prealternate molts occur."
         ),
         "codes_allowed": [
             "FPJ",

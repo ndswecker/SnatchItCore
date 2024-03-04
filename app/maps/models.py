@@ -333,11 +333,14 @@ class CaptureRecord(BaseModel):
             allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
 
         if self.age_WRP not in allowed_codes:
-            raise ValidationError({
-                "age_WRP": ("The age_WRP '{self.age_WRP}' is not allowed for the species "
-                            f"'{target_species['common_name']}' with WRP_groups {wrp_groups}.")
-            })
-
+            raise ValidationError(
+                {
+                    "age_WRP": (
+                        "The age_WRP '{self.age_WRP}' is not allowed for the species "
+                        f"'{target_species['common_name']}' with WRP_groups {wrp_groups}."
+                    ),
+                }
+            )
 
     def validate_how_aged_order(self):
         if not self.how_aged_1 and self.how_aged_2:
@@ -411,9 +414,9 @@ class CaptureRecord(BaseModel):
     def validate_band_size_to_species(self):
         """
         Validates the band_size input against allowed sizes for the given species_number.
-        This method checks if the provided band_size is within the list of allowed 
+        This method checks if the provided band_size is within the list of allowed
         sizes for the species identified by species_number.
-        The allowed sizes are determined based on the band_sizes the species belongs to, 
+        The allowed sizes are determined based on the band_sizes the species belongs to,
         as defined in REFERENCE_GUIDE.
         Raises:
             ValidationError: If the band_size is not allowed for the species,
