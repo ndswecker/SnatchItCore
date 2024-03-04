@@ -388,7 +388,7 @@ class CaptureRecord(BaseModel):
                     "cloacal_protuberance": (
                         "Cloacal protuberance must be filled in for birds aged by " "cloacal protuberance."
                     ),
-                }
+                },
             )
 
         # validate that if cloacal protuberance is greater than 0, then sex must be M
@@ -437,7 +437,6 @@ class CaptureRecord(BaseModel):
             raise ValidationError({"band_size": error_msg})
 
     def validate_status_disposition(self):
-        # validate that if status is 000, then disposition must be D or P
         if self.status == 000 and self.disposition not in ["D", "P"]:
             raise ValidationError(
                 {
@@ -445,7 +444,6 @@ class CaptureRecord(BaseModel):
                 },
             )
 
-        # validate that if dispostion is B, L, S, T, or W, than status cannot be 300
         if self.disposition in ["B", "L", "S", "T", "W"] and self.status == 300:
             raise ValidationError(
                 {
