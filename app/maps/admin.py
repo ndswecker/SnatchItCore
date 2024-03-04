@@ -26,7 +26,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
             )
             return False
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = f"attachment; filename={datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}_USGS.csv"
+        response["Content-Disposition"] = f"attachment; filename={datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}_USGS.csv"  # noqa
         writer = csv.writer(response)
         writer.writerow(USGSSerializer(queryset.first()).serialize().keys())
         for obj in queryset:
