@@ -339,7 +339,7 @@ class CaptureRecord(BaseModel):
                         "The age_WRP '{self.age_WRP}' is not allowed for the species "
                         f"'{target_species['common_name']}' with WRP_groups {wrp_groups}."
                     ),
-                }
+                },
             )
 
     def validate_how_aged_order(self):
@@ -378,20 +378,18 @@ class CaptureRecord(BaseModel):
             invalid_methods.append("how_sexed_2")
         if invalid_methods:
             raise ValidationError(
-                {
-                    method: "Invalid method selected for the bird's sex." for method in invalid_methods
-                }
+                {method: "Invalid method selected for the bird's sex." for method in invalid_methods},
             )
 
         # validate that if how_sexed_1 or how_sexed_2 is C, then cloacal protuberance must be filled in
         if (self.how_sexed_1 == "C" or self.how_sexed_2 == "C") and not self.cloacal_protuberance:
-            raise ValidationError({
-                "cloacal_protuberance": (
-                    "Cloacal protuberance must be filled in for birds aged by "
-                    "cloacal protuberance."
-                )
-            })
-
+            raise ValidationError(
+                {
+                    "cloacal_protuberance": (
+                        "Cloacal protuberance must be filled in for birds aged by " "cloacal protuberance."
+                    ),
+                }
+            )
 
         # validate that if cloacal protuberance is greater than 0, then sex must be M
         if self.cloacal_protuberance and (self.cloacal_protuberance > 0 and self.sex != "M"):
