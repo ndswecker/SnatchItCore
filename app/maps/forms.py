@@ -18,4 +18,10 @@ class CaptureRecordForm(forms.ModelForm):
     class Meta:
         model = CaptureRecord
         fields = "__all__"
-        exclude = ["alpha_code", "discrepancies", "is_flagged_for_review"]
+        exclude = [
+            "user",
+            "bander_initials",
+            "alpha_code",
+            "discrepancies",
+            "is_flagged_for_review",
+        ]

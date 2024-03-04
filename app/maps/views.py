@@ -11,7 +11,12 @@ from .models import CaptureRecord
 class CreateCaptureRecordView(CreateView):
     template_name = "maps/enter_bird.html"
     form_class = CaptureRecordForm
-    success_url = "/maps/"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.bander_initials = self.request.user.initials
+        self.object = form.save()
+        return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
 
 
 class DetailCaptureRecordView(DetailView):
