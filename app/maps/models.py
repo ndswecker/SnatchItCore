@@ -22,7 +22,6 @@ class CaptureRecord(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bander_initials = models.CharField(
         max_length=3,
-        default="JSM",
     )
 
     capture_code = models.CharField(
@@ -290,8 +289,6 @@ class CaptureRecord(BaseModel):
 
         self.fill_in_alpha_code()
 
-        self.validate_initials(self.bander_initials, "bander_initials", mandatory=True)
-
         self.validate_how_aged_order()
         self.validate_juv_aging()
         self.validate_MLP_to_age()
@@ -306,10 +303,6 @@ class CaptureRecord(BaseModel):
 
         self.validate_band_size_to_species()
 
-
-        if self.scribe:
-            self.validate_initials(self.scribe, "scribe", mandatory=False)
-
     def fill_in_alpha_code(self):
         self.alpha_code = SPECIES[self.species_number]["alpha_code"]
 
@@ -323,35 +316,6 @@ class CaptureRecord(BaseModel):
                         "wing_chord": f"Wing chord for {species_info['common_name']} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.",  # noqa: E501
                     },
                 )
-
-    def validate_initials(self, field_value, field_name, mandatory=True):
-        """
-        Validates that a field value is exactly 3 letters long and all characters are alphabetic for mandatory fields.
-        For optional fields, it validates the condition only if a value is provided.
-        Automatically converts to uppercase.
-        :param field_value: The value of the field to validate.
-        :param field_name: The name of the field (for error messages).
-        :param mandatory: Boolean indicating if the field is mandatory.
-        :raises: ValidationError if the field does not meet the criteria and is mandatory.
-        """
-
-        if mandatory:
-            if not field_value or len(field_value) != 3 or not field_value.isalpha():
-                raise ValidationError(
-                    {
-                        field_name: f'{field_name.replace("_", " ").capitalize()} must be exactly three letters long.',
-                    },
-                )
-        else:
-            if field_value and (len(field_value) != 3 or not field_value.isalpha()):
-                raise ValidationError(
-                    {
-                        field_name: f'{field_name.replace("_", " ").capitalize()} must be exactly three letters long.',
-                    },
-                )
-
-        if field_value:
-            setattr(self, field_name, field_value.upper())
 
     def validate_wrp_to_species(self):
         """
