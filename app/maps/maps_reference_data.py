@@ -855,26 +855,40 @@ SPECIES = {
 
 WRP_GROUPS = {
     3: {
-        "description": "Group 3 - Preformative molt less than complete, prebasic molt complete, and no prealternate molts occur.",
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "DCB", "DPB", "MFCF", "MSPB"],
+        "description": ("Group 3 - Preformative molt less than complete, prebasic molt complete, "
+                        "and no prealternate molts occur."),
+        "codes_allowed": [
+            "FPJ", "FCJ", "FPF", "FCF", "SPB", "DCB", "DPB", "MFCF", "MSPB"
+        ],
     },
     4: {
-        "description": "Group 4 - Preformative and prebasic molts complete, and no prealternate molts occur.",
+        "description": ("Group 4 - Preformative and prebasic molts complete, "
+                        "and no prealternate molts occur."),
         "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "MFCF", "MSPB"],
     },
     5: {
-        "description": "Group 5 - Preformative and prebasic molts less than complet and no prealternate molts occur.",
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "SCB", "TPB", "DCB", "DPB", "TCB", "4PB"],
+        "description": ("Group 5 - Preformative and prebasic molts less than complete "
+                        "and no prealternate molts occur."),
+        "codes_allowed": [
+            "FPJ", "FCJ", "FPF", "FCF", "SPB", "SCB", "TPB", "DCB", "DPB", "TCB", "4PB"
+        ],
     },
     6: {
-        "description": "Group 6 - Preformative molt less than complete, prebasic molt less than complete or complete. Prealternate molt occurs in the definative but not the first cylce.",
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "SPB", "DPA", "DCA", "DPB", "DCB", "SCB", "SPA", "SCA", "TPB"],
+        "description": ("Group 6 - Preformative molt less than complete, prebasic molt less than complete or "
+                        "complete. Prealternate molt occurs in the definitive but not the first cycle."),
+        "codes_allowed": [
+            "FPJ", "FCJ", "FPF", "FCF", "SPB", "DPA", "DCA", "DPB", "DCB", "SCB", "SPA", "SCA", "TPB"
+        ],
     },
     8: {
-        "description": "Group 8 - Preformative molt less than complete, prebasic molt complete, and prealternate molt occur in both first and definative cycles.",
-        "codes_allowed": ["FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"],
+        "description": ("Group 8 - Preformative molt less than complete, prebasic molt complete, "
+                        "and prealternate molt occur in both first and definitive cycles."),
+        "codes_allowed": [
+            "FPJ", "FCJ", "FPF", "FCF", "FPA", "FCA", "SPB", "DPA", "DCA", "DPB", "DCB", "DCU", "FCU"
+        ],
     },
 }
+
 
 DISPOSTIONS = {
     "N": {
