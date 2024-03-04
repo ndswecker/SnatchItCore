@@ -29,6 +29,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "crispy_forms",
+    "django_select2",
 ]
 
 LOCAL_APPS = [

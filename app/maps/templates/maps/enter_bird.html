@@ -1,6 +1,10 @@
 {% extends "maps/base.html" %}
 {% load crispy_forms_tags %}
 
+{% block extra_css %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
 {% block title %}Enter Bird{% endblock %}
 
 {% block content %}
@@ -9,19 +13,34 @@
         <form method="post">
             <h1 class="text-center">Enter Bird Record</h1>
             {% csrf_token %}
+            
             {% if form.non_field_errors %}
-            <div class="alert alert-danger" role="alert">
-                {{ form.non_field_errors }}
-            </div>
+                <div class="alert alert-danger" role="alert">
+                    Please correct the errors below.
+                </div>
             {% endif %}
-            {% if form.wing_chord.errors %}
-            <div class="alert alert-danger" role="alert">
-              {{ form.wing_chord.errors.as_text }}
-            </div>
-            {% endif %}
+            
+            {% for field in form %}
+                {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {{ field.errors|striptags }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
             {{ form|crispy }}
             <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <script>
+      $(document).ready(function() {
+          $('.django-select2').select2(); // Initialize Select2 elements with the 'django-select2' class
+      });
+  </script>
 {% endblock %}
