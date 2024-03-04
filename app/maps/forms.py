@@ -8,3 +8,4 @@ class CaptureRecordForm(forms.ModelForm):
         model = CaptureRecord
         fields = "__all__"
         exclude = ["alpha_code", "discrepancies", "is_flagged_for_review"]
+
