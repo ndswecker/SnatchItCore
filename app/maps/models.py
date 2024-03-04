@@ -425,17 +425,16 @@ class CaptureRecord(BaseModel):
         Raises:
             ValidationError: If the band_size is not allowed for the species,
             indicating either an invalid size or a mismatch between the species and
-             its typical band sizes.
+            its typical band sizes.
         """
-
         target_species = SPECIES[self.species_number]
         band_sizes = target_species["band_sizes"]
         if self.band_size not in band_sizes:
-            raise ValidationError(
-                {
-                    "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}.",
-                },
+            error_msg = (
+                f"The band_size '{self.band_size}' is not allowed for the species "
+                f"'{target_species['common_name']}' with band_sizes {band_sizes}."
             )
+            raise ValidationError({"band_size": error_msg})
 
     def validate_status_disposition(self):
         # validate that if status is 000, then disposition must be D or P
