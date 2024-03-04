@@ -338,7 +338,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "age_WRP": f"The age_WRP '{self.age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}.",
-                }
+                },
             )
 
     def validate_how_aged_order(self):
@@ -375,7 +375,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "how_sexed_1": "A method of determination is required for birds with specified sex.",
-                }
+                },
             )
 
         invalid_methods = []
@@ -391,7 +391,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "cloacal_protuberance": "Cloacal protuberance must be filled in for birds aged by cloacal protuberance.",
-                }
+                },
             )
 
         # validate that if cloacal protuberance is greater than 0, then sex must be M
@@ -399,7 +399,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "sex": "Only males may have a cloacal protuberance greater than 0",
-                }
+                },
             )
 
         # Validate that if sex is female, then cloacal protuberance must be 0 or None
@@ -407,7 +407,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "cloacal_protuberance": "Cloacal protuberance must be left blank or set to zero for females.",
-                }
+                },
             )
 
         # validate that if how_sexed_1 or how_sexed_2 is B, then brood patch must be filled in
@@ -415,7 +415,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "brood_patch": "Brood patch must be filled in for birds aged by brood patch.",
-                }
+                },
             )
 
     def validate_band_size_to_species(self):
@@ -434,7 +434,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "band_size": f"The band_size '{self.band_size}' is not allowed for the species '{target_species['common_name']}' with band_sizes {band_sizes}.",
-                }
+                },
             )
 
     def validate_status_disposition(self):
@@ -443,7 +443,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "disposition": "Disposition must be D or P if status is 000.",
-                }
+                },
             )
 
         # validate that if dispostion is B, L, S, T, or W, than status cannot be 300
@@ -451,7 +451,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "status": "Status cannot be 300 if disposition is B, L, S, T, or W. Chose 500",
-                }
+                },
             )
 
     def validate_juv_aging(self):
@@ -460,7 +460,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "how_aged_1": "How aged cannot be P for HY or Local birds. Please choose J.",
-                }
+                },
             )
 
     def validate_MLP_to_age(self):
@@ -469,7 +469,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "how_aged_1": "How aged must be filled in for birds not of age 1.",
-                }
+                },
             )
 
         # validate that if age is 5, and how_aged_1 is L, then how_aged_2 must be filled in
@@ -477,7 +477,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "how_aged_2": "How aged must further separate HY from SY birds. Please fill in how_aged_2.",
-                }
+                },
             )
 
         # validate that if either how_aged_1 or how_aged_2 is L or P, then one of the following fields must be filled in
@@ -493,12 +493,12 @@ class CaptureRecord(BaseModel):
                     self.tertials,
                     self.body_plumage,
                     self.non_feather,
-                ]
+                ],
             ):
                 raise ValidationError(
                     {
                         "age_annual": "At least one of the Molt Limits and Plumage fields must be filled in ",
-                    }
+                    },
                 )
 
     def validate_skull_to_age(self):
@@ -507,7 +507,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "skull": "Skull must be filled in for birds aged by skull.",
-                }
+                },
             )
 
         # validate that if skull is less than 5, then age_annual must be 2 or 4
@@ -515,7 +515,7 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "age_annual": "Age must be HY or L for birds with skull score less than 5.",
-                }
+                },
             )
 
         # validate that if skull is 5 or 6, then age_annual must not be 2 or 4
@@ -523,5 +523,5 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "age_annual": "Age must be SY or ASY for birds with skull score of 5 or 6.",
-                }
+                },
             )
