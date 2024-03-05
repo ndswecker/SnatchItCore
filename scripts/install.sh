@@ -25,7 +25,8 @@ if [ -f "db.sqlite3" ]; then
 fi
 
 # Initialize a clean database
-python app/manage.py makemigrations
-python app/manage.py migrate
+python3 app/manage.py makemigrations
+python3 app/manage.py migrate
 
-python app/manage.py createsuperuser --username user --email user@email.com --noinput
+# python3 app/manage.py createsuperuser --username user --email user@email.com --noinput
+python3 app/manage.py loaddata users-dev

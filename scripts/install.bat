@@ -28,4 +28,5 @@ if exist db.sqlite3 (
 python app\manage.py makemigrations
 python app\manage.py migrate
 
-python app\manage.py createsuperuser --username user --email user@email.com --noinput
+:: python app\manage.py createsuperuser --username user --email user@email.com --noinput
+python app\manage.py loaddata users-dev
