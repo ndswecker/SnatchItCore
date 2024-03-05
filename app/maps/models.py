@@ -341,10 +341,7 @@ class CaptureRecord(BaseModel):
         if self.age_WRP not in allowed_codes:
             raise ValidationError(
                 {
-                    "age_WRP": (
-                        "The age_WRP '{self.age_WRP}' is not allowed for the species "
-                        f"'{target_species['common_name']}' with WRP_groups {wrp_groups}."
-                    ),
+                    "age_WRP": f"The age_WRP {self.age_WRP} is not allowed for the species {target_species['common_name']} with WRP_groups {wrp_groups}.",  # noqa E501
                 },
             )
 
