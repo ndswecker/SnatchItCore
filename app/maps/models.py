@@ -311,15 +311,17 @@ class CaptureRecord(BaseModel):
     def validate_species_to_wing(self):
         if self.wing_chord is None:
             return
-        
+
         wing_chord_range = SPECIES[self.species_number]["wing_chord_range"]
         if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
             raise ValidationError(
                 {
-                "wing_chord": f"Wing chord for {SPECIES[self.species_number]['common_name']} must be between {wing_chord_range[0]} and {wing_chord_range[1]}."
+                    "wing_chord": (
+                        f"Wing chord for {SPECIES[self.species_number]['common_name']} "
+                        f"must be between {range[0]} and {range[1]}."
+                    )
                 }
             )
-
 
     def validate_wrp_to_species(self):
         """
@@ -359,48 +361,52 @@ class CaptureRecord(BaseModel):
     def validate_sex_how_sexed(self):
         if self.sex in ["U", "X"]:
             return
-        
+
         male_criteria = ["C", "W", "E", "O"]
         female_criteria = ["B", "P", "E", "W", "O"]
 
         # Checking if criteria are met
-        if self.sex == "M" and not any(how_sexed in male_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]):
+        if self.sex == "M" and not any(
+            how_sexed in male_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
+        ):
             raise ValidationError("A bird sexed male must have how_sexed_1 or how_sexed_2 as 'C', 'W', 'E', or 'O'.")
 
-        if self.sex == "F" and not any(how_sexed in female_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]):
-            raise ValidationError("A bird sexed female must have how_sexed_1 or how_sexed_2 as 'B', 'P', 'E', 'W', or 'O'.")
-
+        if self.sex == "F" and not any(
+            how_sexed in female_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
+        ):
+            raise ValidationError(
+                "A bird sexed female must have how_sexed_1 or how_sexed_2 as 'B', 'P', 'E', 'W', or 'O'."
+            )
 
     def validate_cloacal_protuberance(self):
         if "C" in [self.how_sexed_1, self.how_sexed_2] and self.cloacal_protuberance in [None, 0]:
             raise ValidationError(
                 {
-                "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance."
-                }
+                    "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",
+                },
             )
 
         if self.sex == "F" and self.cloacal_protuberance not in [None, 0]:
             raise ValidationError(
                 {
-                "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds."
-                }
+                    "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds.",
+                },
             )
 
     def validate_brood_patch(self):
         if (not SPECIES[self.species_number]["male_brood_patch"]) and (self.sex == "M"):
             raise ValidationError(
                 {
-                "brood_patch": "Brood patch must be None"
-                }
+                    "brood_patch": "Brood patch must be None",
+                },
             )
-        
+
         if "B" in [self.how_sexed_1, self.how_sexed_2] and (self.brood_patch is None or self.brood_patch <= 0):
             raise ValidationError(
                 {
-                "brood_patch": "Brood patch must be greater than 0 for birds sexed by brood patch."
-                }
+                    "brood_patch": "Brood patch must be greater than 0 for birds sexed by brood patch.",
+                },
             )
-
 
     def validate_band_size_to_species(self):
         """
