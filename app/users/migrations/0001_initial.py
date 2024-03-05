@@ -105,6 +105,18 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
+                    "initials",
+                    models.CharField(blank=True, max_length=3, null=True, unique=True),
+                ),
+                (
+                    "is_approved",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether this user is able to submit capture records.",
+                        verbose_name="Approval status",
+                    ),
+                ),
+                (
                     "groups",
                     models.ManyToManyField(
                         blank=True,
