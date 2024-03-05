@@ -182,3 +182,7 @@ ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_FORMS = {
     "signup": "users.forms.FirstLastSignupForm",
 }
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+ACCOUNT_CHANGE_EMAIL = True
