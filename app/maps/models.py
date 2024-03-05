@@ -300,6 +300,8 @@ class CaptureRecord(BaseModel):
 
         self.validate_how_sexed_order()
         self.validate_sex_how_sexed()
+        self.validate_cloacal_protuberance()
+        self.validate_brood_patch()
 
         self.validate_band_size_to_species()
 
@@ -307,15 +309,19 @@ class CaptureRecord(BaseModel):
         self.alpha_code = SPECIES[self.species_number]["alpha_code"]
 
     def validate_species_to_wing(self):
-        species_info = SPECIES[self.species_number]
-        if species_info and self.wing_chord is not None:
-            wing_chord_range = species_info.get("wing_chord_range", (0, 0))
-            if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
-                raise ValidationError(
-                    {
-                        "wing_chord": f"Wing chord for {species_info['common_name']} must be between {wing_chord_range[0]} and {wing_chord_range[1]}.",  # noqa: E501
-                    },
-                )
+        if self.wing_chord is None:
+            return
+
+        wing_chord_range = SPECIES[self.species_number]["wing_chord_range"]
+        if not (wing_chord_range[0] <= self.wing_chord <= wing_chord_range[1]):
+            raise ValidationError(
+                {
+                    "wing_chord": (
+                        f"Wing chord for {SPECIES[self.species_number]['common_name']} "
+                        f"must be between {range[0]} and {range[1]}."
+                    )
+                }
+            )
 
     def validate_wrp_to_species(self):
         """
@@ -353,65 +359,52 @@ class CaptureRecord(BaseModel):
             self.how_sexed_2 = None
 
     def validate_sex_how_sexed(self):
-        """
-        Validate that how_sexed_1 and how_sexed_2 are provided with legitimate CHOICES
-        for the sex of the bird. Raises a ValidationError if the criteria are not met.
-        """
-
-        if self.sex == "M":
-            allowed_methods = {"C", "P", "W", "E", "O"}
-        elif self.sex == "F":
-            allowed_methods = {"B", "P", "E", "W", "O"}
-        else:
+        if self.sex in ["U", "X"]:
             return
-        if not self.how_sexed_1:
+
+        male_criteria = ["C", "W", "E", "O"]
+        female_criteria = ["B", "P", "E", "W", "O"]
+
+        # Checking if criteria are met
+        if self.sex == "M" and not any(
+            how_sexed in male_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
+        ):
+            raise ValidationError("A bird sexed male must have how_sexed_1 or how_sexed_2 as 'C', 'W', 'E', or 'O'.")
+
+        if self.sex == "F" and not any(
+            how_sexed in female_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
+        ):
+            raise ValidationError(
+                "A bird sexed female must have how_sexed_1 or how_sexed_2 as 'B', 'P', 'E', 'W', or 'O'."
+            )
+
+    def validate_cloacal_protuberance(self):
+        if "C" in [self.how_sexed_1, self.how_sexed_2] and self.cloacal_protuberance in [None, 0]:
             raise ValidationError(
                 {
-                    "how_sexed_1": "A method of determination is required for birds with specified sex.",
+                    "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",
                 },
             )
 
-        invalid_methods = []
-        if self.how_sexed_1 and self.how_sexed_1 not in allowed_methods:
-            invalid_methods.append("how_sexed_1")
-        if self.how_sexed_2 and self.how_sexed_2 not in allowed_methods:
-            invalid_methods.append("how_sexed_2")
-        if invalid_methods:
-            raise ValidationError(
-                {method: "Invalid method selected for the bird's sex." for method in invalid_methods},
-            )
-
-        # validate that if how_sexed_1 or how_sexed_2 is C, then cloacal protuberance must be filled in
-        if (self.how_sexed_1 == "C" or self.how_sexed_2 == "C") and not self.cloacal_protuberance:
-            raise ValidationError(
-                {
-                    "cloacal_protuberance": (
-                        "Cloacal protuberance must be filled in for birds aged by " "cloacal protuberance."
-                    ),
-                },
-            )
-
-        # validate that if cloacal protuberance is greater than 0, then sex must be M
-        if self.cloacal_protuberance and (self.cloacal_protuberance > 0 and self.sex != "M"):
-            raise ValidationError(
-                {
-                    "sex": "Only males may have a cloacal protuberance greater than 0",
-                },
-            )
-
-        # Validate that if sex is female, then cloacal protuberance must be 0 or None
         if self.sex == "F" and self.cloacal_protuberance not in [None, 0]:
             raise ValidationError(
                 {
-                    "cloacal_protuberance": "Cloacal protuberance must be left blank or set to zero for females.",
+                    "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds.",
                 },
             )
 
-        # validate that if how_sexed_1 or how_sexed_2 is B, then brood patch must be filled in
-        if (self.how_sexed_1 == "B" or self.how_sexed_2 == "B") and not self.brood_patch:
+    def validate_brood_patch(self):
+        if (not SPECIES[self.species_number]["male_brood_patch"]) and (self.sex == "M"):
             raise ValidationError(
                 {
-                    "brood_patch": "Brood patch must be filled in for birds aged by brood patch.",
+                    "brood_patch": "Brood patch must be None",
+                },
+            )
+
+        if "B" in [self.how_sexed_1, self.how_sexed_2] and (self.brood_patch is None or self.brood_patch <= 0):
+            raise ValidationError(
+                {
+                    "brood_patch": "Brood patch must be greater than 0 for birds sexed by brood patch.",
                 },
             )
 
