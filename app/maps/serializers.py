@@ -142,6 +142,31 @@ class IBPSerializer:
     def get_age_annual(self):
         return self.capture_record.age_annual
     
+    # Handle concatenation of how aged with strings and possible null values
+    def get_how_aged(self):
+        aged_1 = self.capture_record.how_aged_1 if self.capture_record.how_aged_1 else ''
+        aged_2 = self.capture_record.how_aged_2 if self.capture_record.how_aged_2 else ''
+        return aged_1 + aged_2
+    
+    def get_WRP(self):
+        return self.capture_record.age_WRP
+    
+    def get_sex(self):
+        return self.capture_record.sex
+    
+    # Handle concatenation of how aged with strings and possible null values
+    def get_how_sexed(self):
+        sexed_1 = self.capture_record.how_sexed_1 if self.capture_record.how_sexed_1 else ''
+        sexed_2 = self.capture_record.how_sexed_2 if self.capture_record.how_sexed_2 else ''
+        return sexed_1 + sexed_2
+    
+    def get_skull(self):
+        return self.capture_record.skull
+    
+    def get_cloacal_protuberance(self):
+        return self.capture_record.cloacal_protuberance
+
+    
     def serialize(self) -> dict:
         """Serialize a CaptureRecord to a dict"""
         return {
@@ -152,4 +177,10 @@ class IBPSerializer:
             "BAND#": self.get_band_number(),
             "SPEC": self.get_speices(),
             "AGE": self.get_age_annual(),
+            "HA": self.get_how_aged(),
+            "WRP": self.get_WRP(),
+            "SEX": self.get_sex(),
+            "HS": self.get_how_sexed(),
+            "SK": self.get_skull(),
+            "CP": self.get_cloacal_protuberance(),
         }
