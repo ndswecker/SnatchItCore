@@ -114,3 +114,42 @@ class USGSSerializer:
             "User Field 4": None,
             "User Field 5": None,
         }
+    
+class IBPSerializer:
+    def __init__(self, capture_record: CaptureRecord):
+        self.capture_record = capture_record
+
+    def get_location(self):
+        # Need to ensure that we have the correct location codes
+        return self.capture_record.location
+
+    def get_page_number(self):
+        # TODO: Implement page number? not sure
+        return 1
+    
+    def get_bander_initials(self):
+        return self.capture_record.bander_initials
+    
+    def get_capture_code(self):
+        return self.capture_record.capture_code
+    
+    def get_band_number(self):
+        return self.capture_record.band_number
+    
+    def get_speices(self):
+        return SPECIES[self.capture_record.species_number]["alpha_code"]
+    
+    def get_age_annual(self):
+        return self.capture_record.age_annual
+    
+    def serialize(self) -> dict:
+        """Serialize a CaptureRecord to a dict"""
+        return {
+            "LOC": self.get_location(),
+            "PG": self.get_page_number(),
+            "BI": self.get_bander_initials(),
+            "CODE": self.get_capture_code(),
+            "BAND#": self.get_band_number(),
+            "SPEC": self.get_speices(),
+            "AGE": self.get_age_annual(),
+        }
