@@ -123,6 +123,9 @@ class IBPSerializer:
     def get_location(self):
         # Need to ensure that we have the correct location codes
         return self.capture_record.location
+    
+    def get_band_size(self):
+        return self.capture_record.band_size
 
     def get_page_number(self):
         # TODO: Implement page number? not sure
@@ -183,7 +186,7 @@ class IBPSerializer:
         return self.capture_record.ff_wear
 
     def get_juvenile_body_plumage(self):
-        return self.capture_record.juvenile_body_plumage
+        return self.capture_record.juv_body_plumage
 
     def get_primary_coverts(self):
         return self.capture_record.primary_coverts
@@ -245,6 +248,7 @@ class IBPSerializer:
     def serialize(self) -> dict:
         return {
             "LOC": self.get_location(),
+            "BS": self.get_band_size(),
             "PG": self.get_page_number(),
             "BI": self.get_bander_initials(),
             "CODE": self.get_capture_code(),
@@ -265,6 +269,8 @@ class IBPSerializer:
             "J BDY PL": self.get_juvenile_body_plumage(),
             "PPC": self.get_primary_coverts(),
             "SSC": self.get_secondary_coverts(),
+            "PPF": self.get_primaries(),
+            "SSF": self.get_secondaries(),
             "TT": self.get_tertials(),
             "RR": self.get_rectrices(),
             "BPL": self.get_body_plumage(),
