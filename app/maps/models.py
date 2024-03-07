@@ -162,13 +162,6 @@ class CaptureRecord(BaseModel):
         blank=True,
     )
 
-    rectrices = models.CharField(
-        max_length=1,
-        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
-        null=True,
-        blank=True,
-    )
-
     secondaries = models.CharField(
         max_length=1,
         choices=MOLT_LIMIT_PLUMAGE_CHOICES,
@@ -177,6 +170,13 @@ class CaptureRecord(BaseModel):
     )
 
     tertials = models.CharField(
+        max_length=1,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
+        null=True,
+        blank=True,
+    )
+
+    rectrices = models.CharField(
         max_length=1,
         choices=MOLT_LIMIT_PLUMAGE_CHOICES,
         null=True,
