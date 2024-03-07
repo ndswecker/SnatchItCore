@@ -319,8 +319,8 @@ class CaptureRecord(BaseModel):
                     "wing_chord": (
                         f"Wing chord for {SPECIES[self.species_number]['common_name']} "
                         f"must be between {range[0]} and {range[1]}."
-                    )
-                }
+                    ),
+                },
             )
 
     def validate_wrp_to_species(self):
@@ -372,7 +372,7 @@ class CaptureRecord(BaseModel):
             how_sexed in female_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
         ):
             raise ValidationError(
-                "A bird sexed female must have how_sexed_1 or how_sexed_2 as 'B', 'P', 'E', 'W', or 'O'."
+                "A bird sexed female must have how_sexed_1 or how_sexed_2 as 'B', 'P', 'E', 'W', or 'O'.",
             )
 
     def validate_cloacal_protuberance(self):
@@ -391,12 +391,13 @@ class CaptureRecord(BaseModel):
             )
 
     def validate_brood_patch(self):
-        if (not SPECIES[self.species_number]["male_brood_patch"]) and (self.sex == "M"):
-            raise ValidationError(
-                {
-                    "brood_patch": "Brood patch must be None",
-                },
-            )
+        # Will need to fix this error message
+        # if (not SPECIES[self.species_number]["male_brood_patch"]) and (self.sex == "M"):
+        #     raise ValidationError(
+        #         {
+        #             "brood_patch": "Brood patch must be None",
+        #         },
+        #     )
 
         if "B" in [self.how_sexed_1, self.how_sexed_2] and (self.brood_patch is None or self.brood_patch <= 0):
             raise ValidationError(
