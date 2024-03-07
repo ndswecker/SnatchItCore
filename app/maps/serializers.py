@@ -165,6 +165,34 @@ class IBPSerializer:
     
     def get_cloacal_protuberance(self):
         return self.capture_record.cloacal_protuberance
+    
+    def get_brood_patch(self):
+        return self.capture_record.brood_patch
+    
+    def get_fat(self):
+        return self.capture_record.fat
+    
+    def get_body_molt(self):
+        return self.capture_record.body_molt
+    
+    def get_ff_molt(self):
+        return self.capture_record.ff_molt
+    
+    def get_juvenile_body_plumage(self):
+        return self.capture_record.juvenile_body_plumage
+    
+    def get_primary_coverts(self):
+        return self.capture_record.primary_coverts
+    
+    def get_secondary_coverts(self):
+        return self.capture_record.secondary_coverts
+    
+    def get_primaries(self):
+        return self.capture_record.primaries
+    
+    def get_secondaries(self):
+        return self.capture_record.secondaries
+
 
     
     def serialize(self) -> dict:
