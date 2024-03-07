@@ -115,6 +115,7 @@ class USGSSerializer:
             "User Field 5": None,
         }
     
+    
 class IBPSerializer:
     def __init__(self, capture_record: CaptureRecord):
         self.capture_record = capture_record
@@ -178,6 +179,9 @@ class IBPSerializer:
     def get_ff_molt(self):
         return self.capture_record.ff_molt
     
+    def get_ff_wear(self):
+        return self.capture_record.ff_wear
+    
     def get_juvenile_body_plumage(self):
         return self.capture_record.juvenile_body_plumage
     
@@ -193,10 +197,53 @@ class IBPSerializer:
     def get_secondaries(self):
         return self.capture_record.secondaries
 
-
+    def get_tertials(self):
+        return self.capture_record.tertials
     
+    def get_rectrices(self):
+        return self.capture_record.rectrices
+    
+    def get_body_plumage(self):
+        return self.capture_record.body_plumage
+    
+    def get_non_feather(self):
+        return self.capture_record.non_feather
+    
+    def get_wing_chord(self):
+        return self.capture_record.wing_chord
+    
+    def get_body_mass(self):
+        return self.capture_record.body_mass
+    
+    def get_status(self):
+        return self.capture_record.status
+    
+    def get_date(self):
+        return self.capture_record.date_time.strftime("%m/%d/%Y")
+    
+    def get_time(self):
+        return self.capture_record.date_time.strftime("%H:%M")
+    
+    def get_station(self):
+        return self.capture_record.station
+    
+    def get_net(self):
+        return self.capture_record.net
+    
+    def get_disposition(self):
+        return self.capture_record.disposition
+    
+    def get_note_number(self):
+        return self.capture_record.note_number
+    
+    def get_feather_pull(self):
+        return ""
+    
+    def get_notes(self):
+        return self.capture_record.note
+    
+
     def serialize(self) -> dict:
-        """Serialize a CaptureRecord to a dict"""
         return {
             "LOC": self.get_location(),
             "PG": self.get_page_number(),
@@ -211,4 +258,27 @@ class IBPSerializer:
             "HS": self.get_how_sexed(),
             "SK": self.get_skull(),
             "CP": self.get_cloacal_protuberance(),
+            "BP": self.get_brood_patch(),
+            "FAT": self.get_fat(),
+            "BMOLT": self.get_body_molt(),
+            "FFMOLT": self.get_ff_molt(),
+            "FFWEAR": self.get_ff_wear(),
+            "J BDY PL": self.get_juvenile_body_plumage(),
+            "PPC": self.get_primary_coverts(),
+            "SSC": self.get_secondary_coverts(),
+            "TT": self.get_tertials(),
+            "RR": self.get_rectrices(),
+            "BPL": self.get_body_plumage(),
+            "NF": self.get_non_feather(),
+            "WING": self.get_wing_chord(),
+            "WEIGHT": self.get_body_mass(),
+            "STATUS": self.get_status(),
+            "DATE": self.get_date(),
+            "TIME": self.get_time(),
+            "STATION": self.get_station(),
+            "NET": self.get_net(),
+            "DISP": self.get_disposition(),
+            "NOTE #": self.get_note_number(),
+            "FTHR PULL": self.get_feather_pull(),
+            "NOTES": self.get_notes(),
         }
