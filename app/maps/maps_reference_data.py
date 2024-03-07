@@ -235,7 +235,7 @@ SPECIES = {
         "pyle_second_edition_page": 255,
         "tail_length": (61, 79),
         "exp_culmen": (17.2, 19.7),
-        "tarsus": (14.3, 15.7)
+        "tarsus": (14.3, 15.7),
     },
     4620: {
         "common_name": "Western Wood-Pewee",
@@ -249,7 +249,7 @@ SPECIES = {
         "pyle_second_edition_page": 257,
         "tail_length": (55, 73),
         "exp_culmen": (12.8, 16.2),
-        "tarsus": (11.7, 14.6)
+        "tarsus": (11.7, 14.6),
     },
     4660: {
         "common_name": "Willow Flycatcher",
@@ -367,7 +367,7 @@ SPECIES = {
         "alpha_code": "PUMA",
         "species_number": 6110,
         "band_sizes": [],
-        "wing_chord_range": (131,156),
+        "wing_chord_range": (131, 156),
         "WRP_groups": [],
         "male_brood_patch": None,
         "pyle_second_edition_page": None,
