@@ -69,7 +69,6 @@ SPECIES = {
         "male_brood_patch": False,
         "pyle_second_edition_page": 104,
     },
-    # New birds added below
     3160: {
         "common_name": "Mourning Dove",
         "scientific_name": "Zenaida macroura",
