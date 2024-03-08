@@ -15,5 +15,6 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("maps/", include("maps.urls"), name="maps"),
+    path("netting/", include("netting.urls"), name="netting"),
     path("users/", include("users.urls"), name="users"),
 ]

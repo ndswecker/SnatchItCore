@@ -2,8 +2,10 @@
   <nav class="nav nav-pills">
     {% if user.is_authenticated %}
       {% if user.is_approved and user.initials %}
-        <a class="nav-link" href="{% url 'maps:create_capture_record' %}">Create Record</a>
-        <a class="nav-link" href="{% url 'maps:list_capture_records' %}">Records</a>
+        <a class="nav-link" href="{% url 'maps:create_capture_record' %}">Create Capture Record</a>
+        <a class="nav-link" href="{% url 'maps:list_capture_records' %}">Capture Records</a>
+        <a class="nav-link" href="{% url 'netting:create' %}">Create Netting Record</a>
+        <a class="nav-link" href="{% url 'netting:list' %}">Netting Records</a>
       {% endif %}
         <a class="nav-link" href="{% url 'users:profile' %}">Profile</a>
       {% if user.is_superuser %}
