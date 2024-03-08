@@ -38,6 +38,7 @@ LOCAL_APPS = [
     "common.apps.CommonConfig",
     "users.apps.UsersConfig",
     "maps.apps.MapsConfig",
+    "netting.apps.NettingConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

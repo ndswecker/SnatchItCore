@@ -1,0 +1,13 @@
+{% extends "netting/base.html" %}
+
+{% block title %}Netting Records{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <ul>
+      {% for record in netting_records %}
+        <li><a href="{% url 'netting:detail' pk=record.pk %}">Netting Record {{ record.pk }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
