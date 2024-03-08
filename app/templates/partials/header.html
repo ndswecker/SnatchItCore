@@ -6,6 +6,8 @@
         <a class="nav-link" href="{% url 'maps:list_capture_records' %}">Records</a>
         <a class="nav-link" href="{% url 'breeding:create' %}">Create Breeding Record</a>
         <a class="nav-link" href="{% url 'breeding:list' %}">Breeding Records</a>
+        <a class="nav-link" href="{% url 'netting:list' %}">Netting Records</a>
+        <a class="nav-link" href="{% url 'netting:create' %}">Create Netting Record</a>
       {% endif %}
         <a class="nav-link" href="{% url 'users:profile' %}">Profile</a>
       {% if user.is_superuser %}
