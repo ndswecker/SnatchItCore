@@ -35,6 +35,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "breeding.apps.BreedingConfig",
     "common.apps.CommonConfig",
     "users.apps.UsersConfig",
     "maps.apps.MapsConfig",
