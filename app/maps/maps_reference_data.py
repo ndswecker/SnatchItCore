@@ -22,7 +22,11 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (50, 90),
         "WRP_groups": [3, 4],
-        "male_brood_patch": False,
+        "sexing_criteria":{
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
         "pyle_second_edition_page": 527,
     },
     6460: {
