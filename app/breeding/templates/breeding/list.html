@@ -1,0 +1,13 @@
+{% extends "breeding/base.html" %}
+
+{% block title %}Breeting Records{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <ul>
+      {% for record in records %}
+        <li><a href="{% url 'breeding:detail' pk=record.pk %}">Breeting Record {{ record.pk }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
