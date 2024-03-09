@@ -300,7 +300,10 @@ class CaptureRecord(BaseModel):
 
         self.validate_how_sexed_order()
         self.validate_sex_how_sexed()
+
         self.validate_cloacal_protuberance()
+        self.validate_cloacal_protuberance_sexing()
+
         self.validate_brood_patch()
         self.validate_brood_patch_sexing()
 
@@ -360,7 +363,7 @@ class CaptureRecord(BaseModel):
         if self.sex in ["U", "X"]:
             return
 
-        male_criteria = ["C", "W", "E", "O"]
+        male_criteria = ["C", "W", "E", "O", "P"]
         female_criteria = ["B", "P", "E", "W", "O"]
 
         # Checking if criteria are met
@@ -397,6 +400,14 @@ class CaptureRecord(BaseModel):
             raise ValidationError(
                 {
                     "brood_patch": "Brood patch must be greater than 0 for birds sexed by brood patch.",
+                },
+            )
+        
+    def validate_cloacal_protuberance_sexing(self):
+        if ("C" in [self.how_sexed_1, self.how_sexed_2]) and not (SPECIES[self.species_number]["sexing_criteria"]["male_by_CP"]):
+            raise ValidationError(
+                {
+                    "cloacal_protuberance": "This species cannot be reliably sexed by CP"
                 },
             )
         
