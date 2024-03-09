@@ -2,7 +2,8 @@
 {% load crispy_forms_tags %}
 
 {% block extra_css %}
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
 
 {% block title %}Enter Bird{% endblock %}
@@ -30,30 +31,93 @@
                 {% endif %}
             {% endfor %}
 
+        <!-- Trigger Modal Button -->
+        <button type="button" id="view-species-info-btn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#speciesInfoModal">View Species Info</button>
+
             {{ form|crispy }}
             <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
         </form>
+
+        <!-- Species Info Modal -->
+        <div id="speciesInfoModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title">Species Information</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="species-info-content">
+                <p>Select a species to view its information here.</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        
+            </div>
+        </div>
+  
+
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <script>
-      $(document).ready(function() {
-          $('.django-select2').select2(); // Initialize Select2 elements with the 'django-select2' class
-      });
-      $('#id_species_number').change(function() {
-        var speciesNumber = $(this).val(); // Get the selected species number
-        $.ajax({
-            url: '{% url "maps:get_band_sizes_for_species" %}',
-            data: {'species_number': speciesNumber},
-            success: function(data) {
-                var bandSizesMessage = "Appropriate band sizes for this species: " + data.band_sizes.join(', ');
-                $('#band-sizes-message').text(bandSizesMessage); // Update the message
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<!-- Include Bootstrap's JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.django-select2').select2();
+
+        var selectedSpeciesNumber = null; // Variable to store the selected species number
+
+        // Store the selected species number when the species_number field changes
+        $('#id_species_number').change(function() {
+            selectedSpeciesNumber = $(this).val();
+        });
+
+        // Add click event listener for the "View Species Info" button
+        $('#view-species-info-btn').click(function() {
+            if (selectedSpeciesNumber) {
+                $.ajax({
+                    url: '{% url "maps:get_species" %}',
+                    data: {'species_number': selectedSpeciesNumber},
+                    success: function(data) {
+                        // Update the modal content with the species info
+                        var speciesInfo = `
+                          <strong>Common Name:</strong> ${data.common_name}<br>
+                          <strong>Scientific Name:</strong> ${data.scientific_name}<br>
+                          <strong>Alpha Code:</strong> ${data.alpha_code}<br>
+                          <strong>Band Sizes:</strong> ${data.band_sizes.join(', ')}<br>
+                          <strong>Wing Chord Range:</strong> ${data.wing_chord_range[0]} - ${data.wing_chord_range[1]}<br>
+                          <strong>WRP Groups:</strong> ${data.WRP_groups.join(', ')}<br>
+                          <strong>Sexing Criteria:</strong> Female by BP: ${data.sexing_criteria.female_by_BP ? 'Yes' : 'No'}, Male by CP: ${data.sexing_criteria.male_by_CP ? 'Yes' : 'No'}, Plumage Dimorphism: ${data.sexing_criteria.plumage_dimorphism ? 'Yes' : 'No'}<br>
+                          <strong>Pyle Second Edition Page:</strong> ${data.pyle_second_edition_page}`;
+                        $('#species-info-content').html(speciesInfo);
+                        $('#speciesInfoModal').modal('show'); // Show the modal
+                    }
+                });
             }
         });
     });
-  </script>
+</script>
+
+    <script>
+        $(document).ready(function() {
+            $('.django-select2').select2();
+
+            // Existing code to handle species selection and modal display
+
+            // Add event listener for when the modal is completely hidden
+            $('#speciesInfoModal').on('hidden.bs.modal', function () {
+                $('.modal-backdrop').remove(); // Remove the backdrop explicitly
+                $('body').removeClass('modal-open'); // Remove the class that prevents scrolling
+            });
+        });
+    </script>
 {% endblock %}

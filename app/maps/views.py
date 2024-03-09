@@ -18,9 +18,26 @@ def get_band_sizes_for_species(request):
     band_sizes = REFERENCE_DATA.SPECIES.get(int(species_number), {}).get('band_sizes', [])
     return JsonResponse({'band_sizes': band_sizes})
 
-def get_species():
-    species = REFERENCE_DATA.SPECIES
-    return JsonResponse({'species': species})
+def get_species(request):
+    species_number = request.GET.get('species_number')
+    species_info = REFERENCE_DATA.SPECIES.get(int(species_number))  # Convert string to int and get species info
+
+    if species_info:
+        # Prepare the data to be sent as JSON
+        data = {
+            'common_name': species_info['common_name'],
+            'scientific_name': species_info['scientific_name'],
+            'alpha_code': species_info['alpha_code'],
+            'band_sizes': species_info['band_sizes'],
+            'wing_chord_range': species_info['wing_chord_range'],
+            'WRP_groups': species_info['WRP_groups'],
+            'sexing_criteria': species_info['sexing_criteria'],
+            'pyle_second_edition_page': species_info['pyle_second_edition_page'],
+        }
+        return JsonResponse(data)
+    else:
+        # If species info not found, you can return an error message or empty data
+        return JsonResponse({'error': 'Species not found'}, status=404)
 
 class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"
