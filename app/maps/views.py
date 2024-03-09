@@ -9,6 +9,14 @@ from .forms import CaptureRecordForm
 from .models import CaptureRecord
 from users.mixins import ApprovalRequiredMixin
 
+from django.http import JsonResponse
+import maps.maps_reference_data as REFERENCE_DATA
+
+
+def get_band_sizes_for_species(request):
+    species_number = request.GET.get('species_number')
+    band_sizes = REFERENCE_DATA.SPECIES.get(int(species_number), {}).get('band_sizes', [])
+    return JsonResponse({'band_sizes': band_sizes})
 
 class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"

@@ -20,6 +20,8 @@
                 </div>
             {% endif %}
 
+            <div id="band-sizes-message"></div>
+
             {% for field in form %}
                 {% if field.errors %}
                     <div class="alert alert-danger">
@@ -42,5 +44,16 @@
       $(document).ready(function() {
           $('.django-select2').select2(); // Initialize Select2 elements with the 'django-select2' class
       });
+      $('#id_species_number').change(function() {
+        var speciesNumber = $(this).val(); // Get the selected species number
+        $.ajax({
+            url: '{% url "maps:get_band_sizes_for_species" %}',
+            data: {'species_number': speciesNumber},
+            success: function(data) {
+                var bandSizesMessage = "Appropriate band sizes for this species: " + data.band_sizes.join(', ');
+                $('#band-sizes-message').text(bandSizesMessage); // Update the message
+            }
+        });
+    });
   </script>
 {% endblock %}

@@ -79,7 +79,7 @@ SPECIES = {
         "scientific_name": "Calypte anna",
         "alpha_code": "ANHU",
         "species_number": 4310,
-        "band_sizes": ["0"],
+        "band_sizes": ["NONE"],
         "wing_chord_range": (46, 52),
         "WRP_groups": [3, 5, 6],
         "sexing_criteria":{

@@ -47,6 +47,12 @@ class CaptureRecord(BaseModel):
         default=5810,
     )
 
+    band_size = models.CharField(
+        max_length=2,
+        choices=BAND_SIZE_CHOICES,
+        default="1B",
+    )
+
     alpha_code = models.CharField(max_length=4)
 
     age_annual = models.IntegerField(
@@ -257,12 +263,6 @@ class CaptureRecord(BaseModel):
     note = models.TextField(
         null=True,
         blank=True,
-    )
-
-    band_size = models.CharField(
-        max_length=2,
-        choices=BAND_SIZE_CHOICES,
-        default="1B",
     )
 
     scribe = models.CharField(
