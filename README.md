@@ -74,3 +74,8 @@ This project uses pre-commit to enforce style and standards
 ```shell
 pre-commit run --all-files
 ```
+
+## Testing
+To Test the maps functionalities:
+
+```py app/manage.py test maps ```
