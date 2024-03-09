@@ -10,4 +10,5 @@ urlpatterns = [
     path(route="detail_record/<int:pk>/", view=views.DetailCaptureRecordView.as_view(), name="detail_capture_record"),
     path(route="", view=views.ListCaptureRecordView.as_view(), name="list_capture_records"),
     path(route="get_band_sizes_for_species/", view=get_band_sizes_for_species, name="get_band_sizes_for_species"),
+    path(route="get_species/", view=views.get_species, name="get_species"),
 ]

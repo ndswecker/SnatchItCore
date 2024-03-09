@@ -18,6 +18,10 @@ def get_band_sizes_for_species(request):
     band_sizes = REFERENCE_DATA.SPECIES.get(int(species_number), {}).get('band_sizes', [])
     return JsonResponse({'band_sizes': band_sizes})
 
+def get_species():
+    species = REFERENCE_DATA.SPECIES
+    return JsonResponse({'species': species})
+
 class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"
     form_class = CaptureRecordForm
