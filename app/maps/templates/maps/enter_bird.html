@@ -4,6 +4,11 @@
 {% block extra_css %}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <style>
+        html, body {
+            overflow-y: scroll !important; /* Always show scrollbar */
+        }
+    </style>
 {% endblock %}
 
 {% block title %}Enter Bird{% endblock %}
@@ -65,28 +70,24 @@
 {% block extra_js %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<!-- Include Bootstrap's JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
     $(document).ready(function() {
         $('.django-select2').select2();
-
-        var selectedSpeciesNumber = null; // Variable to store the selected species number
-
-        // Store the selected species number when the species_number field changes
+        
+        var selectedSpeciesNumber = null;
+        
         $('#id_species_number').change(function() {
             selectedSpeciesNumber = $(this).val();
         });
 
-        // Add click event listener for the "View Species Info" button
         $('#view-species-info-btn').click(function() {
             if (selectedSpeciesNumber) {
                 $.ajax({
                     url: '{% url "maps:get_species" %}',
-                    data: {'species_number': selectedSpeciesNumber},
+                    data: { 'species_number': selectedSpeciesNumber },
                     success: function(data) {
-                        // Update the modal content with the species info
                         var speciesInfo = `
                           <strong>Common Name:</strong> ${data.common_name}<br>
                           <strong>Scientific Name:</strong> ${data.scientific_name}<br>
@@ -102,20 +103,14 @@
                 });
             }
         });
+
+        $('#speciesInfoModal').on('hidden.bs.modal', function() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            $('body').css('padding-right', ''); // Reset any inline padding-right
+        });
     });
 </script>
-
-    <script>
-        $(document).ready(function() {
-            $('.django-select2').select2();
-
-            // Existing code to handle species selection and modal display
-
-            // Add event listener for when the modal is completely hidden
-            $('#speciesInfoModal').on('hidden.bs.modal', function () {
-                $('.modal-backdrop').remove(); // Remove the backdrop explicitly
-                $('body').removeClass('modal-open'); // Remove the class that prevents scrolling
-            });
-        });
-    </script>
 {% endblock %}
+
+
