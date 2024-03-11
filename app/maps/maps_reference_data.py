@@ -22,7 +22,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (50, 90),
         "WRP_groups": [3, 4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -37,7 +37,7 @@ SPECIES = {
         "band_sizes": ["0", "0A"],
         "wing_chord_range": (50, 70),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -52,7 +52,7 @@ SPECIES = {
         "band_sizes": ["1D", "1A", "2"],
         "wing_chord_range": (76, 95),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -67,7 +67,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (80, 110),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -79,10 +79,10 @@ SPECIES = {
         "scientific_name": "Calypte anna",
         "alpha_code": "ANHU",
         "species_number": 4310,
-        "band_sizes": ["0"],
+        "band_sizes": ["NONE"],
         "wing_chord_range": (46, 52),
         "WRP_groups": [3, 5, 6],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": True,
@@ -97,7 +97,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -112,7 +112,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -124,10 +124,10 @@ SPECIES = {
         "scientific_name": "Selasphorus rufus",
         "alpha_code": "RUHU",
         "species_number": 4330,
-        "band_sizes": [],
+        "band_sizes": ["None"],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": True,
@@ -142,7 +142,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -157,7 +157,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -172,7 +172,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -187,7 +187,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -202,7 +202,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -217,7 +217,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -232,7 +232,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (114, 133),
         "WRP_groups": [3, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": False,
@@ -247,7 +247,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (85, 115),
         "WRP_groups": [3, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": True,
@@ -262,7 +262,7 @@ SPECIES = {
         "band_sizes": ["1D", "2", "1A"],
         "wing_chord_range": (110, 132),
         "WRP_groups": [3, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": True,
@@ -277,7 +277,7 @@ SPECIES = {
         "band_sizes": ["3", "3B"],
         "wing_chord_range": (155, 176),
         "WRP_groups": [3, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": True,
@@ -292,7 +292,7 @@ SPECIES = {
         "band_sizes": ["4", "3A"],
         "wing_chord_range": (200, 256),
         "WRP_groups": [3, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": True,
@@ -307,7 +307,7 @@ SPECIES = {
         "band_sizes": ["1B", "1"],
         "wing_chord_range": (96, 114),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -325,7 +325,7 @@ SPECIES = {
         "band_sizes": ["0A", "0", "1"],
         "wing_chord_range": (74, 92),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -343,7 +343,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (61, 77),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -358,7 +358,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (59, 75),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -373,7 +373,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (62, 75),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -388,7 +388,7 @@ SPECIES = {
         "band_sizes": ["0"],
         "wing_chord_range": (54, 66),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -403,7 +403,7 @@ SPECIES = {
         "band_sizes": ["1", "0"],
         "wing_chord_range": (66, 78),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -418,7 +418,7 @@ SPECIES = {
         "band_sizes": ["0", "1"],
         "wing_chord_range": (62, 73),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -433,7 +433,7 @@ SPECIES = {
         "band_sizes": ["3", "2", "3B"],
         "wing_chord_range": (130, 163),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -448,7 +448,7 @@ SPECIES = {
         "band_sizes": ["5", "5A", "4", "4A"],
         "wing_chord_range": (244, 341),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -463,7 +463,7 @@ SPECIES = {
         "band_sizes": ["3", "2", "2A"],
         "wing_chord_range": (109, 134),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -478,7 +478,7 @@ SPECIES = {
         "band_sizes": ["7A", "6", "7"],
         "wing_chord_range": (386, 480),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -493,7 +493,7 @@ SPECIES = {
         "band_sizes": ["1D", "1A", "2"],
         "wing_chord_range": (131, 156),
         "WRP_groups": [4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -508,7 +508,7 @@ SPECIES = {
         "band_sizes": ["1", "0", "1C"],
         "wing_chord_range": (107, 125),
         "WRP_groups": [4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -523,7 +523,7 @@ SPECIES = {
         "band_sizes": ["1", "0", "1C"],
         "wing_chord_range": (102, 119),
         "WRP_groups": [4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -538,7 +538,7 @@ SPECIES = {
         "band_sizes": ["1", "1C"],
         "wing_chord_range": (94, 117),
         "WRP_groups": [4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -553,7 +553,7 @@ SPECIES = {
         "band_sizes": ["1", "0"],
         "wing_chord_range": (108, 123),
         "WRP_groups": [3, 4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -568,7 +568,7 @@ SPECIES = {
         "band_sizes": ["0", "0A"],
         "wing_chord_range": (57, 73),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -583,7 +583,7 @@ SPECIES = {
         "band_sizes": ["0", "0A"],
         "wing_chord_range": (54, 66),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -598,7 +598,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (43, 52),
         "WRP_groups": [4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -613,7 +613,7 @@ SPECIES = {
         "band_sizes": ["0", "1"],
         "wing_chord_range": (60, 73),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -628,7 +628,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (56, 69),
         "WRP_groups": [3, 4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -643,7 +643,7 @@ SPECIES = {
         "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (46, 55),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -658,7 +658,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (42, 56),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -673,7 +673,7 @@ SPECIES = {
         "band_sizes": ["1C", "1"],
         "wing_chord_range": (42, 55),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -688,7 +688,7 @@ SPECIES = {
         "band_sizes": ["1", "0"],
         "wing_chord_range": (47, 60),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -703,7 +703,7 @@ SPECIES = {
         "band_sizes": ["0A"],
         "wing_chord_range": (49, 62),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -718,7 +718,7 @@ SPECIES = {
         "band_sizes": ["0A"],
         "wing_chord_range": (49, 64),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -733,7 +733,7 @@ SPECIES = {
         "band_sizes": ["2"],
         "wing_chord_range": (115, 144),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -748,7 +748,7 @@ SPECIES = {
         "band_sizes": ["1B", "1"],
         "wing_chord_range": (79, 109),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -763,7 +763,7 @@ SPECIES = {
         "band_sizes": ["2", "3", "2A"],
         "wing_chord_range": (113, 135),
         "WRP_groups": [4],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -778,7 +778,7 @@ SPECIES = {
         "band_sizes": ["1A"],
         "wing_chord_range": (87, 100),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -793,7 +793,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (70, 83),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -808,7 +808,7 @@ SPECIES = {
         "band_sizes": ["1", "1B"],
         "wing_chord_range": (17, 86),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -823,7 +823,7 @@ SPECIES = {
         "band_sizes": ["1B", "1A"],
         "wing_chord_range": (78, 105),
         "WRP_groups": [3, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -838,7 +838,7 @@ SPECIES = {
         "band_sizes": ["0", "0A"],
         "wing_chord_range": (66, 77),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -853,7 +853,7 @@ SPECIES = {
         "band_sizes": [],
         "wing_chord_range": (62, 76),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -868,7 +868,7 @@ SPECIES = {
         "band_sizes": ["1A", "2", "1D"],
         "wing_chord_range": (100, 117),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -883,7 +883,7 @@ SPECIES = {
         "band_sizes": ["1", "0", "0A"],
         "wing_chord_range": (53, 64),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -898,7 +898,7 @@ SPECIES = {
         "band_sizes": ["0", "0A" "1"],
         "wing_chord_range": (47, 62),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -913,7 +913,7 @@ SPECIES = {
         "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (55, 66),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -928,7 +928,7 @@ SPECIES = {
         "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (63, 82),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -943,7 +943,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (56, 68),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -958,7 +958,7 @@ SPECIES = {
         "band_sizes": ["0A", "0"],
         "wing_chord_range": (48, 58),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -973,7 +973,7 @@ SPECIES = {
         "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (62, 76),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -988,7 +988,7 @@ SPECIES = {
         "band_sizes": ["1", "0"],
         "wing_chord_range": (59, 81),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -1003,7 +1003,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (63, 75),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -1018,7 +1018,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (63, 84),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -1033,7 +1033,7 @@ SPECIES = {
         "band_sizes": ["1", "0"],
         "wing_chord_range": (97, 92),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -1048,7 +1048,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (85, 99),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -1063,7 +1063,7 @@ SPECIES = {
         "band_sizes": ["1A", "1D", "2"],
         "wing_chord_range": (88, 107),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -1078,7 +1078,7 @@ SPECIES = {
         "band_sizes": ["1A", "1D", "2"],
         "wing_chord_range": (98, 127),
         "WRP_groups": [8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -1093,7 +1093,7 @@ SPECIES = {
         "band_sizes": ["2", "1D"],
         "wing_chord_range": (108, 133),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
@@ -1108,7 +1108,7 @@ SPECIES = {
         "band_sizes": ["1B", "1A", "1D", "2"],
         "wing_chord_range": (85, 115),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -1123,7 +1123,7 @@ SPECIES = {
         "band_sizes": ["4A", "4"],
         "wing_chord_range": (172, 188),
         "WRP_groups": [3, 4, 5],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": False,
             "male_by_CP": False,
             "plumage_dimorphism": False,
@@ -1138,7 +1138,7 @@ SPECIES = {
         "band_sizes": ["1B"],
         "wing_chord_range": (97, 115),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
@@ -1153,7 +1153,7 @@ SPECIES = {
         "band_sizes": ["3", "3B", "3A", "4"],
         "wing_chord_range": (82, 105),
         "WRP_groups": [3],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": False,
             "plumage_dimorphism": False,
@@ -1168,7 +1168,7 @@ SPECIES = {
         "band_sizes": ["1", "0"],
         "wing_chord_range": (63, 76),
         "WRP_groups": [3, 8],
-        "sexing_criteria":{
+        "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
