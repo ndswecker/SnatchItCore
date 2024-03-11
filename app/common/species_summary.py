@@ -41,7 +41,3 @@ class SpeciesSummary:
         return html_snippet
 
 
-# Example usage:
-# species_data = SPECIES[5810] # Assuming this is a dictionary with species data
-# species_summary = SpeciesSummary(species_data)
-# print(species_summary.generate_html_snippet())

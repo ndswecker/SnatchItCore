@@ -35,7 +35,15 @@
             {% endfor %}
 
         <!-- Trigger Modal Button -->
-        <button type="button" id="view-species-info-btn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#speciesInfoModal">View Species Info</button>
+        <button 
+            type="button"
+            id="view-species-info-btn"
+            class="btn btn-info btn-lg"
+            data-toggle="modal"
+            data-target="#speciesInfoModal">
+                View Species Info
+        </button>
+        <button type="button" id="view-species-info-popover" class="btn btn-lg btn-info btn-danger" data-bs-toggle="popover" title="Species Information" data-bs-content="NULL">View Species Info (Popover)</button>
 
             {{ form|crispy }}
             <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
@@ -71,6 +79,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -79,6 +88,44 @@
         $('#id_species_number').change(function() {
             var speciesNumber = $(this).val();
             $('#view-species-info-btn').data('species-number', speciesNumber); // Store the selected species number in the button's data attribute
+        });
+
+        // Popover setup
+        // Initialize popover and set the trigger to manual so we can control when it opens
+        $('#view-species-info-popover').popover({
+            html: true,
+            trigger: 'manual',
+            title: 'Species Information',
+            content: 'Select a species to view its information.'
+        }).on('click', function() {
+            var button = $(this); // Get the button that triggered the popover
+            var speciesNumber = button.data('species-number');
+            
+            if (speciesNumber) {
+                // Fetch species information
+                $.ajax({
+                    url: '{% url "maps:get_species" %}',
+                    data: { 'species_number': speciesNumber },
+                    success: function(htmlSnippet) {
+                        // Update popover content with the fetched HTML snippet
+                        button.attr('data-content', htmlSnippet);
+                        // Refresh and show the popover with new content
+                        button.popover('dispose').popover({
+                            html: true,
+                            trigger: 'focus',
+                            title: 'Species Information',
+                            content: htmlSnippet
+                        }).popover('show');
+                    },
+                    error: function() {
+                        button.attr('data-content', '<p>Could not retrieve species information. Please try again.</p>');
+                        button.popover('show');
+                    }
+                });
+            } else {
+                // Show default message if no species is selected
+                $(this).popover('show');
+            }
         });
 
         $('#view-species-info-btn').click(function() {
@@ -108,5 +155,3 @@
 </script>
 
 {% endblock %}
-
-
