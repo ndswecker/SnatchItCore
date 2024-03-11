@@ -1,22 +1,38 @@
-<p><strong>Species Number:</strong> {{ species_number }}</p>
-<p><strong>Common Name:</strong> {{ common_name }}</p>
-<p><strong>Scientific Name:</strong> {{ scientific_name }}</p>
+<p>
+    <strong>{{ common_name }}</strong> 
+    (<em>{{ scientific_name }}</em>)
+</p>
 <p><strong>Alpha Code:</strong> {{ alpha_code }}</p>
 <p><strong>Band Sizes:</strong> {{ band_sizes }}</p>
+{% if band_sizes_by_sex %}
+    <p>
+        &female; = [ {{ band_sizes_by_sex.female|join:", " }} ],
+        &male; = [ {{ band_sizes_by_sex.male|join:", " }} ]
+    </p>
+{% endif %}
 <p><strong>Wing Chord Range:</strong> {{ wing_chord_range }}</p>
+{% if wing_chord_range_by_sex %}
+    <p>
+        &female; = ( {{ wing_chord_range_by_sex.female|join:" - " }} ), 
+        &male; = ( {{ wing_chord_range_by_sex.male|join:" - " }} )
+    </p>
+{% endif %}
+
 <p><strong>WRP Groups:</strong> {{ WRP_groups }}</p>
-<!-- Here, you'll need to handle the sexing_criteria more carefully. -->
+<!-- Handle the sexing_criteria more carefully. -->
 <p><strong>Sexing Criteria:</strong></p>
 <ul>
     <li>Female by BP: {{ sexing_criteria.female_by_BP|yesno:"Yes,No" }}</li>
     <li>Male by CP: {{ sexing_criteria.male_by_CP|yesno:"Yes,No" }}</li>
-    <!-- Render plumage dimorphism using HTML entities for female and male symbols -->
-    <li>Sex: 
+    <li>Plumage Dimorphism: 
         {% if sexing_criteria.plumage_dimorphism %}
             &female;&ne;&male; (dimorphic)
         {% else %}
             &female;=&male;
         {% endif %}
     </li>
+    {% if sexing_criteria.wing_chord_by_sex %}
+        <li>Wing Chord by Sex: Yes</li>
+    {% endif %}
 </ul>
 <p><strong>Pyle Second Edition Page:</strong> {{ pyle_second_edition_page }}</p>

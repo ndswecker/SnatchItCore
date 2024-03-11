@@ -1075,13 +1075,22 @@ SPECIES = {
         "scientific_name": "Agelaius phoeniceus",
         "alpha_code": "RWBL",
         "species_number": 4980,
-        "band_sizes": ["1A", "1D", "2"],
+        "band_sizes": ["1D", "1A", "2"],
+        "band_sizes_by_sex": {
+            "female": ["1A", "1D"],
+            "male": ["2", "1D"],
+        },
         "wing_chord_range": (98, 127),
+        "wing_chord_range_by_sex": {
+            "female": (98, 107),
+            "male": (117, 127),
+        },
         "WRP_groups": [8],
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": True,
+            "wing_chord_by_sex": True,
         },
         "pyle_second_edition_page": 562,
     },
