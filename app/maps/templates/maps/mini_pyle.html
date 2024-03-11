@@ -1,0 +1,22 @@
+<p><strong>Species Number:</strong> {{ species_number }}</p>
+<p><strong>Common Name:</strong> {{ common_name }}</p>
+<p><strong>Scientific Name:</strong> {{ scientific_name }}</p>
+<p><strong>Alpha Code:</strong> {{ alpha_code }}</p>
+<p><strong>Band Sizes:</strong> {{ band_sizes }}</p>
+<p><strong>Wing Chord Range:</strong> {{ wing_chord_range }}</p>
+<p><strong>WRP Groups:</strong> {{ WRP_groups }}</p>
+<!-- Here, you'll need to handle the sexing_criteria more carefully. -->
+<p><strong>Sexing Criteria:</strong></p>
+<ul>
+    <li>Female by BP: {{ sexing_criteria.female_by_BP|yesno:"Yes,No" }}</li>
+    <li>Male by CP: {{ sexing_criteria.male_by_CP|yesno:"Yes,No" }}</li>
+    <!-- Render plumage dimorphism using HTML entities for female and male symbols -->
+    <li>Sex: 
+        {% if sexing_criteria.plumage_dimorphism %}
+            &female;&ne;&male; (dimorphic)
+        {% else %}
+            &female;=&male;
+        {% endif %}
+    </li>
+</ul>
+<p><strong>Pyle Second Edition Page:</strong> {{ pyle_second_edition_page }}</p>

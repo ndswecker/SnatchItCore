@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic import TemplateView
 
 import maps.maps_reference_data as REFERENCE_DATA
 from .forms import CaptureRecordForm
@@ -18,20 +19,6 @@ def get_band_sizes_for_species(request):
     species_number = request.GET.get("species_number")
     band_sizes = REFERENCE_DATA.SPECIES.get(int(species_number), {}).get("band_sizes", [])
     return JsonResponse({"band_sizes": band_sizes})
-
-
-def get_species(request):
-    species_number = request.GET.get("species_number")
-    species_info = REFERENCE_DATA.SPECIES.get(int(species_number))  # Convert string to int and get species info
-
-    if species_info:
-        species_summary = SpeciesSummary(species_info)
-        html_snippet = species_summary.generate_html_snippet()
-        return HttpResponse(html_snippet, content_type="text/html")  # Return the HTML snippet in the response
-    else:
-        # If species info not found, return an error message as HTML or consider using a 404 page
-        return HttpResponse("<p>Species not found.</p>", status=404, content_type="text/html")
-
 
 class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"
@@ -57,3 +44,25 @@ class ListCaptureRecordView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return CaptureRecord.objects.filter(user=self.request.user)
+    
+class MiniPyleView(TemplateView):
+    template_name = "maps/mini_pyle.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        species_number = self.kwargs.get('species_number')
+        species_info = REFERENCE_DATA.SPECIES.get(species_number, {})
+        context.update({
+            'species_number': species_number,
+            'common_name': species_info.get('common_name', 'Unknown'),
+            'scientific_name': species_info.get('scientific_name', ''),
+            'alpha_code': species_info.get('alpha_code', ''),
+            'band_sizes': ', '.join(species_info.get('band_sizes', [])),
+            'wing_chord_range': ' - '.join(map(str, species_info.get('wing_chord_range', []))),
+            'WRP_groups': ', '.join(map(str, species_info.get('WRP_groups', []))),
+            'sexing_criteria': species_info.get('sexing_criteria', {}),
+            'pyle_second_edition_page': species_info.get('pyle_second_edition_page', ''),
+        })
+
+        return context
+

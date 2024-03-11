@@ -1,5 +1,6 @@
 {% extends "maps/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block extra_css %}
     <!-- Bootstrap 5 CSS -->
@@ -33,7 +34,7 @@
                 id="view-species-info-popover"
                 class="btn btn-lg btn-danger"
                 data-bs-toggle="popover"
-                title="Species Information">
+                title="Species Info">
                 Mini Pyle
             </button>
 
@@ -59,63 +60,7 @@
     <script>
     $(document).ready(function() {
         $('.django-select2').select2();
-
-        // Initialize the popover
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-        var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl, {
-                container: 'body',
-                html: true,
-                trigger: 'focus',
-                content: function() {
-                    var speciesNumber = $('#id_species_number').val();
-                    if (speciesNumber) {
-                        return fetchSpeciesInfo(speciesNumber);
-                    } else {
-                        return 'Select a species to view its information.';
-                    }
-                }
-            });
-        });
-
-        function fetchSpeciesInfo(speciesNumber) {
-            var content = "Loading...";
-            $.ajax({
-                url: '{% url "maps:get_species" %}',
-                data: { 'species_number': speciesNumber },
-                async: false, // Note: Synchronous requests are discouraged
-                success: function(htmlSnippet) {
-                    content = htmlSnippet;
-                },
-                error: function() {
-                    content = 'Could not retrieve species information. Please try again.';
-                }
-            });
-            return content;
-        }
-
-        // Ensure popover updates when species number changes
-        $('#id_species_number').change(function() {
-            popoverList.forEach(function(popover) {
-                popover.dispose();
-            });
-            popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
-                return new bootstrap.Popover(popoverTriggerEl, {
-                    container: 'body',
-                    html: true,
-                    trigger: 'focus',
-                    content: function() {
-                        var speciesNumber = $('#id_species_number').val();
-                        if (speciesNumber) {
-                            return fetchSpeciesInfo(speciesNumber);
-                        } else {
-                            return 'Select a species to view its information.';
-                        }
-                    }
-                });
-            });
-        });
     });
     </script>
+    <script src="{% static 'js/mini_pyle.js' %}"></script>
 {% endblock %}
