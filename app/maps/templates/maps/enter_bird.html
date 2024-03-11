@@ -28,10 +28,23 @@
                 {% endif %}
             {% endfor %}
             
-            <button type="button" id="view-species-info-popover" class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Species Information">View Species Info (Popover)</button>
+            <button 
+                type="button"
+                id="view-species-info-popover"
+                class="btn btn-lg btn-danger"
+                data-bs-toggle="popover"
+                title="Species Information">
+                Mini Pyle
+            </button>
 
             {{ form|crispy }}
-            <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
+
+            <button
+                type='submit' 
+                class="btn btn-lg btn-primary w-100">
+                Submit
+            </button>
+            
         </form>
     </div>
 </div>
