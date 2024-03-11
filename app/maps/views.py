@@ -58,11 +58,14 @@ class MiniPyleView(TemplateView):
             'scientific_name': species_info.get('scientific_name', ''),
             'alpha_code': species_info.get('alpha_code', ''),
             'band_sizes': ', '.join(species_info.get('band_sizes', [])),
+            'band_sizes_by_sex': species_info.get('band_sizes_by_sex', None),
             'wing_chord_range': ' - '.join(map(str, species_info.get('wing_chord_range', []))),
+            'wing_chord_range_by_sex': species_info.get('wing_chord_range_by_sex', None),
             'WRP_groups': ', '.join(map(str, species_info.get('WRP_groups', []))),
             'sexing_criteria': species_info.get('sexing_criteria', {}),
             'pyle_second_edition_page': species_info.get('pyle_second_edition_page', ''),
         })
 
         return context
+
 
