@@ -124,7 +124,7 @@ SPECIES = {
         "scientific_name": "Selasphorus rufus",
         "alpha_code": "RUHU",
         "species_number": 4330,
-        "band_sizes": [],
+        "band_sizes": ["None"],
         "wing_chord_range": (),
         "WRP_groups": [],
         "sexing_criteria": {

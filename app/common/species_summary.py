@@ -1,8 +1,5 @@
-from dataclasses import dataclass
-from dataclasses import field
-from typing import Dict
-from typing import List
-
+from dataclasses import dataclass, field
+from typing import Dict, List
 
 @dataclass
 class SpeciesSummary:
@@ -22,12 +19,19 @@ class SpeciesSummary:
         self.alpha_code = species_data.get("alpha_code", "")
         self.species_number = species_data.get("species_number", 0)
         self.band_sizes = species_data.get("band_sizes", [])
-        self.wing_chord_range = species_data.get("wing_chord_range", [0, 0])
+        self.wing_chord_range = species_data.get("wing_chord_range", [])
         self.WRP_groups = species_data.get("WRP_groups", [])
         self.sexing_criteria = species_data.get("sexing_criteria", {})
         self.pyle_second_edition_page = species_data.get("pyle_second_edition_page", 0)
 
     def generate_html_snippet(self) -> str:
+        # Determine the display for plumage dimorphism based on its value
+        if self.sexing_criteria.get('plumage_dimorphism'):
+            plumage_dimorphism_display = "<strong>Sex:</strong> &female;&ne;&male; (dimorphic)"
+        else:
+            plumage_dimorphism_display = "<strong>Sex:</strong> &female;=&male;"
+
+        # Construct the HTML snippet with the updated plumage dimorphism display
         html_snippet = f"""
         <strong>Common Name:</strong> {self.common_name}<br>
         <strong>Scientific Name:</strong> {self.scientific_name}<br>
@@ -35,7 +39,10 @@ class SpeciesSummary:
         <strong>Band Sizes:</strong> {', '.join(self.band_sizes)}<br>
         <strong>Wing Chord Range:</strong> {self.wing_chord_range[0]} - {self.wing_chord_range[1]}<br>
         <strong>WRP Groups:</strong> {', '.join(map(str, self.WRP_groups))}<br>
-        <strong>Sexing Criteria:</strong> Female by BP: {'Yes' if self.sexing_criteria.get('female_by_BP') else 'No'}, Male by CP: {'Yes' if self.sexing_criteria.get('male_by_CP') else 'No'}, Plumage Dimorphism: {'Yes' if self.sexing_criteria.get('plumage_dimorphism') else 'No'}<br>
+        {plumage_dimorphism_display}<br>
+        <strong>Sexing Criteria:</strong> <br>
+        Female by BP: {'Yes' if self.sexing_criteria.get('female_by_BP') else 'No'}<br>
+        Male by CP: {'Yes' if self.sexing_criteria.get('male_by_CP') else 'No'}<br>
         <strong>Pyle Second Edition Page:</strong> {self.pyle_second_edition_page}
         """
         return html_snippet
