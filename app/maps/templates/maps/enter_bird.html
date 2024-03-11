@@ -75,42 +75,38 @@
 <script>
     $(document).ready(function() {
         $('.django-select2').select2();
-        
-        var selectedSpeciesNumber = null;
-        
+
         $('#id_species_number').change(function() {
-            selectedSpeciesNumber = $(this).val();
+            var speciesNumber = $(this).val();
+            $('#view-species-info-btn').data('species-number', speciesNumber); // Store the selected species number in the button's data attribute
         });
 
         $('#view-species-info-btn').click(function() {
-            if (selectedSpeciesNumber) {
+            var speciesNumber = $(this).data('species-number'); // Retrieve the species number from the button's data attribute
+            if (speciesNumber) {
                 $.ajax({
                     url: '{% url "maps:get_species" %}',
-                    data: { 'species_number': selectedSpeciesNumber },
-                    success: function(data) {
-                        var speciesInfo = `
-                          <strong>Common Name:</strong> ${data.common_name}<br>
-                          <strong>Scientific Name:</strong> ${data.scientific_name}<br>
-                          <strong>Alpha Code:</strong> ${data.alpha_code}<br>
-                          <strong>Band Sizes:</strong> ${data.band_sizes.join(', ')}<br>
-                          <strong>Wing Chord Range:</strong> ${data.wing_chord_range[0]} - ${data.wing_chord_range[1]}<br>
-                          <strong>WRP Groups:</strong> ${data.WRP_groups.join(', ')}<br>
-                          <strong>Sexing Criteria:</strong> Female by BP: ${data.sexing_criteria.female_by_BP ? 'Yes' : 'No'}, Male by CP: ${data.sexing_criteria.male_by_CP ? 'Yes' : 'No'}, Plumage Dimorphism: ${data.sexing_criteria.plumage_dimorphism ? 'Yes' : 'No'}<br>
-                          <strong>Pyle Second Edition Page:</strong> ${data.pyle_second_edition_page}`;
-                        $('#species-info-content').html(speciesInfo);
+                    data: { 'species_number': speciesNumber },
+                    success: function(htmlSnippet) {
+                        $('#species-info-content').html(htmlSnippet); // Directly insert the HTML snippet
                         $('#speciesInfoModal').modal('show'); // Show the modal
+                    },
+                    error: function() {
+                        $('#species-info-content').html('<p>Could not retrieve species information. Please try again.</p>');
+                        $('#speciesInfoModal').modal('show');
                     }
                 });
             }
         });
 
-        $('#speciesInfoModal').on('hidden.bs.modal', function() {
+        $('#speciesInfoModal').on('hidden.bs.modal', function () {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
             $('body').css('padding-right', ''); // Reset any inline padding-right
         });
     });
 </script>
+
 {% endblock %}
 
 
