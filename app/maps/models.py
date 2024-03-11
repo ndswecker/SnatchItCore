@@ -383,7 +383,8 @@ class CaptureRecord(BaseModel):
         if "C" in [self.how_sexed_1, self.how_sexed_2] and self.cloacal_protuberance in [None, 0]:
             raise ValidationError(
                 {
-                    "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",
+                    "cloacal_protuberance": 
+                    "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",
                 },
             )
 
@@ -425,15 +426,16 @@ class CaptureRecord(BaseModel):
                     # ...then a higher value is expected for brood patch development.
                     raise ValidationError(
                         {
-                            "brood_patch": "Males of this species may also develop brood patches. A value of 3 or greater is required.",
-                        }
+                            "brood_patch": 
+                            "Males of this species may also develop brood patches. A value of 3 or greater is required.",
+                        },
                     )
                 else:
                     # If the bird is not sexed by brood patch but has a brood patch value...
                     raise ValidationError(
                         {
                             "brood_patch": "Brood patch is not a reliable sexing method for this species.",
-                        }
+                        },
                     )
 
     def validate_band_size_to_species(self):
