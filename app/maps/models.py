@@ -30,14 +30,6 @@ class CaptureRecord(BaseModel):
         default="N",
     )
 
-    band_number = models.IntegerField(
-        validators=[
-            MinValueValidator(100000000, message="Band number must be at least 9 digits long."),
-            MaxValueValidator(999999999, message="Band number must be less than 10 digits."),
-        ],
-        default=123456789,
-    )
-
     species_number = models.IntegerField(
         validators=[
             MinValueValidator(1000, message="Species number must be at least 4 digits long."),
@@ -51,6 +43,14 @@ class CaptureRecord(BaseModel):
         max_length=2,
         choices=BAND_SIZE_CHOICES,
         default="1B",
+    )
+
+    band_number = models.IntegerField(
+        validators=[
+            MinValueValidator(100000000, message="Band number must be at least 9 digits long."),
+            MaxValueValidator(999999999, message="Band number must be less than 10 digits."),
+        ],
+        default=123456789,
     )
 
     alpha_code = models.CharField(max_length=4)
