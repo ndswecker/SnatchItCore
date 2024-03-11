@@ -2,7 +2,8 @@
 {% load crispy_forms_tags %}
 
 {% block extra_css %}
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <style>
         html, body {
@@ -19,13 +20,11 @@
         <form method="post">
             <h1 class="text-center">Enter Bird Record</h1>
             {% csrf_token %}
-
             {% if form.non_field_errors %}
                 <div class="alert alert-danger" role="alert">
                     Please correct the errors below.
                 </div>
             {% endif %}
-
             {% for field in form %}
                 {% if field.errors %}
                     <div class="alert alert-danger">
@@ -34,16 +33,11 @@
                 {% endif %}
             {% endfor %}
 
-        <!-- Trigger Modal Button -->
-        <button 
-            type="button"
-            id="view-species-info-btn"
-            class="btn btn-info btn-lg"
-            data-toggle="modal"
-            data-target="#speciesInfoModal">
-                View Species Info
-        </button>
-        <button type="button" id="view-species-info-popover" class="btn btn-lg btn-info btn-danger" data-bs-toggle="popover" title="Species Information" data-bs-content="NULL">View Species Info (Popover)</button>
+            <!-- Trigger Modal Button -->
+            <button type="button" id="view-species-info-btn" class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#speciesInfoModal">View Species Info</button>
+            
+            <!-- Trigger Popover Button -->
+            <button type="button" id="view-species-info-popover" class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Species Information">View Species Info (Popover)</button>
 
             {{ form|crispy }}
             <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
@@ -52,106 +46,90 @@
         <!-- Species Info Modal -->
         <div id="speciesInfoModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                <h4 class="modal-title">Species Information</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Species Information</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="species-info-content">
+                        <p>Select a species to view its information here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-body" id="species-info-content">
-                <p>Select a species to view its information here.</p>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
             </div>
         </div>
-
-
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+    <script>
     $(document).ready(function() {
         $('.django-select2').select2();
 
+        // Initialize the popover
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl, {
+                container: 'body',
+                html: true,
+                trigger: 'focus',
+                content: function() {
+                    var speciesNumber = $('#id_species_number').val();
+                    if (speciesNumber) {
+                        return fetchSpeciesInfo(speciesNumber);
+                    } else {
+                        return 'Select a species to view its information.';
+                    }
+                }
+            });
+        });
+
+        function fetchSpeciesInfo(speciesNumber) {
+            var content = "Loading...";
+            $.ajax({
+                url: '{% url "maps:get_species" %}',
+                data: { 'species_number': speciesNumber },
+                async: false, // Note: Synchronous requests are discouraged
+                success: function(htmlSnippet) {
+                    content = htmlSnippet;
+                },
+                error: function() {
+                    content = 'Could not retrieve species information. Please try again.';
+                }
+            });
+            return content;
+        }
+
+        // Ensure popover updates when species number changes
         $('#id_species_number').change(function() {
-            var speciesNumber = $(this).val();
-            $('#view-species-info-btn').data('species-number', speciesNumber); // Store the selected species number in the button's data attribute
-        });
-
-        // Popover setup
-        // Initialize popover and set the trigger to manual so we can control when it opens
-        $('#view-species-info-popover').popover({
-            html: true,
-            trigger: 'manual',
-            title: 'Species Information',
-            content: 'Select a species to view its information.'
-        }).on('click', function() {
-            var button = $(this); // Get the button that triggered the popover
-            var speciesNumber = button.data('species-number');
-            
-            if (speciesNumber) {
-                // Fetch species information
-                $.ajax({
-                    url: '{% url "maps:get_species" %}',
-                    data: { 'species_number': speciesNumber },
-                    success: function(htmlSnippet) {
-                        // Update popover content with the fetched HTML snippet
-                        button.attr('data-content', htmlSnippet);
-                        // Refresh and show the popover with new content
-                        button.popover('dispose').popover({
-                            html: true,
-                            trigger: 'focus',
-                            title: 'Species Information',
-                            content: htmlSnippet
-                        }).popover('show');
-                    },
-                    error: function() {
-                        button.attr('data-content', '<p>Could not retrieve species information. Please try again.</p>');
-                        button.popover('show');
+            popoverList.forEach(function(popover) {
+                popover.dispose();
+            });
+            popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl, {
+                    container: 'body',
+                    html: true,
+                    trigger: 'focus',
+                    content: function() {
+                        var speciesNumber = $('#id_species_number').val();
+                        if (speciesNumber) {
+                            return fetchSpeciesInfo(speciesNumber);
+                        } else {
+                            return 'Select a species to view its information.';
+                        }
                     }
                 });
-            } else {
-                // Show default message if no species is selected
-                $(this).popover('show');
-            }
-        });
-
-        $('#view-species-info-btn').click(function() {
-            var speciesNumber = $(this).data('species-number'); // Retrieve the species number from the button's data attribute
-            if (speciesNumber) {
-                $.ajax({
-                    url: '{% url "maps:get_species" %}',
-                    data: { 'species_number': speciesNumber },
-                    success: function(htmlSnippet) {
-                        $('#species-info-content').html(htmlSnippet); // Directly insert the HTML snippet
-                        $('#speciesInfoModal').modal('show'); // Show the modal
-                    },
-                    error: function() {
-                        $('#species-info-content').html('<p>Could not retrieve species information. Please try again.</p>');
-                        $('#speciesInfoModal').modal('show');
-                    }
-                });
-            }
-        });
-
-        $('#speciesInfoModal').on('hidden.bs.modal', function () {
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
-            $('body').css('padding-right', ''); // Reset any inline padding-right
+            });
         });
     });
-</script>
-
+    </script>
 {% endblock %}
