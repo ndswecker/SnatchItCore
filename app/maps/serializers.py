@@ -123,7 +123,7 @@ class IBPSerializer:
     def get_location(self):
         # Need to ensure that we have the correct location codes
         return self.capture_record.location
-    
+
     def get_band_size(self):
         return self.capture_record.band_size
 

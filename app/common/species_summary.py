@@ -1,5 +1,8 @@
-from dataclasses import dataclass, field
-from typing import List, Dict
+from dataclasses import dataclass
+from dataclasses import field
+from typing import Dict
+from typing import List
+
 
 @dataclass
 class SpeciesSummary:
@@ -36,6 +39,7 @@ class SpeciesSummary:
         <strong>Pyle Second Edition Page:</strong> {self.pyle_second_edition_page}
         """
         return html_snippet
+
 
 # Example usage:
 # species_data = SPECIES[5810] # Assuming this is a dictionary with species data

@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from maps.models import CaptureRecord
-from maps.serializers import IBPSerializer, USGSSerializer
+from maps.serializers import IBPSerializer
+from maps.serializers import USGSSerializer
 
 
 class CaptureRecordAdmin(admin.ModelAdmin):
@@ -35,7 +36,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         for obj in queryset:
             writer.writerow(USGSSerializer(obj).serialize().values())
         return response
-    
+
     @admin.action(description="Export selected records to an IBP CSV")
     def export_csv_ibp(self, request, queryset):
         if queryset.count() > 1000:
@@ -51,13 +52,13 @@ class CaptureRecordAdmin(admin.ModelAdmin):
             f"attachment; filename={datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}_IBP.csv"  # noqa
         )
         writer = csv.writer(response)
-        
+
         if queryset.exists():
             writer.writerow(IBPSerializer(queryset.first()).serialize().keys())
-            
+
         for obj in queryset:
             writer.writerow(IBPSerializer(obj).serialize().values())
-            
+
         return response
 
 

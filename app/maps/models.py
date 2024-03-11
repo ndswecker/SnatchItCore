@@ -402,34 +402,39 @@ class CaptureRecord(BaseModel):
                     "brood_patch": "Brood patch must be greater than 0 for birds sexed by brood patch.",
                 },
             )
-        
+
     def validate_cloacal_protuberance_sexing(self):
-        if ("C" in [self.how_sexed_1, self.how_sexed_2]) and not (SPECIES[self.species_number]["sexing_criteria"]["male_by_CP"]):
+        if ("C" in [self.how_sexed_1, self.how_sexed_2]) and not (
+            SPECIES[self.species_number]["sexing_criteria"]["male_by_CP"]
+        ):
             raise ValidationError(
                 {
-                    "cloacal_protuberance": "This species cannot be reliably sexed by CP"
+                    "cloacal_protuberance": "This species cannot be reliably sexed by CP",
                 },
             )
-        
+
     def validate_brood_patch_sexing(self):
-    # If bird was sexed by brood patch...
+        # If bird was sexed by brood patch...
         if "B" in [self.how_sexed_1, self.how_sexed_2]:
             sexing_criteria = SPECIES[self.species_number]["sexing_criteria"]
-            
+
             # If the species does not exclusively use brood patch for sexing females...
             if not sexing_criteria["female_by_BP"]:
                 # If males of the species may also develop brood patches...
                 if self.brood_patch is None or self.brood_patch < 3:
                     # ...then a higher value is expected for brood patch development.
-                    raise ValidationError({
-                        "brood_patch": "Males of this species may also develop brood patches. A value of 3 or greater is required."
-                    })
+                    raise ValidationError(
+                        {
+                            "brood_patch": "Males of this species may also develop brood patches. A value of 3 or greater is required.",
+                        }
+                    )
                 else:
                     # If the bird is not sexed by brood patch but has a brood patch value...
-                    raise ValidationError({
-                        "brood_patch": "Brood patch is not a reliable sexing method for this species."
-                    })
-
+                    raise ValidationError(
+                        {
+                            "brood_patch": "Brood patch is not a reliable sexing method for this species.",
+                        }
+                    )
 
     def validate_band_size_to_species(self):
         """
