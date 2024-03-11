@@ -5,11 +5,13 @@ from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 
+from common.species_summary import SpeciesSummary
+
 from .forms import CaptureRecordForm
 from .models import CaptureRecord
 from users.mixins import ApprovalRequiredMixin
 
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 import maps.maps_reference_data as REFERENCE_DATA
 
 
@@ -23,21 +25,13 @@ def get_species(request):
     species_info = REFERENCE_DATA.SPECIES.get(int(species_number))  # Convert string to int and get species info
 
     if species_info:
-        # Prepare the data to be sent as JSON
-        data = {
-            'common_name': species_info['common_name'],
-            'scientific_name': species_info['scientific_name'],
-            'alpha_code': species_info['alpha_code'],
-            'band_sizes': species_info['band_sizes'],
-            'wing_chord_range': species_info['wing_chord_range'],
-            'WRP_groups': species_info['WRP_groups'],
-            'sexing_criteria': species_info['sexing_criteria'],
-            'pyle_second_edition_page': species_info['pyle_second_edition_page'],
-        }
-        return JsonResponse(data)
+        species_summary = SpeciesSummary(species_info)
+        html_snippet = species_summary.generate_html_snippet()
+        return HttpResponse(html_snippet, content_type="text/html")  # Return the HTML snippet in the response
     else:
-        # If species info not found, you can return an error message or empty data
-        return JsonResponse({'error': 'Species not found'}, status=404)
+        # If species info not found, return an error message as HTML or consider using a 404 page
+        return HttpResponse('<p>Species not found.</p>', status=404, content_type="text/html")
+
 
 class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"
