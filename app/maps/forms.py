@@ -40,10 +40,11 @@ class CaptureRecordForm(forms.ModelForm):
                 raise ValidationError(message)
 
         try:
-            # Validate skull to age, logging discrepancies or raising errors as needed
+            # May need to pull fill in alpha code out of the try block and place it at the top of the function
             self.fill_in_alpha_code(cleaned_data)
             self.validate_juv_aging(cleaned_data, log_discrepancy)
             self.validate_skull_to_age(cleaned_data, log_discrepancy)
+            self.validate_MLP_to_age(cleaned_data, log_discrepancy)
         except ValidationError as e:
             if not validation_override:
                 raise e
@@ -345,47 +346,34 @@ class CaptureRecordForm(forms.ModelForm):
             log_discrepancy("How aged cannot be P for HY or Local birds. Please choose J.")
 
 
-    def validate_MLP_to_age(self, cleaned_data):
+    def validate_MLP_to_age(self, cleaned_data, log_discrepancy):
         age_annual = cleaned_data.get("age_annual")
         how_aged_1 = cleaned_data.get("how_aged_1")
         how_aged_2 = cleaned_data.get("how_aged_2")
 
-        # validate that if age is not 1, then how_aged_1 must be filled in
         if age_annual != 1 and not how_aged_1:
-            raise ValidationError(
-                {
-                    "how_aged_1": "How aged must be filled in for birds not of age 1.",
-                },
-            )
+            log_discrepancy("how_aged_1: How aged must be filled in for birds not of age 1.")
 
-        # validate that if age is 5, and how_aged_1 is L, then how_aged_2 must be filled in
         if age_annual == 5 and how_aged_1 == "L" and not how_aged_2:
-            raise ValidationError(
-                {
-                    "how_aged_2": "How aged must further separate HY from SY birds. Please fill in how_aged_2.",
-                },
+            log_discrepancy(
+                "how_aged_2: How aged must further separate HY from SY birds. Please fill in how_aged_2."
             )
 
-        # validate that if either how_aged_1 or how_aged_2 is L or P, then one of the following fields must be filled in
-        # primary_coverts, secondary_coverts, primaries, rectrices, secondaries, tertials, body_plumage, non_feather
         if how_aged_1 in ["L", "P"] or how_aged_2 in ["L", "P"]:
-            if not any(
-                [
-                    cleaned_data.get("primary_coverts"),
-                    cleaned_data.get("secondary_coverts"),
-                    cleaned_data.get("primaries"),
-                    cleaned_data.get("rectrices"),
-                    cleaned_data.get("secondaries"),
-                    cleaned_data.get("tertials"),
-                    cleaned_data.get("body_plumage"),
-                    cleaned_data.get("non_feather"),
-                ],
-            ):
-                raise ValidationError(
-                    {
-                        "age_annual": "At least one of the Molt Limits and Plumage fields must be filled in ",
-                    },
+            if not any([
+                cleaned_data.get("primary_coverts"),
+                cleaned_data.get("secondary_coverts"),
+                cleaned_data.get("primaries"),
+                cleaned_data.get("rectrices"),
+                cleaned_data.get("secondaries"),
+                cleaned_data.get("tertials"),
+                cleaned_data.get("body_plumage"),
+                cleaned_data.get("non_feather"),
+            ]):
+                log_discrepancy(
+                    "age_annual: At least one of the Molt Limits and Plumage fields must be filled in."
                 )
+
 
     def validate_skull_to_age(self, cleaned_data, log_discrepancy):
         how_aged_1 = cleaned_data.get("how_aged_1")
