@@ -12,13 +12,24 @@ class CaptureRecordForm(forms.ModelForm):
         choices=SPECIES_CHOICES,
         widget=s2forms.Select2Widget(attrs={"class": "form-control"}),
     )
-    # validation_override = forms.BooleanField(required=False, label='Override validation errors')
+    
     is_validated = forms.BooleanField(
         required=False,  # Make the field not required
         label="Override Validation",  # Label for the field
         initial=False,  # Set the default value to False
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"})  # Define the widget and its class
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.discrepancies = [] 
+        self.validation_override = False
+
+    def log_discrepancy(self, message):
+        if self.validation_override:
+            self.discrepancies.append(message)
+        else:
+            raise ValidationError(message)
 
     class Meta:
         model = CaptureRecord
@@ -27,31 +38,21 @@ class CaptureRecordForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        validation_override = cleaned_data.get("is_validated", False)
-        discrepancies = []
-
-        # Custom function to log discrepancies or raise validation errors
-        def log_discrepancy(message):
-            if validation_override:
-                # Append the message directly if it's a validation override scenario
-                discrepancies.append(message)
-            else:
-                # Otherwise, immediately raise a ValidationError
-                raise ValidationError(message)
+        self.validation_override = cleaned_data.get("is_validated", False)
 
         try:
             # May need to pull fill in alpha code out of the try block and place it at the top of the function
             self.fill_in_alpha_code(cleaned_data)
-            self.validate_juv_aging(cleaned_data, log_discrepancy)
-            self.validate_skull_to_age(cleaned_data, log_discrepancy)
-            self.validate_MLP_to_age(cleaned_data, log_discrepancy)
+            self.validate_juv_aging(cleaned_data)
+            self.validate_skull_to_age(cleaned_data)
+            self.validate_MLP_to_age(cleaned_data)
         except ValidationError as e:
-            if not validation_override:
+            if not self.validation_override:
                 raise e
 
-        if validation_override and discrepancies:
+        if self.validation_override and self.discrepancies:
             # Join discrepancies into a single string, each on a new line
-            discrepancy_text = "\n".join(discrepancies)
+            discrepancy_text = "\n".join(self.discrepancies)
             # Append new discrepancies to any existing text in the instance's discrepancies field
             if self.instance.discrepancies:
                 self.instance.discrepancies += "\n" + discrepancy_text
@@ -59,70 +60,6 @@ class CaptureRecordForm(forms.ModelForm):
                 self.instance.discrepancies = discrepancy_text
 
         return cleaned_data
-
-        # if not validation_override:
-            # self.fill_in_alpha_code(cleaned_data)
-
-            # self.validate_how_aged_order(cleaned_data)
-            # self.validate_juv_aging(cleaned_data)
-            # self.validate_MLP_to_age(cleaned_data)
-            # self.validate_skull_to_age(cleaned_data)
-
-            # self.validate_status_disposition(cleaned_data)
-            # self.validate_species_to_wing(cleaned_data)
-            # self.validate_wrp_to_species(cleaned_data)
-
-            # self.validate_how_sexed_order(cleaned_data)
-            # self.validate_sex_how_sexed(cleaned_data)
-
-            # self.validate_cloacal_protuberance(cleaned_data)
-            # self.validate_cloacal_protuberance_sexing(cleaned_data)
-
-            # self.validate_brood_patch(cleaned_data)
-            # self.validate_brood_patch_sexing(cleaned_data)
-
-            # self.validate_band_size_to_species(cleaned_data)
-        # else:
-            # run each validation and add the error to discrepancies
-            # print("No validation")
-
-        # try:
-        #     self.fill_in_alpha_code(cleaned_data)
-
-        #     self.validate_how_aged_order(cleaned_data)
-        #     self.validate_juv_aging(cleaned_data)
-        #     self.validate_MLP_to_age(cleaned_data)
-        #     self.validate_skull_to_age(cleaned_data)
-
-        #     self.validate_status_disposition(cleaned_data)
-        #     self.validate_species_to_wing(cleaned_data)
-        #     self.validate_wrp_to_species(cleaned_data)
-
-        #     self.validate_how_sexed_order(cleaned_data)
-        #     self.validate_sex_how_sexed(cleaned_data)
-
-        #     self.validate_cloacal_protuberance(cleaned_data)
-        #     self.validate_cloacal_protuberance_sexing(cleaned_data)
-
-        #     self.validate_brood_patch(cleaned_data)
-        #     self.validate_brood_patch_sexing(cleaned_data)
-
-        #     self.validate_band_size_to_species(cleaned_data)
-
-        # except ValidationError as e:
-        #     # Raise errors to user if validation override is not engaged
-        #     if not validation_override:
-        #         errors.append(e)
-        #         # Add the indented block of code here
-
-        # if validation_override and errors:
-        #     # Log the errors in discrepancies and flag for review
-        #     discrepancies = "\n".join([str(e) for e in errors])
-        #     # self.instance.is_flagged_for_review = True
-        #     self.instance.discrepancies += f"Overridden validations: {discrepancies}\n"
-        # elif errors:
-        #     # If not overriding, raise the first validation error as usual
-        #     raise errors[0]
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -337,25 +274,25 @@ class CaptureRecordForm(forms.ModelForm):
                 },
             )
 
-    def validate_juv_aging(self, cleaned_data, log_discrepancy):
+    def validate_juv_aging(self, cleaned_data):
         age_annual = cleaned_data.get("age_annual")
         how_aged_1 = cleaned_data.get("how_aged_1")
 
         # Validate that if age is 4 or 2, then how_aged_1 must not be P
         if age_annual in [4, 2] and how_aged_1 == "P":
-            log_discrepancy("How aged cannot be P for HY or Local birds. Please choose J.")
+            self.log_discrepancy("How aged cannot be P for HY or Local birds. Please choose J.")
 
 
-    def validate_MLP_to_age(self, cleaned_data, log_discrepancy):
+    def validate_MLP_to_age(self, cleaned_data):
         age_annual = cleaned_data.get("age_annual")
         how_aged_1 = cleaned_data.get("how_aged_1")
         how_aged_2 = cleaned_data.get("how_aged_2")
 
         if age_annual != 1 and not how_aged_1:
-            log_discrepancy("how_aged_1: How aged must be filled in for birds not of age 1.")
+            self.log_discrepancy("how_aged_1: How aged must be filled in for birds not of age 1.")
 
         if age_annual == 5 and how_aged_1 == "L" and not how_aged_2:
-            log_discrepancy(
+            self.log_discrepancy(
                 "how_aged_2: How aged must further separate HY from SY birds. Please fill in how_aged_2."
             )
 
@@ -370,12 +307,12 @@ class CaptureRecordForm(forms.ModelForm):
                 cleaned_data.get("body_plumage"),
                 cleaned_data.get("non_feather"),
             ]):
-                log_discrepancy(
+                self.log_discrepancy(
                     "age_annual: At least one of the Molt Limits and Plumage fields must be filled in."
                 )
 
 
-    def validate_skull_to_age(self, cleaned_data, log_discrepancy):
+    def validate_skull_to_age(self, cleaned_data):
         how_aged_1 = cleaned_data.get("how_aged_1")
         how_aged_2 = cleaned_data.get("how_aged_2")
         skull = cleaned_data.get("skull")
@@ -383,10 +320,10 @@ class CaptureRecordForm(forms.ModelForm):
         
         # Check each condition and log a string message
         if (how_aged_1 == "S" or how_aged_2 == "S") and not skull:
-            log_discrepancy("Skull must be filled in for birds aged by skull.")
+            self.log_discrepancy("Skull must be filled in for birds aged by skull.")
 
         if skull and (skull < 5 and age_annual not in [2, 4]):
-            log_discrepancy("Age must be HY or L for birds with skull score less than 5.")
+            self.log_discrepancy("Age must be HY or L for birds with skull score less than 5.")
 
         if skull in [5, 6] and age_annual in [2, 4]:
-            log_discrepancy("Age must be SY or ASY for birds with skull score of 5 or 6.")
+            self.log_discrepancy("Age must be SY or ASY for birds with skull score of 5 or 6.")
