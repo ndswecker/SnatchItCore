@@ -41,6 +41,8 @@ class CaptureRecordForm(forms.ModelForm):
 
         try:
             # Validate skull to age, logging discrepancies or raising errors as needed
+            self.fill_in_alpha_code(cleaned_data)
+            self.validate_juv_aging(cleaned_data, log_discrepancy)
             self.validate_skull_to_age(cleaned_data, log_discrepancy)
         except ValidationError as e:
             if not validation_override:
@@ -122,8 +124,6 @@ class CaptureRecordForm(forms.ModelForm):
         #     raise errors[0]
 
     def save(self, commit=True):
-        # If commit is False, the caller is responsible for saving the object.
-        # This method returns a model instance whether or not commit==True.
         instance = super().save(commit=False)
         if not instance.is_validated:
             instance.is_validated = True
@@ -133,15 +133,12 @@ class CaptureRecordForm(forms.ModelForm):
             instance.save()
         return instance
 
+    # Users should not be filling in the alpha_code field, so we will fill it in for them
     def fill_in_alpha_code(self, cleaned_data):
-        # Accessing the species_number from cleaned_data
         species_number = cleaned_data.get('species_number')
         if species_number:
-            # Assuming SPECIES is a dictionary where keys are species numbers
-            alpha_code = SPECIES.get(species_number, {}).get('alpha_code', '')
-            # Setting the alpha_code in cleaned_data
-            self.cleaned_data['alpha_code'] = alpha_code
-
+            alpha_code = SPECIES.get(int(species_number), {}).get('alpha_code', '') 
+            self.instance.alpha_code = alpha_code  
 
     def validate_species_to_wing(self, cleaned_data):
         wing_chord = cleaned_data.get('wing_chord')
@@ -339,17 +336,14 @@ class CaptureRecordForm(forms.ModelForm):
                 },
             )
 
-    def validate_juv_aging(self, cleaned_data):
+    def validate_juv_aging(self, cleaned_data, log_discrepancy):
         age_annual = cleaned_data.get("age_annual")
         how_aged_1 = cleaned_data.get("how_aged_1")
 
-        # validate that if age is 4 or 2, then how_aged_1 must not be P
+        # Validate that if age is 4 or 2, then how_aged_1 must not be P
         if age_annual in [4, 2] and how_aged_1 == "P":
-            raise ValidationError(
-                {
-                    "how_aged_1": "How aged cannot be P for HY or Local birds. Please choose J.",
-                },
-            )
+            log_discrepancy("How aged cannot be P for HY or Local birds. Please choose J.")
+
 
     def validate_MLP_to_age(self, cleaned_data):
         age_annual = cleaned_data.get("age_annual")
@@ -377,14 +371,14 @@ class CaptureRecordForm(forms.ModelForm):
         if how_aged_1 in ["L", "P"] or how_aged_2 in ["L", "P"]:
             if not any(
                 [
-                    self.primary_coverts,
-                    self.secondary_coverts,
-                    self.primaries,
-                    self.rectrices,
-                    self.secondaries,
-                    self.tertials,
-                    self.body_plumage,
-                    self.non_feather,
+                    cleaned_data.get("primary_coverts"),
+                    cleaned_data.get("secondary_coverts"),
+                    cleaned_data.get("primaries"),
+                    cleaned_data.get("rectrices"),
+                    cleaned_data.get("secondaries"),
+                    cleaned_data.get("tertials"),
+                    cleaned_data.get("body_plumage"),
+                    cleaned_data.get("non_feather"),
                 ],
             ):
                 raise ValidationError(
