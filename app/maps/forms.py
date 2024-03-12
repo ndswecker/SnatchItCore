@@ -12,16 +12,22 @@ class CaptureRecordForm(forms.ModelForm):
         choices=SPECIES_CHOICES,
         widget=s2forms.Select2Widget(attrs={"class": "form-control"}),
     )
-    validation_override = forms.BooleanField(required=False, label='Override validation errors')
+    # validation_override = forms.BooleanField(required=False, label='Override validation errors')
+    is_validated = forms.BooleanField(
+        required=False,  # Make the field not required
+        label="Override Validation",  # Label for the field
+        initial=False,  # Set the default value to False
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"})  # Define the widget and its class
+    )
 
     class Meta:
         model = CaptureRecord
         fields = "__all__"
-        exclude = ["user", "bander_initials", "alpha_code", "discrepancies", "is_flagged_for_review"]
+        exclude = ["user", "bander_initials", "alpha_code", "discrepancies"]
 
     def clean(self):
         cleaned_data = super().clean()
-        validation_override = cleaned_data.get("validation_override", False)
+        validation_override = cleaned_data.get("is_validated", False)
 
         errors = []
         try:
@@ -59,11 +65,23 @@ class CaptureRecordForm(forms.ModelForm):
         if validation_override and errors:
             # Log the errors in discrepancies and flag for review
             discrepancies = "\n".join([str(e) for e in errors])
-            self.instance.is_flagged_for_review = True
+            # self.instance.is_flagged_for_review = True
             self.instance.discrepancies += f"Overridden validations: {discrepancies}\n"
         elif errors:
             # If not overriding, raise the first validation error as usual
             raise errors[0]
+
+    def save(self, commit=True):
+        # If commit is False, the caller is responsible for saving the object.
+        # This method returns a model instance whether or not commit==True.
+        instance = super().save(commit=False)
+        if not instance.is_validated:
+            instance.is_validated = True
+        else:
+            instance.is_validated = False
+        if commit:
+            instance.save()
+        return instance
 
     def fill_in_alpha_code(self, cleaned_data):
         # Accessing the species_number from cleaned_data
@@ -127,8 +145,9 @@ class CaptureRecordForm(forms.ModelForm):
             cleaned_data["how_aged_2"] = None
 
     def validate_how_sexed_order(self, cleaned_data):
-        self.how_sexed_1 = cleaned_data.get("how_sexed_1")
-        self.how_sexed_2 = cleaned_data.get("how_sexed_2")
+        how_sexed_1 = cleaned_data.get("how_sexed_1")
+        how_sexed_2 = cleaned_data.get("how_sexed_2")
+
         if not how_sexed_1 and how_sexed_2:
             how_sexed_1 = how_sexed_2
             how_sexed_2 = None
@@ -233,28 +252,25 @@ class CaptureRecordForm(forms.ModelForm):
                     )
 
     def validate_band_size_to_species(self, cleaned_data):
-        """
-        Validates the band_size input against allowed sizes for the given species_number.
-        This method checks if the provided band_size is within the list of allowed
-        sizes for the species identified by species_number.
-        The allowed sizes are determined based on the band_sizes the species belongs to,
-        as defined in REFERENCE_GUIDE.
-        Raises:
-            ValidationError: If the band_size is not allowed for the species,
-            indicating either an invalid size or a mismatch between the species and
-            its typical band sizes.
-        """
         species_number = cleaned_data.get("species_number")
         band_size = cleaned_data.get("band_size")
 
-        target_species = SPECIES[species_number]
-        band_sizes = target_species["band_sizes"]
-        if band_size not in band_sizes:
-            error_msg = (
-                f"The band_size '{band_size}' is not allowed for the species "
-                f"'{target_species['common_name']}' with band_sizes {band_sizes}."
-            )
-            raise ValidationError({"band_size": error_msg})
+        if species_number is not None:
+            species_number = int(species_number)  # Convert species_number to integer
+            target_species = SPECIES.get(species_number)  # Use .get() to safely access the dictionary
+        
+            if target_species:
+                band_sizes = target_species.get("band_sizes", [])
+                if band_size not in band_sizes:
+                    error_msg = (
+                        f"The band_size '{band_size}' is not allowed for the species "
+                        f"'{target_species.get('common_name', 'Unknown')}' with band_sizes {band_sizes}."
+                    )
+                    raise ValidationError({"band_size": error_msg})
+            else:
+                # Handle the case where the species_number does not exist in SPECIES
+                raise ValidationError({"species_number": f"Species number {species_number} not found in SPECIES dictionary."})
+
 
     def validate_status_disposition(self, cleaned_data):
         status = cleaned_data.get("status")
@@ -331,6 +347,7 @@ class CaptureRecordForm(forms.ModelForm):
         how_aged_1 = cleaned_data.get("how_aged_1")
         how_aged_2 = cleaned_data.get("how_aged_2")
         skull = cleaned_data.get("skull")
+        age_annual = cleaned_data.get("age_annual")
         # validate that if how_aged_1 or how_aged_2 is S, then skull must be filled in
         if (how_aged_1 == "S" or how_aged_2 == "S") and not skull:
             raise ValidationError(
@@ -340,7 +357,7 @@ class CaptureRecordForm(forms.ModelForm):
             )
 
         # validate that if skull is less than 5, then age_annual must be 2 or 4
-        if self.skull and (self.skull < 5 and self.age_annual not in [2, 4]):
+        if skull and (skull < 5 and age_annual not in [2, 4]):
             raise ValidationError(
                 {
                     "age_annual": "Age must be HY or L for birds with skull score less than 5.",
@@ -348,7 +365,7 @@ class CaptureRecordForm(forms.ModelForm):
             )
 
         # validate that if skull is 5 or 6, then age_annual must not be 2 or 4
-        if self.skull in [5, 6] and self.age_annual in [2, 4]:
+        if skull in [5, 6] and age_annual in [2, 4]:
             raise ValidationError(
                 {
                     "age_annual": "Age must be SY or ASY for birds with skull score of 5 or 6.",

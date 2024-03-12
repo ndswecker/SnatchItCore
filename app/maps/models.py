@@ -278,7 +278,8 @@ class CaptureRecord(BaseModel):
     )
 
     discrepancies = models.TextField(null=True, blank=True)
-    is_flagged_for_review = models.BooleanField(default=False)
+    # is_flagged_for_review = models.BooleanField(default=False)
+    is_validated = models.BooleanField(default=True)
 
     def __str__(self):
         common_name = SPECIES[self.species_number]["common_name"]
