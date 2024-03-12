@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django_select2 import forms as s2forms
 
-from maps.maps_reference_data import SPECIES
+from maps.maps_reference_data import SPECIES, WRP_GROUPS
 from maps.choice_definitions import SPECIES_CHOICES
 from maps.models import CaptureRecord
 
@@ -29,27 +29,27 @@ class CaptureRecordForm(forms.ModelForm):
             # For example:
             # self.validate_how_aged_order()
             # Add errors to a list instead of raising them immediately
-            self.fill_in_alpha_code()
+            self.fill_in_alpha_code(cleaned_data)
 
             self.validate_how_aged_order(cleaned_data)
             self.validate_juv_aging(cleaned_data)
-            # self.validate_MLP_to_age()
-            # self.validate_skull_to_age()
+            self.validate_MLP_to_age(cleaned_data)
+            self.validate_skull_to_age(cleaned_data)
 
-            # self.validate_status_disposition()
+            self.validate_status_disposition(cleaned_data)
             self.validate_species_to_wing(cleaned_data)
-            # self.validate_wrp_to_species()
+            self.validate_wrp_to_species(cleaned_data)
 
-            # self.validate_how_sexed_order()
-            # self.validate_sex_how_sexed()
+            self.validate_how_sexed_order(cleaned_data)
+            self.validate_sex_how_sexed(cleaned_data)
 
-            # self.validate_cloacal_protuberance()
-            # self.validate_cloacal_protuberance_sexing()
+            self.validate_cloacal_protuberance(cleaned_data)
+            self.validate_cloacal_protuberance_sexing(cleaned_data)
 
-            # self.validate_brood_patch()
-            # self.validate_brood_patch_sexing()
+            self.validate_brood_patch(cleaned_data)
+            self.validate_brood_patch_sexing(cleaned_data)
 
-            # self.validate_band_size_to_species()
+            self.validate_band_size_to_species(cleaned_data)
 
         except ValidationError as e:
             if not validation_override:
@@ -65,9 +65,9 @@ class CaptureRecordForm(forms.ModelForm):
             # If not overriding, raise the first validation error as usual
             raise errors[0]
 
-    def fill_in_alpha_code(self):
+    def fill_in_alpha_code(self, cleaned_data):
         # Accessing the species_number from cleaned_data
-        species_number = self.cleaned_data.get('species_number')
+        species_number = cleaned_data.get('species_number')
         if species_number:
             # Assuming SPECIES is a dictionary where keys are species numbers
             alpha_code = SPECIES.get(species_number, {}).get('alpha_code', '')
@@ -90,7 +90,7 @@ class CaptureRecordForm(forms.ModelForm):
                     ))
 
         
-    def validate_wrp_to_species(self):
+    def validate_wrp_to_species(self, cleaned_data):
         """
         Validates the age_WRP input against allowed codes for the given species_number.
         Checks if the provided age_WRP code is within the list of allowed codes for the species.
@@ -98,19 +98,25 @@ class CaptureRecordForm(forms.ModelForm):
         Raises ValidationError if the age_WRP code is not allowed, indicating an invalid code or a mismatch.
         """
 
-        target_species = SPECIES[self.species_number]
-        wrp_groups = target_species["WRP_groups"]
+        species_number = cleaned_data.get("species_number")
+        age_WRP = cleaned_data.get("age_WRP")
 
-        allowed_codes = []
-        for group_number in wrp_groups:
-            allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
+        if species_number and age_WRP:
+            target_species = SPECIES.get(species_number)
+            if target_species:
+                wrp_groups = target_species["WRP_groups"]
 
-        if self.age_WRP not in allowed_codes:
-            raise ValidationError(
-                {
-                    "age_WRP": f"The age_WRP {self.age_WRP} is not allowed for the species {target_species['common_name']} with WRP_groups {wrp_groups}.",  # noqa E501
-                },
-            )
+                allowed_codes = []
+                for group_number in wrp_groups:
+                    allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
+
+                if age_WRP not in allowed_codes:
+                    raise ValidationError(
+                        {
+                            "age_WRP": f"The age_WRP '{age_WRP}' is not allowed for the species '{target_species['common_name']}' with WRP_groups {wrp_groups}.",
+                        },
+                    )
+
 
     def validate_how_aged_order(self, cleaned_data):
         how_aged_1 = cleaned_data.get("how_aged_1")
@@ -120,33 +126,44 @@ class CaptureRecordForm(forms.ModelForm):
             cleaned_data["how_aged_1"] = how_aged_2
             cleaned_data["how_aged_2"] = None
 
-    def validate_how_sexed_order(self):
-        if not self.how_sexed_1 and self.how_sexed_2:
-            self.how_sexed_1 = self.how_sexed_2
-            self.how_sexed_2 = None
+    def validate_how_sexed_order(self, cleaned_data):
+        self.how_sexed_1 = cleaned_data.get("how_sexed_1")
+        self.how_sexed_2 = cleaned_data.get("how_sexed_2")
+        if not how_sexed_1 and how_sexed_2:
+            how_sexed_1 = how_sexed_2
+            how_sexed_2 = None
 
-    def validate_sex_how_sexed(self):
-        if self.sex in ["U", "X"]:
+    def validate_sex_how_sexed(self, cleaned_data):
+        sex = cleaned_data.get("sex")
+        how_sexed_1 = cleaned_data.get("how_sexed_1")
+        how_sexed_2 = cleaned_data.get("how_sexed_2")
+
+        if sex in ["U", "X"]:
             return
 
         male_criteria = ["C", "W", "E", "O", "P"]
         female_criteria = ["B", "P", "E", "W", "O"]
 
         # Checking if criteria are met
-        if self.sex == "M" and not any(
-            how_sexed in male_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
+        if sex == "M" and not any(
+            how_sexed in male_criteria for how_sexed in [how_sexed_1, how_sexed_2]
         ):
             raise ValidationError("A bird sexed male must have how_sexed_1 or how_sexed_2 as 'C', 'W', 'E', or 'O'.")
 
-        if self.sex == "F" and not any(
-            how_sexed in female_criteria for how_sexed in [self.how_sexed_1, self.how_sexed_2]
+        if sex == "F" and not any(
+            how_sexed in female_criteria for how_sexed in [how_sexed_1, how_sexed_2]
         ):
             raise ValidationError(
                 "A bird sexed female must have how_sexed_1 or how_sexed_2 as 'B', 'P', 'E', 'W', or 'O'.",
             )
 
-    def validate_cloacal_protuberance(self):
-        if "C" in [self.how_sexed_1, self.how_sexed_2] and self.cloacal_protuberance in [None, 0]:
+    def validate_cloacal_protuberance(self, cleaned_data):
+        how_sexed_1 = cleaned_data.get("how_sexed_1")
+        how_sexed_2 = cleaned_data.get("how_sexed_2")
+        cloacal_protuberance = cleaned_data.get("cloacal_protuberance")
+        sex = cleaned_data.get("sex")
+
+        if "C" in [how_sexed_1, how_sexed_2] and cloacal_protuberance in [None, 0]:
             raise ValidationError(
                 {
                     "cloacal_protuberance": 
@@ -154,24 +171,30 @@ class CaptureRecordForm(forms.ModelForm):
                 },
             )
 
-        if self.sex == "F" and self.cloacal_protuberance not in [None, 0]:
+        if sex == "F" and cloacal_protuberance not in [None, 0]:
             raise ValidationError(
                 {
                     "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds.",
                 },
             )
 
-    def validate_brood_patch(self):
+    def validate_brood_patch(self, cleaned_data):
+        how_sexed_1 = cleaned_data.get("how_sexed_1")
+        how_sexed_2 = cleaned_data.get("how_sexed_2")
+        brood_patch = cleaned_data.get("brood_patch")
 
-        if "B" in [self.how_sexed_1, self.how_sexed_2] and (self.brood_patch is None or self.brood_patch <= 0):
+        if "B" in [how_sexed_1, how_sexed_2] and (brood_patch is None or brood_patch <= 0):
             raise ValidationError(
                 {
                     "brood_patch": "Brood patch must be greater than 0 for birds sexed by brood patch.",
                 },
             )
 
-    def validate_cloacal_protuberance_sexing(self):
-        if ("C" in [self.how_sexed_1, self.how_sexed_2]) and not (
+    def validate_cloacal_protuberance_sexing(self, cleaned_data):
+        how_sexed_1 = cleaned_data.get("how_sexed_1")
+        how_sexed_2 = cleaned_data.get("how_sexed_2")
+
+        if ("C" in [how_sexed_1, how_sexed_2]) and not (
             SPECIES[self.species_number]["sexing_criteria"]["male_by_CP"]
         ):
             raise ValidationError(
@@ -180,15 +203,20 @@ class CaptureRecordForm(forms.ModelForm):
                 },
             )
 
-    def validate_brood_patch_sexing(self):
+    def validate_brood_patch_sexing(self, cleaned_data):
+        how_sexed_1 = cleaned_data.get("how_sexed_1")
+        how_sexed_2 = cleaned_data.get("how_sexed_2")
+        species_number = cleaned_data.get("species_number")
+        brood_patch = cleaned_data.get("brood_patch")
+
         # If bird was sexed by brood patch...
-        if "B" in [self.how_sexed_1, self.how_sexed_2]:
-            sexing_criteria = SPECIES[self.species_number]["sexing_criteria"]
+        if "B" in [how_sexed_1, how_sexed_2]:
+            sexing_criteria = SPECIES[species_number]["sexing_criteria"]
 
             # If the species does not exclusively use brood patch for sexing females...
             if not sexing_criteria["female_by_BP"]:
                 # If males of the species may also develop brood patches...
-                if self.brood_patch is None or self.brood_patch < 3:
+                if brood_patch is None or brood_patch < 3:
                     # ...then a higher value is expected for brood patch development.
                     raise ValidationError(
                         {
@@ -204,7 +232,7 @@ class CaptureRecordForm(forms.ModelForm):
                         },
                     )
 
-    def validate_band_size_to_species(self):
+    def validate_band_size_to_species(self, cleaned_data):
         """
         Validates the band_size input against allowed sizes for the given species_number.
         This method checks if the provided band_size is within the list of allowed
@@ -216,24 +244,29 @@ class CaptureRecordForm(forms.ModelForm):
             indicating either an invalid size or a mismatch between the species and
             its typical band sizes.
         """
-        target_species = SPECIES[self.species_number]
+        species_number = cleaned_data.get("species_number")
+        band_size = cleaned_data.get("band_size")
+
+        target_species = SPECIES[species_number]
         band_sizes = target_species["band_sizes"]
-        if self.band_size not in band_sizes:
+        if band_size not in band_sizes:
             error_msg = (
-                f"The band_size '{self.band_size}' is not allowed for the species "
+                f"The band_size '{band_size}' is not allowed for the species "
                 f"'{target_species['common_name']}' with band_sizes {band_sizes}."
             )
             raise ValidationError({"band_size": error_msg})
 
-    def validate_status_disposition(self):
-        if self.status == 000 and self.disposition not in ["D", "P"]:
+    def validate_status_disposition(self, cleaned_data):
+        status = cleaned_data.get("status")
+        disposition = cleaned_data.get("disposition")
+        if status == 000 and disposition not in ["D", "P"]:
             raise ValidationError(
                 {
                     "disposition": "Disposition must be D or P if status is 000.",
                 },
             )
 
-        if self.disposition in ["B", "L", "S", "T", "W"] and self.status == 300:
+        if disposition in ["B", "L", "S", "T", "W"] and status == 300:
             raise ValidationError(
                 {
                     "status": "Status cannot be 300 if disposition is B, L, S, T, or W. Chose 500",
@@ -252,9 +285,13 @@ class CaptureRecordForm(forms.ModelForm):
                 },
             )
 
-    def validate_MLP_to_age(self):
+    def validate_MLP_to_age(self, cleaned_data):
+        age_annual = cleaned_data.get("age_annual")
+        how_aged_1 = cleaned_data.get("how_aged_1")
+        how_aged_2 = cleaned_data.get("how_aged_2")
+
         # validate that if age is not 1, then how_aged_1 must be filled in
-        if self.age_annual != 1 and not self.how_aged_1:
+        if age_annual != 1 and not how_aged_1:
             raise ValidationError(
                 {
                     "how_aged_1": "How aged must be filled in for birds not of age 1.",
@@ -262,7 +299,7 @@ class CaptureRecordForm(forms.ModelForm):
             )
 
         # validate that if age is 5, and how_aged_1 is L, then how_aged_2 must be filled in
-        if self.age_annual == 5 and self.how_aged_1 == "L" and not self.how_aged_2:
+        if age_annual == 5 and how_aged_1 == "L" and not how_aged_2:
             raise ValidationError(
                 {
                     "how_aged_2": "How aged must further separate HY from SY birds. Please fill in how_aged_2.",
@@ -271,7 +308,7 @@ class CaptureRecordForm(forms.ModelForm):
 
         # validate that if either how_aged_1 or how_aged_2 is L or P, then one of the following fields must be filled in
         # primary_coverts, secondary_coverts, primaries, rectrices, secondaries, tertials, body_plumage, non_feather
-        if self.how_aged_1 in ["L", "P"] or self.how_aged_2 in ["L", "P"]:
+        if how_aged_1 in ["L", "P"] or how_aged_2 in ["L", "P"]:
             if not any(
                 [
                     self.primary_coverts,
@@ -290,9 +327,12 @@ class CaptureRecordForm(forms.ModelForm):
                     },
                 )
 
-    def validate_skull_to_age(self):
+    def validate_skull_to_age(self, cleaned_data):
+        how_aged_1 = cleaned_data.get("how_aged_1")
+        how_aged_2 = cleaned_data.get("how_aged_2")
+        skull = cleaned_data.get("skull")
         # validate that if how_aged_1 or how_aged_2 is S, then skull must be filled in
-        if (self.how_aged_1 == "S" or self.how_aged_2 == "S") and not self.skull:
+        if (how_aged_1 == "S" or how_aged_2 == "S") and not skull:
             raise ValidationError(
                 {
                     "skull": "Skull must be filled in for birds aged by skull.",
