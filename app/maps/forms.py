@@ -12,7 +12,7 @@ class CaptureRecordForm(forms.ModelForm):
         choices=SPECIES_CHOICES,
         widget=s2forms.Select2Widget(attrs={"class": "form-control"}),
     )
-    
+
     is_validated = forms.BooleanField(
         required=False,  # Make the field not required
         label="Override Validation",  # Label for the field
