@@ -48,5 +48,6 @@ class CaptureRecordForm(forms.ModelForm):
 
         validator = CaptureRecordFormValidator(cleaned_data=cleaned_data)
         validator.validate(override_validation=cleaned_data["is_validated"])
+        cleaned_data["is_validated"] = not cleaned_data["is_validated"]
         self.instance.discrepancies = validator.discrepancy_string
         return cleaned_data
