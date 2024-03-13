@@ -52,9 +52,51 @@ def validate_wrp_allowed_for_species(form_data: dict):
     if age_wrp not in allowed_codes:
         raise ValidationError(
             {
-                "age_WRP": f"The age_WRP {age_wrp} is not allowed for the species {target_species['common_name']} with WRP_groups {wrp_groups}.",  # noqa E501
+                "age_WRP": 
+                f"The age_WRP {age_wrp} is not allowed for the species {target_species['common_name']} with WRP_groups {wrp_groups}.",  # noqa E501
             },
         )
+
+def validate_male_how_sexed(form_data: dict):
+    sex = form_data.get("sex")
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    male_criteria = ["C", "W", "E", "O", "P"]
+
+    if sex == "M" and not any(how_sexed in male_criteria for how_sexed in [how_sexed_1, how_sexed_2]):
+        raise ValidationError({
+            "sex": "Fill in how sexed as 'C', 'W', 'E', 'P', or 'O'."
+        })
+
+def validate_female_how_sexed(form_data: dict):
+    sex = form_data.get("sex")
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    female_criteria = ["B", "P", "E", "W", "O"]
+
+    if sex == "F" and not any(how_sexed in female_criteria for how_sexed in [how_sexed_1, how_sexed_2]):
+        raise ValidationError({
+            "sex": "Fill in how sexed as 'B', 'P', 'E', 'W', or 'O'."
+        })
+
+def validate_cloacal_protuberance_filled_if_sexed_by_cp(form_data: dict):
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    cloacal_protuberance = form_data.get("cloacal_protuberance")
+
+    if "C" in [how_sexed_1, how_sexed_2] and cloacal_protuberance in [None, 0]:
+        raise ValidationError({
+            "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance."
+        })
+
+def validate_cloacal_protuberance_none_or_zero_for_females(form_data: dict):
+    sex = form_data.get("sex")
+    cloacal_protuberance = form_data.get("cloacal_protuberance")
+
+    if sex == "F" and cloacal_protuberance not in [None, 0]:
+        raise ValidationError({
+            "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds."
+        })
 
 
 
@@ -67,4 +109,6 @@ class CaptureRecordFormValidator(FormValidator):
             validate_skull_score_for_hy_or_local_birds,
             validate_skull_score_not_valid_for_hy_or_local,
             validate_wrp_allowed_for_species,
+            validate_female_how_sexed,
+            validate_male_how_sexed,
         ]
