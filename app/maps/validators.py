@@ -12,28 +12,35 @@ def validate_juv_aging(form_data: dict):
                 "age_annual": f"How aged cannot be P for HY or Local birds. Please choose J.",
             },
         )
+    
+def validate_skull_provided_if_aged_by_skull(form_data: dict):
+    if ("S" in [form_data.get("how_aged_1"), form_data.get("how_aged_2")]) and not form_data.get("skull"):
+        raise ValidationError(
+            {
+                "skull": "A skull score must be provided if how aged is by skull."
+            }
+        )
+    
+def validate_skull_score_for_hy_or_local_birds(form_data: dict):
+    skull = form_data.get("skull")
+    age_annual = form_data.get("age_annual")
+    if skull and skull < 5 and age_annual not in [2, 4]:
+        raise ValidationError(
+            {
+                "skull": f"A skull score of {skull} is only valid for HY or Local birds."
+            }
+        )
+    
+def validate_skull_score_not_valid_for_hy_or_local(form_data: dict):
+    skull = form_data.get("skull")
+    age_annual = form_data.get("age_annual")
+    if skull in [5, 6] and age_annual in [2, 4]:
+        raise ValidationError(
+            {
+                "skull": f"A skull score of {skull} is not valid for HY or Local birds."
+            }
+        )
 
-def validate_skull_to_age(form_data: dict):
-    if (form_data.get("how_aged_1") == "S" or form_data.get("how_aged_2") == "S") and not form_data.get("skull"):
-        raise ValidationError(
-            {
-                "age_annual": f"A skull score must be provided if how aged is by skull.",
-            },
-        )
-    
-    if form_data.get("skull") and (form_data.get("skull") < 5 and form_data.get("age_annual") not in [2, 4]):
-        raise ValidationError(
-            {
-                "age_annual": f"A skull score of {form_data.get('skull')} is only valid for HY or Local birds.",
-            },
-        )
-    
-    if form_data.get("skull") in [5, 6] and form_data.get("age_annual") in [2, 4]:
-        raise ValidationError(
-            {
-                "age_annual": f"A skull score of {form_data.get('skull')} is not valid for HY or Local birds.",
-            },
-        )
 
 
 class CaptureRecordFormValidator(FormValidator):
@@ -41,5 +48,7 @@ class CaptureRecordFormValidator(FormValidator):
         super().__init__(*args, **kwargs)
         self.validators = [
             validate_juv_aging,
-            validate_skull_to_age,
+            validate_skull_provided_if_aged_by_skull,
+            validate_skull_score_for_hy_or_local_birds,
+            validate_skull_score_not_valid_for_hy_or_local,
         ]
