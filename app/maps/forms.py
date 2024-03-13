@@ -41,7 +41,7 @@ class CaptureRecordForm(forms.ModelForm):
             self.instance.how_sexed_2 = None
 
     def clean(self) -> dict:
-        cleaned_data = super().clean()  # TODO: use self.instance instead of cleaned_data
+        cleaned_data = super().clean()
         self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
