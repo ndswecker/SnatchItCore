@@ -41,7 +41,7 @@ def validate_skull_score_not_valid_for_hy_or_local(form_data: dict):
         )
 
 def validate_wrp_allowed_for_species(form_data: dict):
-    target_species = SPECIES[form_data.get("species_number")]
+    target_species = SPECIES[int(form_data.get("species_number"))]
     wrp_groups = target_species["WRP_groups"]
     age_wrp = form_data.get("age_WRP")
 
@@ -98,6 +98,22 @@ def validate_cloacal_protuberance_none_or_zero_for_females(form_data: dict):
             "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds."
         })
 
+def validate_species_brood_patch_sexing_for_females(form_data: dict):
+    species_number = int(form_data.get("species_number"))
+    brood_patch = form_data.get("brood_patch")
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    sex = form_data.get("sex")
+    reliable_bp_sexing = SPECIES[species_number]["sexing_criteria"]["female_by_BP"]
+
+    # Check if the species can be reliably sexed by brood patch or if brood patch is 3 or 4,
+    # indicating it can be sexed as female regardless of the species' general reliability for sexing by brood patch.
+    if sex == "F" and ("B" in [how_sexed_1, how_sexed_2]) and not reliable_bp_sexing and brood_patch not in [3, 4]:
+        raise ValidationError({
+            "sex": "This species cannot be reliably sexed female by a brood patch alone, unless the brood patch is 3 or 4."
+        })
+
+
 
 
 class CaptureRecordFormValidator(FormValidator):
@@ -111,4 +127,5 @@ class CaptureRecordFormValidator(FormValidator):
             validate_wrp_allowed_for_species,
             validate_female_how_sexed,
             validate_male_how_sexed,
+            validate_species_brood_patch_sexing_for_females,
         ]
