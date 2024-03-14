@@ -105,6 +105,7 @@ def validate_species_brood_patch_sexing_for_females(form_data: dict):
     how_sexed_2 = form_data.get("how_sexed_2")
     sex = form_data.get("sex")
     reliable_bp_sexing = SPECIES[species_number]["sexing_criteria"]["female_by_BP"]
+    # refactor using aliasing and short circuts 
 
     # Check if the species can be reliably sexed by brood patch or if brood patch is 3 or 4,
     # indicating it can be sexed as female regardless of the species' general reliability for sexing by brood patch.
