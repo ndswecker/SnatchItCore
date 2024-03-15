@@ -31,11 +31,15 @@ SPECIES = {
     },
     6460: {
         "common_name": "Orange-crowned Warbler",
-        "scientific_name": "Leiothlypis celata",
+        "scientific_name": "Leiothlypis celata lutescens",
         "alpha_code": "OCWA",
         "species_number": 6460,
         "band_sizes": ["0", "0A"],
-        "wing_chord_range": (50, 70),
+        "wing_chord_range": (51, 66),
+        "wing_chord_range_by_sex:": {
+            "female": (51, 59),
+            "male": (55, 62)
+        },
         "WRP_groups": [3, 8],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -46,11 +50,15 @@ SPECIES = {
     },
     5880: {
         "common_name": "Spotted Towhee",
-        "scientific_name": "Pipilo maculatus",
+        "scientific_name": "Pipilo maculatus oregonus",
         "alpha_code": "SPTO",
         "species_number": 5880,
         "band_sizes": ["1D", "1A", "2"],
         "wing_chord_range": (76, 95),
+        "wing_chord_range_by_sex": {
+            "female": (75, 86),
+            "male": (78, 89)
+        },
         "WRP_groups": [3],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -65,7 +73,11 @@ SPECIES = {
         "alpha_code": "SWTH",
         "species_number": 7580,
         "band_sizes": ["1B"],
-        "wing_chord_range": (80, 110),
+        "wing_chord_range": (86, 107),
+        "wing_chord_range_by_sex": {
+            "female": (86, 103),
+            "male": (90, 107)
+        },
         "WRP_groups": [3],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -229,7 +241,7 @@ SPECIES = {
         "scientific_name": "Sphyrapicus ruber",
         "alpha_code": "RBSA",
         "species_number": 4030,
-        "band_sizes": [],
+        "band_sizes": ["1A", "1B", "1D"],
         "wing_chord_range": (114, 133),
         "WRP_groups": [3, 5],
         "sexing_criteria": {
@@ -291,6 +303,10 @@ SPECIES = {
         "species_number": 4050,
         "band_sizes": ["4", "3A"],
         "wing_chord_range": (200, 256),
+        "wing_chord_range_by_sex": {
+            "female": (200, 246),
+            "male": (210, 256)
+        },
         "WRP_groups": [3, 5],
         "sexing_criteria": {
             "female_by_BP": False,
@@ -522,6 +538,10 @@ SPECIES = {
         "species_number": 6150,
         "band_sizes": ["1", "0", "1C"],
         "wing_chord_range": (102, 119),
+        "wing_chord_range_by_sex": {
+            "female": (102, 112),
+            "male": (108, 119)
+        },
         "WRP_groups": [4],
         "sexing_criteria": {
             "female_by_BP": False,
@@ -582,6 +602,10 @@ SPECIES = {
         "species_number": 7410,
         "band_sizes": ["0", "0A"],
         "wing_chord_range": (54, 66),
+        "wing_chord_range_by_sex": {
+            "female": (54, 63),
+            "male": (57, 66)
+        },
         "WRP_groups": [3],
         "sexing_criteria": {
             "female_by_BP": True,
