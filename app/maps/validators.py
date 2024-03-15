@@ -3,6 +3,29 @@ from django.core.validators import ValidationError
 from common.validators import FormValidator
 from maps.maps_reference_data import SPECIES, WRP_GROUPS
 
+def validate_how_aged_by_plumage(form_data: dict):
+    how_aged_1 = form_data.get("how_aged_1")
+    how_aged_2 = form_data.get("how_aged_2")
+
+    if 'P' not in [how_aged_1, how_aged_2]:
+        return
+    
+    primary_coverts = form_data.get("primary_coverts")
+    secondary_coverts = form_data.get("secondary_coverts")
+    primaries = form_data.get("primaries")
+    secondaries = form_data.get("secondaries")
+    tertials = form_data.get("tertials")
+    rectrices = form_data.get("rectrices")
+    body_plumage = form_data.get("body_plumage")
+
+    plumage_scores = [primary_coverts, secondary_coverts, primaries, secondaries, tertials, rectrices, body_plumage]
+    
+    if all([score in [None, 0] for score in plumage_scores]):
+        raise ValidationError(
+            {
+                "age_annual": "Plumage cannot be used to age a bird without any plumage indicators.",
+            },
+        )
 
 def validate_juv_aging_plumage_not_p(form_data: dict):
     if form_data.get("age_annual") in [4, 2] and form_data.get("how_aged_1") == "P":
@@ -195,12 +218,11 @@ def validate_molt_presence_in_wrp_code(form_data: dict):
         })
   
 
-
-
 class CaptureRecordFormValidator(FormValidator):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.validators = [
+            validate_how_aged_by_plumage,
             validate_juv_aging_plumage_not_p,
             validate_skull_provided_if_aged_by_skull,
             validate_skull_score_for_adults,
