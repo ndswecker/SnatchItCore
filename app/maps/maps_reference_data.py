@@ -751,11 +751,15 @@ SPECIES = {
     },
     7610: {
         "common_name": "American Robin",
-        "scientific_name": "Turdus migratorius",
+        "scientific_name": "Turdus migratorius caurinus",
         "alpha_code": "AMRO",
         "species_number": 7610,
         "band_sizes": ["2"],
-        "wing_chord_range": (115, 144),
+        "wing_chord_range": (115, 137),
+        "wing_chord_range_by_sex": {
+            "female": (115, 132),
+            "male": (120, 137)
+        },
         "WRP_groups": [3],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -766,11 +770,15 @@ SPECIES = {
     },
     7590: {
         "common_name": "Hermit Thrush",
-        "scientific_name": "Catharus guttatus",
+        "scientific_name": "Catharus guttatus guttatus",
         "alpha_code": "HETH",
         "species_number": 7590,
         "band_sizes": ["1B", "1"],
-        "wing_chord_range": (79, 109),
+        "wing_chord_range": (79, 96),
+        "wing_chord_range_by_sex": {
+            "female": (79, 92),
+            "male": (84, 96)
+        },
         "WRP_groups": [3],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -946,8 +954,46 @@ SPECIES = {
     },
     6560: {
         "common_name": "Audubon's Warbler",
-        "scientific_name": "Setophaga auduboni auduboni",
+        "scientific_name": "Setophaga coronata auduboni",
         "alpha_code": "AUWA",
+        "species_number": 6560,
+        "band_sizes": ["0", "0A", "1"],
+        "wing_chord_range": (68, 82),
+        "wing_chord_range_by_age": {
+            "female": (68, 79),
+            "male": (71, 82)
+        },
+        "WRP_groups": [8],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": True,
+        },
+        "pyle_second_edition_page": 633,
+    },
+    6550: {
+        "common_name": "Myrtle Warbler",
+        "scientific_name": "Setophaga coronata coronata",
+        "alpha_code": "MYWA",
+        "species_number": 6560,
+        "band_sizes": ["0", "0A", "1"],
+        "wing_chord_range": (68, 82),
+        "wing_chord_range_by_age": {
+            "female": (63, 75),
+            "male": (67, 79)
+        },
+        "WRP_groups": [8],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": True,
+        },
+        "pyle_second_edition_page": 633,
+    },
+    6556: {
+        "common_name": "Yellow-rumped Warbler",
+        "scientific_name": "Setophaga coronata",
+        "alpha_code": "MYWA",
         "species_number": 6560,
         "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (63, 82),
@@ -1026,6 +1072,29 @@ SPECIES = {
         "species_number": 5547,
         "band_sizes": ["1B"],
         "wing_chord_range": (63, 75),
+        "wing_chord_range_by_sex": {
+            "female": (63, 71),
+            "male": (67, 75)
+        },
+        "WRP_groups": [8],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
+        "pyle_second_edition_page": 508,
+    },
+    5547: {
+        "common_name": "Gambel's White-crowned Sparrow",
+        "scientific_name": "Zonotrichia leucophrys gambelii",
+        "alpha_code": "GWCS",
+        "species_number": 5547,
+        "band_sizes": ["1B"],
+        "wing_chord_range": (69, 84),
+        "wing_chord_range_by_sex": {
+            "female": (69, 79),
+            "male": (74, 84)
+        },
         "WRP_groups": [8],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -1055,7 +1124,11 @@ SPECIES = {
         "alpha_code": "ORJU",
         "species_number": 5671,
         "band_sizes": ["1", "0"],
-        "wing_chord_range": (97, 92),
+        "wing_chord_range": (69, 81),
+        "wing_chord_range_by_sex": {
+            "female": (69, 77),
+            "male": (72, 81)
+        },
         "WRP_groups": [3, 8],
         "sexing_criteria": {
             "female_by_BP": True,
@@ -1139,7 +1212,15 @@ SPECIES = {
         "alpha_code": "BHCO",
         "species_number": 4950,
         "band_sizes": ["1B", "1A", "1D", "2"],
+        "band_sizes_by_sex": {
+            "female": ["1B", "1A", "1D"],
+            "male": ["1A", "1D", "2", "1B"],
+        },
         "wing_chord_range": (85, 115),
+        "wing_chord_range_by_sex": {
+            "female": (85, 103),
+            "male": (96, 115)
+        },
         "WRP_groups": [3],
         "sexing_criteria": {
             "female_by_BP": False,
