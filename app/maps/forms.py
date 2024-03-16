@@ -19,7 +19,6 @@ class CaptureRecordForm(forms.ModelForm):
             "species_number",
             "band_size",
             "band_number",
-            "alpha_code",
 
             Fieldset(
                 "",
