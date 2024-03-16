@@ -1,0 +1,20 @@
+.container-minimal-margin {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.form-control {
+    width: 100%; /* Ensure it takes up the full width of its parent */
+    max-width: 100%; /* Prevent it from overflowing */
+}
+
+.fieldset-padding {
+    padding: 5px;
+}
+
+.bg-custom-gray {
+    background-color: #e0e0e0; /* Adjust the hex color as needed */
+}
+

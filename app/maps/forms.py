@@ -1,10 +1,11 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, Div, Row, Column
+from django.forms import Select
 from django import forms
 from django_select2 import forms as s2forms
 
 from maps.maps_reference_data import SPECIES, WRP_GROUPS
-from maps.choice_definitions import SPECIES_CHOICES
+from maps.choice_definitions import SPECIES_CHOICES, CAPTURE_CODE_CHOICES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator
 
@@ -15,49 +16,90 @@ class CaptureRecordForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.layout = Layout(
-            "capture_code",
-            "species_number",
-            "band_size",
-            "band_number",
+            Fieldset(
+                "",
+                Row(
+                    Column("capture_code", css_class="col-6"),
+                    Column("species_number", css_class="col-6"),
+                ),
+                Row(
+                    Column("band_size", css_class="col-6"),
+                    Column("band_number", css_class="col-6"),
+                ),
+                css_class="fieldset-padding bg-custom-gray",
+            ),
 
             Fieldset(
                 "",
                 Row(
-                    Column("age_annual"),
-                    Column("age_WRP"),
+                    Column("age_annual", css_class="col-6"),
+                    Column("age_WRP", css_class="col-6"),
                 ),
                 Row(
-                    Column("how_aged_1"),
-                    Column("how_aged_2"),
+                    Column("how_aged_1", css_class="col-6"),
+                    Column("how_aged_2", css_class="col-6"),
                 ),
-                css_class="bg-primary pb-3",
+                css_class="fieldset-padding bg-light",
             ),
 
             Fieldset(
                 "",
                 "sex",
                 Row(
-                    Column("how_sexed_1"),
-                    Column("how_sexed_2"),
+                    Column("how_sexed_1", css_class="col-6"),
+                    Column("how_sexed_2", css_class="col-6"),
                 ),
-                css_class="bg-success pb-3",
+                css_class="fieldset-padding bg-custom-gray",
             ),
-            "skull",
-            "cloacal_protuberance",
-            "brood_patch",
-            "fat",
-            "body_molt",
-            "ff_molt",
-            "ff_wear",
-            "juv_body_plumage",
-            "primary_coverts",
-            "secondary_coverts",
-            "primaries",
-            "secondaries",
-            "tertials",
-            "rectrices",
-            "body_plumage",
-            "non_feather",
+
+            Fieldset(
+                "",
+                Row(
+                    Column("skull", css_class="col-12"),
+                ),
+                Row(
+                    Column("cloacal_protuberance", css_class="col-6"),
+                    Column("brood_patch", css_class="col-6"),
+                ),
+                Row(
+                    Column("fat", css_class="col-6"),
+                    Column("body_molt", css_class="col-6"),
+                ),
+                Row(
+                    Column("ff_molt", css_class="col-6"),
+                    Column("ff_wear", css_class="col-6"),
+                ),
+                Row(
+                    Column("juv_body_plumage", css_class="col-12"),
+                ),
+                css_class="fieldset-padding bg-light",
+            ),
+            Fieldset(
+                "",
+                Row(
+                    Column("primary_coverts", css_class="col-6"),
+                    Column("secondary_coverts", css_class="col-6"),
+                ),
+                Row(
+                    Column("primaries", css_class="col-3"),
+                    Column("secondaries", css_class="col-3"),
+                    Column("tertials", css_class="col-3"),
+                    Column("rectrices", css_class="col-3"),
+                ),
+                Row(
+                    Column("body_plumage", css_class="col-6"),
+                    Column("non_feather", css_class="col-6"),
+                ),
+                css_class="fieldset-padding bg-custom-gray",
+            ),
+            # "primary_coverts",
+            # "secondary_coverts",
+            # "primaries",
+            # "secondaries",
+            # "tertials",
+            # "rectrices",
+            # "body_plumage",
+            # "non_feather",
             "wing_chord",
             "body_mass",
             "status",
@@ -72,6 +114,11 @@ class CaptureRecordForm(forms.ModelForm):
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
+
+    capture_code = forms.ChoiceField(
+        choices=CAPTURE_CODE_CHOICES,
+        widget=s2forms.Select2Widget(attrs={"class": "form-control"}),
+    )
 
     species_number = forms.ChoiceField(
         choices=SPECIES_CHOICES,
