@@ -15,16 +15,61 @@ class CaptureRecordForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.layout = Layout(
+            "capture_code",
             "species_number",
+            "band_size",
+            "band_number",
+            "alpha_code",
+
             Fieldset(
-                "Specimen Sex Fields",
+                "",
+                Row(
+                    Column("age_annual"),
+                    Column("age_WRP"),
+                ),
+                Row(
+                    Column("how_aged_1"),
+                    Column("how_aged_2"),
+                ),
+                css_class="bg-primary pb-3",
+            ),
+
+            Fieldset(
+                "",
                 "sex",
                 Row(
                     Column("how_sexed_1"),
                     Column("how_sexed_2"),
                 ),
-                css_class="border",
+                css_class="bg-success pb-3",
             ),
+            "skull",
+            "cloacal_protuberance",
+            "brood_patch",
+            "fat",
+            "body_molt",
+            "ff_molt",
+            "ff_wear",
+            "juv_body_plumage",
+            "primary_coverts",
+            "secondary_coverts",
+            "primaries",
+            "secondaries",
+            "tertials",
+            "rectrices",
+            "body_plumage",
+            "non_feather",
+            "wing_chord",
+            "body_mass",
+            "status",
+            "date_time",
+            "station",
+            "net",
+            "disposition",
+            "note_number",
+            "note",
+            "scribe",
+            "location",
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
