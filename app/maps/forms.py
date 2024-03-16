@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Layout, Fieldset, Submit, Div, Row, Column
 from django import forms
 from django_select2 import forms as s2forms
 
@@ -14,7 +14,20 @@ class CaptureRecordForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
-        self.helper.add_input(Submit('submit', 'Submit', css_class="btn btn-lg btn-primary w-100"))
+        self.helper.layout = Layout(
+            "species_number",
+            Fieldset(
+                "Specimen Sex Fields",
+                "sex",
+                Row(
+                    Column("how_sexed_1"),
+                    Column("how_sexed_2"),
+                ),
+                css_class="border",
+            ),
+            "is_validated",
+            Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
+        )
 
     species_number = forms.ChoiceField(
         choices=SPECIES_CHOICES,
