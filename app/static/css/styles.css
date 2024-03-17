@@ -6,7 +6,6 @@
 }
 
 .form-control {
-    width: 100%; /* Ensure it takes up the full width of its parent */
     max-width: 100%; /* Prevent it from overflowing */
 }
 
@@ -18,3 +17,6 @@
     background-color: #e0e0e0; /* Adjust the hex color as needed */
 }
 
+.select2widget .django-select2 .select2-hidden-accessible {
+    max-width: 100% !important;
+}
