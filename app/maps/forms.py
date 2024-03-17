@@ -1,10 +1,9 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Div, Row, Column
-from django.forms import Select
+from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column
 from django import forms
 from django_select2 import forms as s2forms
 
-from maps.maps_reference_data import SPECIES, WRP_GROUPS
+from maps.maps_reference_data import SPECIES
 from maps.choice_definitions import SPECIES_CHOICES, CAPTURE_CODE_CHOICES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator
@@ -117,19 +116,33 @@ class CaptureRecordForm(forms.ModelForm):
 
     capture_code = forms.ChoiceField(
         choices=CAPTURE_CODE_CHOICES,
-        widget=s2forms.Select2Widget(attrs={"class": "form-control"}),
+        widget=s2forms.Select2Widget(
+            attrs={
+                "class": "form-control select form-select",
+                "data-theme": "bootstrap-5",
+            }
+        ),
     )
 
     species_number = forms.ChoiceField(
         choices=SPECIES_CHOICES,
-        widget=s2forms.Select2Widget(attrs={"class": "form-control"}),
+        widget=s2forms.Select2Widget(
+            attrs={
+                "class": "form-control select form-select",
+                "data-theme": "bootstrap-5",
+            }
+        ),
     )
 
     is_validated = forms.BooleanField(
-        required=False,  # Make the field not required
-        label="Override Validation",  # Label for the field
-        initial=False,  # Set the default value to False
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"})  # Define the widget and its class
+        required=False,
+        label="Override Validation",
+        initial=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+            }
+        )
     )
 
     class Meta:
