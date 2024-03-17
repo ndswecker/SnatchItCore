@@ -1,25 +1,24 @@
-console.log('Hello from mini_pyle.js');
+let popoverTriggerList = [].slice.call(document.querySelectorAll('#view-species-info-popover'));
 
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+let popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
     return new bootstrap.Popover(popoverTriggerEl, {
-        container: 'body',
+        container: "body",
         html: true,
-        trigger: 'focus',
+        trigger: "click",
         content: function() {
-            var speciesNumber = $('#id_species_number').val();
+            let speciesNumber = $('#id_species_number').val();
             if (speciesNumber) {
                 return fetchSpeciesInfo(speciesNumber);
             } else {
-                return 'Select a species to view its information.';
+                return "Select a species to view its information.";
             }
         }
     });
 });
 
 function fetchSpeciesInfo(speciesNumber) {
-    var content = "Loading...";
-    let destination_url = '/maps/mini_pyle/' + speciesNumber + '/';
+    let content = "Loading...";
+    let destination_url = `/maps/mini_pyle/${speciesNumber}/`;
     $.ajax({
         url: destination_url,
         async: false, // Note: Synchronous requests are discouraged
@@ -27,7 +26,7 @@ function fetchSpeciesInfo(speciesNumber) {
             content = htmlSnippet;
         },
         error: function() {
-            content = 'Could not retrieve species information. Please try again.';
+            content = "Could not retrieve species information. Please try again.";
         }
     });
     return content;
@@ -38,18 +37,17 @@ $('#id_species_number').change(function() {
     popoverList.forEach(function(popover) {
         popover.dispose();
     });
-    popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl, {
-            container: 'body',
+            container: "body",
             html: true,
-            trigger: 'focus',
+            trigger: "click",
             content: function() {
-                var speciesNumber = $('#id_species_number').val();
+                let speciesNumber = $('#id_species_number').val();
                 if (speciesNumber) {
                     return fetchSpeciesInfo(speciesNumber);
                 } else {
-                    return 'Select a species to view its information.';
+                    return "Select a species to view its information.";
                 }
             }
         });
