@@ -13,6 +13,7 @@ class CaptureRecordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_class = "my-3"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             Fieldset(
