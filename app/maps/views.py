@@ -35,6 +35,14 @@ class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
     model = CaptureRecord
     context_object_name = "capture_record"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        capture_record = context['capture_record']
+        species_number = capture_record.species_number
+        species_info = REFERENCE_DATA.SPECIES[species_number]
+        context['species_name'] = species_info['common_name']
+        return context
+
 
 class ListCaptureRecordView(LoginRequiredMixin, ListView):
     template_name = "maps/list_all.html"
