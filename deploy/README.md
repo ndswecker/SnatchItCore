@@ -44,12 +44,6 @@ sudo git clone https://USERNAME:ACCESS_TOKEN@github.com/harrelchris/bp-django.gi
 sudo bash /srv/web/deploy/install.sh
 ```
 
-## Update application
-
-```shell
-(cd /srv/web && sudo git pull)
-```
-
 ## Logs
 
 ```shell
