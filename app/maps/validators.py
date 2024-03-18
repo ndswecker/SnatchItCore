@@ -102,7 +102,7 @@ def validate_male_how_sexed(form_data: dict):
         raise ValidationError(
             {
                 "sex": "Fill in how sexed as 'C', 'W', 'E', 'P', or 'O'.",
-            }
+            },
         )
 
 
@@ -118,7 +118,7 @@ def validate_female_how_sexed(form_data: dict):
         raise ValidationError(
             {
                 "sex": "Fill in how sexed as 'B', 'P', 'E', 'W', or 'O'.",
-            }
+            },
         )
 
 
@@ -134,7 +134,7 @@ def validate_cloacal_protuberance_filled_if_sexed_by_cp(form_data: dict):
         raise ValidationError(
             {
                 "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",
-            }
+            },
         )
 
 
@@ -148,7 +148,7 @@ def validate_cloacal_protuberance_none_or_zero_for_females(form_data: dict):
         raise ValidationError(
             {
                 "cloacal_protuberance": "Cloacal protuberance must be None or 0 for female birds.",
-            }
+            },
         )
 
 
@@ -166,7 +166,7 @@ def validate_brood_patch_indication_to_score(form_data: dict):
         raise ValidationError(
             {
                 "brood_patch": "Brood patch must be scored for birds sexed or aged by brood patch.",
-            }
+            },
         )
 
 
@@ -240,7 +240,7 @@ def validate_molt_presence_in_wrp_code(form_data: dict):
         raise ValidationError(
             {
                 "age_WRP": "A molting score is indicated but the WRP code does not contain 'P'. Please correct the WRP code.",
-            }
+            },
         )
 
 

@@ -67,7 +67,7 @@ class MiniPyleView(TemplateView):
                 "WRP_groups": ", ".join(map(str, species_info.get("WRP_groups", []))),
                 "sexing_criteria": species_info.get("sexing_criteria", {}),
                 "pyle_second_edition_page": species_info.get("pyle_second_edition_page", ""),
-            }
+            },
         )
 
         return context
