@@ -1,22 +1,18 @@
-<header class="container-fluid d-flex justify-content-center py-3 border-bottom">
-  <nav class="nav nav-pills">
-    {% if user.is_authenticated %}
-      {% if user.is_approved and user.initials %}
-        <a class="nav-link" href="{% url 'maps:create_capture_record' %}">Create Record</a>
-        <a class="nav-link" href="{% url 'maps:list_capture_records' %}">Records</a>
-        <a class="nav-link" href="{% url 'breeding:create' %}">Create Breeding Record</a>
-        <a class="nav-link" href="{% url 'breeding:list' %}">Breeding Records</a>
-        <a class="nav-link" href="{% url 'netting:list' %}">Netting Records</a>
-        <a class="nav-link" href="{% url 'netting:create' %}">Create Netting Record</a>
-      {% endif %}
-        <a class="nav-link" href="{% url 'users:profile' %}">Profile</a>
-      {% if user.is_superuser %}
-        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-      {% endif %}
-      <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-    {% else %}
-      <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-      <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
-    {% endif %}
-  </nav>
+<header class="container py-2">
+    <div>
+        {% if user.is_authenticated %}
+          {% if user.is_approved and user.initials %}
+            <a href="{% url 'maps:create_capture_record' %}">Create Record</a> /
+            <a href="{% url 'maps:list_capture_records' %}">Records</a> /
+          {% endif %}
+            <a href="{% url 'users:profile' %}">Profile</a> /
+          {% if user.is_superuser %}
+            <a href="{% url 'admin:index' %}">Admin</a> /
+          {% endif %}
+          <a href="{% url 'account_logout' %}">Logout</a>
+        {% else %}
+          <a href="{% url 'account_login' %}">Login</a> /
+          <a href="{% url 'account_signup' %}">Register</a>
+        {% endif %}
+    </div>
 </header>
