@@ -1,4 +1,4 @@
-from maps.maps_reference_data import *
+from maps.maps_reference_data import *  # noqa F403
 from maps.models import CaptureRecord
 
 

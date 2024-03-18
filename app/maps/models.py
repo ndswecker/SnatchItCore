@@ -1,13 +1,12 @@
 import datetime
 
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
 
 from common.models import BaseModel
-from maps.choice_definitions import *
-from maps.maps_reference_data import *
+from maps.choice_definitions import *  # noqa F403
+from maps.maps_reference_data import *  # noqa F403
 from users.models import User
 
 

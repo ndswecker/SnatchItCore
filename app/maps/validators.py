@@ -34,7 +34,7 @@ def validate_juv_aging_plumage_not_p(form_data: dict):
     if form_data.get("age_annual") in [4, 2] and form_data.get("how_aged_1") == "P":
         raise ValidationError(
             {
-                "age_annual": f"How aged cannot be P for HY or Local birds. Please choose J.",
+                "age_annual": "How aged cannot be P for HY or Local birds. Please choose J.",
             },
         )
 
@@ -78,7 +78,7 @@ def validate_wrp_allowed_for_species(form_data: dict):
     wrp_groups = target_species["WRP_groups"]
     age_wrp = form_data.get("age_WRP")
 
-    allowed_codes = []
+    allowed_codes: list[str] = []
     for group_number in wrp_groups:
         allowed_codes.extend(WRP_GROUPS[group_number]["codes_allowed"])
 
@@ -133,7 +133,7 @@ def validate_cloacal_protuberance_filled_if_sexed_by_cp(form_data: dict):
     if "C" in [how_sexed_1, how_sexed_2] and cloacal_protuberance in [None, 0]:
         raise ValidationError(
             {
-                "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",
+                "cloacal_protuberance": "Cloacal protuberance must be filled in for birds sexed by cloacal protuberance.",  # noqa E501
             },
         )
 
@@ -187,7 +187,7 @@ def validate_species_brood_patch_sexing_for_females(form_data: dict):
     if bp_indicated and bp_used_alone and bp_limited_reliability and limited_bp:
         raise ValidationError(
             {
-                "sex": "This species cannot be reliably sexed female by a brood patch alone, unless the brood patch is 3 or 4.",
+                "sex": "This species cannot be reliably sexed female by a brood patch alone, unless the brood patch is 3 or 4.",  # noqa E501
             },
         )
 
@@ -222,7 +222,7 @@ def validate_wrp_to_molt_score(form_data: dict):
     if not has_molt_score:
         raise ValidationError(
             {
-                "age_WRP": "The WRP code indicates this bird is molting, please indicate so in the body molt or flight feather molt scores",
+                "age_WRP": "The WRP code indicates this bird is molting, please indicate so in the body molt or flight feather molt scores",  # noqa E501
             },
         )
 
@@ -239,7 +239,7 @@ def validate_molt_presence_in_wrp_code(form_data: dict):
     if molt_indicated and p_not_in_wrp:
         raise ValidationError(
             {
-                "age_WRP": "A molting score is indicated but the WRP code does not contain 'P'. Please correct the WRP code.",
+                "age_WRP": "A molting score is indicated but the WRP code does not contain 'P'. Please correct the WRP code.",  # noqa E501
             },
         )
 
@@ -348,7 +348,7 @@ def validate_how_sexed_by_wing_chord_in_range(form_data: dict):
     if wing_chord < wing_chord_min or wing_chord > wing_chord_max:
         raise ValidationError(
             {
-                "wing_chord": f"The wing chord {wing_chord} is not within the expected range for a {mapped_sex} of this species.",
+                "wing_chord": f"The wing chord {wing_chord} is not within the expected range for a {mapped_sex} of this species.",  # noqa E501
             },
         )
 
@@ -373,7 +373,7 @@ def validate_recapture_has_no_band_size(form_data: dict):
     if form_data.get("band_size") != "R":
         raise ValidationError(
             {
-                "band_size": "Band size must labled as 'Recap' for recaptures.",
+                "band_size": "Band size must labeled as 'Recap' for recaptures.",
             },
         )
 

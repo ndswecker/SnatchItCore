@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -11,7 +10,6 @@ from django.views.generic import TemplateView
 import maps.maps_reference_data as REFERENCE_DATA
 from .forms import CaptureRecordForm
 from .models import CaptureRecord
-from common.species_summary import SpeciesSummary
 from users.mixins import ApprovalRequiredMixin
 
 

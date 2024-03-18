@@ -5,7 +5,7 @@ class FormValidator:
     def __init__(self, cleaned_data: dict):
         self.cleaned_data = cleaned_data
         self.discrepancy_string = ""
-        self.validation_errors = []
+        self.validation_errors: list[str] = []
         self.validators = []
 
     def validate(self, override_validation: bool):

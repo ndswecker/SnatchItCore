@@ -1084,11 +1084,11 @@ SPECIES = {
         },
         "pyle_second_edition_page": 508,
     },
-    5547: {
+    5550: {
         "common_name": "Gambel's White-crowned Sparrow",
         "scientific_name": "Zonotrichia leucophrys gambelii",
         "alpha_code": "GWCS",
-        "species_number": 5547,
+        "species_number": 5550,
         "band_sizes": ["1B"],
         "wing_chord_range": (69, 84),
         "wing_chord_range_by_sex": {
