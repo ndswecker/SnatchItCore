@@ -11,8 +11,8 @@ from maps.serializers import USGSSerializer
 
 
 class CaptureRecordAdmin(admin.ModelAdmin):
-    list_display = ("band_number", "species_number", "date_time")
-    list_filter = ("band_number", "species_number", "date_time")
+    list_display = ("band_number", "is_validated", "species_number", "date_time")
+    list_filter = ("is_validated", "species_number", "date_time")
     actions = [
         "export_csv_usgs",
         "export_csv_ibp",
