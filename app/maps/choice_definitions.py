@@ -170,6 +170,7 @@ BAND_SIZE_CHOICES = [
     ("3B", "3B"),
     ("4", "4"),
     ("R", "Recap"),
+    ("U", "Unbanded"),
 ]
 
 DISPOSITION_CHOICES = [
