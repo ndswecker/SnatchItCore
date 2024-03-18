@@ -14,7 +14,7 @@
   <h1 class="text-center">Capture Record Details</h1>
 
   <div class="mb-1 p-1 bg-light">
-    <h2 class="h4">Basic Information</h2>
+    <h2 class="h4 text-center">Basic Information</h2>
     
     <div class="row">
       <div class="col-12 text-center">
@@ -36,13 +36,13 @@
   </div>
 
   <div class="mb-1 p-1 bg-secondary text-white">
-    <h2 class="h4">Age and Sex Details</h2>
+    <h2 class="h4 text-center">Age and Sex Details</h2>
     <div class="row">
-      <div class="col-6">
+      <div class="col-6 text-center">
           <p><strong>Age Annual:</strong> {{ capture_record.age_annual }}</p>
           <p><strong>Age WRP:</strong> {{ capture_record.age_WRP }}</p>
       </div>
-      <div class="col-6">
+      <div class="col-6 text-center">
           <p><strong>How Aged 1:</strong> {{ capture_record.how_aged_1 }}</p>
           <p><strong>How Aged 2:</strong> {{ capture_record.how_aged_2 }}</p>
       </div>
@@ -50,7 +50,7 @@
   </div>
 
   <div class="mb-1 p-1 bg-light">
-      <h2 class="h4">Physical Features</h2>
+      <h2 class="h4 text-center">Physical Features</h2>
     <div class="row">
       <div class="col-3">
         <p><strong>SK:</strong> {{ capture_record.skull|default:"N/A" }}</p>
@@ -69,7 +69,84 @@
         <p><strong>JBP:</strong> {{ capture_record.juv_body_plumage|default:"N/A" }}</p>
       </div>
     </div>
-  
   </div>
+
+  <div class="mb-1 p-1 bg-secondary text-white">
+    <h2 class="h4 text-center">Molt Limits and Plumage</h2>
+    <div class="row">
+      <div class="col-6 text-center">
+        <p><strong>Primary Coverts:</strong> {{ capture_record.primary_coverts|default:"N/A" }}</p>
+      </div>
+      <div class="col-6 text-center">
+        <p><strong>Secondary Coverts:</strong> {{ capture_record.secondary_coverts|default:"N/A" }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <p><strong>P:</strong> {{ capture_record.primaries|default:"N/A" }}</p>
+      </div>
+      <div class="col-3">
+        <p><strong>S:</strong> {{ capture_record.secondaries|default:"N/A" }}</p>
+      </div>
+      <div class="col-3">
+        <p><strong>T:</strong> {{ capture_record.tertials|default:"N/A" }}</p>
+      </div>
+      <div class="col-3">
+        <p><strong>R:</strong> {{ capture_record.rectrices|default:"N/A" }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 text-center">
+        <p><strong>Body Plumage:</strong> {{ capture_record.body_plumage|default:"N/A" }}</p>
+      </div>
+      <div class="col-6 text-center">
+        <p><strong>Non-Feather:</strong> {{ capture_record.non_feather|default:"N/A" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-1 p-1 bg-light">
+    <h2 class="h4 text-center">Details and Effort</h2>
+    <div class="row">
+        <div class="col-4 text-center">
+            <p><strong>Wing Chord:</strong> {{ capture_record.wing_chord|default:"N/A" }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p><strong>Body Mass:</strong> {{ capture_record.body_mass|default:"N/A" }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p><strong>Status:</strong> {{ capture_record.status|default:"N/A" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-center">
+            <p><strong>Net:</strong> {{ capture_record.net|default:"N/A" }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p><strong>Station:</strong> {{ capture_record.station|default:"N/A" }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p><strong>Location:</strong> {{ capture_record.location|default:"N/A" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-center">
+            <p><strong>Disposition:</strong> {{ capture_record.disposition|default:"N/A" }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p><strong>Scribe:</strong> {{ capture_record.scribe|default:"N/A" }}</p>
+        </div>
+        <div class="col-4 text-center">
+            <p><strong>Date Time:</strong> {{ capture_record.date_time|date:"Y-m-d H:i" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <p><strong>Note:</strong> {{ capture_record.note|default:"N/A" }}</p>
+        </div>
+    </div>
+</div>
+
+
 </div>
 {% endblock %}
