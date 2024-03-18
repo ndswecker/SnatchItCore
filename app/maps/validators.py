@@ -218,6 +218,10 @@ def validate_molt_presence_in_wrp_code(form_data: dict):
         })
   
 def validate_species_to_band_size(form_data: dict):
+    capture_code = form_data.get("capture_code")
+    if capture_code == "R":
+        return
+
     species_number = int(form_data.get("species_number"))
     band_size = form_data.get("band_size")
 
@@ -247,35 +251,9 @@ def validate_species_to_wing_chord(form_data: dict):
             },
         )
 
-def validate_species_to_wing_chord_by_sex(form_data: dict):
-    wing_chord_value = form_data.get("wing_chord")
-    
-    if wing_chord_value is None:
-        return
-    
-    species_number = int(form_data.get("species_number"))
-    target_species = SPECIES[species_number]
-
-    if "wing_chord_range_by_sex" not in target_species or form_data.get("sex") not in ["M", "F"]:
-        return
-
-    wing_chord = int(wing_chord_value)
-    
-    sex_code_mapping = {"M": "male", "F": "female"}
-    sex = form_data.get("sex")
-    mapped_sex = sex_code_mapping.get(sex)
-
-    wing_chord_min = target_species["wing_chord_range_by_sex"][mapped_sex][0]
-    wing_chord_max = target_species["wing_chord_range_by_sex"][mapped_sex][1]
-
-    if wing_chord < wing_chord_min or wing_chord > wing_chord_max:
-        raise ValidationError(
-            {
-                "wing_chord": f"The wing chord {wing_chord} is not within the expected range for a {mapped_sex} of this species.",
-            },
-        )
-
 def validate_how_sexed_to_wing_chord(form_data: dict):
+    if form_data.get("sex") not in ["M", "F"]:
+        return
     
     how_sexed_1 = form_data.get("how_sexed_1")
     how_sexed_2 = form_data.get("how_sexed_2")
@@ -289,6 +267,80 @@ def validate_how_sexed_to_wing_chord(form_data: dict):
         raise ValidationError(
             {
                 "wing_chord": "Wing chord must be filled in for birds sexed by wing chord."
+            }
+        )
+
+def validate_how_sexed_by_wing_chord_is_possible(form_data: dict):
+    if form_data.get("sex") not in ["M", "F"]:
+        return
+
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    
+    if "W" not in [how_sexed_1, how_sexed_2]:
+        return
+    
+    species_number = int(form_data.get("species_number"))
+
+    if "wing_chord_range_by_sex" not in SPECIES[species_number]:
+        raise ValidationError(
+            {
+                "how_sexed_1": "This species cannot be sexed by wing chord."
+            }
+        )   
+
+def validate_how_sexed_by_wing_chord_in_range(form_data: dict):
+    sex = form_data.get("sex")
+
+    if sex not in ["M", "F"]:
+        return
+
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    
+    if "W" not in [how_sexed_1, how_sexed_2]:
+        return
+    
+    species_number = int(form_data.get("species_number"))
+
+    if "wing_chord_range_by_sex" not in SPECIES[species_number]:
+        return
+    
+    sex_code_mapping = {"M": "male", "F": "female"}
+    
+    mapped_sex = sex_code_mapping.get(sex)
+    wing_chord = int(form_data.get("wing_chord"))
+
+    wing_chord_min = SPECIES[species_number]["wing_chord_range_by_sex"][mapped_sex][0]
+    wing_chord_max = SPECIES[species_number]["wing_chord_range_by_sex"][mapped_sex][1]
+
+    if wing_chord < wing_chord_min or wing_chord > wing_chord_max:
+        raise ValidationError(
+            {
+                "wing_chord": f"The wing chord {wing_chord} is not within the expected range for a {mapped_sex} of this species.",
+            },
+        )
+
+def validate_how_sexed_has_sex(form_data: dict):
+    how_sexed_1 = form_data.get("how_sexed_1")
+    how_sexed_2 = form_data.get("how_sexed_2")
+    sex = form_data.get("sex")
+
+    if (how_sexed_1 is None and how_sexed_2 is None) and sex not in ["U", "X"]:
+        raise ValidationError(
+            {
+                "sex": "How sexed must be blank for birds not sexed."
+            }
+        )
+        
+def validate_recapture_has_no_band_size(form_data: dict):
+    if form_data.get("capture_code") != "R":
+        return
+    
+    if form_data.get("band_size") != "R":
+        raise ValidationError(
+            {
+                "band_size": "Band size must labled as 'Recap' for recaptures."
             }
         )
 
@@ -313,6 +365,9 @@ class CaptureRecordFormValidator(FormValidator):
             validate_molt_presence_in_wrp_code,
             validate_species_to_band_size,
             validate_species_to_wing_chord,
-            validate_species_to_wing_chord_by_sex,
+            validate_how_sexed_by_wing_chord_in_range,
             validate_how_sexed_to_wing_chord,
+            validate_how_sexed_by_wing_chord_is_possible,
+            validate_how_sexed_has_sex,
+            validate_recapture_has_no_band_size
         ]
