@@ -376,6 +376,17 @@ def validate_recapture_has_no_band_size(form_data: dict):
                 "band_size": "Band size must labeled as 'Recap' for recaptures.",
             },
         )
+
+def validate_recapture_has_band_number(form_data: dict):
+    if form_data.get("capture_code") != "R":
+        return
+
+    if form_data.get("band_number") is None:
+        raise ValidationError(
+            {
+                "band_number": "Band number must be filled in for recaptures.",
+            },
+        )
     
 def validate_unbanded_has_no_band_size(form_data: dict):
     if form_data.get("capture_code") != "U":
@@ -428,4 +439,5 @@ class CaptureRecordFormValidator(FormValidator):
             validate_recapture_has_no_band_size,
             validate_unbanded_has_no_band_size,
             validate_unbanded_has_no_band_number,
+            validate_recapture_has_band_number,
         ]
