@@ -20,6 +20,12 @@ sudo bash /srv/web/deploy/install.sh
 sudo /srv/web/venv/bin/python3 /srv/web/app/manage.py createsuperuser
 ```
 
+## Update
+
+```shell
+sudo bash /srv/web/deploy/update.sh
+```
+
 ### Private repository
 
 You will need an access token if the repository is private.
