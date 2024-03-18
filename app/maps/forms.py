@@ -1,10 +1,15 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column
+from crispy_forms.layout import Column
+from crispy_forms.layout import Fieldset
+from crispy_forms.layout import Layout
+from crispy_forms.layout import Row
+from crispy_forms.layout import Submit
 from django import forms
 from django_select2 import forms as s2forms
 
+from maps.choice_definitions import CAPTURE_CODE_CHOICES
+from maps.choice_definitions import SPECIES_CHOICES
 from maps.maps_reference_data import SPECIES
-from maps.choice_definitions import SPECIES_CHOICES, CAPTURE_CODE_CHOICES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator
 
@@ -28,7 +33,6 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 css_class="fieldset-padding bg-custom-gray",
             ),
-
             Fieldset(
                 "",
                 Row(
@@ -41,7 +45,6 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 css_class="fieldset-padding bg-light",
             ),
-
             Fieldset(
                 "",
                 "sex",
@@ -51,7 +54,6 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 css_class="fieldset-padding bg-custom-gray",
             ),
-
             Fieldset(
                 "",
                 Row(
@@ -102,7 +104,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column("net", css_class="col-4"),
                     Column("station", css_class="col-4"),
-                    Column("location", css_class="col-4")
+                    Column("location", css_class="col-4"),
                 ),
                 Row(
                     Column("disposition", css_class="col-4"),
@@ -125,7 +127,7 @@ class CaptureRecordForm(forms.ModelForm):
             attrs={
                 "class": "form-control select form-select",
                 "data-theme": "bootstrap-5",
-            }
+            },
         ),
     )
 
@@ -135,7 +137,7 @@ class CaptureRecordForm(forms.ModelForm):
             attrs={
                 "class": "form-control select form-select",
                 "data-theme": "bootstrap-5",
-            }
+            },
         ),
     )
 
@@ -146,8 +148,8 @@ class CaptureRecordForm(forms.ModelForm):
         widget=forms.CheckboxInput(
             attrs={
                 "class": "form-check-input",
-            }
-        )
+            },
+        ),
     )
 
     class Meta:

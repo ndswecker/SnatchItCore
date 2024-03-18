@@ -279,7 +279,7 @@ class CaptureRecord(BaseModel):
 
     discrepancies = models.TextField(null=True, blank=True)
     # We will default to true. Since the validattion is done in the form
-    # we will assume that the data is valid unless the user clicks on the 
+    # we will assume that the data is valid unless the user clicks on the
     # override validation button.
     is_validated = models.BooleanField(default=True)
 

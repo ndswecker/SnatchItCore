@@ -1,5 +1,8 @@
-from dataclasses import dataclass, field
-from typing import Dict, List
+from dataclasses import dataclass
+from dataclasses import field
+from typing import Dict
+from typing import List
+
 
 @dataclass
 class SpeciesSummary:
@@ -26,7 +29,7 @@ class SpeciesSummary:
 
     def generate_html_snippet(self) -> str:
         # Determine the display for plumage dimorphism based on its value
-        if self.sexing_criteria.get('plumage_dimorphism'):
+        if self.sexing_criteria.get("plumage_dimorphism"):
             plumage_dimorphism_display = "<strong>Sex:</strong> &female;&ne;&male; (dimorphic)"
         else:
             plumage_dimorphism_display = "<strong>Sex:</strong> &female;=&male;"
@@ -46,5 +49,3 @@ class SpeciesSummary:
         <strong>Pyle Second Edition Page:</strong> {self.pyle_second_edition_page}
         """
         return html_snippet
-
-

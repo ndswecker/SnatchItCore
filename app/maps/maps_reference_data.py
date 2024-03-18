@@ -38,7 +38,7 @@ SPECIES = {
         "wing_chord_range": (51, 66),
         "wing_chord_range_by_sex:": {
             "female": (51, 59),
-            "male": (55, 62)
+            "male": (55, 62),
         },
         "WRP_groups": [3, 8],
         "sexing_criteria": {
@@ -57,7 +57,7 @@ SPECIES = {
         "wing_chord_range": (76, 95),
         "wing_chord_range_by_sex": {
             "female": (75, 86),
-            "male": (78, 89)
+            "male": (78, 89),
         },
         "WRP_groups": [3],
         "sexing_criteria": {
@@ -76,7 +76,7 @@ SPECIES = {
         "wing_chord_range": (86, 107),
         "wing_chord_range_by_sex": {
             "female": (86, 103),
-            "male": (90, 107)
+            "male": (90, 107),
         },
         "WRP_groups": [3],
         "sexing_criteria": {
@@ -305,7 +305,7 @@ SPECIES = {
         "wing_chord_range": (200, 256),
         "wing_chord_range_by_sex": {
             "female": (200, 246),
-            "male": (210, 256)
+            "male": (210, 256),
         },
         "WRP_groups": [3, 5],
         "sexing_criteria": {
@@ -540,7 +540,7 @@ SPECIES = {
         "wing_chord_range": (102, 119),
         "wing_chord_range_by_sex": {
             "female": (102, 112),
-            "male": (108, 119)
+            "male": (108, 119),
         },
         "WRP_groups": [4],
         "sexing_criteria": {
@@ -604,7 +604,7 @@ SPECIES = {
         "wing_chord_range": (54, 66),
         "wing_chord_range_by_sex": {
             "female": (54, 63),
-            "male": (57, 66)
+            "male": (57, 66),
         },
         "WRP_groups": [3],
         "sexing_criteria": {
@@ -758,7 +758,7 @@ SPECIES = {
         "wing_chord_range": (115, 137),
         "wing_chord_range_by_sex": {
             "female": (115, 132),
-            "male": (120, 137)
+            "male": (120, 137),
         },
         "WRP_groups": [3],
         "sexing_criteria": {
@@ -777,7 +777,7 @@ SPECIES = {
         "wing_chord_range": (79, 96),
         "wing_chord_range_by_sex": {
             "female": (79, 92),
-            "male": (84, 96)
+            "male": (84, 96),
         },
         "WRP_groups": [3],
         "sexing_criteria": {
@@ -961,7 +961,7 @@ SPECIES = {
         "wing_chord_range": (68, 82),
         "wing_chord_range_by_age": {
             "female": (68, 79),
-            "male": (71, 82)
+            "male": (71, 82),
         },
         "WRP_groups": [8],
         "sexing_criteria": {
@@ -980,7 +980,7 @@ SPECIES = {
         "wing_chord_range": (68, 82),
         "wing_chord_range_by_age": {
             "female": (63, 75),
-            "male": (67, 79)
+            "male": (67, 79),
         },
         "WRP_groups": [8],
         "sexing_criteria": {
@@ -1074,7 +1074,7 @@ SPECIES = {
         "wing_chord_range": (63, 75),
         "wing_chord_range_by_sex": {
             "female": (63, 71),
-            "male": (67, 75)
+            "male": (67, 75),
         },
         "WRP_groups": [8],
         "sexing_criteria": {
@@ -1093,7 +1093,7 @@ SPECIES = {
         "wing_chord_range": (69, 84),
         "wing_chord_range_by_sex": {
             "female": (69, 79),
-            "male": (74, 84)
+            "male": (74, 84),
         },
         "WRP_groups": [8],
         "sexing_criteria": {
@@ -1127,7 +1127,7 @@ SPECIES = {
         "wing_chord_range": (69, 81),
         "wing_chord_range_by_sex": {
             "female": (69, 77),
-            "male": (72, 81)
+            "male": (72, 81),
         },
         "WRP_groups": [3, 8],
         "sexing_criteria": {
@@ -1219,7 +1219,7 @@ SPECIES = {
         "wing_chord_range": (85, 115),
         "wing_chord_range_by_sex": {
             "female": (85, 103),
-            "male": (96, 115)
+            "male": (96, 115),
         },
         "WRP_groups": [3],
         "sexing_criteria": {
@@ -1331,7 +1331,7 @@ WRP_GROUPS = {
             "FCF",
             "MFCF",
             "SPB",
-            "MSPB"
+            "MSPB",
             "SCB",
             "TPB",
             "DCB",
