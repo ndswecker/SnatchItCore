@@ -1,46 +1,52 @@
 {% extends "maps/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block extra_css %}
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet"/>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}Enter Bird{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="p-5 m-auto">
-        <form method="post">
-            <h1 class="text-center">Enter Bird Record</h1>
-            {% csrf_token %}
-
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger" role="alert">
-                    Please correct the errors below.
+<div class="container p-0">
+    <div class="">
+        <h1 class="text-center">Enter Bird Record</h1>
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    {{ field.errors|striptags }}
                 </div>
             {% endif %}
+        {% endfor %}
 
-            {% for field in form %}
-                {% if field.errors %}
-                    <div class="alert alert-danger">
-                        {{ field.errors|striptags }}
-                    </div>
-                {% endif %}
-            {% endfor %}
+        <button
+            type="button"
+            id="view-species-info-popover"
+            class="btn btn-lg btn-danger w-100"
+            data-bs-toggle="popover"
+            title="Species Info">
+            Mini Pyle
+        </button>
 
-            {{ form|crispy }}
-            <button type='submit' class="btn btn-lg btn-primary w-100">Submit</button>
-        </form>
+        {% crispy form form.helper %}
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
       $(document).ready(function() {
-          $('.django-select2').select2(); // Initialize Select2 elements with the 'django-select2' class
+          $('.django-select2').select2({
+            width: "100%",
+          });
       });
-  </script>
+    </script>
+    <script src="{% static 'js/mini_pyle.js' %}"></script>
 {% endblock %}
