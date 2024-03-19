@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect
@@ -27,6 +28,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
         form.instance.user = self.request.user
         form.instance.bander_initials = self.request.user.initials
         self.object = form.save()
+        messages.success(self.request, "Capture record created successfully.")
         return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
 
 
