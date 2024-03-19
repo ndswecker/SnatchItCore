@@ -377,17 +377,19 @@ def validate_recapture_has_no_band_size(form_data: dict):
             },
         )
 
-def validate_recapture_has_band_number(form_data: dict):
-    if form_data.get("capture_code") != "R":
+
+def validate_recapture_and_new_has_band_number(form_data: dict):
+    if form_data.get("capture_code") not in ["R", "N"]:
         return
 
     if form_data.get("band_number") is None:
         raise ValidationError(
             {
-                "band_number": "Band number must be filled in for recaptures.",
+                "band_number": "Band number must be filled in for new birds and recaps.",
             },
         )
-    
+
+
 def validate_unbanded_has_no_band_size(form_data: dict):
     if form_data.get("capture_code") != "U":
         return
@@ -398,7 +400,8 @@ def validate_unbanded_has_no_band_size(form_data: dict):
                 "band_size": "Band size must labeled as 'Unbanded' for unbanded birds.",
             },
         )
-    
+
+
 def validate_unbanded_has_no_band_number(form_data: dict):
     if form_data.get("capture_code") != "U":
         return
@@ -439,5 +442,5 @@ class CaptureRecordFormValidator(FormValidator):
             validate_recapture_has_no_band_size,
             validate_unbanded_has_no_band_size,
             validate_unbanded_has_no_band_number,
-            validate_recapture_has_band_number,
+            validate_recapture_and_new_has_band_number,
         ]
