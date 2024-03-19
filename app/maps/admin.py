@@ -12,6 +12,7 @@ from maps.serializers import USGSSerializer
 
 class CaptureRecordAdmin(admin.ModelAdmin):
     list_display = (
+        "capture_code",
         "band_number",
         "is_validated",
         "bander_initials",
@@ -20,6 +21,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
     )
     list_filter = (
         "is_validated",
+        "capture_code",
         "bander_initials",
         "species_number",
         "date_time",
