@@ -246,7 +246,7 @@ def validate_molt_presence_in_wrp_code(form_data: dict):
 
 def validate_species_to_band_size(form_data: dict):
     capture_code = form_data.get("capture_code")
-    if capture_code == "R":
+    if capture_code in ["R", "U"]:
         return
 
     species_number = int(form_data.get("species_number"))
@@ -378,6 +378,42 @@ def validate_recapture_has_no_band_size(form_data: dict):
         )
 
 
+def validate_recapture_and_new_has_band_number(form_data: dict):
+    if form_data.get("capture_code") not in ["R", "N"]:
+        return
+
+    if form_data.get("band_number") is None:
+        raise ValidationError(
+            {
+                "band_number": "Band number must be filled in for new birds and recaps.",
+            },
+        )
+
+
+def validate_unbanded_has_no_band_size(form_data: dict):
+    if form_data.get("capture_code") != "U":
+        return
+
+    if form_data.get("band_size") != "U":
+        raise ValidationError(
+            {
+                "band_size": "Band size must labeled as 'Unbanded' for unbanded birds.",
+            },
+        )
+
+
+def validate_unbanded_has_no_band_number(form_data: dict):
+    if form_data.get("capture_code") != "U":
+        return
+
+    if form_data.get("band_number") is not None:
+        raise ValidationError(
+            {
+                "band_number": "Band number must be left blank for unbanded birds.",
+            },
+        )
+
+
 class CaptureRecordFormValidator(FormValidator):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -404,4 +440,7 @@ class CaptureRecordFormValidator(FormValidator):
             validate_how_sexed_by_wing_chord_is_possible,
             validate_how_sexed_has_sex,
             validate_recapture_has_no_band_size,
+            validate_unbanded_has_no_band_size,
+            validate_unbanded_has_no_band_number,
+            validate_recapture_and_new_has_band_number,
         ]

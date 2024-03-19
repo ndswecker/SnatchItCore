@@ -50,6 +50,8 @@ class CaptureRecord(BaseModel):
             MaxValueValidator(999999999, message="Band number must be less than 10 digits."),
         ],
         default=123456789,
+        null=True,
+        blank=True,
     )
 
     alpha_code = models.CharField(max_length=4)

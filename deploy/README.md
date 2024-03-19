@@ -20,6 +20,12 @@ sudo bash /srv/web/deploy/install.sh
 sudo /srv/web/venv/bin/python3 /srv/web/app/manage.py createsuperuser
 ```
 
+## Update
+
+```shell
+sudo bash /srv/web/deploy/update.sh
+```
+
 ### Private repository
 
 You will need an access token if the repository is private.
@@ -36,12 +42,6 @@ Include GitHub credentials to bypass interactive prompt
 sudo apt install git -y
 sudo git clone https://USERNAME:ACCESS_TOKEN@github.com/harrelchris/bp-django.git /srv/web
 sudo bash /srv/web/deploy/install.sh
-```
-
-## Update application
-
-```shell
-(cd /srv/web && sudo git pull)
 ```
 
 ## Logs
