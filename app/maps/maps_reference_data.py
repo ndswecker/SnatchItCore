@@ -1716,3 +1716,66 @@ SEXES = (
         },
     },
 )
+
+BREEDING_STATUSES = {
+    "Cn": {
+        "code": "Cn",
+        "description": "Confirmed Breeder. Carrying Nesting Material",
+        "rank": 11,
+    },
+    "Cm": {
+        "code": "Cm",
+        "description": "Confirmed Breeder. Carrying nest material",
+        "rank": 10,
+    },
+    "Cf": {
+        "code": "Cf",
+        "description": "Confirmed Breeder. Carrying food or fecal sac",
+        "rank": 9,
+    },
+    "Cd": {
+        "code": "Cd",
+        "description": "Confirmed Breeder. Distraction Display",
+        "rank": 8,
+    },
+    "Cl": {
+        "code": "Cl",
+        "description": "Confirmed Breeder. Local bird",
+        "rank": 7,
+    },
+    "Pc": {
+        "code": "Pc",
+        "description": "Probable Breeder. Courtship/copulation",
+        "rank": 6,
+    },
+    "Pt": {
+        "code": "Pt",
+        "description": "Probable Breeder. Other territorial behavior",
+        "rank": 5,
+    },
+    "Ps": {
+        "code": "Ps",
+        "description": "Probable Breeder. Song/drumming",
+        "rank": 4
+    },
+    "Ob": {
+        "code": "Ob",
+        "description": "Observed. Banded/Captured",
+        "rank": 3
+    },
+    "Oe": {
+        "code": "Oe",
+        "description": "Observed. Encountered",
+        "rank": 2,
+    },
+    "Oo": {
+        "code": "Oo",
+        "description": "Observed. Flyover",
+        "rank": 1,
+    },
+    "--": {
+        "code": "--",
+        "description": "Absent",
+        "rank": 0,
+    },
+}
