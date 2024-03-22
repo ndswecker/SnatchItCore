@@ -89,8 +89,9 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("rectrices", css_class="col-3"),
                 ),
                 Row(
-                    Column("body_plumage", css_class="col-6"),
-                    Column("non_feather", css_class="col-6"),
+                    Column("alula", css_class="col-4"),
+                    Column("body_plumage", css_class="col-4"),
+                    Column("non_feather", css_class="col-4"),
                 ),
                 css_class="fieldset-padding bg-custom-gray",
             ),
