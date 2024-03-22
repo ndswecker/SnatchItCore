@@ -197,6 +197,13 @@ class CaptureRecord(BaseModel):
         blank=True,
     )
 
+    alula = models.CharField(
+        max_length=1,
+        choices=MOLT_LIMIT_PLUMAGE_CHOICES,
+        null=True,
+        blank=True,
+    )
+
     non_feather = models.CharField(
         max_length=1,
         choices=MOLT_LIMIT_PLUMAGE_CHOICES,
