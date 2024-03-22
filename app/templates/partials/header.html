@@ -4,6 +4,7 @@
           {% if user.is_approved and user.initials %}
             <a href="{% url 'maps:create_capture_record' %}">Create Record</a> /
             <a href="{% url 'maps:list_capture_records' %}">Records</a> /
+            <a href="{% url 'breeding:report' %}">Breeding</a> /
           {% endif %}
             <a href="{% url 'users:profile' %}">Profile</a> /
           {% if user.is_superuser %}
