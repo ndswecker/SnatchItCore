@@ -205,6 +205,11 @@ class IBPSerializer:
 
     def get_rectrices(self):
         return self.capture_record.rectrices
+    
+    def get_alulua(self):
+        alulua = self.capture_record.alulua
+        # If alulua is null, return empty string, otherwise return 'Alula: ' + alulua
+        return "Alula: " + alulua if alulua else ""
 
     def get_body_plumage(self):
         return self.capture_record.body_plumage
@@ -243,6 +248,11 @@ class IBPSerializer:
         return ""
 
     def get_notes(self):
+        # Get the alula and add to the notes
+        alula = self.get_alulua()
+        if alula:
+            self.capture_record.note += ". " + alula
+        
         return self.capture_record.note
 
     def serialize(self) -> dict:
