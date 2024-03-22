@@ -1,33 +1,69 @@
-from django.urls import reverse_lazy
-from django.views.generic import DetailView
-from django.views.generic import FormView
-from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseNotAllowed
+from django.http import JsonResponse
+from django.views.generic import TemplateView
+from django.utils import timezone
 
-from breeding.forms import BreedingRecordForm
-from breeding.models import BreedingRecord
-
-
-class CreateBreedingRecordView(FormView):
-    template_name = "breeding/create.html"
-    form_class = BreedingRecordForm
-    success_url = reverse_lazy("breeding:create")
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.save()
-        return super().form_valid(form)
+from breeding.forms import StatusForm
+from breeding.models import Status
+from maps.maps_reference_data import BREEDING_STATUSES
+from maps.maps_reference_data import SPECIES
+from users.decorators import approval_required
+from users.mixins import ApprovalRequiredMixin
 
 
-class ListBreedingRecordView(ListView):
-    model = BreedingRecord
-    template_name = "breeding/list.html"
-    context_object_name = "records"
+class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
+    template_name = "breeding/report.html"
 
-    def get_queryset(self):
-        return BreedingRecord.objects.filter(user=self.request.user)
+    def _get_table(self):
+        """Create a representation of the HTML table as nested dicts.
+        Populates periods for species in which status record exist.
+
+        {
+            "SOSP": {1: "Cn", ..., 10: "--"},
+            "OCWA": {1: "--", ..., 10: "Ps"},
+            ...,
+        }
+        """
+
+        table = {}
+        absent_string = "--"
+        species_list = [s["alpha_code"] for s in SPECIES.values()]
+        for species in species_list:
+            table[species] = {i: absent_string for i in range(1, 11)}
+        for status in Status.objects.filter(created_at__year=timezone.now().year):
+            table[status.species][status.period] = status.status
+        return table
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["table"] = self._get_table()
+        context["options"] = BREEDING_STATUSES.keys()
+        return context
 
 
-class DetailBreedingRecordView(DetailView):
-    model = BreedingRecord
-    template_name = "breeding/detail.html"
-    context_object_name = "record"
+@login_required
+@approval_required
+def status_view(request):
+    if request.method == "POST":
+        form = StatusForm(data=request.POST)
+        if form.is_valid():
+            existing_status = Status.objects.filter(
+                species=form.cleaned_data["species"],
+                period=form.cleaned_data["period"],
+            ).first()
+            if existing_status:
+                existing_status.status = form.cleaned_data["status"]
+                existing_status.user = request.user
+                existing_status.save()
+            else:
+                form.instance.user = request.user
+                form.save()
+            return JsonResponse({"status": "success"})
+        else:
+            return JsonResponse({
+                "status": "error",
+                "errors": form.errors,
+            })
+    return HttpResponseNotAllowed(['POST'])
