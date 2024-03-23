@@ -17,8 +17,8 @@ const statusModal = new bootstrap.Modal('#status-modal', {});
 document.querySelectorAll(".status").forEach(function(el) {
     el.addEventListener("click", function() {
         // TODO: update modal title to match bird
-        document.getElementById("species").setAttribute('value', el.dataset.species);
-        document.getElementById("period").setAttribute('value', el.dataset.period);
+        document.getElementById("species").setAttribute("value", el.dataset.species);
+        document.getElementById("period").setAttribute("value", el.dataset.period);
         statusModal.show();
     });
 });
@@ -33,15 +33,15 @@ document.getElementById("submit-button").addEventListener("click", function () {
     const formData = new FormData(form);
 
     fetch(form.action, {
-        method: 'post',
+        method: "post",
         body: formData,
     }).then(response => {
         if (response.ok) {
-            let el = document.getElementById(`${formData.get('species')}-${formData.get('period')}`);
-            el.innerHTML = formData.get('status').toString();
+            let el = document.getElementById(`${formData.get("species")}-${formData.get("period")}`);
+            el.innerHTML = formData.get("status").toString();
             return response.json();
         } else {
-            throw new Error('Failed to submit form');
+            throw new Error("Failed to submit form");
         }
     }).catch(error => {
         console.error(error);
