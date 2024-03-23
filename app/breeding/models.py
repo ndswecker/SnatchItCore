@@ -25,6 +25,8 @@ class Status(BaseModel):
     station = models.CharField(
         max_length=4,
         choices=[(s, s) for s in REFERENCE_DATA.SITE_LOCATIONS.keys()],
+        null=False,
+        blank=False,
     )
 
     class Meta:

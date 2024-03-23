@@ -16,7 +16,7 @@ from users.mixins import ApprovalRequiredMixin
 class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
     template_name = "breeding/report.html"
 
-    def _get_table(self):
+    def _get_table(self, station):
         """Create a representation of the HTML table as nested dicts.
         Populates periods for species in which status record exist.
 
@@ -32,7 +32,7 @@ class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
         species_list = [s["alpha_code"] for s in SPECIES.values()]
         for species in species_list:
             table[species] = {i: absent_string for i in range(1, 11)}
-        for status in Status.objects.filter(created_at__year=timezone.now().year):
+        for status in Status.objects.filter(created_at__year=timezone.now().year, station=station):
             table[status.species][status.period] = status.status
         return table
 
@@ -40,6 +40,7 @@ class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["table"] = self._get_table()
         context["options"] = BREEDING_STATUSES.keys()
+        context["station"] = self.kwargs["station"]
         return context
 
 

@@ -63,6 +63,7 @@
               <label for="status">Select a status:</label>
               <input type="text" name="species" id="species" hidden value="blank">
               <input type="text" name="period" id="period" hidden value="blank">
+              <input type="text" name="station" id="station" hidden value="{{ station }}">
               <select name="status" id="status" class="mb-3">
                 {% for option in options %}
                   <option value="{{ option }}">{{ option }}</option>

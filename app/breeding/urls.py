@@ -5,6 +5,6 @@ from . import views
 app_name = "breeding"
 
 urlpatterns = [
-    path("", views.ReportView.as_view(), name="report"),
+    path("<str:station>/", views.ReportView.as_view(), name="report"),
     path("status/", views.status_view, name="status"),
 ]
