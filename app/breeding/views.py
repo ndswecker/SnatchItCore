@@ -38,9 +38,9 @@ class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["table"] = self._get_table()
-        context["options"] = BREEDING_STATUSES.keys()
         context["station"] = self.kwargs["station"]
+        context["table"] = self._get_table(station=self.kwargs["station"])
+        context["options"] = BREEDING_STATUSES.keys()
         return context
 
 
