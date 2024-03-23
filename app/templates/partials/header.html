@@ -1,19 +1,48 @@
-<header class="container py-2">
-    <div>
+{% load static %}
+<header>
+  <nav class="container navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'img/logo.jpg' %}" alt="PSBO Logo" width="91" height="42">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if user.is_authenticated %}
-          {% if user.is_approved and user.initials %}
-            <a href="{% url 'maps:create_capture_record' %}">Create Record</a> /
-            <a href="{% url 'maps:list_capture_records' %}">Records</a> /
-            <a href="{% url 'breeding:report' %}">Breeding</a> /
+          {% if user.is_approved %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'maps:create_capture_record' %}">Create Record</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'maps:list_capture_records' %}">Records</a></li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Breeding
+              </a>
+              <ul class="dropdown-menu">
+                {% for station in stations %}
+                  <li><a class="dropdown-item" href="{% url 'breeding:report' station=station %}">{{ station }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
           {% endif %}
-            <a href="{% url 'users:profile' %}">Profile</a> /
-          {% if user.is_superuser %}
-            <a href="{% url 'admin:index' %}">Admin</a> /
-          {% endif %}
-          <a href="{% url 'account_logout' %}">Logout</a>
-        {% else %}
-          <a href="{% url 'account_login' %}">Login</a> /
-          <a href="{% url 'account_signup' %}">Register</a>
         {% endif %}
+        </ul>
+
+        <ul class="navbar-nav mb-2 mb-lg-0 text-md-end">
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'users:profile' %}">Profile</a></li>
+            {% if user.is_superuser %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
+  </nav>
 </header>
