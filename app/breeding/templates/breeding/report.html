@@ -1,0 +1,86 @@
+{% extends "breeding/base.html" %}
+{% load static %}
+
+{% block title %}Breeding Record{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="my-3 text-center">Breeding Report {{ station }}</h1>
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th class="text-center">Species</th>
+          <th class="text-center">1</th>
+          <th class="text-center">2</th>
+          <th class="text-center">3</th>
+          <th class="text-center">4</th>
+          <th class="text-center">5</th>
+          <th class="text-center">6</th>
+          <th class="text-center">7</th>
+          <th class="text-center">8</th>
+          <th class="text-center">9</th>
+          <th class="text-center">10</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for species, periods in table.items %}
+        <tr>
+          <td>{{ species }}</td>
+          {% for period, status in periods.items %}
+            <td data-species="{{ species }}" data-period="{{ period }}" id="{{ species }}-{{ period }}" class="status text-center">{{ status }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th class="text-center">Species</th>
+          <th class="text-center">1</th>
+          <th class="text-center">2</th>
+          <th class="text-center">3</th>
+          <th class="text-center">4</th>
+          <th class="text-center">5</th>
+          <th class="text-center">6</th>
+          <th class="text-center">7</th>
+          <th class="text-center">8</th>
+          <th class="text-center">9</th>
+          <th class="text-center">10</th>
+        </tr>
+      </tfoot>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="status-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="status-form" action="{% url 'breeding:status' %}" onsubmit="handleSubmit(e)">
+              {% csrf_token %}
+              <label for="status">Select a status:</label>
+              <input type="text" name="species" id="species" hidden value="blank">
+              <input type="text" name="period" id="period" hidden value="blank">
+              <input type="text" name="station" id="station" hidden value="{{ station }}">
+              <select name="status" id="status" class="mb-3">
+                {% for option in options %}
+                  <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+              </select>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="submit-button">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/breeding.js' %}"></script>
+{% endblock %}
