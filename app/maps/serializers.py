@@ -206,7 +206,7 @@ class IBPSerializer:
     def get_rectrices(self):
         return self.capture_record.rectrices
     
-    def get_alulua(self):
+    def get_alula(self):
         alulua = self.capture_record.alulua
         # If alulua is null, return empty string, otherwise return 'Alula: ' + alulua
         return "Alula: " + alulua if alulua else ""
@@ -249,9 +249,10 @@ class IBPSerializer:
 
     def get_notes(self):
         # Get the alula and add to the notes
-        alula = self.get_alulua()
+        alula = self.get_alula()
+        notes = self.capture_record.note if self.capture_record.note else ""
         if alula:
-            self.capture_record.note += ". " + alula
+            notes += ". " + alula if notes else alula
         
         return self.capture_record.note
 
