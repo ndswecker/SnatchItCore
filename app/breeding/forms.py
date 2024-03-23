@@ -1,12 +1,9 @@
 from django import forms
 
-from breeding.models import BreedingRecord
+from breeding.models import Status
 
 
-class BreedingRecordForm(forms.ModelForm):
+class StatusForm(forms.ModelForm):
     class Meta:
-        model = BreedingRecord
+        model = Status
         fields = "__all__"
-        exclude = [
-            "user",
-        ]
