@@ -3,6 +3,8 @@ from django.db import models
 from common.models import BaseModel
 from users.models import User
 
+import maps.maps_reference_data as REFERENCE_DATA
+
 
 class Station(BaseModel):
     name = models.CharField(max_length=256)
@@ -20,6 +22,10 @@ class Status(BaseModel):
     species = models.CharField(max_length=4)  # TODO: use species number
     period = models.IntegerField()
     status = models.CharField(max_length=2)
+    station = models.CharField(
+        max_length=4,
+        choices=[(s, s) for s in REFERENCE_DATA.SITE_LOCATIONS.keys()],
+    )
 
     class Meta:
         verbose_name_plural = "Statuses"
