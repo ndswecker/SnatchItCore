@@ -53,6 +53,7 @@ def status_view(request):
             existing_status = Status.objects.filter(
                 species=form.cleaned_data["species"],
                 period=form.cleaned_data["period"],
+                station=form.cleaned_data["station"],
             ).first()
             if existing_status:
                 existing_status.status = form.cleaned_data["status"]
@@ -67,4 +68,4 @@ def status_view(request):
                 "status": "error",
                 "errors": form.errors,
             })
-    return HttpResponseNotAllowed(['POST'])
+    return HttpResponseNotAllowed(["POST"])
