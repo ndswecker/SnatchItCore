@@ -208,8 +208,6 @@ class IBPSerializer:
     
     def get_alula(self):
         alula = self.capture_record.alula
-        print(alula)
-        # If alulua is null, return empty string, otherwise return 'Alula: ' + alulua
         return "Alula: " + alula if alula else ""
 
     def get_body_plumage(self):
@@ -249,7 +247,6 @@ class IBPSerializer:
         return ""
 
     def get_notes(self):
-        # Get the alula and add to the notes
         alula = self.get_alula()
         notes = self.capture_record.note if self.capture_record.note else ""
         if alula:
