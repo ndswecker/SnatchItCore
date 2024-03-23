@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Status",
+            name="BreedingRecord",
             fields=[
                 (
                     "id",
@@ -33,27 +33,31 @@ class Migration(migrations.Migration):
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
-                ("species", models.CharField(max_length=4)),
-                ("period", models.IntegerField()),
-                ("status", models.CharField(max_length=2)),
-                (
-                    "station",
-                    models.CharField(
-                        choices=[("MORS", "MORS"), ("GHPR", "GHPR")], max_length=4
-                    ),
-                ),
+                ("date", models.DateField()),
+                ("hawo", models.CharField(max_length=100, verbose_name="HAWO")),
+                ("acfl", models.CharField(max_length=100, verbose_name="ACFL")),
+                ("ytvi", models.CharField(max_length=100, verbose_name="YTVI")),
+                ("revi", models.CharField(max_length=100, verbose_name="REVI")),
+                ("tres", models.CharField(max_length=100, verbose_name="TRES")),
+                ("cach", models.CharField(max_length=100, verbose_name="CACH")),
+                ("woth", models.CharField(max_length=100, verbose_name="WOTH")),
+                ("gcth", models.CharField(max_length=100, verbose_name="GCTH")),
+                ("amro", models.CharField(max_length=100, verbose_name="AMRO")),
+                ("grca", models.CharField(max_length=100, verbose_name="GRCA")),
+                ("nopa", models.CharField(max_length=100, verbose_name="NOPA")),
+                ("ywar", models.CharField(max_length=100, verbose_name="YWAR")),
+                ("amre", models.CharField(max_length=100, verbose_name="AMRE")),
+                ("initials", models.CharField(max_length=100)),
                 (
                     "user",
                     models.ForeignKey(
-                        blank=True,
-                        null=True,
-                        on_delete=django.db.models.deletion.SET_NULL,
+                        on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],
             options={
-                "verbose_name_plural": "Statuses",
+                "abstract": False,
             },
         ),
     ]
