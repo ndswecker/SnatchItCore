@@ -10,7 +10,23 @@ from breeding.serializers import StatusSerializer
 
 
 class StatusAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        '__str__',
+        "station",
+        "species",
+        "period",
+        "status",
+        "user",
+    )
+    list_filter = (
+        "species",
+        "period",
+        "status",
+        "station",
+    )
+    actions = [
+
+    ]
 
 
 admin.site.register(Status, StatusAdmin)

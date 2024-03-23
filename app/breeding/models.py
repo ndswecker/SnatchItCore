@@ -21,4 +21,4 @@ class Status(BaseModel):
         verbose_name_plural = "Statuses"
 
     def __str__(self):
-        return f"{self.species} - {self.period} - {self.status}"
+        return f"{self.species} - {self.period} - {self.station}"
