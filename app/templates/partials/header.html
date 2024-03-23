@@ -1,6 +1,6 @@
 {% load static %}
-<header>
-  <nav class="container navbar navbar-expand-lg bg-body-tertiary">
+<header class="bg-body-tertiary">
+  <nav class="container navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'index' %}">
         <img src="{% static 'img/logo.jpg' %}" alt="PSBO Logo" width="91" height="42">
@@ -15,7 +15,7 @@
           {% if user.is_approved %}
             <li class="nav-item"><a class="nav-link" href="{% url 'maps:create_capture_record' %}">Create Record</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'maps:list_capture_records' %}">Records</a></li>
-    
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Breeding
