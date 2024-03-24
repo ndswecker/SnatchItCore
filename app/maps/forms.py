@@ -98,25 +98,23 @@ class CaptureRecordForm(forms.ModelForm):
             Fieldset(
                 "",
                 Row(
-                    Column("wing_chord", css_class="col-4"),
-                    Column("body_mass", css_class="col-4"),
-                    Column("status", css_class="col-4"),
+                    Column("wing_chord", css_class="col-6"),
+                    Column("body_mass", css_class="col-6"),
                 ),
                 Row(
                     Column("net", css_class="col-4"),
                     Column("station", css_class="col-8"),
                 ),
                 Row(
-                    Column("disposition", css_class="col-4"),
-                    Column("scribe", css_class="col-4"),
-                    Column("note_number", css_class="col-4"),
+                    Column("disposition", css_class="col-6"),
+                    Column("status", css_class="col-6"),
                 ),
                 Row(
-                    Column("note", css_class="col-12"),
+                    Column("date_time", css_class="col-6"),
+                    Column("scribe", css_class="col-6"),
                 ),
                 css_class="fieldset-padding bg-light",
             ),
-            "date_time",
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
