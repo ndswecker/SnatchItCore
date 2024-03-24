@@ -104,8 +104,7 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 Row(
                     Column("net", css_class="col-4"),
-                    Column("station", css_class="col-4"),
-                    Column("location", css_class="col-4"),
+                    Column("station", css_class="col-8"),
                 ),
                 Row(
                     Column("disposition", css_class="col-4"),
