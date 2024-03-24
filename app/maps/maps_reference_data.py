@@ -1,6 +1,6 @@
 # Description: Reference data for MAPS and USGS banding codes and descriptions
 
-SITE_LOCATIONS = {
+STATION_LOCATIONS = {
     "MORS": {
         "name": "Morse Preserve MAPS",
         "code": "MORS",
