@@ -26,7 +26,7 @@ class USGSSerializer:
         return self.capture_record.sex
 
     def get_bbl_location_id(self):
-        return SITE_LOCATIONS[self.capture_record.station]["BBL_location_id"]
+        return STATION_LOCATIONS[self.capture_record.station]["BBL_location_id"]
 
     def get_notes(self):
         return self.capture_record.note or ""

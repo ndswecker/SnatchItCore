@@ -279,12 +279,6 @@ class CaptureRecord(BaseModel):
         blank=True,
     )
 
-    location = models.CharField(
-        max_length=4,
-        choices=STATION_CHOICES,
-        default="MORS",
-    )
-
     discrepancies = models.TextField(null=True, blank=True)
     # We will default to true. Since the validattion is done in the form
     # we will assume that the data is valid unless the user clicks on the
