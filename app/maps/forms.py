@@ -188,6 +188,7 @@ class CaptureRecordForm(forms.ModelForm):
         hour = int(self.cleaned_data.get('capture_time_hour'))
         minute = int(self.cleaned_data.get('capture_time_minute'))
         today = timezone.localtime(timezone.now()).date()
+        # today = datetime.datetime.utcnow().date()
         capture_datetime = datetime.datetime(year=today.year, month=today.month, day=today.day, hour=hour, minute=minute)
 
         # make sure the capture_datetime is timezone-aware
