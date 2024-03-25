@@ -424,6 +424,24 @@ def validate_net_to_station(form_data: dict):
                 "net": f"The net {net} is not at the station {station}.",
             },
         )
+    
+def validate_band_number_to_size(form_data: dict):
+    # Ensure that the 4th digit of the band number matches the first character of the band size
+    band_number = form_data.get("band_number")
+    band_size = form_data.get("band_size")
+
+    if band_number is None or band_size in ["R", "U"]:
+        return
+
+    # Convert band_number to string and access the 4th digit (3rd index)
+    appropriate_size_band = str(band_number)[3]
+    if appropriate_size_band != band_size[0]:
+        raise ValidationError(
+            {
+                "band_size": f"The band number {band_number} does not match the band size {band_size}.",
+            },
+        )
+
 
 
 class CaptureRecordFormValidator(FormValidator):
@@ -456,4 +474,5 @@ class CaptureRecordFormValidator(FormValidator):
             validate_unbanded_has_no_band_number,
             validate_recapture_and_new_has_band_number,
             validate_net_to_station,
+            validate_band_number_to_size,
         ]
