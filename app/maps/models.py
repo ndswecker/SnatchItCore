@@ -245,10 +245,12 @@ class CaptureRecord(BaseModel):
         default=timezone.now,
     )
 
-    release_time = models.DateTimeField(
-        # auto_now_add=True,
+    hold_time = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
         null=True,
         blank=True,
+        help_text="Time in minutes between capture and release.",
     )
 
     station = models.CharField(
