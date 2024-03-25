@@ -17,16 +17,6 @@ from maps.validators import CaptureRecordFormValidator
 
 
 class CaptureRecordForm(forms.ModelForm):
-    # capture_year = forms.ChoiceField(
-    #     choices=[('', 'Select year...')] + [(str(i), i) for i in range(2024, 2027)],
-    #     required=True,
-    #     initial=str(timezone.now().year),
-    # )
-
-    # capture_day = forms.ChoiceField(
-    #     choices=[('', 'Select day...')] + [(str(i), f'{i:02d}') for i in range(1, 32)],
-    #     required=True,
-    # )
 
     capture_year_day = forms.DateField(
         label="Date",
@@ -48,6 +38,8 @@ class CaptureRecordForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.start_time = timezone.now()
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -148,11 +140,15 @@ class CaptureRecordForm(forms.ModelForm):
                 "",
                 Row(
                     Column("capture_year_day", css_class='col-6'),
-                    Column("capture_time_hour", css_class="col-3"),
-                    Column("capture_time_minute", css_class="col-3"),
+                    Column(
+                        Row(Column("capture_time_hour", css_class="col-12")),
+                        Row(Column("capture_time_minute", css_class="col-12")),
+                        css_class="col-6"
+                    ),
                 ),
                 css_class="fieldset-padding bg-custom-gray",
             ),
+
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
@@ -191,7 +187,14 @@ class CaptureRecordForm(forms.ModelForm):
     class Meta:
         model = CaptureRecord
         fields = "__all__"
-        exclude = ["user", "bander_initials", "alpha_code", "discrepancies", "capture_time", "release_time"]
+        exclude = [
+            "user",
+            "bander_initials",
+            "alpha_code",
+            "discrepancies",
+            "capture_time",
+            "hold_time",
+        ]
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
     def _clean_alpha_code(self):
@@ -217,6 +220,12 @@ class CaptureRecordForm(forms.ModelForm):
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
         self.instance.release_time = timezone.now()
+
+        submission_time = timezone.now()
+
+        # Calculate the time difference between the capture time and the submission time
+        time_held = submission_time - self.start_time
+        self.instance.hold_time = time_held.total_seconds() / 60
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
