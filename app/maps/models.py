@@ -250,7 +250,7 @@ class CaptureRecord(BaseModel):
         decimal_places=2,
         null=True,
         blank=True,
-        help_text="Time in minutes between capture and release.",
+        help_text="Time held in hand.",
     )
 
     station = models.CharField(
