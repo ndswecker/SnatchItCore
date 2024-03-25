@@ -217,7 +217,6 @@ class CaptureRecordForm(forms.ModelForm):
         minute = int(self.cleaned_data.get('capture_time_minute'))
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
-        self.instance.release_time = timezone.now()
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
