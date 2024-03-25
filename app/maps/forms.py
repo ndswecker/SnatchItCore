@@ -4,7 +4,6 @@ from crispy_forms.layout import Fieldset
 from crispy_forms.layout import Layout
 from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
-from crispy_forms.layout import Field
 from django import forms
 from django.utils import timezone
 from django_select2 import forms as s2forms
