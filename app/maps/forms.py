@@ -39,8 +39,6 @@ class CaptureRecordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.start_time = timezone.now()
-
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
         self.helper.form_method = "post"
@@ -220,12 +218,6 @@ class CaptureRecordForm(forms.ModelForm):
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
         self.instance.release_time = timezone.now()
-
-        submission_time = timezone.now()
-
-        # Calculate the time difference between the capture time and the submission time
-        time_held = submission_time - self.start_time
-        self.instance.hold_time = time_held.total_seconds() / 60
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
