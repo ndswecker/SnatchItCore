@@ -122,7 +122,7 @@ class IBPSerializer:
 
     def get_location(self):
         # Need to ensure that we have the correct location codes
-        return self.capture_record.location
+        return self.capture_record.station
 
     def get_band_size(self):
         return self.capture_record.band_size
@@ -229,7 +229,7 @@ class IBPSerializer:
         return self.capture_record.capture_time.strftime("%m/%d/%Y")
 
     def get_time(self):
-        return self.capture_record.capture_time.strftime("%H:%M")
+        return self.capture_record.capture_time.strftime("%H%M")
 
     def get_station(self):
         return self.capture_record.station
