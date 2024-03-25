@@ -3,6 +3,7 @@ import datetime
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from common.models import BaseModel
 from maps.choice_definitions import *  # noqa F403
@@ -240,8 +241,16 @@ class CaptureRecord(BaseModel):
         default=300,
     )
 
-    date_time = models.DateTimeField(
-        default=rounded_down_datetime,
+    capture_time = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    hold_time = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Minutes held in hand.",
     )
 
     station = models.CharField(
@@ -291,4 +300,4 @@ class CaptureRecord(BaseModel):
 
     def __str__(self):
         common_name = SPECIES[self.species_number]["common_name"]
-        return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
+        return f"{common_name} - {self.band_number} - {self.capture_time.strftime('%Y-%m-%d %H:%M')}"

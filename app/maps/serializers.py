@@ -35,7 +35,7 @@ class USGSSerializer:
         return "Mist net"
 
     def get_capture_time(self):
-        return self.capture_record.date_time.strftime("%H:%M")
+        return self.capture_record.capture_time.strftime("%H:%M")
 
     def get_banded_leg(self):
         return "L"
@@ -58,9 +58,9 @@ class USGSSerializer:
             "Band Number": self.capture_record.band_number,
             "Species": self.get_species(),
             "Disposition": self.get_condition_code(),
-            "Banding Year": self.capture_record.date_time.year,
-            "Banding Month": self.capture_record.date_time.month,
-            "Banding Day": self.capture_record.date_time.day,
+            "Banding Year": self.capture_record.capture_time.year,
+            "Banding Month": self.capture_record.capture_time.month,
+            "Banding Day": self.capture_record.capture_time.day,
             "Age": self.capture_record.age_annual,
             "How Aged": self.get_how_aged(),
             "Sex": self.get_sex(),
@@ -226,10 +226,10 @@ class IBPSerializer:
         return self.capture_record.status
 
     def get_date(self):
-        return self.capture_record.date_time.strftime("%m/%d/%Y")
+        return self.capture_record.capture_time.strftime("%m/%d/%Y")
 
     def get_time(self):
-        return self.capture_record.date_time.strftime("%H:%M")
+        return self.capture_record.capture_time.strftime("%H:%M")
 
     def get_station(self):
         return self.capture_record.station

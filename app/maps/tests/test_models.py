@@ -23,7 +23,7 @@ class TestModels(TestCase):
             age_annual=1,
             age_WRP='MFCF',
             status=300,
-            date_time= datetime.datetime.now(),
+            capture_time= datetime.datetime.now(),
             station='MORS',
             band_size='1B',
             location='MORS',
