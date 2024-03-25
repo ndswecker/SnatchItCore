@@ -3,6 +3,7 @@ import datetime
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from common.models import BaseModel
 from maps.choice_definitions import *  # noqa F403
@@ -241,7 +242,11 @@ class CaptureRecord(BaseModel):
     )
 
     date_time = models.DateTimeField(
-        default=rounded_down_datetime,
+        default=timezone.now,
+    )
+
+    release_time = models.DateTimeField(
+        auto_now_add=True,
     )
 
     station = models.CharField(
