@@ -17,14 +17,14 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         "is_validated",
         "bander_initials",
         "species_number",
-        "date_time",
+        "capture_time",
     )
     list_filter = (
         "is_validated",
         "capture_code",
         "bander_initials",
         "species_number",
-        "date_time",
+        "capture_time",
     )
     actions = [
         "export_csv_usgs",

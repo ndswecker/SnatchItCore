@@ -167,7 +167,7 @@ class CaptureRecordForm(forms.ModelForm):
     class Meta:
         model = CaptureRecord
         fields = "__all__"
-        exclude = ["user", "bander_initials", "alpha_code", "discrepancies", "date_time", "release_time"]
+        exclude = ["user", "bander_initials", "alpha_code", "discrepancies", "capture_time", "release_time"]
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
     def _clean_alpha_code(self):
@@ -193,8 +193,8 @@ class CaptureRecordForm(forms.ModelForm):
         # make sure the capture_datetime is timezone-aware
         tz_aware_capture_datetime = timezone.make_aware(capture_datetime, timezone.get_current_timezone())
 
-        # set it to the model's date_time field
-        self.instance.date_time = tz_aware_capture_datetime
+        # set it to the model's capture_time field
+        self.instance.capture_time = tz_aware_capture_datetime
         self.instance.release_time = timezone.now()
 
     def clean(self) -> dict:

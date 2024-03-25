@@ -241,7 +241,7 @@ class CaptureRecord(BaseModel):
         default=300,
     )
 
-    date_time = models.DateTimeField(
+    capture_time = models.DateTimeField(
         default=timezone.now,
     )
 
@@ -298,4 +298,4 @@ class CaptureRecord(BaseModel):
 
     def __str__(self):
         common_name = SPECIES[self.species_number]["common_name"]
-        return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
+        return f"{common_name} - {self.band_number} - {self.capture_time.strftime('%Y-%m-%d %H:%M')}"
