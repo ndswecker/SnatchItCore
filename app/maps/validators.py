@@ -3,6 +3,7 @@ from django.core.validators import ValidationError
 from common.validators import FormValidator
 from maps.maps_reference_data import SPECIES
 from maps.maps_reference_data import WRP_GROUPS
+from maps.maps_reference_data import STATION_LOCATIONS
 
 
 def validate_how_aged_by_plumage(form_data: dict):
@@ -412,6 +413,17 @@ def validate_unbanded_has_no_band_number(form_data: dict):
                 "band_number": "Band number must be left blank for unbanded birds.",
             },
         )
+    
+def validate_net_to_station(form_data: dict):
+    net = int(form_data.get("net"))
+    station = form_data.get("station")
+    
+    if net not in STATION_LOCATIONS[station]["net_set"]:
+        raise ValidationError(
+            {
+                "net": f"The net {net} is not at the station {station}.",
+            },
+        )
 
 
 class CaptureRecordFormValidator(FormValidator):
@@ -443,4 +455,5 @@ class CaptureRecordFormValidator(FormValidator):
             validate_unbanded_has_no_band_size,
             validate_unbanded_has_no_band_number,
             validate_recapture_and_new_has_band_number,
+            validate_net_to_station,
         ]

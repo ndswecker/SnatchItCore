@@ -250,9 +250,13 @@ class CaptureRecord(BaseModel):
         default="MORS",
     )
 
-    net = models.CharField(
-        max_length=4,
-        default="15",
+    net = models.IntegerField(
+        validators=[
+            MinValueValidator(1, message="Net must be at least 1."),
+            MaxValueValidator(21, message="Net must be less than 22."),
+        ],
+        null=False,
+        blank=False,
     )
 
     disposition = models.CharField(
