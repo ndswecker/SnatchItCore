@@ -18,8 +18,14 @@ import datetime
 
 
 class CaptureRecordForm(forms.ModelForm):
-    capture_time_hour = forms.ChoiceField(choices=[(str(i), f'{i:02d}') for i in range(24)])
-    capture_time_minute = forms.ChoiceField(choices=[(str(i), f'{i:02d}') for i in range(0, 60, 10)])
+    capture_time_hour = forms.ChoiceField(
+        choices=[('', 'Select hour...')] + [(str(i), f'{i:02d}') for i in range(24)],
+        required=True,
+    )
+    capture_time_minute = forms.ChoiceField(
+        choices=[('', 'Select minute...')] + [(str(i), f'{i:02d}') for i in range(0, 60, 10)],
+        required=True,
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
