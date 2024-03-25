@@ -167,6 +167,10 @@ class IBPSerializer:
         sexed_1 = self.capture_record.how_sexed_1 if self.capture_record.how_sexed_1 else ""
         sexed_2 = self.capture_record.how_sexed_2 if self.capture_record.how_sexed_2 else ""
         return sexed_1 + sexed_2
+    
+    def get_cloacal_direction(self):
+        direction = self.capture_record.cloacal_direction
+        return "Cloacal Direction: " + direction if direction else ""
 
     def get_skull(self):
         return self.capture_record.skull
@@ -252,9 +256,12 @@ class IBPSerializer:
 
     def get_notes(self):
         alula = self.get_alula()
+        cloacal_direction = self.get_cloacal_direction()
         notes = self.capture_record.note if self.capture_record.note else ""
         if alula:
             notes += ". " + alula if notes else alula
+        if cloacal_direction:
+            notes += ". " + cloacal_direction if notes else cloacal_direction
         
         return notes
 

@@ -68,7 +68,10 @@ class CaptureRecordForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                "sex",
+                Row(
+                    Column("sex", css_class="col-6"),
+                    Column("cloacal_direction", css_class="col-6"),
+                ),
                 Row(
                     Column("how_sexed_1", css_class="col-6"),
                     Column("how_sexed_2", css_class="col-6"),
