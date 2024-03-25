@@ -5,11 +5,17 @@ STATION_LOCATIONS = {
         "name": "Morse Preserve MAPS",
         "code": "MORS",
         "BBL_location_id": 223665,
+        "net_set": [
+            15, 2, 3, 14, 5, 6, 10, 9, 8, 7, 20, 21
+        ],
     },
     "GHPR": {
         "name": "Glacial Heritage Preserve MAPS",
         "code": "GHPR",
         "BBL_location_id": 0,
+        "net_set": [
+            1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16
+        ],
     },
 }
 
