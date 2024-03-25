@@ -11,6 +11,10 @@ class USGSSerializer:
 
     def get_condition_code(self):
         return DISPOSTIONS[self.capture_record.capture_code]["usgs"]["code"]
+    
+    def get_month(self):
+        # format the month to always be 2 digits
+        return f"{self.capture_record.capture_time.month:02d}"
 
     def get_how_aged(self):
         if not self.capture_record.how_aged_1:
@@ -59,7 +63,7 @@ class USGSSerializer:
             "Species": self.get_species(),
             "Disposition": self.get_condition_code(),
             "Banding Year": self.capture_record.capture_time.year,
-            "Banding Month": self.capture_record.capture_time.month,
+            "Banding Month": self.get_month(),
             "Banding Day": self.capture_record.capture_time.day,
             "Age": self.capture_record.age_annual,
             "How Aged": self.get_how_aged(),
