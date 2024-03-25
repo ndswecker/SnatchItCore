@@ -4,6 +4,7 @@ from crispy_forms.layout import Fieldset
 from crispy_forms.layout import Layout
 from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
+from crispy_forms.layout import Field
 from django import forms
 from django.utils import timezone
 from django_select2 import forms as s2forms
@@ -14,15 +15,33 @@ from maps.maps_reference_data import SPECIES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator
 
-import datetime
-
 
 class CaptureRecordForm(forms.ModelForm):
+    # capture_year = forms.ChoiceField(
+    #     choices=[('', 'Select year...')] + [(str(i), i) for i in range(2024, 2027)],
+    #     required=True,
+    #     initial=str(timezone.now().year),
+    # )
+
+    # capture_day = forms.ChoiceField(
+    #     choices=[('', 'Select day...')] + [(str(i), f'{i:02d}') for i in range(1, 32)],
+    #     required=True,
+    # )
+
+    capture_year_day = forms.DateField(
+        label="Date",
+        widget=forms.SelectDateWidget(years=range(2024, 2027)),
+        initial=timezone.now().date(),
+    )
+
     capture_time_hour = forms.ChoiceField(
-        choices=[('', 'Select hour...')] + [(str(i), f'{i:02d}') for i in range(24)],
+        label="Hr",
+        choices=[('', 'Select hour...')] + [(str(i), f'{i:02d}') for i in range(0, 24)],
         required=True,
     )
+
     capture_time_minute = forms.ChoiceField(
+        label="Min",
         choices=[('', 'Select minute...')] + [(str(i), f'{i:02d}') for i in range(0, 60, 10)],
         required=True,
     )
@@ -119,15 +138,20 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("station", css_class="col-8"),
                 ),
                 Row(
-                    Column("disposition", css_class="col-6"),
-                    Column("status", css_class="col-6"),
-                ),
-                Row(
+                    Column("disposition", css_class="col-4"),
+                    Column("status", css_class="col-4"),
                     Column("scribe", css_class="col-4"),
-                    Column("capture_time_hour", css_class="col-4"),
-                    Column("capture_time_minute", css_class="col-4"),
                 ),
                 css_class="fieldset-padding bg-light",
+            ),
+            Fieldset(
+                "",
+                Row(
+                    Column("capture_year_day", css_class='col-6'),
+                    Column("capture_time_hour", css_class="col-3"),
+                    Column("capture_time_minute", css_class="col-3"),
+                ),
+                css_class="fieldset-padding bg-custom-gray",
             ),
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
@@ -185,17 +209,13 @@ class CaptureRecordForm(forms.ModelForm):
             self.instance.how_sexed_2 = None
     
     def _clean_capture_time(self):
+        year = int(self.cleaned_data.get('capture_year_day').year)
+        month = int(self.cleaned_data.get('capture_year_day').month)
+        day = int(self.cleaned_data.get('capture_year_day').day)
         hour = int(self.cleaned_data.get('capture_time_hour'))
         minute = int(self.cleaned_data.get('capture_time_minute'))
-        today = timezone.localtime(timezone.now()).date()
-        # today = datetime.datetime.utcnow().date()
-        capture_datetime = datetime.datetime(year=today.year, month=today.month, day=today.day, hour=hour, minute=minute)
 
-        # make sure the capture_datetime is timezone-aware
-        tz_aware_capture_datetime = timezone.make_aware(capture_datetime, timezone.get_current_timezone())
-
-        # set it to the model's capture_time field
-        self.instance.capture_time = tz_aware_capture_datetime
+        self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
         self.instance.release_time = timezone.now()
 
     def clean(self) -> dict:
