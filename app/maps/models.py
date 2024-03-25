@@ -246,7 +246,9 @@ class CaptureRecord(BaseModel):
     )
 
     release_time = models.DateTimeField(
-        auto_now_add=True,
+        # auto_now_add=True,
+        null=True,
+        blank=True,
     )
 
     station = models.CharField(
