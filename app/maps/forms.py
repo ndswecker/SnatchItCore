@@ -16,17 +16,16 @@ from maps.validators import CaptureRecordFormValidator
 
 
 class CaptureRecordForm(forms.ModelForm):
-
-    capture_year_day = forms.DateField(
-        label="Date",
-        widget=forms.SelectDateWidget(years=range(2024, 2027)),
-        initial=timezone.now().date(),
-    )
-
     capture_time_hour = forms.ChoiceField(
         label="Hr",
         choices=[('', 'Select hour...')] + [(str(i), f'{i:02d}') for i in range(0, 24)],
         required=True,
+    )
+
+    capture_year_day = forms.DateField(
+        label="Date",
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        initial=timezone.now().date(),
     )
 
     capture_time_minute = forms.ChoiceField(
@@ -139,12 +138,9 @@ class CaptureRecordForm(forms.ModelForm):
             Fieldset(
                 "",
                 Row(
-                    Column("capture_year_day", css_class='col-6'),
-                    Column(
-                        Row(Column("capture_time_hour", css_class="col-12")),
-                        Row(Column("capture_time_minute", css_class="col-12")),
-                        css_class="col-6"
-                    ),
+                    Column("capture_year_day", css_class="col-4"),
+                    Column("capture_time_hour", css_class="col-4"),
+                    Column("capture_time_minute", css_class="col-4"),
                 ),
                 css_class="fieldset-padding bg-custom-gray",
             ),
@@ -205,8 +201,9 @@ class CaptureRecordForm(forms.ModelForm):
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
     def _clean_alpha_code(self):
-        if self.instance.species_number:
-            self.instance.alpha_code = SPECIES[self.instance.species_number]["alpha_code"]
+        species_number = int(self.cleaned_data.get("species_number"))
+        alpha_code = SPECIES[species_number]["alpha_code"]
+        self.instance.alpha_code = alpha_code
 
     def _clean_how_aged_order(self):
         if self.instance.how_aged_2 and not self.instance.how_aged_1:
@@ -217,7 +214,7 @@ class CaptureRecordForm(forms.ModelForm):
         if self.instance.how_sexed_2 and not self.instance.how_sexed_1:
             self.instance.how_sexed_1 = self.instance.how_sexed_2
             self.instance.how_sexed_2 = None
-    
+
     def _clean_capture_time(self):
         year = int(self.cleaned_data.get('capture_year_day').year)
         month = int(self.cleaned_data.get('capture_year_day').month)
