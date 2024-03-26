@@ -6,7 +6,6 @@ from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
 from django import forms
 from django.utils import timezone
-from django_select2 import forms as s2forms
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
 from maps.choice_definitions import SPECIES_CHOICES
@@ -158,22 +157,12 @@ class CaptureRecordForm(forms.ModelForm):
 
     capture_code = forms.ChoiceField(
         choices=CAPTURE_CODE_CHOICES,
-        widget=s2forms.Select2Widget(
-            attrs={
-                "class": "form-control select form-select",
-                "data-theme": "bootstrap-5",
-            },
-        ),
+        required=True,
     )
 
     species_number = forms.ChoiceField(
         choices=SPECIES_CHOICES,
-        widget=s2forms.Select2Widget(
-            attrs={
-                "class": "form-control select form-select",
-                "data-theme": "bootstrap-5",
-            },
-        ),
+        required=True,
     )
 
     is_validated = forms.BooleanField(
