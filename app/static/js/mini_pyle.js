@@ -68,4 +68,14 @@ $(document).ready(function() {
             removeItemButton: true,
         });
     }
+
+    // Initialize Choices.js for the capture_code field.
+    var captureCodeSelect = document.getElementById('id_capture_code');
+    if (captureCodeSelect) {
+        var choices = new Choices(captureCodeSelect, {
+            searchEnabled: true,
+            itemSelectText: '',
+            removeItemButton: true,
+        });
+    }
 });
