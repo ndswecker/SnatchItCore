@@ -99,6 +99,12 @@ class CaptureRecord(BaseModel):
         blank=True,
         choices=HOW_AGED_SEXED_CHOICES,
     )
+    cloacal_direction = models.CharField(
+        max_length=1,
+        choices=SEX_CHOICES,
+        null=True,
+        blank=True,
+    )
 
     skull = models.IntegerField(
         choices=SKULL_CHOICES,

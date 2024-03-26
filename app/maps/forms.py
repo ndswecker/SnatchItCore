@@ -4,7 +4,6 @@ from crispy_forms.layout import Fieldset
 from crispy_forms.layout import Layout
 from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
-from crispy_forms.layout import Field
 from django import forms
 from django.utils import timezone
 from django_select2 import forms as s2forms
@@ -68,7 +67,10 @@ class CaptureRecordForm(forms.ModelForm):
             ),
             Fieldset(
                 "",
-                "sex",
+                Row(
+                    Column("sex", css_class="col-6"),
+                    Column("cloacal_direction", css_class="col-6"),
+                ),
                 Row(
                     Column("how_sexed_1", css_class="col-6"),
                     Column("how_sexed_2", css_class="col-6"),
@@ -141,6 +143,13 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("capture_time_minute", css_class="col-4"),
                 ),
                 css_class="fieldset-padding bg-custom-gray",
+            ),
+            Fieldset(
+                "",
+                Row(
+                    Column("note", css_class="col-12"),
+                ),
+                css_class="fieldset-padding bg-light",
             ),
 
             "is_validated",
