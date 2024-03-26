@@ -201,8 +201,9 @@ class CaptureRecordForm(forms.ModelForm):
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
     def _clean_alpha_code(self):
-        if self.instance.species_number:
-            self.instance.alpha_code = SPECIES[self.instance.species_number]["alpha_code"]
+        species_number = int(self.cleaned_data.get("species_number"))
+        alpha_code = SPECIES[species_number]["alpha_code"]
+        self.instance.alpha_code = alpha_code
 
     def _clean_how_aged_order(self):
         if self.instance.how_aged_2 and not self.instance.how_aged_1:
