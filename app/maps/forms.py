@@ -6,7 +6,6 @@ from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
 from django import forms
 from django.utils import timezone
-from django_select2 import forms as s2forms
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
 from maps.choice_definitions import SPECIES_CHOICES
@@ -32,6 +31,28 @@ class CaptureRecordForm(forms.ModelForm):
         label="Min",
         choices=[('', 'Select minute...')] + [(str(i), f'{i:02d}') for i in range(0, 60, 10)],
         required=True,
+    )
+
+    capture_code = forms.ChoiceField(
+        choices=CAPTURE_CODE_CHOICES,
+        required=True,
+    )
+
+    species_number = forms.ChoiceField(
+        label="Species",
+        choices=SPECIES_CHOICES,
+        required=True,
+    )
+
+    is_validated = forms.BooleanField(
+        required=False,
+        label="Override Validation",
+        initial=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+            },
+        ),
     )
 
     def __init__(self, *args, **kwargs):
@@ -155,37 +176,6 @@ class CaptureRecordForm(forms.ModelForm):
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
-
-    capture_code = forms.ChoiceField(
-        choices=CAPTURE_CODE_CHOICES,
-        widget=s2forms.Select2Widget(
-            attrs={
-                "class": "form-control select form-select",
-                "data-theme": "bootstrap-5",
-            },
-        ),
-    )
-
-    species_number = forms.ChoiceField(
-        choices=SPECIES_CHOICES,
-        widget=s2forms.Select2Widget(
-            attrs={
-                "class": "form-control select form-select",
-                "data-theme": "bootstrap-5",
-            },
-        ),
-    )
-
-    is_validated = forms.BooleanField(
-        required=False,
-        label="Override Validation",
-        initial=False,
-        widget=forms.CheckboxInput(
-            attrs={
-                "class": "form-check-input",
-            },
-        ),
-    )
 
     class Meta:
         model = CaptureRecord
