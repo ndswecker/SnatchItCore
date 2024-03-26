@@ -148,6 +148,13 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 css_class="fieldset-padding bg-custom-gray",
             ),
+            Fieldset(
+                "",
+                Row(
+                    Column("note", css_class="col-12"),
+                ),
+                css_class="fieldset-padding bg-light",
+            ),
 
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
