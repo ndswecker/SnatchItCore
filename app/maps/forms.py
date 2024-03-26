@@ -32,6 +32,27 @@ class CaptureRecordForm(forms.ModelForm):
         choices=[('', 'Select minute...')] + [(str(i), f'{i:02d}') for i in range(0, 60, 10)],
         required=True,
     )
+    
+    capture_code = forms.ChoiceField(
+        choices=CAPTURE_CODE_CHOICES,
+        required=True,
+    )
+
+    species_number = forms.ChoiceField(
+        choices=SPECIES_CHOICES,
+        required=True,
+    )
+
+    is_validated = forms.BooleanField(
+        required=False,
+        label="Override Validation",
+        initial=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+            },
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -154,27 +175,6 @@ class CaptureRecordForm(forms.ModelForm):
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
-
-    capture_code = forms.ChoiceField(
-        choices=CAPTURE_CODE_CHOICES,
-        required=True,
-    )
-
-    species_number = forms.ChoiceField(
-        choices=SPECIES_CHOICES,
-        required=True,
-    )
-
-    is_validated = forms.BooleanField(
-        required=False,
-        label="Override Validation",
-        initial=False,
-        widget=forms.CheckboxInput(
-            attrs={
-                "class": "form-check-input",
-            },
-        ),
-    )
 
     class Meta:
         model = CaptureRecord
