@@ -3,9 +3,7 @@
 {% load static %}
 
 {% block extra_css %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -39,16 +37,10 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-    <script>
-      $(document).ready(function() {
-          $('.django-select2').select2({
-            width: "100%",
-          });
-      });
-    </script>
     <script src="{% static 'js/mini_pyle.js' %}"></script>
     <script src="{% static 'js/capture_code.js' %}"></script>
 {% endblock %}
