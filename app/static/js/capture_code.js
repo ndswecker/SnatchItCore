@@ -1,9 +1,9 @@
 $(document).ready(function() {
     $('#id_capture_code').on('change', function() {
-        var captureCode = $(this).val();
-        var bandSizeSelect = $('#id_band_size');
-        var bandNumberInput = $('#id_band_number');
-        var statusSelect = $('#id_status'); 
+        let captureCode = $(this).val();
+        let bandSizeSelect = $('#id_band_size');
+        let bandNumberInput = $('#id_band_number');
+        let statusSelect = $('#id_status'); 
 
         if (captureCode === 'R') {
             bandSizeSelect.val('R').trigger('change')
