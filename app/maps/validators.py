@@ -414,6 +414,17 @@ def validate_unbanded_has_no_band_number(form_data: dict):
             },
         )
     
+def validate_unbanded_status(form_data: dict):
+    if form_data.get("capture_code") != "U":
+        return
+
+    if int(form_data.get("status")) != 0:
+        raise ValidationError(
+            {
+                "status": "Status must be 000 for unbanded birds.",
+            },
+        )
+    
 def validate_net_to_station(form_data: dict):
     net = int(form_data.get("net"))
     station = form_data.get("station")
@@ -442,6 +453,76 @@ def validate_band_number_to_size(form_data: dict):
             },
         )
 
+def validate_status_to_dispostion_for_injury(form_data: dict):
+    status = int(form_data.get("status"))
+    if status != 500:
+        return
+
+    disposition = form_data.get("disposition")
+    injury_codes = ["B", "E", "F", "I", "L", "P", "S", "T", "W"]
+    
+
+    if disposition not in injury_codes:
+        raise ValidationError(
+            {
+                "disposition": f"The disposition {disposition} is not a valid injury code for a bird with status {status}.",
+            },
+        )
+    
+def validate_disposition_to_status_for_injury(form_data: dict):
+    disposition = form_data.get("disposition")
+    status = int(form_data.get("status", 0))  # Default to 0 if status not provided
+    injury_codes = ["B", "E", "F", "I", "L", "P", "S", "T", "W"]
+
+    # If the disposition indicates an injury, ensure status is 500
+    if disposition in injury_codes and status != 500:
+        raise ValidationError(
+            {
+                "status": f"With disposition {disposition}, the status must be 500 to indicate injury.",
+            },
+        )
+    
+def validate_injury_has_note(form_data: dict):
+    status = int(form_data.get("status"))
+    if status != 500:
+        return
+
+    note = form_data.get("note")
+    
+    if not note:
+        raise ValidationError(
+            {
+                "note": "A note must be provided for injured birds.",
+            },
+        )
+
+def validate_death_to_status(form_data: dict):
+    disposition = form_data.get("disposition")
+    if disposition != "D":
+        return
+    
+    status = int(form_data.get("status"))
+
+    if status != 0:
+        raise ValidationError(
+            {
+                "disposition": "Dead birds must have a status of 000"
+            }
+        )
+
+def validate_death_has_note(form_data: dict):
+    disposition = form_data.get("disposition")
+    if disposition != "D":
+        return
+    
+    note = form_data.get("note")
+
+    if not note:
+        raise ValidationError(
+            {
+                "note": "Dead birds must have a note"
+            }
+        )
 
 
 class CaptureRecordFormValidator(FormValidator):
@@ -472,7 +553,13 @@ class CaptureRecordFormValidator(FormValidator):
             validate_recapture_has_no_band_size,
             validate_unbanded_has_no_band_size,
             validate_unbanded_has_no_band_number,
+            validate_unbanded_status,
             validate_recapture_and_new_has_band_number,
             validate_net_to_station,
             validate_band_number_to_size,
+            validate_status_to_dispostion_for_injury,
+            validate_disposition_to_status_for_injury,
+            validate_injury_has_note,
+            validate_death_to_status,
+            validate_death_has_note,
         ]
