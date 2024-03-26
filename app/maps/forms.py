@@ -32,13 +32,14 @@ class CaptureRecordForm(forms.ModelForm):
         choices=[('', 'Select minute...')] + [(str(i), f'{i:02d}') for i in range(0, 60, 10)],
         required=True,
     )
-    
+
     capture_code = forms.ChoiceField(
         choices=CAPTURE_CODE_CHOICES,
         required=True,
     )
 
     species_number = forms.ChoiceField(
+        label="Species",
         choices=SPECIES_CHOICES,
         required=True,
     )
