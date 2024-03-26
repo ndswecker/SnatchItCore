@@ -54,4 +54,11 @@ $(document).ready(function() {
         $popover.popover('dispose'); // Dispose of the current popover
         $popover = initializePopover(); // Reinitialize the popover
     });
+
+    // Focus on search input when Select2 dropdown is opened
+    $('#id_species_number').select2().on('select2:open', function() {
+        setTimeout(function() {
+            $('.select2-search__field').first().focus();
+        }, 50);
+    });
 });
