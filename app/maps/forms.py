@@ -56,7 +56,17 @@ class CaptureRecordForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        # Extract the instance from kwargs if it's there
+        instance = kwargs.get('instance', None)
+
+        super(CaptureRecordForm, self).__init__(*args, **kwargs)
+
+        # Check if there's an instance to work with (i.e., we are editing an existing record)
+        if instance and instance.capture_time:
+            # Set the initial values for hour and minute fields based on the instance's capture_time
+            self.fields['capture_time_hour'].initial = instance.capture_time.hour
+            self.fields['capture_time_minute'].initial = instance.capture_time.strftime('%M')
+
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
