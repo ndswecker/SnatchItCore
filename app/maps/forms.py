@@ -72,7 +72,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("band_size", css_class="col-6"),
                     Column("band_number", css_class="col-6"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -84,7 +84,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_aged_1", css_class="col-6"),
                     Column("how_aged_2", css_class="col-6"),
                 ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
@@ -96,7 +96,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_sexed_1", css_class="col-6"),
                     Column("how_sexed_2", css_class="col-6"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -118,7 +118,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column("juv_body_plumage", css_class="col-12"),
                 ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
@@ -137,7 +137,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("body_plumage", css_class="col-4"),
                     Column("non_feather", css_class="col-4"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -146,31 +146,31 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("body_mass", css_class="col-6"),
                 ),
                 Row(
-                    Column("net", css_class="col-4"),
-                    Column("station", css_class="col-8"),
+                    Column("status", css_class="col-6"),
+                    Column("disposition", css_class="col-6"),
                 ),
-                Row(
-                    Column("disposition", css_class="col-4"),
-                    Column("status", css_class="col-4"),
-                    Column("scribe", css_class="col-4"),
-                ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
+                Row(
+                    Column("net", css_class="col-4"),
+                    Column("station", css_class="col-4"),
+                    Column("scribe", css_class="col-4"),
+                ),
                 Row(
                     Column("capture_year_day", css_class="col-4"),
                     Column("capture_time_hour", css_class="col-4"),
                     Column("capture_time_minute", css_class="col-4"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
                 Row(
                     Column("note", css_class="col-12"),
                 ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
 
             "is_validated",
