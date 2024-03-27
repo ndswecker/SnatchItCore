@@ -1,7 +1,11 @@
-.fieldset-padding {
-    padding: 5px;
-}
+
 
 .bg-custom-gray {
     background-color: #e0e0e0; /* Adjust the hex color as needed */
+}
+
+.fieldset-container {
+    padding: 5px;
+    border: 1px solid #bdbdbd; /* Adjust the hex color as needed */
+    border-radius: 5px;
 }

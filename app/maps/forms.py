@@ -72,7 +72,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("band_size", css_class="col-6"),
                     Column("band_number", css_class="col-6"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container bg-custom-gray",
             ),
             Fieldset(
                 "",
@@ -84,7 +84,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_aged_1", css_class="col-6"),
                     Column("how_aged_2", css_class="col-6"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container bg-light",
             ),
             Fieldset(
                 "",
@@ -96,7 +96,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_sexed_1", css_class="col-6"),
                     Column("how_sexed_2", css_class="col-6"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container bg-custom-gray",
             ),
             Fieldset(
                 "",
@@ -118,7 +118,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column("juv_body_plumage", css_class="col-12"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container bg-light",
             ),
             Fieldset(
                 "",
@@ -137,7 +137,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("body_plumage", css_class="col-4"),
                     Column("non_feather", css_class="col-4"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container bg-custom-gray",
             ),
             Fieldset(
                 "",
@@ -154,7 +154,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("status", css_class="col-4"),
                     Column("scribe", css_class="col-4"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container bg-light",
             ),
             Fieldset(
                 "",
@@ -163,14 +163,14 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("capture_time_hour", css_class="col-4"),
                     Column("capture_time_minute", css_class="col-4"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container bg-custom-gray",
             ),
             Fieldset(
                 "",
                 Row(
                     Column("note", css_class="col-12"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container bg-light",
             ),
 
             "is_validated",
