@@ -46,8 +46,8 @@ class CaptureRecordForm(forms.ModelForm):
 
     is_validated = forms.BooleanField(
         required=False,
-        label="Override Validation",
-        initial=False,
+        label="Validate this record?",
+        initial=True,
         widget=forms.CheckboxInput(
             attrs={
                 "class": "form-check-input",
@@ -62,11 +62,10 @@ class CaptureRecordForm(forms.ModelForm):
         super(CaptureRecordForm, self).__init__(*args, **kwargs)
 
         # Check if there's an instance to work with (i.e., we are editing an existing record)
-        if instance and instance.capture_time:
+        if instance:
             # Set the initial values for hour and minute fields based on the instance's capture_time
             self.fields['capture_time_hour'].initial = instance.capture_time.hour
             self.fields['capture_time_minute'].initial = instance.capture_time.strftime('%M')
-
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -224,15 +223,34 @@ class CaptureRecordForm(forms.ModelForm):
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
-    def clean(self) -> dict:
+    def clean(self):
         cleaned_data = super().clean()
+
+        # Run the initial clean methods
         self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
         self._clean_capture_time()
 
+        # Initialize the validator with the cleaned data
         validator = CaptureRecordFormValidator(cleaned_data=cleaned_data)
-        validator.validate(override_validation=cleaned_data["is_validated"])
-        cleaned_data["is_validated"] = not cleaned_data["is_validated"]
-        self.instance.discrepancies = validator.discrepancy_string
+
+        # Check if 'is_validated' is checked (True means validations are to be enforced)
+        if cleaned_data.get("is_validated", False):
+            # Run validations
+            validator.validate()
+            # If there are discrepancies, even though validations were enforced, add them to the instance
+            if validator.has_discrepancies():
+                self.instance.discrepancies = validator.discrepancy_string
+                # Optionally, if you want to force is_validated to False when there are discrepancies
+                # cleaned_data["is_validated"] = False
+        else:
+            # If 'is_validated' is unchecked, bypass validations but capture possible discrepancies
+            validator.validate(bypass=True)
+            # Capture discrepancies for admin to review
+            self.instance.discrepancies = validator.discrepancy_string
+            # Ensure 'is_validated' remains False since validations were bypassed
+            cleaned_data["is_validated"] = False
+
         return cleaned_data
+
