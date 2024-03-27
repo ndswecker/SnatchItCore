@@ -7,6 +7,7 @@ from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 from django.utils import timezone
 
 import maps.maps_reference_data as REFERENCE_DATA
@@ -92,3 +93,13 @@ class MiniPyleView(TemplateView):
         )
 
         return context
+
+class EditCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, UpdateView):
+    model = CaptureRecord
+    form_class = CaptureRecordForm
+    template_name = "maps/enter_bird.html"
+    success_url = reverse_lazy("maps:list_capture_records")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Capture record updated successfully.")
+        return super().form_valid(form)
