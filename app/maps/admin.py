@@ -20,6 +20,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         "capture_time",
     )
     list_filter = (
+        "station",
         "is_validated",
         "capture_code",
         "bander_initials",
