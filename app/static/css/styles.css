@@ -36,15 +36,3 @@
     display: flex;
     flex-direction: row;
 }
-  
-.flex-fill {
-    flex: 1; /* Ensures each column takes up equal space */
-    text-align: left; /* Aligns the text to the left in each column */
-    padding-left: 10px; /* Adds some padding to ensure the text does not stick to the edge */
-}
-
-/* You might want to align the 'Edit' link to the right to differentiate it from other columns */
-.edit-link {
-    text-align: right;
-    padding-right: 10px; /* Similar reasoning for adding some padding on the right */
-}
