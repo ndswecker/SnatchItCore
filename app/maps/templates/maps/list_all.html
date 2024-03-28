@@ -6,20 +6,32 @@
 {% block content %}
 <div class="container">
   <h1 class="text-center">View All Capture Records</h1>
-  <div class="list-group">
-    {% for record in capture_records %}
-    <div class="list-group-item {{ forloop.counter|divisibleby:2|yesno:'even-set,odd-set' }} d-flex justify-content-between align-items-center">
-      <div class="flex-fill">{{ record.capture_time|date:"m/d H:i" }}</div>
-      <div class="flex-fill">{{ record.band_number }}</div>
-      <div class="flex-fill">{{ SPECIES|get_alpha_code:record.species_number }}</div>
-      <div class="flex-fill">{{ record.bander_initials }}</div>
-      {% if record.user == request.user %}
-        <div class="flex-fill edit-link"><a href="{% url 'maps:edit_capture_record' pk=record.pk %}">Edit</a></div>
-      {% else %}
-        <div class="flex-fill"></div> <!-- Empty for alignment -->
-      {% endif %}
-    </div>
-    {% endfor %}
-  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Capture Time</th>
+        <th scope="col">Band Number</th>
+        <th scope="col">Species</th>
+        <th scope="col">Bander Initials</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in capture_records %}
+      <tr class="{{ forloop.counter|divisibleby:2|yesno:'table-secondary,' }}">
+        <td>{{ record.capture_time|date:"m/d H:i" }}</td>
+        <td>{{ record.band_number }}</td>
+        <td>{{ SPECIES|get_alpha_code:record.species_number }}</td>
+        <td>{{ record.bander_initials }}</td>
+        <td>
+          <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">View</a>
+          {% if record.user == request.user %}
+            | <a href="{% url 'maps:edit_capture_record' pk=record.pk %}">Edit</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
