@@ -66,6 +66,7 @@ $(document).ready(function() {
             searchEnabled: true,
             itemSelectText: '',
             removeItemButton: true,
+            shouldSort: false,
         });
     }
 
@@ -76,6 +77,9 @@ $(document).ready(function() {
             searchEnabled: true,
             itemSelectText: '',
             removeItemButton: true,
+            shouldSort: false,
         });
     }
+
+
 });
