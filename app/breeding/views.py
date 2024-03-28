@@ -29,7 +29,7 @@ class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
 
         table = {}
         absent_string = "--"
-        species_list = [s["alpha_code"] for s in SPECIES.values()]
+        species_list = [SPECIES[s]["alpha_code"] for s in sorted(SPECIES)]
         for species in species_list:
             table[species] = {i: absent_string for i in range(1, 11)}
         for status in Status.objects.filter(created_at__year=timezone.now().year, station=station):
