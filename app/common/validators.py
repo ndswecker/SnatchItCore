@@ -1,18 +1,16 @@
 from django.core.exceptions import ValidationError
 
-
 class FormValidator:
     def __init__(self, cleaned_data: dict):
         self.cleaned_data = cleaned_data
-        self.discrepancy_string = ""
-        self.validation_errors: list[str] = []
-        self.validators = []
+        self.validation_errors: list[str] = [] 
+        self.validators = [] 
 
-    def validate(self, override_validation: bool):
-        if override_validation:
-            return self._catch_validation_errors()
+    def validate(self, raise_errors: bool):
+        if raise_errors:
+            self._raise_validation_errors()
         else:
-            return self._raise_validation_errors()
+            self._catch_validation_errors()
 
     def _raise_validation_errors(self):
         for validator in self.validators:
@@ -24,4 +22,4 @@ class FormValidator:
                 validator(self.cleaned_data)
             except ValidationError as e:
                 self.validation_errors.append(e.messages[0])
-        self.discrepancy_string = "\n".join(err_str for err_str in self.validation_errors).strip("\n")
+            

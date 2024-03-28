@@ -526,8 +526,8 @@ def validate_death_has_note(form_data: dict):
 
 
 class CaptureRecordFormValidator(FormValidator):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, cleaned_data):
+        super().__init__(cleaned_data)
         self.validators = [
             validate_how_aged_by_plumage,
             validate_juv_aging_plumage_not_p,

@@ -888,7 +888,7 @@ SPECIES = {
         "scientific_name": "Spinus tristis",
         "alpha_code": "AMGO",
         "species_number": 5290,
-        "band_sizes": [],
+        "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (62, 76),
         "WRP_groups": [8],
         "sexing_criteria": {

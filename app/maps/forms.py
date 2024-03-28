@@ -46,8 +46,8 @@ class CaptureRecordForm(forms.ModelForm):
 
     is_validated = forms.BooleanField(
         required=False,
-        label="Override Validation",
-        initial=False,
+        label="Validate this record?",
+        initial=True,
         widget=forms.CheckboxInput(
             attrs={
                 "class": "form-check-input",
@@ -56,7 +56,17 @@ class CaptureRecordForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        # Extract the instance from kwargs if it's there
+        instance = kwargs.get('instance', None)
+
+        super(CaptureRecordForm, self).__init__(*args, **kwargs)
+
+        # Check if there's an instance to work with (i.e., we are editing an existing record)
+        if instance:
+            # Set the initial values for hour and minute fields based on the instance's capture_time
+            self.fields['capture_time_hour'].initial = instance.capture_time.hour
+            self.fields['capture_time_minute'].initial = instance.capture_time.strftime('%M')
+            instance.discrepancies = ''
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -72,7 +82,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("band_size", css_class="col-6"),
                     Column("band_number", css_class="col-6"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -84,7 +94,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_aged_1", css_class="col-6"),
                     Column("how_aged_2", css_class="col-6"),
                 ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
@@ -96,7 +106,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_sexed_1", css_class="col-6"),
                     Column("how_sexed_2", css_class="col-6"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -118,7 +128,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column("juv_body_plumage", css_class="col-12"),
                 ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
@@ -137,7 +147,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("body_plumage", css_class="col-4"),
                     Column("non_feather", css_class="col-4"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -146,31 +156,31 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("body_mass", css_class="col-6"),
                 ),
                 Row(
-                    Column("net", css_class="col-4"),
-                    Column("station", css_class="col-8"),
+                    Column("status", css_class="col-6"),
+                    Column("disposition", css_class="col-6"),
                 ),
-                Row(
-                    Column("disposition", css_class="col-4"),
-                    Column("status", css_class="col-4"),
-                    Column("scribe", css_class="col-4"),
-                ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
+                Row(
+                    Column("net", css_class="col-4"),
+                    Column("station", css_class="col-4"),
+                    Column("scribe", css_class="col-4"),
+                ),
                 Row(
                     Column("capture_year_day", css_class="col-4"),
                     Column("capture_time_hour", css_class="col-4"),
                     Column("capture_time_minute", css_class="col-4"),
                 ),
-                css_class="fieldset-container bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
                 Row(
                     Column("note", css_class="col-12"),
                 ),
-                css_class="fieldset-container bg-light",
+                css_class="fieldset-container even-set",
             ),
 
             "is_validated",
@@ -195,6 +205,7 @@ class CaptureRecordForm(forms.ModelForm):
         alpha_code = SPECIES[species_number]["alpha_code"]
         self.instance.alpha_code = alpha_code
 
+    # How aged and how sexed should always have the first option filled in if the second is filled in
     def _clean_how_aged_order(self):
         if self.instance.how_aged_2 and not self.instance.how_aged_1:
             self.instance.how_aged_1 = self.instance.how_aged_2
@@ -214,15 +225,26 @@ class CaptureRecordForm(forms.ModelForm):
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
-    def clean(self) -> dict:
+
+    def clean(self):
         cleaned_data = super().clean()
+
         self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
         self._clean_capture_time()
 
         validator = CaptureRecordFormValidator(cleaned_data=cleaned_data)
-        validator.validate(override_validation=cleaned_data["is_validated"])
-        cleaned_data["is_validated"] = not cleaned_data["is_validated"]
-        self.instance.discrepancies = validator.discrepancy_string
+
+        # Check if 'is_validated' is checked (True means validations are to be enforced)
+        if cleaned_data.get("is_validated", True):
+            validator.validate(raise_errors=True) 
+            if validator.validation_errors:
+                raise forms.ValidationError(discrepancy_string)
+        else:
+            validator.validate(raise_errors=False)
+            discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
+            self.instance.discrepancies = discrepancy_string
+
         return cleaned_data
+
