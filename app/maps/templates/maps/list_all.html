@@ -1,4 +1,5 @@
 {% extends 'maps/base.html' %}
+{% load custom_filters %}
 
 {% block title %}All Capture Records{% endblock %}
 
@@ -7,7 +8,9 @@
     <h1 class="text-center">View All Capture Records</h1>
     <ul>
       {% for record in capture_records %}
-        <li>{{record.pk}} <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a></li>
+        <li>{{record.capture_time}}
+          <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a>
+          {{ SPECIES|get_item:record.species_number }} {{ record.bander_initials }}
       {% endfor %}
     </ul>
   </div>
