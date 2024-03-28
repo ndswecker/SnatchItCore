@@ -526,9 +526,8 @@ def validate_death_has_note(form_data: dict):
 
 
 class CaptureRecordFormValidator(FormValidator):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.discrepancies = []
+    def __init__(self, cleaned_data):
+        super().__init__(cleaned_data)
         self.validators = [
             validate_how_aged_by_plumage,
             validate_juv_aging_plumage_not_p,
@@ -564,23 +563,3 @@ class CaptureRecordFormValidator(FormValidator):
             validate_death_to_status,
             validate_death_has_note,
         ]
-
-    def validate(self, bypass=False):
-        for validator_func in self.validators:
-            try:
-                validator_func(self.cleaned_data)
-            except ValidationError as e:
-                if bypass:
-                    # Collect the error message instead of raising it
-                    self.discrepancies.append(e.message)
-                else:
-                    # If not bypassing, re-raise the exception
-                    raise e
-
-    def has_discrepancies(self):
-        return len(self.discrepancies) > 0
-
-    @property
-    def discrepancy_string(self):
-        # Join all discrepancies into a single string
-        return "; ".join(self.discrepancies)
