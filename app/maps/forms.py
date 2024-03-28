@@ -66,6 +66,7 @@ class CaptureRecordForm(forms.ModelForm):
             # Set the initial values for hour and minute fields based on the instance's capture_time
             self.fields['capture_time_hour'].initial = instance.capture_time.hour
             self.fields['capture_time_minute'].initial = instance.capture_time.strftime('%M')
+            instance.discrepancies = ''
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
