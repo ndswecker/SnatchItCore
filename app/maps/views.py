@@ -26,6 +26,12 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
     template_name = "maps/enter_bird.html"
     form_class = CaptureRecordForm
 
+    def get_initial(self):
+        initial = super().get_initial()
+        # Set the initial value of 'bander_initials' to the current user's initials
+        initial['bander_initials'] = self.request.user.initials
+        return initial
+
     def get(self, request, *args, **kwargs):
         # Set start time in session when the form is first loaded
         request.session['form_start_time'] = timezone.now().isoformat()
@@ -43,7 +49,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
         form.instance.hold_time = time_held.total_seconds() / 60
 
         form.instance.user = self.request.user
-        form.instance.bander_initials = self.request.user.initials
+        form.instance.scribe_initials = self.request.user.initials
         self.object = form.save()
         messages.success(self.request, "Capture record created successfully.")
         return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))

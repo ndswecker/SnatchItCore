@@ -20,8 +20,10 @@ def rounded_down_datetime():
 
 class CaptureRecord(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bander_initials = models.CharField(
+    scribe_initials = models.CharField(
         max_length=3,
+        null=False,
+        blank=False,
     )
 
     capture_code = models.CharField(
@@ -292,10 +294,10 @@ class CaptureRecord(BaseModel):
         blank=True,
     )
 
-    scribe = models.CharField(
+    bander_initials = models.CharField(
         max_length=3,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
     )
 
     discrepancies = models.TextField(null=True, blank=True)

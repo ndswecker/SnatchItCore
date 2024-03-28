@@ -15,7 +15,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         "capture_code",
         "band_number",
         "is_validated",
-        "bander_initials",
+        "scribe_initials",
         "species_number",
         "capture_time",
     )
@@ -23,7 +23,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         "station",
         "is_validated",
         "capture_code",
-        "bander_initials",
+        "scribe_initials",
         "species_number",
         "capture_time",
     )
