@@ -67,6 +67,13 @@ class ListCaptureRecordView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return CaptureRecord.objects.filter(user=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the species reference data
+        context['SPECIES'] = REFERENCE_DATA.SPECIES
+        return context
 
 
 class MiniPyleView(TemplateView):
