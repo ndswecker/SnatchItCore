@@ -204,6 +204,7 @@ class CaptureRecordForm(forms.ModelForm):
         alpha_code = SPECIES[species_number]["alpha_code"]
         self.instance.alpha_code = alpha_code
 
+    # How aged and how sexed should always have the first option filled in if the second is filled in
     def _clean_how_aged_order(self):
         if self.instance.how_aged_2 and not self.instance.how_aged_1:
             self.instance.how_aged_1 = self.instance.how_aged_2
@@ -223,34 +224,26 @@ class CaptureRecordForm(forms.ModelForm):
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
+
     def clean(self):
         cleaned_data = super().clean()
 
-        # Run the initial clean methods
         self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
         self._clean_capture_time()
 
-        # Initialize the validator with the cleaned data
         validator = CaptureRecordFormValidator(cleaned_data=cleaned_data)
 
         # Check if 'is_validated' is checked (True means validations are to be enforced)
-        if cleaned_data.get("is_validated", False):
-            # Run validations
-            validator.validate()
-            # If there are discrepancies, even though validations were enforced, add them to the instance
-            if validator.has_discrepancies():
-                self.instance.discrepancies = validator.discrepancy_string
-                # Optionally, if you want to force is_validated to False when there are discrepancies
-                # cleaned_data["is_validated"] = False
+        if cleaned_data.get("is_validated", True):
+            validator.validate(raise_errors=True) 
+            if validator.validation_errors:
+                raise forms.ValidationError(discrepancy_string)
         else:
-            # If 'is_validated' is unchecked, bypass validations but capture possible discrepancies
-            validator.validate(bypass=True)
-            # Capture discrepancies for admin to review
-            self.instance.discrepancies = validator.discrepancy_string
-            # Ensure 'is_validated' remains False since validations were bypassed
-            cleaned_data["is_validated"] = False
+            validator.validate(raise_errors=False)
+            discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
+            self.instance.discrepancies = discrepancy_string
 
         return cleaned_data
 
