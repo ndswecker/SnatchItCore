@@ -10,7 +10,7 @@
       {% for record in capture_records %}
         <li>{{record.capture_time}}
           <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a>
-          {{ SPECIES|get_item:record.species_number }} {{ record.bander_initials }}
+          {{ SPECIES|get_alpha_code:record.species_number }} {{ record.bander_initials }}
       {% endfor %}
     </ul>
   </div>
