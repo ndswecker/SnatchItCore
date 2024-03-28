@@ -166,7 +166,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column("net", css_class="col-4"),
                     Column("station", css_class="col-4"),
-                    Column("scribe", css_class="col-4"),
+                    Column("bander_initials", css_class="col-4"),
                 ),
                 Row(
                     Column("capture_year_day", css_class="col-4"),
@@ -192,7 +192,7 @@ class CaptureRecordForm(forms.ModelForm):
         fields = "__all__"
         exclude = [
             "user",
-            "bander_initials",
+            "scribe_initials",
             "alpha_code",
             "discrepancies",
             "capture_time",
