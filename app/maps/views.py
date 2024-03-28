@@ -66,14 +66,14 @@ class ListCaptureRecordView(LoginRequiredMixin, ListView):
     context_object_name = "capture_records"
 
     def get_queryset(self):
-        return CaptureRecord.objects.filter(user=self.request.user)
+        # Return all CaptureRecord objects
+        return CaptureRecord.objects.all()
     
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in the species reference data
         context['SPECIES'] = REFERENCE_DATA.SPECIES
         return context
+
 
 
 class MiniPyleView(TemplateView):
@@ -106,6 +106,12 @@ class EditCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, UpdateVie
     form_class = CaptureRecordForm
     template_name = "maps/enter_bird.html"
     success_url = reverse_lazy("maps:list_capture_records")
+
+    def get_queryset(self):
+        # Ensure that only the records created by the logged-in user can be edited.
+        # This overrides the default queryset to apply this restriction.
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
 
     def form_valid(self, form):
         messages.success(self.request, "Capture record updated successfully.")
