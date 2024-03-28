@@ -15,8 +15,10 @@
         <h1 class="text-center">Enter Bird Record</h1>
         {% for field in form %}
             {% if field.errors %}
-                <div class="alert alert-danger">
-                    {{ field.errors|striptags }}
+                <div class="alert alert-danger" role="alert">
+                    {% for error in field.errors %}
+                        <a href="#{{ field.auto_id }}" class="alert-link">{{ error }}</a>
+                    {% endfor %}
                 </div>
             {% endif %}
         {% endfor %}
@@ -43,4 +45,5 @@
 
     <script src="{% static 'js/mini_pyle.js' %}"></script>
     <script src="{% static 'js/capture_code.js' %}"></script>
+    <script src="{% static 'js/error_alert.js' %}"></script>
 {% endblock %}
