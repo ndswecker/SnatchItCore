@@ -10,7 +10,7 @@ CAPTURE_CODE_CHOICES = [
     ("A", "(A) Added Band"),
 ]
 
-SPECIES_CHOICES = [(k, f"{v['alpha_code']} - {v['common_name']}") for k, v in REFERENCE_DATA.SPECIES.items()]
+SPECIES_CHOICES = [(k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(REFERENCE_DATA.SPECIES.items())]
 
 AGE_ANNUAL_CHOICES = [
     (4, "4 - Local (incapable of sustained flight)"),

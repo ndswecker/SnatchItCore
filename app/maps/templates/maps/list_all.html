@@ -1,14 +1,47 @@
 {% extends 'maps/base.html' %}
+{% load static %}
+{% load custom_filters %}
 
 {% block title %}All Capture Records{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="text-center">View All Capture Records</h1>
-    <ul>
+<div class="container">
+  <h1 class="text-center">View All Capture Records</h1>
+
+  <!-- Search input field -->
+  <input type="text" id="searchInput" onkeyup="searchByBandNumber()" placeholder="Search for band numbers..." class="form-control mb-4" title="Type in a band number">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Capture Time</th>
+        <th scope="col">Band Number</th>
+        <th scope="col">Species</th>
+        <th scope="col">Bander Initials</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="recordsTable">
       {% for record in capture_records %}
-        <li>{{record.pk}} <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">{{record.band_number}}</a></li>
+      <tr class="{{ forloop.counter|divisibleby:2|yesno:'table-secondary,' }}">
+        <td>{{ record.capture_time|date:"m/d H:i" }}</td>
+        <td class="band-number">{{ record.band_number }}</td>
+        <td>{{ SPECIES|get_alpha_code:record.species_number }}</td>
+        <td>{{ record.bander_initials }}</td>
+        <td>
+          <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">View</a>
+          {% if record.user == request.user %}
+            | <a href="{% url 'maps:edit_capture_record' pk=record.pk %}">Edit</a>
+          {% endif %}
+        </td>
+      </tr>
       {% endfor %}
-    </ul>
-  </div>
+    </tbody>
+  </table>
+</div>
 {% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/search_band_number.js' %}"></script>
+{% endblock %}
+

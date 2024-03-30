@@ -5,7 +5,7 @@ from crispy_forms.layout import Layout
 from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
 from django import forms
-from django_select2 import forms as s2forms
+from django.utils import timezone
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
 from maps.choice_definitions import SPECIES_CHOICES
@@ -15,8 +15,59 @@ from maps.validators import CaptureRecordFormValidator
 
 
 class CaptureRecordForm(forms.ModelForm):
+    capture_time_hour = forms.ChoiceField(
+        label="Hr",
+        choices=[("", "Select hour...")] + [(str(i), f"{i:02d}") for i in range(0, 24)],
+        required=True,
+    )
+
+    capture_year_day = forms.DateField(
+        label="Date",
+        widget=forms.DateInput(attrs={"type": "date"}),
+        initial=timezone.now().date(),
+    )
+
+    capture_time_minute = forms.ChoiceField(
+        label="Min",
+        choices=[("", "Select minute...")] + [(str(i), f"{i:02d}") for i in range(0, 60, 10)],
+        required=True,
+    )
+
+    capture_code = forms.ChoiceField(
+        choices=CAPTURE_CODE_CHOICES,
+        required=True,
+    )
+
+    species_number = forms.ChoiceField(
+        label="Species",
+        choices=SPECIES_CHOICES,
+        required=True,
+    )
+
+    is_validated = forms.BooleanField(
+        required=False,
+        label="Validate this record?",
+        initial=True,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+            },
+        ),
+    )
+
     def __init__(self, *args, **kwargs):
+        # Extract the instance from kwargs if it's there
+        instance = kwargs.get("instance", None)
+
         super().__init__(*args, **kwargs)
+
+        # Check if there's an instance to work with (i.e., we are editing an existing record)
+        if instance:
+            # Set the initial values for hour and minute fields based on the instance's capture_time
+            self.fields["capture_time_hour"].initial = instance.capture_time.hour
+            self.fields["capture_time_minute"].initial = instance.capture_time.strftime("%M")
+            instance.discrepancies = ""
+
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
         self.helper.form_method = "post"
@@ -31,7 +82,7 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("band_size", css_class="col-6"),
                     Column("band_number", css_class="col-6"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -43,16 +94,19 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("how_aged_1", css_class="col-6"),
                     Column("how_aged_2", css_class="col-6"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
-                "sex",
+                Row(
+                    Column("sex", css_class="col-6"),
+                    Column("cloacal_direction", css_class="col-6"),
+                ),
                 Row(
                     Column("how_sexed_1", css_class="col-6"),
                     Column("how_sexed_2", css_class="col-6"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
@@ -74,7 +128,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column("juv_body_plumage", css_class="col-12"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container even-set",
             ),
             Fieldset(
                 "",
@@ -93,76 +147,64 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("body_plumage", css_class="col-4"),
                     Column("non_feather", css_class="col-4"),
                 ),
-                css_class="fieldset-padding bg-custom-gray",
+                css_class="fieldset-container odd-set",
             ),
             Fieldset(
                 "",
                 Row(
-                    Column("wing_chord", css_class="col-4"),
-                    Column("body_mass", css_class="col-4"),
-                    Column("status", css_class="col-4"),
+                    Column("wing_chord", css_class="col-6"),
+                    Column("body_mass", css_class="col-6"),
                 ),
+                Row(
+                    Column("status", css_class="col-6"),
+                    Column("disposition", css_class="col-6"),
+                ),
+                css_class="fieldset-container even-set",
+            ),
+            Fieldset(
+                "",
                 Row(
                     Column("net", css_class="col-4"),
                     Column("station", css_class="col-4"),
-                    Column("location", css_class="col-4"),
+                    Column("bander_initials", css_class="col-4"),
                 ),
                 Row(
-                    Column("disposition", css_class="col-4"),
-                    Column("scribe", css_class="col-4"),
-                    Column("note_number", css_class="col-4"),
+                    Column("capture_year_day", css_class="col-4"),
+                    Column("capture_time_hour", css_class="col-4"),
+                    Column("capture_time_minute", css_class="col-4"),
                 ),
+                css_class="fieldset-container odd-set",
+            ),
+            Fieldset(
+                "",
                 Row(
                     Column("note", css_class="col-12"),
                 ),
-                css_class="fieldset-padding bg-light",
+                css_class="fieldset-container even-set",
             ),
-            "date_time",
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
 
-    capture_code = forms.ChoiceField(
-        choices=CAPTURE_CODE_CHOICES,
-        widget=s2forms.Select2Widget(
-            attrs={
-                "class": "form-control select form-select",
-                "data-theme": "bootstrap-5",
-            },
-        ),
-    )
-
-    species_number = forms.ChoiceField(
-        choices=SPECIES_CHOICES,
-        widget=s2forms.Select2Widget(
-            attrs={
-                "class": "form-control select form-select",
-                "data-theme": "bootstrap-5",
-            },
-        ),
-    )
-
-    is_validated = forms.BooleanField(
-        required=False,
-        label="Override Validation",
-        initial=False,
-        widget=forms.CheckboxInput(
-            attrs={
-                "class": "form-check-input",
-            },
-        ),
-    )
-
     class Meta:
         model = CaptureRecord
         fields = "__all__"
-        exclude = ["user", "bander_initials", "alpha_code", "discrepancies"]
+        exclude = [
+            "user",
+            "scribe_initials",
+            "alpha_code",
+            "discrepancies",
+            "capture_time",
+            "hold_time",
+        ]
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
     def _clean_alpha_code(self):
-        if self.instance.species_number:
-            self.instance.alpha_code = SPECIES[self.instance.species_number]["alpha_code"]
+        species_number = int(self.cleaned_data.get("species_number"))
+        alpha_code = SPECIES[species_number]["alpha_code"]
+        self.instance.alpha_code = alpha_code
 
+    # How aged and how sexed should always have the first option filled in if the second is filled in
     def _clean_how_aged_order(self):
         if self.instance.how_aged_2 and not self.instance.how_aged_1:
             self.instance.how_aged_1 = self.instance.how_aged_2
@@ -173,14 +215,31 @@ class CaptureRecordForm(forms.ModelForm):
             self.instance.how_sexed_1 = self.instance.how_sexed_2
             self.instance.how_sexed_2 = None
 
-    def clean(self) -> dict:
+    def _clean_capture_time(self):
+        year = int(self.cleaned_data.get("capture_year_day").year)
+        month = int(self.cleaned_data.get("capture_year_day").month)
+        day = int(self.cleaned_data.get("capture_year_day").day)
+        hour = int(self.cleaned_data.get("capture_time_hour"))
+        minute = int(self.cleaned_data.get("capture_time_minute"))
+
+        self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+
+    def clean(self):
         cleaned_data = super().clean()
+
         self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
+        self._clean_capture_time()
 
         validator = CaptureRecordFormValidator(cleaned_data=cleaned_data)
-        validator.validate(override_validation=cleaned_data["is_validated"])
-        cleaned_data["is_validated"] = not cleaned_data["is_validated"]
-        self.instance.discrepancies = validator.discrepancy_string
+
+        # Check if 'is_validated' is checked (True means validations are to be enforced)
+        if cleaned_data.get("is_validated", True):
+            validator.validate(raise_errors=True)
+        else:
+            validator.validate(raise_errors=False)
+            discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
+            self.instance.discrepancies = discrepancy_string
+
         return cleaned_data

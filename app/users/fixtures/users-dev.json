@@ -17,7 +17,6 @@
       "created_at": "2024-01-01T00:00:00.000Z",
       "updated_at": "2024-01-01T00:00:00.000Z",
       "initials": "USR",
-      "is_approved": true,
       "groups": [],
       "user_permissions": []
     }

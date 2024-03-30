@@ -179,6 +179,8 @@ LOGIN_REDIRECT_URL = "maps:create_capture_record"
 
 LOGOUT_REDIRECT_URL = "account_login"
 
+ACCOUNT_SIGNUP_REDIRECT_URL = "users:profile"
+
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_EMAIL_VERIFICATION = None

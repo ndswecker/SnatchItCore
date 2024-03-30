@@ -1,155 +1,116 @@
 {% extends 'maps/base.html' %}
 {% load static %}
+{% load tz %}
 
 {% block extra_css %}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet"/>
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}Capture Record Detail{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h1 class="text-center">Capture Record Details</h1>
+<div class="container mt-5">
+    <div class="card ">
+        <div class="card-header">
+            <h1 class="text-center">Capture Record Details</h1>
+        </div>
+        <div class="card-body record-card">
+            <!-- Basic Information Section -->
+            <div class="card field-set-card odd-set">
+              <div class="card-header">Basic Information</div>
+              <div class="card-body">
+                <p><strong>Species:</strong> {{ species_name }}</p>
+                <p><strong>Band Number:</strong> {{ capture_record.band_number }}</p>
+                <p><strong>DB ID:</strong> {{ capture_record.id }}</p>
+                <p><strong>Code:</strong> {{ capture_record.capture_code }}</p>
+                <p><strong>Band Size:</strong> {{ capture_record.band_size }}</p>
+              </div>
+            </div>
 
-  <div class="mb-1 p-1 bg-light">
-    <h2 class="h4 text-center">Basic Information</h2>
+            <!-- Age and Sex Details Section -->
+            <div class="card field-set-card even-set">
+              <div class="card-header">Age Details</div>
+              <div class="card-body">
+                <p><strong>Age Annual:</strong> {{ capture_record.age_annual }}</p>
+                <p><strong>Age WRP:</strong> {{ capture_record.age_WRP }}</p>
+                <p><strong>How Aged 1:</strong> {{ capture_record.how_aged_1 }}</p>
+                <p><strong>How Aged 2:</strong> {{ capture_record.how_aged_2 }}</p>
+              </div>
+            </div>
 
-    <div class="row">
-      <div class="col-12 text-center">
-        <p>{{ species_name }} : {{ capture_record.band_number }}</p>
-      </div>
-    </div>
+            <div class="card field-set-card odd-set">
+              <div class="card-header">Sex Details</div>
+              <div class="card-body">
+                <p><strong>Sex:</strong> {{ capture_record.sex }}</p>
+                <p><strong>Cloacal Direction:</strong> {{ capture_record.cloacal_direction }}</p>
+                <p><strong>How Sexed 1:</strong> {{ capture_record.how_sexed_1 }}</p>
+                <p><strong>How Sexed 2:</strong> {{ capture_record.how_sexed_2 }}</p>
+              </div>
+            </div>
 
-    <div class="row">
-      <div class="col-4 text-center">
-        <p><strong>DB ID:</strong> {{ capture_record.id }}</p>
-      </div>
-      <div class="col-4 text-center">
-        <p><strong>Code:</strong> {{ capture_record.capture_code }}</p>
-      </div>
-      <div class="col-4 text-center">
-        <p><strong>Band Size:</strong> {{ capture_record.band_size }}</p>
-      </div>
-    </div>
-  </div>
+            <!-- Physical Features Section -->
+            <div class="card field-set-card even-set">
+              <div class="card-header">Physical Features</div>
+              <div class="card-body">
+                <p><strong>SK:</strong> {{ capture_record.skull|default:"N/A" }}</p>
+                <p><strong>Fat:</strong> {{ capture_record.fat|default:"N/A" }}</p>
+                <p><strong>CP:</strong> {{ capture_record.cloacal_protuberance|default:"N/A" }}</p>
+                <p><strong>BP:</strong> {{ capture_record.brood_patch|default:"N/A" }}</p>
+                <p><strong>FF Molt:</strong> {{ capture_record.ff_molt|default:"N/A" }}</p>
+                <p><strong>FF Wear:</strong> {{ capture_record.ff_wear|default:"N/A" }}</p>
+                <p><strong>Juv Body Plumage:</strong> {{ capture_record.juv_body_plumage|default:"N/A" }}</p>
+              </div>
+            </div>
 
-  <div class="mb-1 p-1 bg-secondary text-white">
-    <h2 class="h4 text-center">Age and Sex Details</h2>
-    <div class="row">
-      <div class="col-6 text-center">
-          <p><strong>Age Annual:</strong> {{ capture_record.age_annual }}</p>
-          <p><strong>Age WRP:</strong> {{ capture_record.age_WRP }}</p>
-      </div>
-      <div class="col-6 text-center">
-          <p><strong>How Aged 1:</strong> {{ capture_record.how_aged_1 }}</p>
-          <p><strong>How Aged 2:</strong> {{ capture_record.how_aged_2 }}</p>
-      </div>
-    </div>
-  </div>
+            <!-- Molt Limits and Plumage Section -->
+            <div class="card field-set-card odd-set">
+              <div class="card-header">Molt Limits and Plumage</div>
+              <div class="card-body">
+                <p><strong>Primary Coverts:</strong> {{ capture_record.primary_coverts|default:"N/A" }}</p>
+                <p><strong>Secondary Coverts:</strong> {{ capture_record.secondary_coverts|default:"N/A" }}</p>
+                <p><strong>Primaries:</strong> {{ capture_record.primaries|default:"N/A" }}</p>
+                <p><strong>Secondaries:</strong> {{ capture_record.secondaries|default:"N/A" }}</p>
+                <p><strong>Tertials:</strong> {{ capture_record.tertials|default:"N/A" }}</p>
+                <p><strong>Rectrices:</strong> {{ capture_record.rectrices|default:"N/A" }}</p>
+                <p><strong>Alula:</strong> {{ capture_record.alula|default:"N/A" }}</p>
+                <p><strong>Body Plumage:</strong> {{ capture_record.body_plumage|default:"N/A" }}</p>
+                <p><strong>Non Feather:</strong> {{ capture_record.non_feather|default:"N/A" }}</p>
+              </div>
+            </div>
 
-  <div class="mb-1 p-1 bg-light">
-      <h2 class="h4 text-center">Physical Features</h2>
-    <div class="row">
-      <div class="col-3">
-        <p><strong>SK:</strong> {{ capture_record.skull|default:"N/A" }}</p>
-        <p><strong>Fat:</strong> {{ capture_record.fat|default:"N/A" }}</p>
-      </div>
-      <div class="col-3">
-        <p><strong>CP:</strong> {{ capture_record.cloacal_protuberance|default:"N/A" }}</p>
-        <p><strong>BP:</strong> {{ capture_record.brood_patch|default:"N/A" }}</p>
-      </div>
-      <div class="col-3">
-        <p><strong>BM:</strong> {{ capture_record.body_molt|default:"N/A" }}</p>
-        <p><strong>FFM:</strong> {{ capture_record.ff_molt|default:"N/A" }}</p>
-      </div>
-      <div class="col-3">
-        <p><strong>FFW:</strong> {{ capture_record.ff_wear|default:"N/A" }}</p>
-        <p><strong>JBP:</strong> {{ capture_record.juv_body_plumage|default:"N/A" }}</p>
-      </div>
-    </div>
-  </div>
+            <!-- Details and Effort Section -->
+            <div class="card field-set-card even-set">
+              <div class="card-header">Details and Effort</div>
+              <div class="card-body">
+                <p><strong>Wing Chord:</strong> {{ capture_record.wing_chord|default:"N/A" }}</p>
+                <p><strong>Body Mass:</strong> {{ capture_record.body_mass|default:"N/A" }}</p>
+                <p><strong>Status:</strong> {{ capture_record.status|default:"N/A" }}</p>
+                <p><strong>Disposition:</strong> {{ capture_record.disposition|default:"N/A" }}</p>
+              </div>
+            </div>
 
-  <div class="mb-1 p-1 bg-secondary text-white">
-    <h2 class="h4 text-center">Molt Limits and Plumage</h2>
-    <div class="row">
-      <div class="col-6 text-center">
-        <p><strong>Primary Coverts:</strong> {{ capture_record.primary_coverts|default:"N/A" }}</p>
-      </div>
-      <div class="col-6 text-center">
-        <p><strong>Secondary Coverts:</strong> {{ capture_record.secondary_coverts|default:"N/A" }}</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-3">
-        <p><strong>P:</strong> {{ capture_record.primaries|default:"N/A" }}</p>
-      </div>
-      <div class="col-3">
-        <p><strong>S:</strong> {{ capture_record.secondaries|default:"N/A" }}</p>
-      </div>
-      <div class="col-3">
-        <p><strong>T:</strong> {{ capture_record.tertials|default:"N/A" }}</p>
-      </div>
-      <div class="col-3">
-        <p><strong>R:</strong> {{ capture_record.rectrices|default:"N/A" }}</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-4 text-center">
-        <p><strong>Alula:</strong> {{ capture_record.alula|default:"N/A" }}</p>
-      </div>
-      <div class="col-4 text-center">
-        <p><strong>Body Plumage:</strong> {{ capture_record.body_plumage|default:"N/A" }}</p>
-      </div>
-      <div class="col-4 text-center">
-        <p><strong>Non-Feather:</strong> {{ capture_record.non_feather|default:"N/A" }}</p>
-      </div>
-    </div>
-  </div>
+            <div class="card field-set-card odd-set">
+              <div class="card-header">Station and Date</div>
+              <div class="card-body">
+                <p><strong>Station:</strong> {{ capture_record.station }}</p>
+                <p><strong>Date:</strong> {{ capture_record.capture_time|date:"N j, Y" }}</p>
+                <p><strong>Time:</strong> {{ capture_record.capture_time|time:"P" }}</p>
+                <p><strong>Hold Time(min):</strong> {{ capture_record.hold_time }}</p>
+                <p><strong>Scribe:</strong> {{ capture_record.scribe }}</p>
+              </div>
+            </div>
 
-  <div class="mb-1 p-1 bg-light">
-    <h2 class="h4 text-center">Details and Effort</h2>
-    <div class="row">
-        <div class="col-4 text-center">
-            <p><strong>Wing Chord:</strong> {{ capture_record.wing_chord|default:"N/A" }}</p>
-        </div>
-        <div class="col-4 text-center">
-            <p><strong>Body Mass:</strong> {{ capture_record.body_mass|default:"N/A" }}</p>
-        </div>
-        <div class="col-4 text-center">
-            <p><strong>Status:</strong> {{ capture_record.status|default:"N/A" }}</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4 text-center">
-            <p><strong>Net:</strong> {{ capture_record.net|default:"N/A" }}</p>
-        </div>
-        <div class="col-4 text-center">
-            <p><strong>Station:</strong> {{ capture_record.station|default:"N/A" }}</p>
-        </div>
-        <div class="col-4 text-center">
-            <p><strong>Location:</strong> {{ capture_record.location|default:"N/A" }}</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4 text-center">
-            <p><strong>Disposition:</strong> {{ capture_record.disposition|default:"N/A" }}</p>
-        </div>
-        <div class="col-4 text-center">
-            <p><strong>Scribe:</strong> {{ capture_record.scribe|default:"N/A" }}</p>
-        </div>
-        <div class="col-4 text-center">
-            <p><strong>Date Time:</strong> {{ capture_record.date_time|date:"Y-m-d H:i" }}</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 ">
-            <p><strong>Note:</strong> {{ capture_record.note|default:"N/A" }}</p>
-        </div>
-    </div>
-</div>
+            <div class="card field-set-card even-set">
+              <div class="card-header">Notes</div>
+              <div class="card-body">
+                <p><strong>Note:</strong> {{ capture_record.note|default:"N/A" }}</p>
+              </div>
+            </div>
 
-
+        </div>
+        <div class="card-footer text-muted">
+            <a href="{% url 'maps:edit_capture_record' pk=capture_record.pk %}" class="btn btn-primary">Edit Record</a>
+        </div>
+    </div>
 </div>
 {% endblock %}

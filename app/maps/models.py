@@ -3,6 +3,7 @@ import datetime
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from common.models import BaseModel
 from maps.choice_definitions import *  # noqa F403
@@ -19,8 +20,10 @@ def rounded_down_datetime():
 
 class CaptureRecord(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bander_initials = models.CharField(
+    scribe_initials = models.CharField(
         max_length=3,
+        null=False,
+        blank=False,
     )
 
     capture_code = models.CharField(
@@ -97,6 +100,12 @@ class CaptureRecord(BaseModel):
         null=True,
         blank=True,
         choices=HOW_AGED_SEXED_CHOICES,
+    )
+    cloacal_direction = models.CharField(
+        max_length=1,
+        choices=SEX_CHOICES,
+        null=True,
+        blank=True,
     )
 
     skull = models.IntegerField(
@@ -240,8 +249,16 @@ class CaptureRecord(BaseModel):
         default=300,
     )
 
-    date_time = models.DateTimeField(
-        default=rounded_down_datetime,
+    capture_time = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    hold_time = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Minutes held in hand.",
     )
 
     station = models.CharField(
@@ -250,9 +267,9 @@ class CaptureRecord(BaseModel):
         default="MORS",
     )
 
-    net = models.CharField(
-        max_length=4,
-        default="15",
+    net = models.IntegerField(
+        null=False,
+        blank=False,
     )
 
     disposition = models.CharField(
@@ -273,24 +290,19 @@ class CaptureRecord(BaseModel):
         blank=True,
     )
 
-    scribe = models.CharField(
+    bander_initials = models.CharField(
         max_length=3,
-        null=True,
-        blank=True,
-    )
-
-    location = models.CharField(
-        max_length=4,
-        choices=STATION_CHOICES,
-        default="MORS",
+        null=False,
+        blank=False,
     )
 
     discrepancies = models.TextField(null=True, blank=True)
-    # We will default to true. Since the validattion is done in the form
-    # we will assume that the data is valid unless the user clicks on the
-    # override validation button.
-    is_validated = models.BooleanField(default=True)
+
+    is_validated = models.BooleanField(
+        default=True,
+        help_text="Apply validations to this record",
+    )
 
     def __str__(self):
         common_name = SPECIES[self.species_number]["common_name"]
-        return f"{common_name} - {self.band_number} - {self.date_time.strftime('%Y-%m-%d %H:%M')}"
+        return f"{common_name} - {self.band_number} - {self.capture_time.strftime('%Y-%m-%d %H:%M')}"
