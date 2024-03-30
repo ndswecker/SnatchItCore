@@ -111,6 +111,7 @@ class Migration(migrations.Migration):
                             (5540, "WCSP - White-crowned Sparrow"),
                             (5547, "PSWS - Puget Sound White-crowned Sparrow"),
                             (5550, "GWCS - Gambel's White-crowned Sparrow"),
+                            (5570, "GCSP - Golden-crowned Sparrow"),
                             (5600, "CHSP - Chipping Sparrow"),
                             (5671, "ORJU - Oregon Junco"),
                             (5810, "SOSP - Song Sparrow"),
