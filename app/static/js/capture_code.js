@@ -3,7 +3,7 @@ $(document).ready(function() {
         let captureCode = $(this).val();
         let bandSizeSelect = $('#id_band_size');
         let bandNumberInput = $('#id_band_number');
-        let statusSelect = $('#id_status'); 
+        let statusSelect = $('#id_status');
 
         if (captureCode === 'R') {
             bandSizeSelect.val('R').trigger('change')

@@ -11,7 +11,7 @@ class USGSSerializer:
 
     def get_condition_code(self):
         return DISPOSTIONS[self.capture_record.capture_code]["usgs"]["code"]
-    
+
     def get_month(self):
         # format the month to always be 2 digits
         return f"{self.capture_record.capture_time.month:02d}"
@@ -167,7 +167,7 @@ class IBPSerializer:
         sexed_1 = self.capture_record.how_sexed_1 if self.capture_record.how_sexed_1 else ""
         sexed_2 = self.capture_record.how_sexed_2 if self.capture_record.how_sexed_2 else ""
         return sexed_1 + sexed_2
-    
+
     def get_cloacal_direction(self):
         direction = self.capture_record.cloacal_direction
         return "Cloacal Direction: " + direction if direction else ""
@@ -213,7 +213,7 @@ class IBPSerializer:
 
     def get_rectrices(self):
         return self.capture_record.rectrices
-    
+
     def get_alula(self):
         alula = self.capture_record.alula
         return "Alula: " + alula if alula else ""
@@ -262,7 +262,7 @@ class IBPSerializer:
             notes += ". " + alula if notes else alula
         if cloacal_direction:
             notes += ". " + cloacal_direction if notes else cloacal_direction
-        
+
         return notes
 
     def serialize(self) -> dict:

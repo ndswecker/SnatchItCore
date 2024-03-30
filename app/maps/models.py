@@ -268,10 +268,6 @@ class CaptureRecord(BaseModel):
     )
 
     net = models.IntegerField(
-        validators=[
-            MinValueValidator(1, message="Net must be at least 1."),
-            MaxValueValidator(21, message="Net must be less than 22."),
-        ],
         null=False,
         blank=False,
     )
@@ -301,7 +297,7 @@ class CaptureRecord(BaseModel):
     )
 
     discrepancies = models.TextField(null=True, blank=True)
-    
+
     is_validated = models.BooleanField(
         default=True,
         help_text="Apply validations to this record",

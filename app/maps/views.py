@@ -1,19 +1,18 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
-from django.utils import timezone
 
 import maps.maps_reference_data as REFERENCE_DATA
 from .forms import CaptureRecordForm
 from .models import CaptureRecord
-from users.mixins import ApprovalRequiredMixin
 
 
 def get_band_sizes_for_species(request):
@@ -22,28 +21,29 @@ def get_band_sizes_for_species(request):
     return JsonResponse({"band_sizes": band_sizes})
 
 
-class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
+class CreateCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"
     form_class = CaptureRecordForm
+    permission_required = "maps.add_capturerecord"
 
     def get_initial(self):
         initial = super().get_initial()
         # Set the initial value of 'bander_initials' to the current user's initials
-        initial['bander_initials'] = self.request.user.initials
+        initial["bander_initials"] = self.request.user.initials
         return initial
 
     def get(self, request, *args, **kwargs):
         # Set start time in session when the form is first loaded
-        request.session['form_start_time'] = timezone.now().isoformat()
+        request.session["form_start_time"] = timezone.now().isoformat()
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         # Retrieve start time from session and convert it back to a datetime object
-        start_time_str = self.request.session.pop('form_start_time', None)
+        start_time_str = self.request.session.pop("form_start_time", None)
         start_time = timezone.datetime.fromisoformat(start_time_str)
 
         submission_time = timezone.now()
-        
+
         # Calculate time held and set it on the instance before saving
         time_held = submission_time - start_time
         form.instance.hold_time = time_held.total_seconds() / 60
@@ -53,6 +53,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
         self.object = form.save()
         messages.success(self.request, "Capture record created successfully.")
         return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
+
 
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
     template_name = "maps/detail.html"
@@ -70,16 +71,12 @@ class ListCaptureRecordView(LoginRequiredMixin, ListView):
     template_name = "maps/list_all.html"
     model = CaptureRecord
     context_object_name = "capture_records"
+    ordering = "-created_at"
 
-    def get_queryset(self):
-        # Return all CaptureRecord objects
-        return CaptureRecord.objects.all()
-    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['SPECIES'] = REFERENCE_DATA.SPECIES
+        context["SPECIES"] = REFERENCE_DATA.SPECIES
         return context
-
 
 
 class MiniPyleView(TemplateView):
@@ -107,9 +104,11 @@ class MiniPyleView(TemplateView):
 
         return context
 
-class EditCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, UpdateView):
+
+class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = CaptureRecord
     form_class = CaptureRecordForm
+    permission_required = "maps.add_capturerecord"
     template_name = "maps/enter_bird.html"
     success_url = reverse_lazy("maps:list_capture_records")
 

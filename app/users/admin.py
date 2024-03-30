@@ -12,18 +12,22 @@ class UserAdmin(AuthUserAdmin):
         "first_name",
         "last_name",
         "initials",
-        "is_approved",
         "is_staff",
         "is_superuser",
     )
-    list_filter = ("is_approved", "is_staff", "is_superuser", "is_active", "groups")
+    list_filter = (
+        "is_staff",
+        "is_superuser",
+        "is_active",
+        "groups",
+    )
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (_("Personal info"), {"fields": ("first_name", "last_name", "email", "initials")}),
         (
             _("Permissions"),
-            {"fields": ("is_active", "is_approved", "is_staff", "is_superuser", "groups", "user_permissions")},
-        ),  # noqa
+            {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")},
+        ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
 

@@ -5,6 +5,12 @@
 
 {% block content %}
   <div class="container">
+    {% if not perms.maps.add_capturerecord %}
+      <div class="alert alert-danger alert-dismissible fade show mt-3 text-center" role="alert">
+        You are not yet approved to submit capture records. Please contact an admin.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
     <h1>Profile</h1>
     <p>Welcome, {{ user.first_name }} {{ user.last_name }}!</p>
     <p><a href="{% url 'users:email_change' %}">Update Email</a></p>

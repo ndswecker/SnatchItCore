@@ -1,10 +1,11 @@
 from django.core.exceptions import ValidationError
 
+
 class FormValidator:
     def __init__(self, cleaned_data: dict):
         self.cleaned_data = cleaned_data
-        self.validation_errors: list[str] = [] 
-        self.validators = [] 
+        self.validation_errors: list[str] = []
+        self.validators: list = []
 
     def validate(self, raise_errors: bool):
         if raise_errors:
@@ -22,4 +23,3 @@ class FormValidator:
                 validator(self.cleaned_data)
             except ValidationError as e:
                 self.validation_errors.append(e.messages[0])
-            

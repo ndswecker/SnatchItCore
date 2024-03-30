@@ -15,6 +15,6 @@ function searchByBandNumber() {
             } else {
                 tr[i].style.display = "none";
             }
-        }       
+        }
     }
 }

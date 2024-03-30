@@ -17,19 +17,19 @@ from maps.validators import CaptureRecordFormValidator
 class CaptureRecordForm(forms.ModelForm):
     capture_time_hour = forms.ChoiceField(
         label="Hr",
-        choices=[('', 'Select hour...')] + [(str(i), f'{i:02d}') for i in range(0, 24)],
+        choices=[("", "Select hour...")] + [(str(i), f"{i:02d}") for i in range(0, 24)],
         required=True,
     )
 
     capture_year_day = forms.DateField(
         label="Date",
-        widget=forms.DateInput(attrs={'type': 'date'}),
+        widget=forms.DateInput(attrs={"type": "date"}),
         initial=timezone.now().date(),
     )
 
     capture_time_minute = forms.ChoiceField(
         label="Min",
-        choices=[('', 'Select minute...')] + [(str(i), f'{i:02d}') for i in range(0, 60, 10)],
+        choices=[("", "Select minute...")] + [(str(i), f"{i:02d}") for i in range(0, 60, 10)],
         required=True,
     )
 
@@ -57,16 +57,16 @@ class CaptureRecordForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         # Extract the instance from kwargs if it's there
-        instance = kwargs.get('instance', None)
+        instance = kwargs.get("instance", None)
 
-        super(CaptureRecordForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Check if there's an instance to work with (i.e., we are editing an existing record)
         if instance:
             # Set the initial values for hour and minute fields based on the instance's capture_time
-            self.fields['capture_time_hour'].initial = instance.capture_time.hour
-            self.fields['capture_time_minute'].initial = instance.capture_time.strftime('%M')
-            instance.discrepancies = ''
+            self.fields["capture_time_hour"].initial = instance.capture_time.hour
+            self.fields["capture_time_minute"].initial = instance.capture_time.strftime("%M")
+            instance.discrepancies = ""
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -182,7 +182,6 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 css_class="fieldset-container even-set",
             ),
-
             "is_validated",
             Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
@@ -217,14 +216,13 @@ class CaptureRecordForm(forms.ModelForm):
             self.instance.how_sexed_2 = None
 
     def _clean_capture_time(self):
-        year = int(self.cleaned_data.get('capture_year_day').year)
-        month = int(self.cleaned_data.get('capture_year_day').month)
-        day = int(self.cleaned_data.get('capture_year_day').day)
-        hour = int(self.cleaned_data.get('capture_time_hour'))
-        minute = int(self.cleaned_data.get('capture_time_minute'))
+        year = int(self.cleaned_data.get("capture_year_day").year)
+        month = int(self.cleaned_data.get("capture_year_day").month)
+        day = int(self.cleaned_data.get("capture_year_day").day)
+        hour = int(self.cleaned_data.get("capture_time_hour"))
+        minute = int(self.cleaned_data.get("capture_time_minute"))
 
         self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
-
 
     def clean(self):
         cleaned_data = super().clean()
@@ -238,13 +236,10 @@ class CaptureRecordForm(forms.ModelForm):
 
         # Check if 'is_validated' is checked (True means validations are to be enforced)
         if cleaned_data.get("is_validated", True):
-            validator.validate(raise_errors=True) 
-            if validator.validation_errors:
-                raise forms.ValidationError(discrepancy_string)
+            validator.validate(raise_errors=True)
         else:
             validator.validate(raise_errors=False)
             discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
             self.instance.discrepancies = discrepancy_string
 
         return cleaned_data
-

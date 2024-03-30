@@ -1,25 +1,21 @@
 # Description: Reference data for MAPS and USGS banding codes and descriptions
 
-STATION_LOCATIONS = {
+STATION_LOCATIONS: dict = {
     "MORS": {
         "name": "Morse Preserve MAPS",
         "code": "MORS",
         "BBL_location_id": 223665,
-        "net_set": [
-            15, 2, 3, 14, 5, 6, 10, 9, 8, 7, 20, 21
-        ],
+        "net_set": [15, 2, 3, 14, 5, 6, 10, 9, 8, 7, 20, 21],
     },
     "GHPR": {
         "name": "Glacial Heritage Preserve MAPS",
         "code": "GHPR",
         "BBL_location_id": 0,
-        "net_set": [
-            1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16
-        ],
+        "net_set": [1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16],
     },
 }
 
-SPECIES = {
+SPECIES: dict = {
     5810: {
         "common_name": "Song Sparrow",
         "scientific_name": "Melospiza melodia",
@@ -187,21 +183,6 @@ SPECIES = {
         "scientific_name": "Accipiter cooperii",
         "alpha_code": "COHA",
         "species_number": 3330,
-        "band_sizes": [],
-        "wing_chord_range": (),
-        "WRP_groups": [],
-        "sexing_criteria": {
-            "female_by_BP": False,
-            "male_by_CP": True,
-            "plumage_dimorphism": False,
-        },
-        "pyle_second_edition_page": None,
-    },
-    3650: {
-        "common_name": "Barn Owl",
-        "scientific_name": "Tyto alba",
-        "alpha_code": "BNOW",
-        "species_number": 3650,
         "band_sizes": [],
         "wing_chord_range": (),
         "WRP_groups": [],
@@ -1575,7 +1556,7 @@ SPECIES = {
     },
 }
 
-WRP_GROUPS = {
+WRP_GROUPS: dict = {
     3: {
         "description": (
             "Group 3 - Preformative molt less than complete, prebasic molt complete, "
