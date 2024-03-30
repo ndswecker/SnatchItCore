@@ -1,5 +1,5 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseNotAllowed
 from django.http import JsonResponse
 from django.utils import timezone
@@ -9,11 +9,10 @@ from breeding.forms import StatusForm
 from breeding.models import Status
 from maps.maps_reference_data import BREEDING_STATUSES
 from maps.maps_reference_data import SPECIES
-from users.decorators import approval_required
-from users.mixins import ApprovalRequiredMixin
 
 
-class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
+class ReportView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    permission_required = "maps.view_capturerecord"
     template_name = "breeding/report.html"
 
     def _get_table(self, station):
@@ -45,7 +44,7 @@ class ReportView(LoginRequiredMixin, ApprovalRequiredMixin, TemplateView):
 
 
 @login_required
-@approval_required
+@permission_required("maps.add_capturerecord")
 def status_view(request):
     if request.method == "POST":
         form = StatusForm(data=request.POST)

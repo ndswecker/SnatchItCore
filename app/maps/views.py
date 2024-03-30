@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -13,7 +13,6 @@ from django.views.generic import UpdateView
 import maps.maps_reference_data as REFERENCE_DATA
 from .forms import CaptureRecordForm
 from .models import CaptureRecord
-from users.mixins import ApprovalRequiredMixin
 
 
 def get_band_sizes_for_species(request):
@@ -22,9 +21,10 @@ def get_band_sizes_for_species(request):
     return JsonResponse({"band_sizes": band_sizes})
 
 
-class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateView):
+class CreateCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = "maps/enter_bird.html"
     form_class = CaptureRecordForm
+    permission_required = "maps.add_capturerecord"
 
     def get_initial(self):
         initial = super().get_initial()
@@ -105,9 +105,10 @@ class MiniPyleView(TemplateView):
         return context
 
 
-class EditCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, UpdateView):
+class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = CaptureRecord
     form_class = CaptureRecordForm
+    permission_required = "maps.add_capturerecord"
     template_name = "maps/enter_bird.html"
     success_url = reverse_lazy("maps:list_capture_records")
 
