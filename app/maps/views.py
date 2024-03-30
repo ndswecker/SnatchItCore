@@ -43,7 +43,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
         start_time = timezone.datetime.fromisoformat(start_time_str)
 
         submission_time = timezone.now()
-        
+
         # Calculate time held and set it on the instance before saving
         time_held = submission_time - start_time
         form.instance.hold_time = time_held.total_seconds() / 60
@@ -53,6 +53,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
         self.object = form.save()
         messages.success(self.request, "Capture record created successfully.")
         return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
+
 
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
     template_name = "maps/detail.html"
@@ -70,16 +71,12 @@ class ListCaptureRecordView(LoginRequiredMixin, ListView):
     template_name = "maps/list_all.html"
     model = CaptureRecord
     context_object_name = "capture_records"
+    ordering = "-created_at"
 
-    def get_queryset(self):
-        # Return all CaptureRecord objects
-        return CaptureRecord.objects.all()
-    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['SPECIES'] = REFERENCE_DATA.SPECIES
         return context
-
 
 
 class MiniPyleView(TemplateView):
