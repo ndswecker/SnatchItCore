@@ -914,7 +914,7 @@ SPECIES: dict = {
         "scientific_name": "Geothlypis trichas",
         "alpha_code": "COYE",
         "species_number": 6810,
-        "band_sizes": ["0", "0A" "1"],
+        "band_sizes": ["0", "0A", "1"],
         "wing_chord_range": (47, 62),
         "WRP_groups": [3, 8],
         "sexing_criteria": {
@@ -1590,7 +1590,7 @@ WRP_GROUPS: dict = {
         ],
     },
     4: {
-        "description": ("Group 4 - Preformative and prebasic molts complete, " "and no prealternate molts occur."),
+        "description": "Group 4 - Preformative and prebasic molts complete, and no prealternate molts occur.",
         "codes_allowed": [
             "FPJ",
             "FCJ",
@@ -1602,7 +1602,7 @@ WRP_GROUPS: dict = {
     },
     5: {
         "description": (
-            "Group 5 - Preformative and prebasic molts less than complete " "and no prealternate molts occur."
+            "Group 5 - Preformative and prebasic molts less than complete and no prealternate molts occur."
         ),
         "codes_allowed": [
             "FPJ",
