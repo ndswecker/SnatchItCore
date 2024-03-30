@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed
 from django.http import JsonResponse
-from django.views.generic import TemplateView
 from django.utils import timezone
+from django.views.generic import TemplateView
 
 from breeding.forms import StatusForm
 from breeding.models import Status
@@ -64,8 +64,10 @@ def status_view(request):
                 form.save()
             return JsonResponse({"status": "success"})
         else:
-            return JsonResponse({
-                "status": "error",
-                "errors": form.errors,
-            })
+            return JsonResponse(
+                {
+                    "status": "error",
+                    "errors": form.errors,
+                },
+            )
     return HttpResponseNotAllowed(["POST"])

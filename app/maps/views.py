@@ -3,12 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
-from django.utils import timezone
 
 import maps.maps_reference_data as REFERENCE_DATA
 from .forms import CaptureRecordForm
@@ -29,17 +29,17 @@ class CreateCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, CreateV
     def get_initial(self):
         initial = super().get_initial()
         # Set the initial value of 'bander_initials' to the current user's initials
-        initial['bander_initials'] = self.request.user.initials
+        initial["bander_initials"] = self.request.user.initials
         return initial
 
     def get(self, request, *args, **kwargs):
         # Set start time in session when the form is first loaded
-        request.session['form_start_time'] = timezone.now().isoformat()
+        request.session["form_start_time"] = timezone.now().isoformat()
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         # Retrieve start time from session and convert it back to a datetime object
-        start_time_str = self.request.session.pop('form_start_time', None)
+        start_time_str = self.request.session.pop("form_start_time", None)
         start_time = timezone.datetime.fromisoformat(start_time_str)
 
         submission_time = timezone.now()
@@ -75,7 +75,7 @@ class ListCaptureRecordView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['SPECIES'] = REFERENCE_DATA.SPECIES
+        context["SPECIES"] = REFERENCE_DATA.SPECIES
         return context
 
 
@@ -103,6 +103,7 @@ class MiniPyleView(TemplateView):
         )
 
         return context
+
 
 class EditCaptureRecordView(LoginRequiredMixin, ApprovalRequiredMixin, UpdateView):
     model = CaptureRecord

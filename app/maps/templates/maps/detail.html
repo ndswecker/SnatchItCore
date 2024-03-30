@@ -41,10 +41,10 @@
             <div class="card field-set-card odd-set">
               <div class="card-header">Sex Details</div>
               <div class="card-body">
-                <p><strong>Sex:</strong> {{ capture_record.sex }}</p> 
+                <p><strong>Sex:</strong> {{ capture_record.sex }}</p>
                 <p><strong>Cloacal Direction:</strong> {{ capture_record.cloacal_direction }}</p>
                 <p><strong>How Sexed 1:</strong> {{ capture_record.how_sexed_1 }}</p>
-                <p><strong>How Sexed 2:</strong> {{ capture_record.how_sexed_2 }}</p>  
+                <p><strong>How Sexed 2:</strong> {{ capture_record.how_sexed_2 }}</p>
               </div>
             </div>
 
@@ -106,7 +106,7 @@
                 <p><strong>Note:</strong> {{ capture_record.note|default:"N/A" }}</p>
               </div>
             </div>
-            
+
         </div>
         <div class="card-footer text-muted">
             <a href="{% url 'maps:edit_capture_record' pk=capture_record.pk %}" class="btn btn-primary">Edit Record</a>
