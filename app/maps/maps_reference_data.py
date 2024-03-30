@@ -1554,6 +1554,21 @@ SPECIES: dict = {
         },
         "pyle_second_edition_page": 73,
     },
+    5570: {
+        "common_name": "Golden-crowned Sparrow",
+        "scientific_name": "Zonotrichia atricapilla",
+        "alpha_code": "GCSP",
+        "species_number": 5570,
+        "band_sizes": ["1B", "1A"],
+        "wing_chord_range": (71, 83),
+        "WRP_groups": [8],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
+        "pyle_second_edition_page": 510,
+    },
 }
 
 WRP_GROUPS: dict = {
