@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-# Update
-apt update
-apt upgrade -y
-
 # Configure UFW
-source /srv/web/deploy/ufw.sh
+# source /srv/web/deploy/ufw.sh
 
 # Create database
 source /srv/web/deploy/postgres.sh
