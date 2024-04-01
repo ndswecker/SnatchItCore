@@ -201,18 +201,24 @@ class CaptureRecordForm(forms.ModelForm):
     def _clean_alpha_code(self):
         species_number = int(self.cleaned_data.get("species_number"))
         alpha_code = SPECIES[species_number]["alpha_code"]
-        self.instance.alpha_code = alpha_code
+        self.cleaned_data["alpha_code"] = alpha_code
 
     # How aged and how sexed should always have the first option filled in if the second is filled in
     def _clean_how_aged_order(self):
-        if self.instance.how_aged_2 and not self.instance.how_aged_1:
-            self.instance.how_aged_1 = self.instance.how_aged_2
-            self.instance.how_aged_2 = None
+        how_aged_1 = self.cleaned_data.get("how_aged_1")
+        how_aged_2 = self.cleaned_data.get("how_aged_2")
+
+        if not how_aged_1 and how_aged_2:
+            self.cleaned_data["how_aged_1"] = how_aged_2
+            self.cleaned_data["how_aged_2"] = None
 
     def _clean_how_sexed_order(self):
-        if self.instance.how_sexed_2 and not self.instance.how_sexed_1:
-            self.instance.how_sexed_1 = self.instance.how_sexed_2
-            self.instance.how_sexed_2 = None
+        how_sexed_1 = self.cleaned_data.get("how_sexed_1")
+        how_sexed_2 = self.cleaned_data.get("how_sexed_2")
+
+        if not how_sexed_1 and how_sexed_2:
+            self.cleaned_data["how_sexed_1"] = how_sexed_2
+            self.cleaned_data["how_sexed_2"] = None
 
     def _clean_capture_time(self):
         year = int(self.cleaned_data.get("capture_year_day").year)
@@ -221,24 +227,34 @@ class CaptureRecordForm(forms.ModelForm):
         hour = int(self.cleaned_data.get("capture_time_hour"))
         minute = int(self.cleaned_data.get("capture_time_minute"))
 
-        self.instance.capture_time = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+        self.cleaned_data["capture_time"] = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+
+    # Convert bander initials to all uppercase
+    def _clean_bander_initials(self):
+        bander_initials = self.cleaned_data.get("bander_initials")
+        print(f"bander_initials: {bander_initials}")
+        bander_initials = bander_initials.upper()
+        self.cleaned_data["bander_initials"] = bander_initials
+        
+        print(f'bander initials now equals {self.cleaned_data["bander_initials"]}')
 
     def clean(self):
-        cleaned_data = super().clean()
+        super().clean()
 
         self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
         self._clean_capture_time()
+        self._clean_bander_initials()
 
-        validator = CaptureRecordFormValidator(cleaned_data=cleaned_data)
+        validator = CaptureRecordFormValidator(cleaned_data=self.cleaned_data)
 
         # Check if 'is_validated' is checked (True means validations are to be enforced)
-        if cleaned_data.get("is_validated", True):
+        if self.cleaned_data.get("is_validated", True):
             validator.validate(raise_errors=True)
         else:
             validator.validate(raise_errors=False)
             discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
             self.instance.discrepancies = discrepancy_string
 
-        return cleaned_data
+        return self.cleaned_data
