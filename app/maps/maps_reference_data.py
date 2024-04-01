@@ -2036,12 +2036,12 @@ BREEDING_STATUSES = {
     "Ps": {
         "code": "Ps",
         "description": "Probable Breeder. Song/drumming",
-        "rank": 4
+        "rank": 4,
     },
     "Ob": {
         "code": "Ob",
         "description": "Observed. Banded/Captured",
-        "rank": 3
+        "rank": 3,
     },
     "Oe": {
         "code": "Oe",
