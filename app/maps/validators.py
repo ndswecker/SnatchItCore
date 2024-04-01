@@ -513,9 +513,10 @@ def validate_death_to_status(form_data: dict):
     if status != 0:
         raise ValidationError(
             {
-                "disposition": "Dead birds must have a status of 000"
-            }
+                "disposition": "Dead birds must have a status of 000",
+            },
         )
+
 
 def validate_death_has_note(form_data: dict):
     disposition = form_data.get("disposition")
@@ -527,8 +528,8 @@ def validate_death_has_note(form_data: dict):
     if not note:
         raise ValidationError(
             {
-                "note": "Dead birds must have a note"
-            }
+                "note": "Dead birds must have a note",
+            },
         )
 
 
