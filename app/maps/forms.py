@@ -68,12 +68,31 @@ class CaptureRecordForm(forms.ModelForm):
             self.fields["capture_time_minute"].initial = instance.capture_time.strftime("%M")
             instance.discrepancies = ""
 
+        self.fields["cloacal_protuberance"].label = "CP"
+        self.fields["brood_patch"].label = "BP"
+        self.fields["juv_body_plumage"].label = "Juvenile Only"
+        self.fields["body_plumage"].label = "Body Plum."
+
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
         self.helper.form_method = "post"
         self.helper.layout = Layout(
             Fieldset(
-                "",
+                "Location Date & Time",
+                Row(
+                    Column("net", css_class="col-3"),
+                    Column("station", css_class="col-4"),
+                    Column("bander_initials", css_class="col-5"),
+                ),
+                Row(
+                    Column("capture_year_day", css_class="col-4"),
+                    Column("capture_time_hour", css_class="col-4"),
+                    Column("capture_time_minute", css_class="col-4"),
+                ),
+                css_class="fieldset-container odd-set",
+            ),
+            Fieldset(
+                "Species",
                 Row(
                     Column("capture_code", css_class="col-6"),
                     Column("species_number", css_class="col-6"),
@@ -82,22 +101,10 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("band_size", css_class="col-6"),
                     Column("band_number", css_class="col-6"),
                 ),
-                css_class="fieldset-container odd-set",
-            ),
-            Fieldset(
-                "",
-                Row(
-                    Column("age_annual", css_class="col-6"),
-                    Column("age_WRP", css_class="col-6"),
-                ),
-                Row(
-                    Column("how_aged_1", css_class="col-6"),
-                    Column("how_aged_2", css_class="col-6"),
-                ),
                 css_class="fieldset-container even-set",
             ),
             Fieldset(
-                "",
+                "Sexing",
                 Row(
                     Column("sex", css_class="col-6"),
                     Column("cloacal_direction", css_class="col-6"),
@@ -109,29 +116,26 @@ class CaptureRecordForm(forms.ModelForm):
                 css_class="fieldset-container odd-set",
             ),
             Fieldset(
-                "",
+                "Morphometrics",
                 Row(
-                    Column("skull", css_class="col-12"),
+                    Column("cloacal_protuberance", css_class="col-4"),
+                    Column("brood_patch", css_class="col-4"),
+                    Column("fat", css_class="col-4"),
                 ),
                 Row(
-                    Column("cloacal_protuberance", css_class="col-6"),
-                    Column("brood_patch", css_class="col-6"),
+                    Column("body_molt", css_class="col-4"),
+                    Column("ff_molt", css_class="col-4"),
+                    Column("ff_wear", css_class="col-4"),
                 ),
                 Row(
-                    Column("fat", css_class="col-6"),
-                    Column("body_molt", css_class="col-6"),
-                ),
-                Row(
-                    Column("ff_molt", css_class="col-6"),
-                    Column("ff_wear", css_class="col-6"),
-                ),
-                Row(
-                    Column("juv_body_plumage", css_class="col-12"),
+                    Column("wing_chord", css_class="col-4"),
+                    Column("skull", css_class="col-4"),
+                    Column("juv_body_plumage", css_class="col-4"),
                 ),
                 css_class="fieldset-container even-set",
             ),
             Fieldset(
-                "",
+                "Molt Limits & Plumage",
                 Row(
                     Column("primary_coverts", css_class="col-6"),
                     Column("secondary_coverts", css_class="col-6"),
@@ -150,28 +154,23 @@ class CaptureRecordForm(forms.ModelForm):
                 css_class="fieldset-container odd-set",
             ),
             Fieldset(
-                "",
+                "Aging",
                 Row(
-                    Column("wing_chord", css_class="col-6"),
-                    Column("body_mass", css_class="col-6"),
+                    Column("age_annual", css_class="col-6"),
+                    Column("age_WRP", css_class="col-6"),
                 ),
                 Row(
-                    Column("status", css_class="col-6"),
-                    Column("disposition", css_class="col-6"),
+                    Column("how_aged_1", css_class="col-6"),
+                    Column("how_aged_2", css_class="col-6"),
                 ),
                 css_class="fieldset-container even-set",
             ),
             Fieldset(
-                "",
+                "Weight & Status",
                 Row(
-                    Column("net", css_class="col-4"),
-                    Column("station", css_class="col-4"),
-                    Column("bander_initials", css_class="col-4"),
-                ),
-                Row(
-                    Column("capture_year_day", css_class="col-4"),
-                    Column("capture_time_hour", css_class="col-4"),
-                    Column("capture_time_minute", css_class="col-4"),
+                    Column("body_mass", css_class="col-4"),
+                    Column("status", css_class="col-4"),
+                    Column("disposition", css_class="col-4"),
                 ),
                 css_class="fieldset-container odd-set",
             ),
