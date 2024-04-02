@@ -235,8 +235,7 @@ class CaptureRecordForm(forms.ModelForm):
         print(f"bander_initials: {bander_initials}")
         bander_initials = bander_initials.upper()
         self.cleaned_data["bander_initials"] = bander_initials
-        
-        print(f'bander initials now equals {self.cleaned_data["bander_initials"]}')
+    
 
     def clean(self):
         super().clean()
