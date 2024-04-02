@@ -1726,7 +1726,7 @@ DISPOSTIONS = {
     },
 }
 
-AGES_ANNUAL = {
+AGES_ANNUAL: dict = {
     "4": {
         "maps": {
             "code": "4",
@@ -1758,6 +1758,7 @@ AGES_ANNUAL = {
             "code": "AHY",
             "description": "After Hatching Year",
         },
+        "allowed_wrp_codes": ["MFCF", "MFPA", "MFCA", "MSPB"],
     },
     "5": {
         "maps": {
@@ -1768,7 +1769,7 @@ AGES_ANNUAL = {
             "code": "SY",
             "description": "Second Year",
         },
-        "allowed_wrp_codes": ["FCF", "FPA", "FCA", "SPB"],
+        "allowed_wrp_codes": ["FCF", "FPA", "FCA", "FCU", "SPB"],
     },
     "6": {
         "maps": {
@@ -1790,7 +1791,7 @@ AGES_ANNUAL = {
             "code": "TY",
             "description": "Third Year",
         },
-        "allowed_wrp_codes": ["MSCB", "SCB", "DPA", "DCA", "MTCB", "TCB" "4PB"],
+        "allowed_wrp_codes": ["MSCB", "SCB", "DPA", "DCA", "MTCB", "TCB", "4PB"],
     },
     "8": {
         "maps": {
@@ -1801,6 +1802,7 @@ AGES_ANNUAL = {
             "code": "ATY",
             "description": "After Third Year",
         },
+        "allowed_wrp_codes": ["DPB", "DCB", "DCU"],
     },
     "0": {
         "maps": {
@@ -1822,6 +1824,90 @@ AGES_ANNUAL = {
             "code": "U",
             "description": "Unknown",  # Assuming 'U' is equivalent to 'Not attempted'
         },
+        "allowed_wrp_codes": ["UCU"],
+    },
+}
+
+AGES_WRP: dict = {
+    "FPJ": {
+        "description": "First prejuvenile molt",
+        "detail": "(FPJ) First prejuvenile molt"
+    },
+    "FCJ": {
+        "description": "First cycle juvenile plumage",
+        "detail": "(FCJ) First cycle juvenile plumage"
+    },
+    "FPF": {
+        "description": "First preformative molt",
+        "detail": "(FPF) First preformative molt"
+    },
+    "FCF": {
+        "description": "First cycle formative plumage",
+        "detail": "(FCF) First cycle formative plumage"
+    },
+    "MFCF": {
+        "description": "Minimum first cycle formative",
+        "detail": "(M-FCF) Minimum first cycle formative"
+    },
+    "FPA": {
+        "description": "First prealternate molt",
+        "detail": "(FPA) First prealternate molt"
+    },
+    "MFPA": {
+        "description": "Minimum first cycle prealternate",
+        "detail": "(M-FPA) Minimum first cycle prealternate"
+    },
+    "FCA": {
+        "description": "First cycle alternate plumage",
+        "detail": "(FCA) First cycle alternate plumage"
+    },
+    "MFCA": {
+        "description": "Minimum first cycle alternate",
+        "detail": "(M-FCA) Minimum first cycle alternate"
+    },
+    "SPB": {
+        "description": "Second prebasic molt",
+        "detail": "(SPB) Second prebasic molt"
+    },
+    "MSPB": {
+        "description": "Minimum second prebasic molt",
+        "detail": "(M-SPB) Minimum second prebasic molt"
+    },
+    "SCB": {
+        "description": "Second cycle basic plumage",
+        "detail": "(SCB) Second cycle basic plumage"
+    },
+    "DPB": {
+        "description": "Definitive prebasic molt",
+        "detail": "(DPB) Definitive prebasic molt"
+    },
+    "DCB": {
+        "description": "Definitive cycle basic plumage",
+        "detail": "(DCB) Definitive cycle basic plumage"
+    },
+    "DPA": {
+        "description": "Definitive prealternate molt",
+        "detail": "(DPA) Definitive prealternate molt"
+    },
+    "DCA": {
+        "description": "Definitive cycle alternate plumage",
+        "detail": "(DCA) Definitive cycle alternate plumage"
+    },
+    "TPB": {
+        "description": "Third prebasic molt",
+        "detail": "(TPB) Third prebasic molt"
+    },
+    "FCU": {
+        "description": "First cycle unknown plumage",
+        "detail": "(FCU) First cycle unknown plumage"
+    },
+    "DCU": {
+        "description": "Definitive cycle unknown plumage",
+        "detail": "(DCU) Definitive cycle unknown plumage"
+    },
+    "UCU": {
+        "description": "Unknown cycle unknown plumage",
+        "detail": "(UCU) Unknown cycle unknown plumage"
     },
 }
 
