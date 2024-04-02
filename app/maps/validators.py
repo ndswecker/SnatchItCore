@@ -534,7 +534,7 @@ def validate_death_has_note(form_data: dict):
         )
     
 def validate_age_annual_to_allowed_wrp(form_data: dict):
-    age_annual = form_data.get("age_annual")
+    age_annual = str(form_data.get("age_annual"))
     age_wrp = form_data.get("age_WRP")
 
     allowed_wrp_codes = AGES_ANNUAL[age_annual]["allowed_wrp_codes"]
