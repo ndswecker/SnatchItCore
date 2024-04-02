@@ -4,8 +4,11 @@ from django.test import TestCase
 from maps.validators import validate_band_number_to_size
 from maps.validators import validate_juv_aging_plumage_not_p
 from maps.validators import validate_wrp_allowed_for_species
+from maps.validators import validate_age_annual_to_allowed_wrp
 from maps.maps_reference_data import WRP_GROUPS
 from maps.maps_reference_data import SPECIES
+from maps.maps_reference_data import AGES_ANNUAL
+from maps.maps_reference_data import AGES_WRP
 
 
 class TestValidateJuvAging(TestCase):
@@ -112,3 +115,61 @@ class TestValidateWrpAllowedForSpecies(TestCase):
                     validate_wrp_allowed_for_species(form_data)
                 except ValidationError:
                     self.fail(f"Validation failed for {form_data}. {code} should be allowed for species {species_number}.")
+
+class TestValidateAgeAnnualToAgeWRP(TestCase):
+    def test_valid_age_annual_wrp_combinations(self):
+        # Test valid combinations of age_annual and age_wrp
+        for age_annual, data in AGES_ANNUAL.items():
+            for age_wrp in data["allowed_wrp_codes"]:
+                with self.subTest(age_annual=age_annual, age_wrp=age_wrp):
+                    form_data = {"age_annual": age_annual, "age_WRP": age_wrp}
+                    # Should not raise ValidationError
+                    validate_age_annual_to_allowed_wrp(form_data)
+
+    def test_invalid_age_annual_wrp_combinations(self):
+        # Assuming "UCU" is a WRP code that is not valid for any of the ages except "0" and "9"
+        invalid_wrp_code = "UCU"
+        for age_annual in AGES_ANNUAL:
+            if invalid_wrp_code not in AGES_ANNUAL[age_annual]["allowed_wrp_codes"]:
+                with self.subTest(age_annual=age_annual, age_wrp=invalid_wrp_code):
+                    form_data = {"age_annual": age_annual, "age_WRP": invalid_wrp_code}
+                    # Should raise ValidationError
+                    with self.assertRaises(ValidationError):
+                        validate_age_annual_to_allowed_wrp(form_data)
+
+    def test_age_4(self):
+        age_annual= "4"
+        valid_wrp_code = "FPJ"
+
+        for wrp_code in AGES_WRP.keys():
+            form_data = {
+                "age_annual": age_annual,
+                "age_WRP": wrp_code
+            }
+            if wrp_code == valid_wrp_code:
+                try:
+                    validate_age_annual_to_allowed_wrp(form_data)
+                except ValidationError:
+                    self.fail(f"Validation incorrectly failed for WRP code {wrp_code} with age annual {age_annual}")
+            else:
+                with self.assertRaises(ValidationError):
+                    validate_age_annual_to_allowed_wrp(form_data)
+
+    def test_age_2(self):
+        age_annual = "2"
+        valid_wrp_codes = AGES_ANNUAL[age_annual]["allowed_wrp_codes"]
+
+        for wrp_code in AGES_WRP.keys():
+            form_data = {
+                "age_annual": age_annual,
+                "age_WRP": wrp_code
+            }
+            if wrp_code in valid_wrp_codes:
+                try:
+                    validate_age_annual_to_allowed_wrp(form_data)
+                except ValidationError:
+                    self.fail(f"Validation incorrectly failed for WRP code {wrp_code} with age annual {age_annual}")
+            else:
+                with self.assertRaises(ValidationError):
+                    validate_age_annual_to_allowed_wrp(form_data)
+    
