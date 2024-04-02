@@ -1736,6 +1736,7 @@ AGES_ANNUAL = {
             "code": "L",
             "description": "Local",
         },
+        "allowed_wrp_codes": ["FPJ"],
     },
     "2": {
         "maps": {
@@ -1746,6 +1747,7 @@ AGES_ANNUAL = {
             "code": "HY",
             "description": "Hatching Year",
         },
+        "allowed_wrp_codes": ["FPJ", "FCJ", "FPF", "FCF"],
     },
     "1": {
         "maps": {
@@ -1766,6 +1768,7 @@ AGES_ANNUAL = {
             "code": "SY",
             "description": "Second Year",
         },
+        "allowed_wrp_codes": ["FCF", "FPA", "FCA", "SPB"],
     },
     "6": {
         "maps": {
@@ -1776,6 +1779,7 @@ AGES_ANNUAL = {
             "code": "ASY",
             "description": "After Second Year",
         },
+        "allowed_wrp_codes": ["DPA", "MDCA", "DCA", "DPB", "DCB", "DCU"],
     },
     "7": {
         "maps": {
@@ -1786,6 +1790,7 @@ AGES_ANNUAL = {
             "code": "TY",
             "description": "Third Year",
         },
+        "allowed_wrp_codes": ["MSCB", "SCB", "DPA", "DCA", "MTCB", "TCB" "4PB"],
     },
     "8": {
         "maps": {
@@ -1806,6 +1811,7 @@ AGES_ANNUAL = {
             "code": "U",
             "description": "Unknown",
         },
+        "allowed_wrp_codes": ["UCU"],
     },
     "9": {
         "maps": {
