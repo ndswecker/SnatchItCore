@@ -31,6 +31,7 @@ AGE_WRP_CHOICES = [
     ("FCF", "(FCF) First cycle formative plumage"),
     ("MFCF", "(M-FCF) Minimum first cycle formative"),
     ("FPA", "(FPA) First prealternate molt"),
+    ("MFPA", "(M-FPA) Minimum first cycle prealternate"),
     ("FCA", "(FCA) First cycle alternate plumage"),
     ("MFCA", "(M-FCA) Minimum first cycle alternate"),
     ("SPB", "(SPB) Second prebasic molt"),
