@@ -19,7 +19,10 @@ class TestModels(TestCase):
 
         self.capture_record = CaptureRecord.objects.create(
             user=self.user,
+            bander_initials="ACC",
+            net=14,
             capture_code="N",
+            band_number=123056789,
             species_number=5810,
             age_annual=1,
             age_WRP="MFCF",
@@ -27,7 +30,6 @@ class TestModels(TestCase):
             capture_time=datetime.datetime.now(),
             station="MORS",
             band_size="1B",
-            location="MORS",
         )
 
     def test_capture_record(self):

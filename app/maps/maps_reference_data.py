@@ -31,6 +31,21 @@ SPECIES: dict = {
         },
         "pyle_second_edition_page": 527,
     },
+    9999: {
+        "common_name": "California Quail",
+        "scientific_name": "Californicus quilus",
+        "alpha_code": "CAQU",
+        "species_number": 9999,
+        "band_sizes": [],
+        "wing_chord_range": (),
+        "WRP_groups": [],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
+        "pyle_second_edition_page": 527,
+    },
     6460: {
         "common_name": "Orange-crowned Warbler",
         "scientific_name": "Leiothlypis celata lutescens",
@@ -1584,7 +1599,6 @@ WRP_GROUPS: dict = {
             "FCF",
             "SPB",
             "DCB",
-            "DPB",
             "MFCF",
             "MSPB",
         ],
@@ -1595,7 +1609,6 @@ WRP_GROUPS: dict = {
             "FPJ",
             "FCJ",
             "FPF",
-            "FCF",
             "MFCF",
             "MSPB",
         ],
@@ -1728,8 +1741,8 @@ DISPOSTIONS = {
     },
 }
 
-AGES_ANNUAL = {
-    "4": {
+AGES_ANNUAL: dict = {
+    4: {
         "maps": {
             "code": "4",
             "description": "Local (incapable of sustained flight)",
@@ -1738,8 +1751,9 @@ AGES_ANNUAL = {
             "code": "L",
             "description": "Local",
         },
+        "allowed_wrp_codes": ["FPJ"],
     },
-    "2": {
+    2: {
         "maps": {
             "code": "2",
             "description": "Hatch Year (HY)",
@@ -1748,8 +1762,9 @@ AGES_ANNUAL = {
             "code": "HY",
             "description": "Hatching Year",
         },
+        "allowed_wrp_codes": ["FPJ", "FCJ", "FPF", "FCF"],
     },
-    "1": {
+    1: {
         "maps": {
             "code": "1",
             "description": "After Hatch Year (AHY)",
@@ -1758,8 +1773,9 @@ AGES_ANNUAL = {
             "code": "AHY",
             "description": "After Hatching Year",
         },
+        "allowed_wrp_codes": ["MFCF", "MFPA", "MFCA", "MSPB"],
     },
-    "5": {
+    5: {
         "maps": {
             "code": "5",
             "description": "Second Year (SY)",
@@ -1768,8 +1784,9 @@ AGES_ANNUAL = {
             "code": "SY",
             "description": "Second Year",
         },
+        "allowed_wrp_codes": ["FCF", "FPA", "FCA", "FCU", "SPB"],
     },
-    "6": {
+    6: {
         "maps": {
             "code": "6",
             "description": "After Second Year (ASY)",
@@ -1778,8 +1795,9 @@ AGES_ANNUAL = {
             "code": "ASY",
             "description": "After Second Year",
         },
+        "allowed_wrp_codes": ["DPA", "MDCA", "DCA", "DPB", "DCB", "DCU"],
     },
-    "7": {
+    7: {
         "maps": {
             "code": "7",
             "description": "Third Year (TY)",
@@ -1788,8 +1806,9 @@ AGES_ANNUAL = {
             "code": "TY",
             "description": "Third Year",
         },
+        "allowed_wrp_codes": ["MSCB", "SCB", "DPA", "DCA", "MTCB", "TCB", "4PB"],
     },
-    "8": {
+    8: {
         "maps": {
             "code": "8",
             "description": "After Third Year (ATY)",
@@ -1798,8 +1817,9 @@ AGES_ANNUAL = {
             "code": "ATY",
             "description": "After Third Year",
         },
+        "allowed_wrp_codes": ["DPB", "DCB", "DCU"],
     },
-    "0": {
+    0: {
         "maps": {
             "code": "0",
             "description": "Indeterminable Age",
@@ -1808,8 +1828,9 @@ AGES_ANNUAL = {
             "code": "U",
             "description": "Unknown",
         },
+        "allowed_wrp_codes": ["UCU"],
     },
-    "9": {
+    9: {
         "maps": {
             "code": "9",
             "description": "Not attempted",
@@ -1818,6 +1839,90 @@ AGES_ANNUAL = {
             "code": "U",
             "description": "Unknown",  # Assuming 'U' is equivalent to 'Not attempted'
         },
+        "allowed_wrp_codes": ["UCU"],
+    },
+}
+
+AGES_WRP: dict = {
+    "FPJ": {
+        "description": "First prejuvenile molt",
+        "detail": "(FPJ) First prejuvenile molt"
+    },
+    "FCJ": {
+        "description": "First cycle juvenile plumage",
+        "detail": "(FCJ) First cycle juvenile plumage"
+    },
+    "FPF": {
+        "description": "First preformative molt",
+        "detail": "(FPF) First preformative molt"
+    },
+    "FCF": {
+        "description": "First cycle formative plumage",
+        "detail": "(FCF) First cycle formative plumage"
+    },
+    "MFCF": {
+        "description": "Minimum first cycle formative",
+        "detail": "(M-FCF) Minimum first cycle formative"
+    },
+    "FPA": {
+        "description": "First prealternate molt",
+        "detail": "(FPA) First prealternate molt"
+    },
+    "MFPA": {
+        "description": "Minimum first cycle prealternate",
+        "detail": "(M-FPA) Minimum first cycle prealternate"
+    },
+    "FCA": {
+        "description": "First cycle alternate plumage",
+        "detail": "(FCA) First cycle alternate plumage"
+    },
+    "MFCA": {
+        "description": "Minimum first cycle alternate",
+        "detail": "(M-FCA) Minimum first cycle alternate"
+    },
+    "SPB": {
+        "description": "Second prebasic molt",
+        "detail": "(SPB) Second prebasic molt"
+    },
+    "MSPB": {
+        "description": "Minimum second prebasic molt",
+        "detail": "(M-SPB) Minimum second prebasic molt"
+    },
+    "SCB": {
+        "description": "Second cycle basic plumage",
+        "detail": "(SCB) Second cycle basic plumage"
+    },
+    "DPB": {
+        "description": "Definitive prebasic molt",
+        "detail": "(DPB) Definitive prebasic molt"
+    },
+    "DCB": {
+        "description": "Definitive cycle basic plumage",
+        "detail": "(DCB) Definitive cycle basic plumage"
+    },
+    "DPA": {
+        "description": "Definitive prealternate molt",
+        "detail": "(DPA) Definitive prealternate molt"
+    },
+    "DCA": {
+        "description": "Definitive cycle alternate plumage",
+        "detail": "(DCA) Definitive cycle alternate plumage"
+    },
+    "TPB": {
+        "description": "Third prebasic molt",
+        "detail": "(TPB) Third prebasic molt"
+    },
+    "FCU": {
+        "description": "First cycle unknown plumage",
+        "detail": "(FCU) First cycle unknown plumage"
+    },
+    "DCU": {
+        "description": "Definitive cycle unknown plumage",
+        "detail": "(DCU) Definitive cycle unknown plumage"
+    },
+    "UCU": {
+        "description": "Unknown cycle unknown plumage",
+        "detail": "(UCU) Unknown cycle unknown plumage"
     },
 }
 
