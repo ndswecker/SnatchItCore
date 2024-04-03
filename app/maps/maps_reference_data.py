@@ -31,6 +31,21 @@ SPECIES: dict = {
         },
         "pyle_second_edition_page": 527,
     },
+    9999: {
+        "common_name": "California Quail",
+        "scientific_name": "Californicus quilus",
+        "alpha_code": "CAQU",
+        "species_number": 9999,
+        "band_sizes": [],
+        "wing_chord_range": (),
+        "WRP_groups": [],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
+        "pyle_second_edition_page": 527,
+    },
     6460: {
         "common_name": "Orange-crowned Warbler",
         "scientific_name": "Leiothlypis celata lutescens",
