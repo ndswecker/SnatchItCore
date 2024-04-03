@@ -1727,7 +1727,7 @@ DISPOSTIONS = {
 }
 
 AGES_ANNUAL: dict = {
-    "4": {
+    4: {
         "maps": {
             "code": "4",
             "description": "Local (incapable of sustained flight)",
@@ -1738,7 +1738,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["FPJ"],
     },
-    "2": {
+    2: {
         "maps": {
             "code": "2",
             "description": "Hatch Year (HY)",
@@ -1749,7 +1749,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["FPJ", "FCJ", "FPF", "FCF"],
     },
-    "1": {
+    1: {
         "maps": {
             "code": "1",
             "description": "After Hatch Year (AHY)",
@@ -1760,7 +1760,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["MFCF", "MFPA", "MFCA", "MSPB"],
     },
-    "5": {
+    5: {
         "maps": {
             "code": "5",
             "description": "Second Year (SY)",
@@ -1771,7 +1771,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["FCF", "FPA", "FCA", "FCU", "SPB"],
     },
-    "6": {
+    6: {
         "maps": {
             "code": "6",
             "description": "After Second Year (ASY)",
@@ -1782,7 +1782,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["DPA", "MDCA", "DCA", "DPB", "DCB", "DCU"],
     },
-    "7": {
+    7: {
         "maps": {
             "code": "7",
             "description": "Third Year (TY)",
@@ -1793,7 +1793,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["MSCB", "SCB", "DPA", "DCA", "MTCB", "TCB", "4PB"],
     },
-    "8": {
+    8: {
         "maps": {
             "code": "8",
             "description": "After Third Year (ATY)",
@@ -1804,7 +1804,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["DPB", "DCB", "DCU"],
     },
-    "0": {
+    0: {
         "maps": {
             "code": "0",
             "description": "Indeterminable Age",
@@ -1815,7 +1815,7 @@ AGES_ANNUAL: dict = {
         },
         "allowed_wrp_codes": ["UCU"],
     },
-    "9": {
+    9: {
         "maps": {
             "code": "9",
             "description": "Not attempted",
