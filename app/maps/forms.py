@@ -6,6 +6,7 @@ from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
 from django import forms
 from django.utils import timezone
+from django.utils.dateparse import parse_time
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
 from maps.choice_definitions import SPECIES_CHOICES
@@ -15,22 +16,11 @@ from maps.validators import CaptureRecordFormValidator
 
 
 class CaptureRecordForm(forms.ModelForm):
-    capture_time_hour = forms.ChoiceField(
-        label="Hr",
-        choices=[("", "Select hour...")] + [(str(i), f"{i:02d}") for i in range(0, 24)],
-        required=True,
-    )
 
     capture_year_day = forms.DateField(
         label="Date",
         widget=forms.DateInput(attrs={"type": "date"}),
         initial=timezone.now().date(),
-    )
-
-    capture_time_minute = forms.ChoiceField(
-        label="Min",
-        choices=[("", "Select minute...")] + [(str(i), f"{i:02d}") for i in range(0, 60, 10)],
-        required=True,
     )
 
     capture_code = forms.ChoiceField(
@@ -55,6 +45,17 @@ class CaptureRecordForm(forms.ModelForm):
         ),
     )
 
+    input_time = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={
+                "class": "timepicker",
+                "type": "time",
+            },
+        ),
+        label="Time",
+        required=True,
+    )
+
     def __init__(self, *args, **kwargs):
         # Extract the instance from kwargs if it's there
         instance = kwargs.get("instance", None)
@@ -63,15 +64,15 @@ class CaptureRecordForm(forms.ModelForm):
 
         # Check if there's an instance to work with (i.e., we are editing an existing record)
         if instance:
-            # Set the initial values for hour and minute fields based on the instance's capture_time
-            self.fields["capture_time_hour"].initial = instance.capture_time.hour
-            self.fields["capture_time_minute"].initial = instance.capture_time.strftime("%M")
+            # Set the initial value for the input_time field based on the instance's capture_time
+            self.fields["input_time"].initial = instance.capture_time.strftime("%H:%M")
             instance.discrepancies = ""
 
         self.fields["cloacal_protuberance"].label = "CP"
         self.fields["brood_patch"].label = "BP"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
+        self.fields["input_time"].initial = timezone.now().time().replace(second=0, microsecond=0)
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -85,9 +86,8 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("bander_initials", css_class="col-5"),
                 ),
                 Row(
-                    Column("capture_year_day", css_class="col-4"),
-                    Column("capture_time_hour", css_class="col-4"),
-                    Column("capture_time_minute", css_class="col-4"),
+                    Column("capture_year_day", css_class="col-6"),
+                    Column("input_time", css_class="col-6")
                 ),
                 css_class="fieldset-container odd-set",
             ),
@@ -224,11 +224,20 @@ class CaptureRecordForm(forms.ModelForm):
         year = int(self.cleaned_data.get("capture_year_day").year)
         month = int(self.cleaned_data.get("capture_year_day").month)
         day = int(self.cleaned_data.get("capture_year_day").day)
-        hour = int(self.cleaned_data.get("capture_time_hour"))
-        minute = int(self.cleaned_data.get("capture_time_minute"))
+        hour = int(self.cleaned_data.get("input_time").strftime("%H"))
+        minute = int(self.cleaned_data.get("input_time").strftime("%M"))
 
-        self.cleaned_data["capture_time"] = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+        print(f"IN CLEANED CAPTURE TIME: h: {hour}, m: {minute}")
 
+        # Combine the date and time to form the complete capture_time
+        self.cleaned_data["capture_time"] = timezone.datetime(
+                year=year,
+                month=month,
+                day=day,
+                hour=hour,
+                minute=minute,
+            )
+        
     # Convert bander initials to all uppercase
     def _clean_bander_initials(self):
         bander_initials = self.cleaned_data.get("bander_initials")
