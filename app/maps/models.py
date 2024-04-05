@@ -251,6 +251,8 @@ class CaptureRecord(BaseModel):
 
     capture_time = models.DateTimeField(
         default=timezone.now,
+        null=True,
+        blank=True,
     )
 
     hold_time = models.DecimalField(
