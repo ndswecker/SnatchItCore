@@ -1,3 +1,4 @@
+import datetime
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Column
 from crispy_forms.layout import Fieldset
@@ -230,15 +231,13 @@ class CaptureRecordForm(forms.ModelForm):
         print(f"IN CLEANED CAPTURE TIME: h: {hour}, m: {minute}")
 
         # Combine the date and time to form the complete capture_time
-        self.cleaned_data["capture_time"] = timezone.datetime(
+        self.cleaned_data["capture_time"] = datetime.datetime(
                 year=year,
                 month=month,
                 day=day,
                 hour=hour,
                 minute=minute,
-                second=0,
-                tzinfo=timezone.get_current_timezone(),
-            )
+        )
         
     # Convert bander initials to all uppercase
     def _clean_bander_initials(self):
