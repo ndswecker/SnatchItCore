@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Calculate current time rounded down to the nearest 10 minutes
-    const now = new Date();
-    now.setMinutes(Math.floor(now.getMinutes() / 10) * 10);
-    now.setSeconds(0);
+    // const now = new Date();
+    // now.setMinutes(Math.floor(now.getMinutes() / 10) * 10);
+    // now.setSeconds(0);
 
     flatpickr(".timepicker", {
         enableTime: true,
         noCalendar: true,
         dateFormat: "H:i",
         minuteIncrement: 10,
-        defaultDate: now,
+        // defaultDate: now,
         onClose: function(selectedDates, dateStr, instance) {
             console.log("Called onClose")
             if (selectedDates.length > 0) {

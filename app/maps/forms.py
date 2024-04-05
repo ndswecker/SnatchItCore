@@ -236,6 +236,8 @@ class CaptureRecordForm(forms.ModelForm):
                 day=day,
                 hour=hour,
                 minute=minute,
+                second=0,
+                tzinfo=timezone.get_current_timezone(),
             )
         
     # Convert bander initials to all uppercase
