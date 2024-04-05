@@ -74,6 +74,7 @@ class CaptureRecordForm(forms.ModelForm):
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
         self.fields["input_time"].initial = timezone.now().time().replace(second=0, microsecond=0)
+        self.fields["capture_time"].initial = timezone.now()
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -194,7 +195,7 @@ class CaptureRecordForm(forms.ModelForm):
             "scribe_initials",
             "alpha_code",
             "discrepancies",
-            "capture_time",
+            # "capture_time",
             "hold_time",
         ]
 
@@ -220,6 +221,13 @@ class CaptureRecordForm(forms.ModelForm):
         if not how_sexed_1 and how_sexed_2:
             self.cleaned_data["how_sexed_1"] = how_sexed_2
             self.cleaned_data["how_sexed_2"] = None
+        
+    # Convert bander initials to all uppercase
+    def _clean_bander_initials(self):
+        bander_initials = self.cleaned_data.get("bander_initials")
+        print(f"bander_initials: {bander_initials}")
+        bander_initials = bander_initials.upper()
+        self.cleaned_data["bander_initials"] = bander_initials
 
     def _clean_capture_time(self):
         year = int(self.cleaned_data.get("capture_year_day").year)
@@ -238,14 +246,16 @@ class CaptureRecordForm(forms.ModelForm):
                 hour=hour,
                 minute=minute,
         )
-        
-    # Convert bander initials to all uppercase
-    def _clean_bander_initials(self):
-        bander_initials = self.cleaned_data.get("bander_initials")
-        print(f"bander_initials: {bander_initials}")
-        bander_initials = bander_initials.upper()
-        self.cleaned_data["bander_initials"] = bander_initials
     
+    # def save(self, commit=True):
+    #     # Use the combined capture_time from cleaned_data
+    #     if "capture_time" in self.cleaned_data:
+    #         self.instance.capture_time = self.cleaned_data["capture_time"]
+
+    #     return super().save(commit=commit)
+    
+    def clean_capture_time(self):
+        print("Im CLEANING THIS SHITTY CAPTURE TIME")
 
     def clean(self):
         super().clean()
@@ -264,6 +274,10 @@ class CaptureRecordForm(forms.ModelForm):
         else:
             validator.validate(raise_errors=False)
             discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
-            self.instance.discrepancies = discrepancy_string
+            print(f"discrepancy_string: {discrepancy_string}")
+            # self.instance.discrepancies = discrepancy_string
+            # discrepancies = self.cleaned_data.get("discrepancies", "")
+            self.cleaned_data["discrepancies"] = discrepancy_string
+
 
         return self.cleaned_data
