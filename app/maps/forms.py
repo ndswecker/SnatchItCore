@@ -57,6 +57,9 @@ class CaptureRecordForm(forms.ModelForm):
         required=True,
     )
 
+    alpha_code = forms.CharField(widget=forms.HiddenInput(), required=False)
+    discrepancies = forms.CharField(widget=forms.HiddenInput(), required=False)
+
     def __init__(self, *args, **kwargs):
         # Extract the instance from kwargs if it's there
         instance = kwargs.get("instance", None)
@@ -75,6 +78,8 @@ class CaptureRecordForm(forms.ModelForm):
         self.fields["body_plumage"].label = "Body Plum."
         self.fields["input_time"].initial = timezone.now().time().replace(second=0, microsecond=0)
         self.fields["capture_time"].initial = timezone.now()
+        self.fields["alpha_code"].widget = forms.HiddenInput()
+        self.fields["discrepancies"].widget = forms.HiddenInput()
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -190,12 +195,10 @@ class CaptureRecordForm(forms.ModelForm):
     class Meta:
         model = CaptureRecord
         fields = "__all__"
+        # The view will handle setting the user, scribe_initials, and hold_time fields
         exclude = [
             "user",
             "scribe_initials",
-            "alpha_code",
-            "discrepancies",
-            # "capture_time",
             "hold_time",
         ]
 
@@ -236,26 +239,17 @@ class CaptureRecordForm(forms.ModelForm):
         hour = int(self.cleaned_data.get("input_time").strftime("%H"))
         minute = int(self.cleaned_data.get("input_time").strftime("%M"))
 
-        print(f"IN CLEANED CAPTURE TIME: h: {hour}, m: {minute}")
-
         # Combine the date and time to form the complete capture_time
-        self.cleaned_data["capture_time"] = datetime.datetime(
-                year=year,
-                month=month,
-                day=day,
-                hour=hour,
-                minute=minute,
+        naive_datetime = datetime.datetime(
+            year=year,
+            month=month,
+            day=day,
+            hour=hour,
+            minute=minute,
         )
-    
-    # def save(self, commit=True):
-    #     # Use the combined capture_time from cleaned_data
-    #     if "capture_time" in self.cleaned_data:
-    #         self.instance.capture_time = self.cleaned_data["capture_time"]
 
-    #     return super().save(commit=commit)
-    
-    def clean_capture_time(self):
-        print("Im CLEANING THIS SHITTY CAPTURE TIME")
+        # Make the datetime object timezone-aware
+        self.cleaned_data["capture_time"] = timezone.make_aware(naive_datetime)
 
     def clean(self):
         super().clean()
@@ -274,9 +268,6 @@ class CaptureRecordForm(forms.ModelForm):
         else:
             validator.validate(raise_errors=False)
             discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
-            print(f"discrepancy_string: {discrepancy_string}")
-            # self.instance.discrepancies = discrepancy_string
-            # discrepancies = self.cleaned_data.get("discrepancies", "")
             self.cleaned_data["discrepancies"] = discrepancy_string
 
 
