@@ -15,6 +15,12 @@ class USGSSerializer:
     def get_month(self):
         # format the month to always be 2 digits
         return f"{self.capture_record.capture_time.month:02d}"
+    
+    # USGS Uses the age alpha code rather than the number
+    def get_age_annual(self):
+        age_number = self.capture_record.age_annual
+        age_code = AGES_ANNUAL[age_number]["usgs"]["code"]
+        return age_code
 
     def get_how_aged(self):
         if not self.capture_record.how_aged_1:
@@ -51,10 +57,15 @@ class USGSSerializer:
         return self.capture_record.skull or ""
 
     def get_body_molt(self):
-        return self.capture_record.body_molt or ""
+        molt = self.capture_record.body_molt
+        return "Y" if molt and molt >= 1 else "N"
 
     def get_ff_molt(self):
-        return self.capture_record.ff_molt or ""
+        molt = self.capture_record.ff_molt
+        return "Y" if molt and molt in ["A", "S", "J"] else "N"
+    
+    def get_scribe(self):
+        return self.capture_record.scribe_initials
 
     def serialize(self) -> dict:
         """Serialize a CaptureRecord to a dict"""
@@ -65,7 +76,7 @@ class USGSSerializer:
             "Banding Year": self.capture_record.capture_time.year,
             "Banding Month": self.get_month(),
             "Banding Day": self.capture_record.capture_time.day,
-            "Age": self.capture_record.age_annual,
+            "Age": self.get_age_annual(),
             "How Aged": self.get_how_aged(),
             "Sex": self.get_sex(),
             "How Sexed": self.get_usgs_how_sexed_code(),
@@ -75,7 +86,7 @@ class USGSSerializer:
             "Replaced Band Number": None,
             "Reward Band Number": None,
             "Bander ID": self.capture_record.bander_initials,
-            "Scribe": self.capture_record.scribe,
+            "Scribe": self.get_scribe(),
             "How Captured": self.get_capture_method(),
             "Capture Time Enter or Paste Here": None,
             "Capture Time": self.get_capture_time(),
