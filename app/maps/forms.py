@@ -1,4 +1,5 @@
 import datetime
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Column
 from crispy_forms.layout import Fieldset
@@ -95,7 +96,7 @@ class CaptureRecordForm(forms.ModelForm):
                 ),
                 Row(
                     Column("capture_year_day", css_class="col-6"),
-                    Column("input_time", css_class="col-6")
+                    Column("input_time", css_class="col-6"),
                 ),
                 css_class="fieldset-container odd-set",
             ),
@@ -226,7 +227,7 @@ class CaptureRecordForm(forms.ModelForm):
         if not how_sexed_1 and how_sexed_2:
             self.cleaned_data["how_sexed_1"] = how_sexed_2
             self.cleaned_data["how_sexed_2"] = None
-        
+
     # Convert bander initials to all uppercase
     def clean_bander_initials(self):
         bander_initials = self.cleaned_data.get("bander_initials")
@@ -252,7 +253,6 @@ class CaptureRecordForm(forms.ModelForm):
 
         # Make the datetime object timezone-aware
         self.cleaned_data["capture_time"] = timezone.make_aware(naive_datetime)
-        
 
     def clean(self):
         super().clean()
@@ -270,6 +270,5 @@ class CaptureRecordForm(forms.ModelForm):
             validator.validate(raise_errors=False)
             discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
             self.cleaned_data["discrepancies"] = discrepancy_string
-
 
         return self.cleaned_data
