@@ -1728,6 +1728,10 @@ DISPOSTIONS = {
             "description": "Unbanded Bird",
             "code": "U",
         },
+        "usgs": {
+            "description": "Unbanded, not used",
+            "code": "none",
+        }
     },
     "C": {
         "maps": {
