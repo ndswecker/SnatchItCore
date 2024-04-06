@@ -24,7 +24,7 @@ SPECIES: dict = {
         "band_sizes": [],
         "wing_chord_range": (0, 0),
         "WRP_groups": [],
-        "sexing_criteria": {}, 
+        "sexing_criteria": {},
         "pyle_second_edition_page": 0,
     },
     -2: {
@@ -1899,7 +1899,7 @@ DISPOSTIONS: dict = {
         "usgs": {
             "description": "Unbanded, not used",
             "code": "none",
-        }
+        },
     },
     "C": {
         "maps": {

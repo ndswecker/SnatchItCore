@@ -11,9 +11,7 @@ CAPTURE_CODE_CHOICES = [
 ]
 
 SPECIES_CHOICES = [
-    (k, f"{v['alpha_code']} - {v['common_name']}")
-    for k, v in sorted(REFERENCE_DATA.SPECIES.items())
-    if k > 2730
+    (k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(REFERENCE_DATA.SPECIES.items()) if k > 2730
 ]
 
 AGE_ANNUAL_CHOICES = [
