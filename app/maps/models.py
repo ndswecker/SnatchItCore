@@ -33,10 +33,6 @@ class CaptureRecord(BaseModel):
     )
 
     species_number = models.IntegerField(
-        validators=[
-            MinValueValidator(1000, message="Species number must be at least 4 digits long."),
-            MaxValueValidator(9999, message="Species number must be less than 5 digits."),
-        ],
         choices=SPECIES_CHOICES,
         default=5810,
     )

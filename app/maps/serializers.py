@@ -15,7 +15,7 @@ class USGSSerializer:
     def get_month(self):
         # format the month to always be 2 digits
         return f"{self.capture_record.capture_time.month:02d}"
-    
+
     # USGS Uses the age alpha code rather than the number
     def get_age_annual(self):
         age_number = self.capture_record.age_annual
@@ -63,7 +63,7 @@ class USGSSerializer:
     def get_ff_molt(self):
         molt = self.capture_record.ff_molt
         return "Y" if molt and molt in ["A", "S", "J"] else "N"
-    
+
     def get_scribe(self):
         return self.capture_record.scribe_initials
 
