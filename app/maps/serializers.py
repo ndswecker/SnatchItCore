@@ -15,6 +15,12 @@ class USGSSerializer:
     def get_month(self):
         # format the month to always be 2 digits
         return f"{self.capture_record.capture_time.month:02d}"
+    
+    # USGS Uses the age alpha code rather than the number
+    def get_age_annual(self):
+        age_number = self.capture_record.age_annual
+        age_code = AGES_ANNUAL[age_number]["usgs"]["code"]
+        return age_code
 
     def get_how_aged(self):
         if not self.capture_record.how_aged_1:
@@ -68,7 +74,7 @@ class USGSSerializer:
             "Banding Year": self.capture_record.capture_time.year,
             "Banding Month": self.get_month(),
             "Banding Day": self.capture_record.capture_time.day,
-            "Age": self.capture_record.age_annual,
+            "Age": self.get_age_annual(),
             "How Aged": self.get_how_aged(),
             "Sex": self.get_sex(),
             "How Sexed": self.get_usgs_how_sexed_code(),
