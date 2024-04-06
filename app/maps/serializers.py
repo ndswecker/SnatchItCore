@@ -57,7 +57,8 @@ class USGSSerializer:
         return self.capture_record.skull or ""
 
     def get_body_molt(self):
-        return self.capture_record.body_molt or ""
+        molt = self.capture_record.body_molt
+        return "Y" if molt and molt >= 1 else "N"
 
     def get_ff_molt(self):
         return self.capture_record.ff_molt or ""
