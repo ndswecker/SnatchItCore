@@ -76,6 +76,7 @@ class CaptureRecordForm(forms.ModelForm):
         self.fields["brood_patch"].label = "BP"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
+        self.fields["capture_year_day"].initial = timezone.now().date()
         self.fields["input_time"].initial = timezone.now().time().replace(second=0, microsecond=0)
         self.fields["capture_time"].initial = timezone.now()
         self.fields["alpha_code"].widget = forms.HiddenInput()
@@ -203,10 +204,11 @@ class CaptureRecordForm(forms.ModelForm):
         ]
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
-    def _clean_alpha_code(self):
+    def clean_alpha_code(self):
         species_number = int(self.cleaned_data.get("species_number"))
         alpha_code = SPECIES[species_number]["alpha_code"]
         self.cleaned_data["alpha_code"] = alpha_code
+        return alpha_code
 
     # How aged and how sexed should always have the first option filled in if the second is filled in
     def _clean_how_aged_order(self):
@@ -226,11 +228,11 @@ class CaptureRecordForm(forms.ModelForm):
             self.cleaned_data["how_sexed_2"] = None
         
     # Convert bander initials to all uppercase
-    def _clean_bander_initials(self):
+    def clean_bander_initials(self):
         bander_initials = self.cleaned_data.get("bander_initials")
-        print(f"bander_initials: {bander_initials}")
-        bander_initials = bander_initials.upper()
-        self.cleaned_data["bander_initials"] = bander_initials
+        if bander_initials:
+            bander_initials = bander_initials.upper()
+        return bander_initials
 
     def _clean_capture_time(self):
         year = int(self.cleaned_data.get("capture_year_day").year)
@@ -250,15 +252,14 @@ class CaptureRecordForm(forms.ModelForm):
 
         # Make the datetime object timezone-aware
         self.cleaned_data["capture_time"] = timezone.make_aware(naive_datetime)
+        
 
     def clean(self):
         super().clean()
 
-        self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
         self._clean_capture_time()
-        self._clean_bander_initials()
 
         validator = CaptureRecordFormValidator(cleaned_data=self.cleaned_data)
 
