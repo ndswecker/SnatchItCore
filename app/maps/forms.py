@@ -6,6 +6,7 @@ from crispy_forms.layout import Fieldset
 from crispy_forms.layout import Layout
 from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
+from crispy_forms.layout import HTML
 from django import forms
 from django.utils import timezone
 
@@ -126,9 +127,11 @@ class CaptureRecordForm(forms.ModelForm):
             Fieldset(
                 "Morphometrics",
                 Row(
-                    Column("cloacal_protuberance", css_class="col-4"),
-                    Column("brood_patch", css_class="col-4"),
-                    Column("fat", css_class="col-4"),
+                    Column("cloacal_protuberance", css_class="col-6"),
+                    Column("brood_patch", css_class="col-6"),
+                ),
+                Row(
+                    Column("fat", css_class="col-6"),
                 ),
                 Row(
                     Column("body_molt", css_class="col-4"),
