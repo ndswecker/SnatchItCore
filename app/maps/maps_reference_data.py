@@ -16,6 +16,189 @@ STATION_LOCATIONS: dict = {
 }
 
 SPECIES: dict = {
+    -1: {
+        "common_name": "Plain Chachalaca",
+        "scientific_name": "Ortalis vetula",
+        "alpha_code": "PLCH",
+        "species_number": -1,
+        "band_sizes": [],
+        "wing_chord_range": (0, 0),
+        "WRP_groups": [],
+        "sexing_criteria": {}, 
+        "pyle_second_edition_page": 0,
+    },
+    -2: {
+        "common_name": "Chukar",
+        "scientific_name": "Alectoris chukar",
+        "alpha_code": "CHUK",
+        "species_number": -2,
+        "band_sizes": [],
+        "wing_chord_range": (0, 0),
+        "WRP_groups": [],
+        "sexing_criteria": {},
+        "pyle_second_edition_page": 0,
+    },
+    -3: {
+        "common_name": "Himalayan Snowcock",
+        "scientific_name": "Tetraogallus himalayensis",
+        "alpha_code": "HISN",
+        "species_number": -3,
+        # ... additional properties ...
+    },
+    -4: {
+        "common_name": "Gray Partridge",
+        "scientific_name": "Perdix perdix",
+        "alpha_code": "GRAP",
+        "species_number": -4,
+        # ... additional properties ...
+    },
+    -5: {
+        "common_name": "Ring-necked Pheasant",
+        "scientific_name": "Phasianus colchicus",
+        "alpha_code": "RNEP",
+        "species_number": -5,
+        # ... additional properties ...
+    },
+    -6: {
+        "common_name": "Common Peafowl",
+        "scientific_name": "Pavo cristatus",
+        "alpha_code": "CPEA",
+        "species_number": -6,
+        # ... additional properties ...
+    },
+    -7: {
+        "common_name": "Ruffed Grouse",
+        "scientific_name": "Bonasa umbellus",
+        "alpha_code": "RUGR",
+        "species_number": -7,
+        # ... additional properties ...
+    },
+    -8: {
+        "common_name": "Greater Sage-Grouse",
+        "scientific_name": "Centrocercus urophasianus",
+        "alpha_code": "GRSG",
+        "species_number": -8,
+        # ... additional properties ...
+    },
+    -9: {
+        "common_name": "Spruce Grouse",
+        "scientific_name": "Falcipennis canadensis",
+        "alpha_code": "SPGR",
+        "species_number": -9,
+        # ... additional properties ...
+    },
+    -10: {
+        "common_name": "Willow Ptarmigan",
+        "scientific_name": "Lagopus lagopus",
+        "alpha_code": "WIPT",
+        "species_number": -10,
+        # ... additional properties ...
+    },
+    -11: {
+        "common_name": "Rock Ptarmigan",
+        "scientific_name": "Lagopus muta",
+        "alpha_code": "ROPT",
+        "species_number": -11,
+        # ... additional properties ...
+    },
+    -12: {
+        "common_name": "White-tailed Ptarmigan",
+        "scientific_name": "Lagopus leucura",
+        "alpha_code": "WTPT",
+        "species_number": -12,
+        # ... additional properties ...
+    },
+    -13: {
+        "common_name": "Ruffed Grouse",
+        "scientific_name": "Bonasa umbellus",
+        "alpha_code": "RUGR",
+        "species_number": -13,
+        # ... additional properties ...
+    },
+    -14: {
+        "common_name": "Dusky Grouse",
+        "scientific_name": "Dendragapus obscurus",
+        "alpha_code": "DUGR",
+        "species_number": -14,
+        # ... additional properties ...
+    },
+    -15: {
+        "common_name": "Sooty Grouse",
+        "scientific_name": "Dendragapus fuliginosus",
+        "alpha_code": "SOGR",
+        "species_number": -15,
+        # ... additional properties ...
+    },
+    -16: {
+        "common_name": "Sharp-tailed Grouse",
+        "scientific_name": "Tympanuchus phasianellus",
+        "alpha_code": "STGR",
+        "species_number": -16,
+        # ... additional properties ...
+    },
+    -17: {
+        "common_name": "Greater Prairie-Chicken",
+        "scientific_name": "Tympanuchus cupido",
+        "alpha_code": "GRPC",
+        "species_number": -17,
+        # ... additional properties ...
+    },
+    -18: {
+        "common_name": "Lesser Prairie-Chicken",
+        "scientific_name": "Tympanuchus pallidicinctus",
+        "alpha_code": "LEPC",
+        "species_number": -18,
+        # ... additional properties ...
+    },
+    -19: {
+        "common_name": "Wild Turkey",
+        "scientific_name": "Meleagris gallopavo",
+        "alpha_code": "WITU",
+        "species_number": -19,
+        # ... additional properties ...
+    },
+    -20: {
+        "common_name": "Wild Turkey",
+        "scientific_name": "Meleagris gallopavo",
+        "alpha_code": "WITU",
+        "species_number": -20,
+        # ... additional properties ...
+    },
+    -21: {
+        "common_name": "Scaled Quail",
+        "scientific_name": "Callipepla squamata",
+        "alpha_code": "SCQU",
+        "species_number": -21,
+        # ... additional properties ...
+    },
+    -22: {
+        "common_name": "California Quail",
+        "scientific_name": "Callipepla californica",
+        "alpha_code": "CAQU",
+        "species_number": -22,
+        # ... additional properties ...
+    },
+    -23: {
+        "common_name": "Gambel's Quail",
+        "scientific_name": "Callipepla gambelii",
+        "alpha_code": "GAQU",
+        "species_number": -23,
+        # ... additional properties ...
+    },
+    -24: {
+        "common_name": "Northern Bobwhite",
+        "scientific_name": "Colinus virginianus",
+        "alpha_code": "NOBO",
+        "species_number": -24,
+        # ... additional properties ...
+    },
+    -25: {
+        "common_name": "Montezuma Quail",
+        "scientific_name": "Cyrtonyx montezumae",
+        "alpha_code": "MOQU",
+        "species_number": -25,
+        # ... additional properties ...
+    },
     5810: {
         "common_name": "Song Sparrow",
         "scientific_name": "Melospiza melodia",
@@ -24,21 +207,6 @@ SPECIES: dict = {
         "band_sizes": ["1B"],
         "wing_chord_range": (50, 90),
         "WRP_groups": [3, 4],
-        "sexing_criteria": {
-            "female_by_BP": True,
-            "male_by_CP": True,
-            "plumage_dimorphism": False,
-        },
-        "pyle_second_edition_page": 527,
-    },
-    9999: {
-        "common_name": "California Quail",
-        "scientific_name": "Californicus quilus",
-        "alpha_code": "CAQU",
-        "species_number": 9999,
-        "band_sizes": [],
-        "wing_chord_range": (),
-        "WRP_groups": [],
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
