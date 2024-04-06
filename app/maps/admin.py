@@ -48,7 +48,8 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         writer.writerow(USGSSerializer(queryset.first()).serialize().keys())
         for obj in queryset:
-            if obj.capture_code == "U":
+            # Skip records with capture code "U" and "R"
+            if obj.capture_code in ["U", "R"]:
                 continue  # Skip this record and move on to the next one
             writer.writerow(USGSSerializer(obj).serialize().values())
         return response
