@@ -8,7 +8,6 @@ from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
 from django import forms
 from django.utils import timezone
-from django.utils.dateparse import parse_time
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
 from maps.choice_definitions import SPECIES_CHOICES

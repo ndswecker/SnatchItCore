@@ -543,7 +543,7 @@ def validate_age_annual_to_allowed_wrp(form_data: dict):
     if age_wrp not in allowed_wrp_codes:
         raise ValidationError(
             {
-                "age_WRP": f"The age {age_annual} does not correspond to the WRP code {age_wrp}. Allowed codes are {', '.join(allowed_wrp_codes)}.",
+                "age_WRP": f"The age {age_annual} does not correspond to the WRP code {age_wrp}. Allowed codes are {', '.join(allowed_wrp_codes)}.",  # noqa E501
             },
         )
 
