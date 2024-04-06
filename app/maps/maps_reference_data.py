@@ -1846,83 +1846,83 @@ AGES_ANNUAL: dict = {
 AGES_WRP: dict = {
     "FPJ": {
         "description": "First prejuvenile molt",
-        "detail": "(FPJ) First prejuvenile molt"
+        "detail": "(FPJ) First prejuvenile molt",
     },
     "FCJ": {
         "description": "First cycle juvenile plumage",
-        "detail": "(FCJ) First cycle juvenile plumage"
+        "detail": "(FCJ) First cycle juvenile plumage",
     },
     "FPF": {
         "description": "First preformative molt",
-        "detail": "(FPF) First preformative molt"
+        "detail": "(FPF) First preformative molt",
     },
     "FCF": {
         "description": "First cycle formative plumage",
-        "detail": "(FCF) First cycle formative plumage"
+        "detail": "(FCF) First cycle formative plumage",
     },
     "MFCF": {
         "description": "Minimum first cycle formative",
-        "detail": "(M-FCF) Minimum first cycle formative"
+        "detail": "(M-FCF) Minimum first cycle formative",
     },
     "FPA": {
         "description": "First prealternate molt",
-        "detail": "(FPA) First prealternate molt"
+        "detail": "(FPA) First prealternate molt",
     },
     "MFPA": {
         "description": "Minimum first cycle prealternate",
-        "detail": "(M-FPA) Minimum first cycle prealternate"
+        "detail": "(M-FPA) Minimum first cycle prealternate",
     },
     "FCA": {
         "description": "First cycle alternate plumage",
-        "detail": "(FCA) First cycle alternate plumage"
+        "detail": "(FCA) First cycle alternate plumage",
     },
     "MFCA": {
         "description": "Minimum first cycle alternate",
-        "detail": "(M-FCA) Minimum first cycle alternate"
+        "detail": "(M-FCA) Minimum first cycle alternate",
     },
     "SPB": {
         "description": "Second prebasic molt",
-        "detail": "(SPB) Second prebasic molt"
+        "detail": "(SPB) Second prebasic molt",
     },
     "MSPB": {
         "description": "Minimum second prebasic molt",
-        "detail": "(M-SPB) Minimum second prebasic molt"
+        "detail": "(M-SPB) Minimum second prebasic molt",
     },
     "SCB": {
         "description": "Second cycle basic plumage",
-        "detail": "(SCB) Second cycle basic plumage"
+        "detail": "(SCB) Second cycle basic plumage",
     },
     "DPB": {
         "description": "Definitive prebasic molt",
-        "detail": "(DPB) Definitive prebasic molt"
+        "detail": "(DPB) Definitive prebasic molt",
     },
     "DCB": {
         "description": "Definitive cycle basic plumage",
-        "detail": "(DCB) Definitive cycle basic plumage"
+        "detail": "(DCB) Definitive cycle basic plumage",
     },
     "DPA": {
         "description": "Definitive prealternate molt",
-        "detail": "(DPA) Definitive prealternate molt"
+        "detail": "(DPA) Definitive prealternate molt",
     },
     "DCA": {
         "description": "Definitive cycle alternate plumage",
-        "detail": "(DCA) Definitive cycle alternate plumage"
+        "detail": "(DCA) Definitive cycle alternate plumage",
     },
     "TPB": {
         "description": "Third prebasic molt",
-        "detail": "(TPB) Third prebasic molt"
+        "detail": "(TPB) Third prebasic molt",
     },
     "FCU": {
         "description": "First cycle unknown plumage",
-        "detail": "(FCU) First cycle unknown plumage"
+        "detail": "(FCU) First cycle unknown plumage",
     },
     "DCU": {
         "description": "Definitive cycle unknown plumage",
-        "detail": "(DCU) Definitive cycle unknown plumage"
+        "detail": "(DCU) Definitive cycle unknown plumage",
     },
     "UCU": {
         "description": "Unknown cycle unknown plumage",
-        "detail": "(UCU) Unknown cycle unknown plumage"
+        "detail": "(UCU) Unknown cycle unknown plumage",
     },
 }
 

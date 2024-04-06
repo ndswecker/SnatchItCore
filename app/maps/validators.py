@@ -1,10 +1,10 @@
 from django.core.validators import ValidationError
 
 from common.validators import FormValidator
+from maps.maps_reference_data import AGES_ANNUAL
 from maps.maps_reference_data import SPECIES
 from maps.maps_reference_data import STATION_LOCATIONS
 from maps.maps_reference_data import WRP_GROUPS
-from maps.maps_reference_data import AGES_ANNUAL
 
 
 def validate_how_aged_by_plumage(form_data: dict):
@@ -532,7 +532,8 @@ def validate_death_has_note(form_data: dict):
                 "note": "Dead birds must have a note",
             },
         )
-    
+
+
 def validate_age_annual_to_allowed_wrp(form_data: dict):
     age_annual = int(form_data.get("age_annual"))
     age_wrp = form_data.get("age_WRP")
@@ -542,8 +543,7 @@ def validate_age_annual_to_allowed_wrp(form_data: dict):
     if age_wrp not in allowed_wrp_codes:
         raise ValidationError(
             {
-                "age_WRP": 
-                f"The age {age_annual} does not correspond to the WRP code {age_wrp}. Allowed codes are {', '.join(allowed_wrp_codes)}."
+                "age_WRP": f"The age {age_annual} does not correspond to the WRP code {age_wrp}. Allowed codes are {', '.join(allowed_wrp_codes)}.",  # noqa E501
             },
         )
 

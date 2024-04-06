@@ -1,3 +1,5 @@
+import datetime
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Column
 from crispy_forms.layout import Fieldset
@@ -15,22 +17,11 @@ from maps.validators import CaptureRecordFormValidator
 
 
 class CaptureRecordForm(forms.ModelForm):
-    capture_time_hour = forms.ChoiceField(
-        label="Hr",
-        choices=[("", "Select hour...")] + [(str(i), f"{i:02d}") for i in range(0, 24)],
-        required=True,
-    )
 
     capture_year_day = forms.DateField(
         label="Date",
         widget=forms.DateInput(attrs={"type": "date"}),
         initial=timezone.now().date(),
-    )
-
-    capture_time_minute = forms.ChoiceField(
-        label="Min",
-        choices=[("", "Select minute...")] + [(str(i), f"{i:02d}") for i in range(0, 60, 10)],
-        required=True,
     )
 
     capture_code = forms.ChoiceField(
@@ -55,6 +46,20 @@ class CaptureRecordForm(forms.ModelForm):
         ),
     )
 
+    input_time = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={
+                "class": "timepicker",
+                "type": "time",
+            },
+        ),
+        label="Time",
+        required=True,
+    )
+
+    alpha_code = forms.CharField(widget=forms.HiddenInput(), required=False)
+    discrepancies = forms.CharField(widget=forms.HiddenInput(), required=False)
+
     def __init__(self, *args, **kwargs):
         # Extract the instance from kwargs if it's there
         instance = kwargs.get("instance", None)
@@ -63,15 +68,19 @@ class CaptureRecordForm(forms.ModelForm):
 
         # Check if there's an instance to work with (i.e., we are editing an existing record)
         if instance:
-            # Set the initial values for hour and minute fields based on the instance's capture_time
-            self.fields["capture_time_hour"].initial = instance.capture_time.hour
-            self.fields["capture_time_minute"].initial = instance.capture_time.strftime("%M")
+            # Set the initial value for the input_time field based on the instance's capture_time
+            self.fields["input_time"].initial = instance.capture_time.strftime("%H:%M")
             instance.discrepancies = ""
 
         self.fields["cloacal_protuberance"].label = "CP"
         self.fields["brood_patch"].label = "BP"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
+        self.fields["capture_year_day"].initial = timezone.now().date()
+        self.fields["input_time"].initial = timezone.now().time().replace(second=0, microsecond=0)
+        self.fields["capture_time"].initial = timezone.now()
+        self.fields["alpha_code"].widget = forms.HiddenInput()
+        self.fields["discrepancies"].widget = forms.HiddenInput()
 
         self.helper = FormHelper()
         self.helper.form_class = "my-3"
@@ -85,9 +94,8 @@ class CaptureRecordForm(forms.ModelForm):
                     Column("bander_initials", css_class="col-5"),
                 ),
                 Row(
-                    Column("capture_year_day", css_class="col-4"),
-                    Column("capture_time_hour", css_class="col-4"),
-                    Column("capture_time_minute", css_class="col-4"),
+                    Column("capture_year_day", css_class="col-6"),
+                    Column("input_time", css_class="col-6"),
                 ),
                 css_class="fieldset-container odd-set",
             ),
@@ -188,20 +196,19 @@ class CaptureRecordForm(forms.ModelForm):
     class Meta:
         model = CaptureRecord
         fields = "__all__"
+        # The view will handle setting the user, scribe_initials, and hold_time fields
         exclude = [
             "user",
             "scribe_initials",
-            "alpha_code",
-            "discrepancies",
-            "capture_time",
             "hold_time",
         ]
 
     # Users should not be filling in the alpha_code field, so we will fill it in for them
-    def _clean_alpha_code(self):
+    def clean_alpha_code(self):
         species_number = int(self.cleaned_data.get("species_number"))
         alpha_code = SPECIES[species_number]["alpha_code"]
         self.cleaned_data["alpha_code"] = alpha_code
+        return alpha_code
 
     # How aged and how sexed should always have the first option filled in if the second is filled in
     def _clean_how_aged_order(self):
@@ -220,31 +227,38 @@ class CaptureRecordForm(forms.ModelForm):
             self.cleaned_data["how_sexed_1"] = how_sexed_2
             self.cleaned_data["how_sexed_2"] = None
 
+    # Convert bander initials to all uppercase
+    def clean_bander_initials(self):
+        bander_initials = self.cleaned_data.get("bander_initials")
+        if bander_initials:
+            bander_initials = bander_initials.upper()
+        return bander_initials
+
     def _clean_capture_time(self):
         year = int(self.cleaned_data.get("capture_year_day").year)
         month = int(self.cleaned_data.get("capture_year_day").month)
         day = int(self.cleaned_data.get("capture_year_day").day)
-        hour = int(self.cleaned_data.get("capture_time_hour"))
-        minute = int(self.cleaned_data.get("capture_time_minute"))
+        hour = int(self.cleaned_data.get("input_time").strftime("%H"))
+        minute = int(self.cleaned_data.get("input_time").strftime("%M"))
 
-        self.cleaned_data["capture_time"] = timezone.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+        # Combine the date and time to form the complete capture_time
+        naive_datetime = datetime.datetime(
+            year=year,
+            month=month,
+            day=day,
+            hour=hour,
+            minute=minute,
+        )
 
-    # Convert bander initials to all uppercase
-    def _clean_bander_initials(self):
-        bander_initials = self.cleaned_data.get("bander_initials")
-        print(f"bander_initials: {bander_initials}")
-        bander_initials = bander_initials.upper()
-        self.cleaned_data["bander_initials"] = bander_initials
-    
+        # Make the datetime object timezone-aware
+        self.cleaned_data["capture_time"] = timezone.make_aware(naive_datetime)
 
     def clean(self):
         super().clean()
 
-        self._clean_alpha_code()
         self._clean_how_aged_order()
         self._clean_how_sexed_order()
         self._clean_capture_time()
-        self._clean_bander_initials()
 
         validator = CaptureRecordFormValidator(cleaned_data=self.cleaned_data)
 
@@ -254,6 +268,6 @@ class CaptureRecordForm(forms.ModelForm):
         else:
             validator.validate(raise_errors=False)
             discrepancy_string = "\n".join(validator.validation_errors).strip("\n")
-            self.instance.discrepancies = discrepancy_string
+            self.cleaned_data["discrepancies"] = discrepancy_string
 
         return self.cleaned_data

@@ -6,8 +6,7 @@ class CaptureRecordFormTest(TestCase):
 
     def test_valid_form_submission(self):
         form_data = {
-            "capture_time_hour": "12",
-            "capture_time_minute": "30",
+            "input_time": timezone.now().strftime("%H:%M"),
             "capture_year_day": timezone.now().date(),
             "capture_code": "N",
             "species_number": 5810,
