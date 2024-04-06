@@ -61,7 +61,8 @@ class USGSSerializer:
         return "Y" if molt and molt >= 1 else "N"
 
     def get_ff_molt(self):
-        return self.capture_record.ff_molt or ""
+        molt = self.capture_record.ff_molt
+        return "Y" if molt and molt in ["A", "S", "J"] else "N"
     
     def get_scribe(self):
         return self.capture_record.scribe_initials
