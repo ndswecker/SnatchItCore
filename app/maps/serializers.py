@@ -55,6 +55,9 @@ class USGSSerializer:
 
     def get_ff_molt(self):
         return self.capture_record.ff_molt or ""
+    
+    def get_scribe(self):
+        return self.capture_record.scribe_initials
 
     def serialize(self) -> dict:
         """Serialize a CaptureRecord to a dict"""
@@ -75,7 +78,7 @@ class USGSSerializer:
             "Replaced Band Number": None,
             "Reward Band Number": None,
             "Bander ID": self.capture_record.bander_initials,
-            "Scribe": self.capture_record.scribe,
+            "Scribe": self.get_scribe(),
             "How Captured": self.get_capture_method(),
             "Capture Time Enter or Paste Here": None,
             "Capture Time": self.get_capture_time(),
