@@ -1850,7 +1850,7 @@ WRP_GROUPS: dict = {
     },
 }
 
-DISPOSTIONS = {
+DISPOSTIONS: dict = {
     "N": {
         "maps": {
             "description": "New Bird",
@@ -2098,7 +2098,7 @@ AGES_WRP: dict = {
     },
 }
 
-HOW_AGE_DETERMINED = {
+HOW_AGE_DETERMINED: dict = {
     "S": {
         "maps": {
             "code": "S",
@@ -2229,52 +2229,50 @@ HOW_AGE_DETERMINED = {
     },
 }
 
-SEXES = (
-    {
-        "M": {
-            "maps": {
-                "code": "M",
-                "description": "Male",
-            },
-            "usgs": {
-                "code": "M",
-                "description": "Male",
-            },
+SEXES: dict = {
+    "M": {
+        "maps": {
+            "code": "M",
+            "description": "Male",
         },
-        "F": {
-            "maps": {
-                "code": "F",
-                "description": "Female",
-            },
-            "usgs": {
-                "code": "F",
-                "description": "Female",
-            },
-        },
-        "U": {
-            "maps": {
-                "code": "U",
-                "description": "Unknown",
-            },
-            "usgs": {
-                "code": "U",
-                "description": "Unknown",
-            },
-        },
-        "X": {
-            "maps": {
-                "code": "X",
-                "description": "Not Attempted",
-            },
-            "usgs": {
-                "code": "U",
-                "description": "Unknown",
-            },
+        "usgs": {
+            "code": "M",
+            "description": "Male",
         },
     },
-)
+    "F": {
+        "maps": {
+            "code": "F",
+            "description": "Female",
+        },
+        "usgs": {
+            "code": "F",
+            "description": "Female",
+        },
+    },
+    "U": {
+        "maps": {
+            "code": "U",
+            "description": "Unknown",
+        },
+        "usgs": {
+            "code": "U",
+            "description": "Unknown",
+        },
+    },
+    "X": {
+        "maps": {
+            "code": "X",
+            "description": "Not Attempted",
+        },
+        "usgs": {
+            "code": "U",
+            "description": "Unknown",
+        },
+    },
+}
 
-BREEDING_STATUSES = {
+BREEDING_STATUSES: dict = {
     "Cn": {
         "code": "Cn",
         "description": "Confirmed Breeder. Carrying Nesting Material",
