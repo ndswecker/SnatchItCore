@@ -73,8 +73,9 @@ class CaptureRecordForm(forms.ModelForm):
             self.fields["input_time"].initial = instance.capture_time.strftime("%H:%M")
             instance.discrepancies = ""
 
-        self.fields["cloacal_protuberance"].label = "CP"
-        self.fields["brood_patch"].label = "BP"
+        self.fields["cloacal_protuberance"].label = "CP ℹ"
+        # brood patch label is 'BP' and then info icon
+        self.fields["brood_patch"].label = "BP ℹ"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
         self.fields["capture_year_day"].initial = timezone.now().date()
@@ -127,11 +128,9 @@ class CaptureRecordForm(forms.ModelForm):
             Fieldset(
                 "Morphometrics",
                 Row(
-                    Column("cloacal_protuberance", css_class="col-6"),
-                    Column("brood_patch", css_class="col-6"),
-                ),
-                Row(
-                    Column("fat", css_class="col-6"),
+                    Column("cloacal_protuberance", css_class="col-4"),
+                    Column("brood_patch", css_class="col-4"),
+                    Column("fat", css_class="col-4"),
                 ),
                 Row(
                     Column("body_molt", css_class="col-4"),
