@@ -6,6 +6,7 @@ from crispy_forms.layout import Fieldset
 from crispy_forms.layout import Layout
 from crispy_forms.layout import Row
 from crispy_forms.layout import Submit
+from crispy_forms.layout import Button
 from django import forms
 from django.utils import timezone
 
@@ -29,11 +30,11 @@ class CaptureRecordForm(forms.ModelForm):
         required=True,
     )
 
-    species_number = forms.ChoiceField(
-        label="Species",
-        choices=SPECIES_CHOICES,
-        required=True,
-    )
+    # species_number = forms.ChoiceField(
+    #     label="Species",
+    #     choices=SPECIES_CHOICES,
+    #     required=True,
+    # )
 
     is_validated = forms.BooleanField(
         required=False,
@@ -72,8 +73,11 @@ class CaptureRecordForm(forms.ModelForm):
             self.fields["input_time"].initial = instance.capture_time.strftime("%H:%M")
             instance.discrepancies = ""
 
-        self.fields["cloacal_protuberance"].label = "CP"
-        self.fields["brood_patch"].label = "BP"
+        self.fields["cloacal_protuberance"].label = "CP ℹ"
+        self.fields["brood_patch"].label = "BP ℹ"
+        self.fields["ff_wear"].label = "FF Wear ℹ"
+        self.fields["fat"].label = "Fat ℹ"
+        self.fields["skull"].label = "Skull ℹ"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
         self.fields["capture_year_day"].initial = timezone.now().date()
@@ -102,12 +106,14 @@ class CaptureRecordForm(forms.ModelForm):
             Fieldset(
                 "Species",
                 Row(
-                    Column("capture_code", css_class="col-6"),
-                    Column("species_number", css_class="col-6"),
+                    Column("capture_code", css_class="col-8"),
+                    Column("band_size", css_class="col-4"),
                 ),
                 Row(
-                    Column("band_size", css_class="col-6"),
-                    Column("band_number", css_class="col-6"),
+                    Column("species_number", css_class="col-12"),
+                ),
+                Row(
+                    Column("band_number", css_class="col-12"),
                 ),
                 css_class="fieldset-container even-set",
             ),
