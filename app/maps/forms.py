@@ -30,11 +30,11 @@ class CaptureRecordForm(forms.ModelForm):
         required=True,
     )
 
-    species_number = forms.ChoiceField(
-        label="Species",
-        choices=SPECIES_CHOICES,
-        required=True,
-    )
+    # species_number = forms.ChoiceField(
+    #     label="Species",
+    #     choices=SPECIES_CHOICES,
+    #     required=True,
+    # )
 
     is_validated = forms.BooleanField(
         required=False,
@@ -77,6 +77,7 @@ class CaptureRecordForm(forms.ModelForm):
         self.fields["brood_patch"].label = "BP ℹ"
         self.fields["ff_wear"].label = "FF Wear ℹ"
         self.fields["fat"].label = "Fat ℹ"
+        self.fields["skull"].label = "Skull ℹ"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
         self.fields["capture_year_day"].initial = timezone.now().date()
