@@ -53,3 +53,22 @@
     display: flex;
     flex-direction: row;
 }
+
+.modal-button {
+    padding: 10px 15px; /* Gives the button a comfortable padding */
+    border: none; /* Removes any default border */
+    border-radius: 5px; /* Rounds the corners of the button */
+    background-color: #007bff; /* Bootstrap primary button color */
+    color: white; /* Text color for the button */
+    text-align: center; /* Centers the text within the button */
+    text-decoration: none; /* Removes any underline from the text */
+    display: inline-block; /* Allows you to set padding and margins on the button */
+    font-size: 1rem; /* Sets the size of the text within the button */
+    cursor: pointer; /* Changes the mouse cursor to a pointer on hover */
+    transition: background-color 0.3s; /* Smooth background color transition on hover */
+}
+
+.modal-button:hover, .modal-button:focus {
+    background-color: #0056b3; /* Darkens the button slightly when hovered/focused */
+    outline: none; /* Removes the outline on focus */
+}
