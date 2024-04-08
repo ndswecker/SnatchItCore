@@ -105,12 +105,14 @@ class CaptureRecordForm(forms.ModelForm):
             Fieldset(
                 "Species",
                 Row(
-                    Column("capture_code", css_class="col-6"),
-                    Column("species_number", css_class="col-6"),
+                    Column("capture_code", css_class="col-8"),
+                    Column("band_size", css_class="col-4"),
                 ),
                 Row(
-                    Column("band_size", css_class="col-6"),
-                    Column("band_number", css_class="col-6"),
+                    Column("species_number", css_class="col-12"),
+                ),
+                Row(
+                    Column("band_number", css_class="col-12"),
                 ),
                 css_class="fieldset-container even-set",
             ),
