@@ -74,8 +74,8 @@ class CaptureRecordForm(forms.ModelForm):
             instance.discrepancies = ""
 
         self.fields["cloacal_protuberance"].label = "CP ℹ"
-        # brood patch label is 'BP' and then info icon
         self.fields["brood_patch"].label = "BP ℹ"
+        self.fields["ff_wear"].label = "FF Wear ℹ"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
         self.fields["capture_year_day"].initial = timezone.now().date()
