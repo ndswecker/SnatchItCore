@@ -29,12 +29,6 @@ class CaptureRecordForm(forms.ModelForm):
         required=True,
     )
 
-    # species_number = forms.ChoiceField(
-    #     label="Species",
-    #     choices=SPECIES_CHOICES,
-    #     required=True,
-    # )
-
     is_validated = forms.BooleanField(
         required=False,
         label="Validate this record?",
