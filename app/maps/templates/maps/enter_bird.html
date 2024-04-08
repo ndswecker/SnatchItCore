@@ -12,7 +12,7 @@
 {% block content %}
 <div class="container-fluid m-1 p-1">
     <div class="">
-        <h1 class="text-center">Enter Bird Record</h1>
+        <h1 class="text-center">{% block formTitle %}Enter Bird Record{% endblock %}</h1>
         {% for field in form %}
             {% if field.errors %}
                 <div class="alert alert-danger" role="alert">

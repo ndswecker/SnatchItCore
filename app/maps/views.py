@@ -110,7 +110,7 @@ class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
     model = CaptureRecord
     form_class = CaptureRecordForm
     permission_required = "maps.add_capturerecord"
-    template_name = "maps/enter_bird.html"
+    template_name = "maps/update_bird.html"
     success_url = reverse_lazy("maps:list_capture_records")
 
     def get_queryset(self):
