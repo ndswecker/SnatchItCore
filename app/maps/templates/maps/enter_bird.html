@@ -41,7 +41,7 @@
 {% include "maps/partials/generic_modal.html" with modal_id="bpModal" modal_title="Brood Patch Scores" modal_image_src="/static/img/brood_patch.png" modal_alt_text="Brood Patch" %}
 {% include "maps/partials/generic_modal.html" with modal_id="ffWearModal" modal_title="Flight Feather Wear" modal_image_src="/static/img/feather_wear.png" modal_alt_text="Feather Wear" %}
 {% include "maps/partials/generic_modal.html" with modal_id="fatModal" modal_title="Fat Scores" modal_image_src="/static/img/fat.jpg" modal_alt_text="Fat Scores" %}
-{% include "maps/partials/generic_modal.html" with modal_id="skullModal" modal_title="Skull Scores" modal_image_src="/static/img/skull_pyle.png" modal_alt_text="Skull Scores" %}
+{% include "maps/partials/generic_modal.html" with modal_id="skullModal" modal_title="Skull Scores" modal_image_src="/static/img/skull_full.gif" modal_alt_text="Skull Scores" %}
 
 {% endblock %}
 
@@ -54,5 +54,10 @@
     <script src="{% static 'js/help_images.js' %}"></script>
     <script src="{% static 'js/capture_code.js' %}"></script>
     <script src="{% static 'js/error_alert.js' %}"></script>
-    <script src="{% static 'js/time_picker.js' %}"></script>
+
+    {% block time_picker_js %}
+        <script src="{% static 'js/time_picker.js' %}"></script>
+    {% endblock %}
+    
 {% endblock %}
+

@@ -1,4 +1,15 @@
 {% extends "maps/enter_bird.html" %}
+{% load static %}
 
-{% block title %}{{block.super}}-Update{% endblock %}
-{% block formTitle %} Update Bird {% endblock %}
+{% block title %}Update{% endblock %}
+{% block formTitle %}Update Bird{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <span id="time-info-container" data-datetime="{{ form.instance.capture_time|date:'Y-m-d H:i' }}"></span>
+{% endblock %}
+
+{% block time_picker_js %}
+    <script src="{% static 'js/update_time_picker.js' %}"></script>
+{% endblock %}
+

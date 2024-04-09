@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
         defaultDate: now,
         onClose: function(selectedDates, dateStr, instance) {
             console.log("Called onClose")
+            const timeContainer = document.getElementById('time-info-container');
+            const inputTime = timeContainer.getAttribute('data-input-time');
+            console.log(inputTime); 
+            
             if (selectedDates.length > 0) {
                 // Get the selected date
                 let selectedDate = selectedDates[0];
