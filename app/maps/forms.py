@@ -261,3 +261,9 @@ class CaptureRecordForm(forms.ModelForm):
             self.cleaned_data["discrepancies"] = discrepancy_string
 
         return self.cleaned_data
+    
+class CSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label="Select a CSV file to upload",
+        help_text="The file should only be a previously exported IBP CSV file.",
+    )
