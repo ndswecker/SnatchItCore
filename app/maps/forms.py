@@ -55,16 +55,7 @@ class CaptureRecordForm(forms.ModelForm):
     discrepancies = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def __init__(self, *args, **kwargs):
-        # Extract the instance from kwargs if it's there
-        instance = kwargs.get("instance", None)
-
         super().__init__(*args, **kwargs)
-
-        # Check if there's an instance to work with (i.e., we are editing an existing record)
-        if instance:
-            # Set the initial value for the input_time field based on the instance's capture_time
-            self.fields["input_time"].initial = instance.capture_time.strftime("%H:%M")
-            instance.discrepancies = ""
 
         self.fields["cloacal_protuberance"].label = "CP ℹ"
         self.fields["brood_patch"].label = "BP ℹ"
