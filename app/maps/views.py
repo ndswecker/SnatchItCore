@@ -55,6 +55,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, Creat
         messages.success(self.request, "Capture record created successfully.")
         return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
 
+
 class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = CaptureRecord
     form_class = CaptureRecordForm
@@ -71,6 +72,7 @@ class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
     def form_valid(self, form):
         messages.success(self.request, "Capture record updated successfully.")
         return super().form_valid(form)
+
 
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
     template_name = "maps/detail.html"
@@ -120,4 +122,3 @@ class MiniPyleView(TemplateView):
         )
 
         return context
-
