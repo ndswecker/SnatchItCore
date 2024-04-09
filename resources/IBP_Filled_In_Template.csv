@@ -10,9 +10,3 @@ MORS,0A,1,CX,N,291037533,PSFL,2,JS,FPF,F,P,2,0,0,0,4,N,1,1,J,F,J,J,J,J,J,J,56,7.
 MORS,0A,1,CX,N,291037534,PSFL,2,SJ,HFCF,M,P,3,0,0,1,0,N,0,1,J,F,J,J,J,J,,,61,8.9,300,7/16/2021,820,MORS,8,,,,
 MORS,0,1,JC,N,288070406,CHSP,1,SC,MFCA,M,C,6,3,0,0,0,N,5,,U,U,U,U,U,U,N,,73,12.9,300,6/17/2021,640,MORS,7,,5,,prob sy
 MORS,0,2,EB,N,288070409,YEWA,6,PS,DCA,M,PC,6,2,0,1,0,N,3,,B,B,B,B,A,B,,,62,,300,7/6/2021,1010,MORS,2,,,,escaped at scale
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,etc.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,"*note on  leading zeros in time, net, and note: all three of these fields are stored with a leading zero in our database.",,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,Time is also stored in a 3 digit format. e.g. a time of 7:40 is stored as 074 and a time of 10:10 is stored as 101. ,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,"The suggested format above is what we think might be easiest for operators to translate from most data sheets, but feel free to enter ",,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,"times, nets, and notes with a leading zero.",,,,,,,,,,,,,,,,,,,,,,,,,,
