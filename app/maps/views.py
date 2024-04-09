@@ -56,6 +56,24 @@ class CreateCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, Creat
         return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
 
 
+class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = CaptureRecord
+    form_class = CaptureRecordForm
+    permission_required = "maps.add_capturerecord"
+    template_name = "maps/update_bird.html"
+    success_url = reverse_lazy("maps:list_capture_records")
+
+    def get_queryset(self):
+        # Ensure that only the records created by the logged-in user can be edited.
+        # This overrides the default queryset to apply this restriction.
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Capture record updated successfully.")
+        return super().form_valid(form)
+
+
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
     template_name = "maps/detail.html"
     model = CaptureRecord
@@ -104,21 +122,3 @@ class MiniPyleView(TemplateView):
         )
 
         return context
-
-
-class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    model = CaptureRecord
-    form_class = CaptureRecordForm
-    permission_required = "maps.add_capturerecord"
-    template_name = "maps/enter_bird.html"
-    success_url = reverse_lazy("maps:list_capture_records")
-
-    def get_queryset(self):
-        # Ensure that only the records created by the logged-in user can be edited.
-        # This overrides the default queryset to apply this restriction.
-        queryset = super().get_queryset()
-        return queryset.filter(user=self.request.user)
-
-    def form_valid(self, form):
-        messages.success(self.request, "Capture record updated successfully.")
-        return super().form_valid(form)
