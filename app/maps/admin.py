@@ -34,6 +34,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
     actions = [
         "export_csv_usgs",
         "export_csv_ibp",
+        "import_ibp_data",
     ]
 
     @admin.action(description="Export selected records to a USGS CSV")

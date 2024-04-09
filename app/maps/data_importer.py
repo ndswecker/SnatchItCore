@@ -67,6 +67,7 @@ class IBPDataImporter:
         capture_record.band_size = row.get("BS")
         capture_record.bander_initials = row.get("BI")
         capture_record.capture_code = row.get("CODE")
+        capture_record.band_number = int(row.get("BAND#"))
         capture_record.alpha_code = row.get("SPECIES")
         capture_record.species_number = self.get_species_number(row.get("SPECIES"))
         capture_record.age_annual = int(row.get("AGE"))
