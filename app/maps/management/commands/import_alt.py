@@ -7,6 +7,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from maps.models import CaptureRecord
+from maps.maps_reference_data import SPECIES
 from users.models import User
 
 user = User.objects.get(id=1)
@@ -21,8 +22,51 @@ class IBPDataImporter:
             print(row)
             self.create_capture_record(row)
     
+     # A method to get the species number from the SPECIES dict using the alpha code
+    def get_species_number(self, alpha_code):
+        for species_number, species_info in SPECIES.items():
+            if species_info["alpha_code"] == alpha_code:
+               return int(species_number)
+        return None
+    
+    # A method to set how_aged_1 and how_aged_2 from the "HA" column.
+    # The "HA" column may contain up to 2 characters. If it contains 2 characters, 
+    # the first character should be set to how_aged_1 and the second character should be set to how_aged_2.
+    def set_how_aged(self, how_aged):
+        how_aged_1, how_aged_2 = None, None
+        if len(how_aged) >= 1:
+            how_aged_1 = how_aged[0]
+        if len(how_aged) == 2:
+            how_aged_2 = how_aged[1]
+        return how_aged_1, how_aged_2
+    
+    # A method to set how_sexed_1 and how_sexed_2 from the "HS" column.
+    # The "HS" column may contain up to 2 characters. If it contains 2 characters,
+    # the first character should be set to how_sexed_1 and the second character should be set to how_sexed_2.
+    def set_how_sexed(self, how_sexed):
+        how_sexed_1, how_sexed_2 = None, None
+        if len(how_sexed) >= 1:
+            how_sexed_1 = how_sexed[0]
+        if len(how_sexed) == 2:
+            how_sexed_2 = how_sexed[1]
+        return how_sexed_1, how_sexed_2
+    
+    # A method to parse the date MM/DD/YYYY
+    def parse_date(self, date_str):
+        month, day, year = date_str.split("/")
+        # return a datetime object
+        return datetime.date(int(year), int(month), int(day))
+    
+    def parse_time(self, time_str):
+        # Pad the time string to ensure it's always 4 characters, e.g., '740' becomes '0740'
+        time_str = time_str.zfill(4)
+        hour = int(time_str[:2])
+        minute = int(time_str[2:4])
+        return datetime.time(hour, minute)
+    
     def create_capture_record(self, row):
         capture_record = CaptureRecord()
+        capture_record.user = user
 
         # Map each csv column to the corresponding CaptureRecord field
         capture_record.station = row.get("LOC")
@@ -77,6 +121,8 @@ class IBPDataImporter:
         capture_record.is_validated = True
         # Assume for IBP imports that the bander is also the scribe
         capture_record.scribe_initials = row.get("BI")
+
+        capture_record.save()
 
 class Command(BaseCommand):
     help = "Import IBP records from a CSV"
