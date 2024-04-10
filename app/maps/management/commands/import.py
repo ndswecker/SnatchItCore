@@ -1,3 +1,10 @@
+"""
+Import MAPS data from a CSV file.
+
+To execute against included CSV:
+
+    python app\manage.py import resources/IBP_Filled_In_Template.csv --header
+"""
 import csv
 import datetime
 import pathlib
