@@ -7,9 +7,12 @@ from django.db import transaction
 from django.utils import timezone
 
 from maps.models import CaptureRecord
+from maps.maps_reference_data import SPECIES
 from users.models import User
 
 user = User.objects.get(pk=1)
+
+species_alpha_codes = {s["alpha_code"]: s["species_number"] for s in SPECIES.values()}
 
 csv_columns = {
     "station": str,
@@ -125,6 +128,10 @@ class Command(BaseCommand):
             datetime.datetime.combine(date, time)
         )
 
+    def _format_species_number(self, data):
+        alpha_code = data["alpha_code"]
+        data["species_number"] = species_alpha_codes[alpha_code]
+
     def _cast_types(self, data: dict):
         for key, value in data.items():
             if key in fields:
@@ -138,6 +145,7 @@ class Command(BaseCommand):
         self._format_how_aged(data)
         self._format_how_sexed(data)
         self._format_how_capture_date(data)
+        self._format_species_number(data)
 
         del data["PG"]
         del data["HA"]
