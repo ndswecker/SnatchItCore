@@ -1,3 +1,10 @@
+"""
+Import MAPS data from a CSV file.
+
+To execute against included CSV:
+
+    python app\manage.py import resources/IBP_Filled_In_Template.csv --header
+"""
 import csv
 import datetime
 import pathlib
@@ -5,102 +12,73 @@ import pathlib
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils import timezone
-from pydantic import BaseModel
 
 from maps.models import CaptureRecord
+from maps.maps_reference_data import SPECIES
 from users.models import User
 
-user = User.objects.get(id=1)
+user = User.objects.get(pk=1)
 
+species_alpha_codes = {s["alpha_code"]: s["species_number"] for s in SPECIES.values()}
 
-class Record(BaseModel):
-    user: None
-    scribe_initials: str
-    capture_code: str
-    species_number: int
-    band_size: str
-    band_number: int
-    alpha_code: str
-    age_annual: int
-    how_aged_1: str
-    how_aged_2: str
-    age_WRP: str
-    sex: str
-    how_sexed_1: str
-    how_sexed_2: str
-    cloacal_direction: str
-    skull: int
-    cloacal_protuberance: int
-    brood_patch: int
-    fat: int
-    body_molt: int
-    ff_molt: str
-    ff_wear: int
-    juv_body_plumage: int
-    primary_coverts: str
-    secondary_coverts: str
-    primaries: str
-    secondaries: str
-    tertials: str
-    rectrices: str
-    body_plumage: str
-    alula: str
-    non_feather: str
-    wing_chord: int
-    body_mass: float
-    status: int
-    capture_time: datetime.datetime
-    hold_time: float
-    station: str
-    net: int
-    disposition: str
-    note_number: str
-    note: str
-    bander_initials: str
-    discrepancies: str
-    is_validated: bool
+csv_columns = {
+    "station": str,
+    "band_size": str,
+    "PG": str,
+    "bander_initials": str,
+    "capture_code": str,
+    "band_number": int,
+    "alpha_code": str,
+    "age_annual": int,
+    "HA": str,
+    "age_WRP": str,
+    "sex": str,
+    "HS": str,
+    "skull": int,
+    "cloacal_protuberance": int,
+    "brood_patch": int,
+    "fat": int,
+    "body_molt": int,
+    "ff_molt": str,
+    "ff_wear": int,
+    "juv_body_plumage": int,
+    "primary_coverts": str,
+    "secondary_coverts": str,
+    "primaries": str,
+    "secondaries": str,
+    "tertials": str,
+    "rectrices": str,
+    "body_plumage": str,
+    "non_feather": str,
+    "wing_chord": int,
+    "body_mass": float,
+    "status": int,
+    "DATE": str,
+    "TIME": str,
+    "STATION": str,
+    "net": int,
+    "disposition": str,
+    "note_number": str,
+    "FTHR PULL": str,
+    "note": str,
+}
 
-HEADER = [
-    "station",
-    "band_size",
-    "PG",
-    "bander_initials",
-    "capture_code",
-    "band_number",
-    "alpha_code",
-    "age_annual",
-    "HA",
-    "age_WRP",
-    "sex",
-    "HS",
-    "skull",
-    "cloacal_protuberance",
-    "brood_patch",
-    "fat",
-    "body_molt",
-    "ff_molt",
-    "ff_wear",
-    "juv_body_plumage",
-    "primary_coverts",
-    "secondary_coverts",
-    "primaries",
-    "secondaries",
-    "tertials",
-    "rectrices",
-    "body_plumage",
-    "non_feather",
-    "wing_chord",
-    "body_mass",
-    "status",
-    "DATE",
-    "TIME",
-    "STATION",
-    "net",
-    "disposition",
-    "note_number",
-    "FTHR PULL",
-    "note",
-]
+model_fields = {
+    "scribe_initials": str,
+    "species_number": int,
+    "how_aged_1": str,
+    "how_aged_2": str,
+    "how_sexed_1": str,
+    "how_sexed_2": str,
+    "cloacal_direction": str,
+    "alula": str,
+    "discrepancies": str,
+    "is_validated": bool,
+    "hold_time": float,
+}
+
+fields = csv_columns.copy()
+fields.update(model_fields)
 
 
 class Command(BaseCommand):
@@ -122,11 +100,10 @@ class Command(BaseCommand):
             if options["header"]:
                 next(reader)  # skip header
             for line in reader:
-                data = dict(zip(HEADER, line))
-                record = self.format_data(data)
-                records.append(CaptureRecord(**record.dict()))
-                break
-        # CaptureRecord.objects.bulk_create(records)
+                data = dict(zip(csv_columns.keys(), line))
+                self.format_data(data)
+                records.append(CaptureRecord(**data))
+        CaptureRecord.objects.bulk_create(records)
         self.stdout.write(self.style.SUCCESS(f"Imported {len(records)} records"))
 
     def _format_how_aged(self, data):
@@ -158,10 +135,24 @@ class Command(BaseCommand):
             datetime.datetime.combine(date, time)
         )
 
+    def _format_species_number(self, data):
+        alpha_code = data["alpha_code"]
+        data["species_number"] = species_alpha_codes[alpha_code]
+
+    def _cast_types(self, data: dict):
+        for key, value in data.items():
+            if key in fields:
+                data_type = fields[key]
+                try:
+                    data[key] = data_type(value)
+                except ValueError:
+                    data[key] = None
+
     def format_data(self, data: dict):
         self._format_how_aged(data)
         self._format_how_sexed(data)
         self._format_how_capture_date(data)
+        self._format_species_number(data)
 
         del data["PG"]
         del data["HA"]
@@ -171,6 +162,6 @@ class Command(BaseCommand):
         del data["STATION"]
         del data["FTHR PULL"]
 
-        record = Record(**data)
-        record.user = user
-        return record
+        self._cast_types(data)
+
+        data["user"] = user
