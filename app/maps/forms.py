@@ -10,7 +10,6 @@ from django import forms
 from django.utils import timezone
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
-from maps.choice_definitions import SPECIES_CHOICES
 from maps.maps_reference_data import SPECIES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator

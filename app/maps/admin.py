@@ -4,8 +4,6 @@ import datetime
 from django.contrib import admin
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import path
 
 from maps.models import CaptureRecord
 from maps.serializers import IBPSerializer
