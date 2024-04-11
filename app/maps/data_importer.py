@@ -1,15 +1,16 @@
 import csv
 import datetime
 
-from maps.models import CaptureRecord
-from maps.maps_reference_data import SPECIES
-
 from django.utils import timezone
+
+from maps.maps_reference_data import SPECIES
+from maps.models import CaptureRecord
+
 
 class IBPDataImporter:
     def __init__(self, csv_file):
         self.csv_file = csv_file
-    
+
     def parse_csv(self):
         reader = csv.DictReader(self.csv_file.read().decode("utf-8").splitlines())
         for row in reader:
@@ -22,9 +23,9 @@ class IBPDataImporter:
             if species_info["alpha_code"] == alpha_code:
                 return int(species_number)
         return None
-    
+
     # A method to set how_aged_1 and how_aged_2 from the "HA" column.
-    # The "HA" column may contain up to 2 characters. If it contains 2 characters, 
+    # The "HA" column may contain up to 2 characters. If it contains 2 characters,
     # the first character should be set to how_aged_1 and the second character should be set to how_aged_2.
     def set_how_aged(self, how_aged):
         how_aged_1, how_aged_2 = None, None
@@ -33,7 +34,7 @@ class IBPDataImporter:
         if len(how_aged) == 2:
             how_aged_2 = how_aged[1]
         return how_aged_1, how_aged_2
-    
+
     # A method to set how_sexed_1 and how_sexed_2 from the "HS" column.
     # The "HS" column may contain up to 2 characters. If it contains 2 characters,
     # the first character should be set to how_sexed_1 and the second character should be set to how_sexed_2.
@@ -44,20 +45,19 @@ class IBPDataImporter:
         if len(how_sexed) == 2:
             how_sexed_2 = how_sexed[1]
         return how_sexed_1, how_sexed_2
-    
+
     # A method to parse the date MM/DD/YYYY
     def parse_date(self, date_str):
         month, day, year = date_str.split("/")
         # return a datetime object
         return datetime.date(int(year), int(month), int(day))
-    
+
     def parse_time(self, time_str):
         # Pad the time string to ensure it's always 4 characters, e.g., '740' becomes '0740'
         time_str = time_str.zfill(4)
         hour = int(time_str[:2])
         minute = int(time_str[2:4])
         return datetime.time(hour, minute)
-
 
     def create_capture_record(self, row):
         capture_record = CaptureRecord()
@@ -104,7 +104,7 @@ class IBPDataImporter:
         capture_date = self.parse_date(row.get("DATE"))
         capture_time = self.parse_time(row.get("TIME"))
         capture_record.capture_time = timezone.make_aware(
-            datetime.datetime.combine(capture_date, capture_time)
+            datetime.datetime.combine(capture_date, capture_time),
         )
         capture_record.net = int(row.get("NET"))
         capture_record.disposition = row.get("DISP")

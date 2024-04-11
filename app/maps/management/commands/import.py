@@ -1,20 +1,22 @@
-"""
+r"""
 Import MAPS data from a CSV file.
 
 To execute against included CSV:
 
     python app\manage.py import resources/IBP_Filled_In_Template.csv --header
 """
+
 import csv
 import datetime
 import pathlib
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 from django.db import transaction
 from django.utils import timezone
 
-from maps.models import CaptureRecord
 from maps.maps_reference_data import SPECIES
+from maps.models import CaptureRecord
 from users.models import User
 
 user = User.objects.get(pk=1)
@@ -132,7 +134,7 @@ class Command(BaseCommand):
         time = datetime.time(hour, minute)
 
         data["capture_time"] = timezone.make_aware(
-            datetime.datetime.combine(date, time)
+            datetime.datetime.combine(date, time),
         )
 
     def _format_species_number(self, data):

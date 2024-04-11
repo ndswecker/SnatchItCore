@@ -3,12 +3,10 @@ import datetime
 
 from django.contrib import admin
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import path
 
-from maps.data_importer import IBPDataImporter
-from maps.forms import CSVUploadForm
 from maps.models import CaptureRecord
 from maps.serializers import IBPSerializer
 from maps.serializers import USGSSerializer
@@ -34,7 +32,6 @@ class CaptureRecordAdmin(admin.ModelAdmin):
     actions = [
         "export_csv_usgs",
         "export_csv_ibp",
-        "import_ibp_data",
     ]
 
     @admin.action(description="Export selected records to a USGS CSV")
@@ -82,32 +79,6 @@ class CaptureRecordAdmin(admin.ModelAdmin):
             writer.writerow(IBPSerializer(obj).serialize().values())
 
         return response
-    
-    @admin.action(description="Import IBP CSV Data")
-    def import_ibp_data(self, request, queryset):
-        if 'apply' in request.POST:
-            form = CSVUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                csv_file = request.FILES['csv_file']
-                importer = IBPDataImporter(csv_file)
-                importer.parse_csv()
-                self.message_user(request, "Data imported successfully.")
-                return HttpResponseRedirect(request.get_full_path())
-        else:
-            form = CSVUploadForm()
-        
-        return render(request, "admin/import_ibp_data.html", {"form": form})
-    
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path(
-                "import-ibp-data/",
-                self.admin_site.admin_view(self.import_ibp_data),
-                name="import_ibp_data",
-            )
-        ]
-        return custom_urls + urls
 
 
 admin.site.register(CaptureRecord, CaptureRecordAdmin)
