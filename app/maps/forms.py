@@ -10,7 +10,6 @@ from django import forms
 from django.utils import timezone
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
-from maps.choice_definitions import SPECIES_CHOICES
 from maps.maps_reference_data import SPECIES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator
@@ -261,3 +260,10 @@ class CaptureRecordForm(forms.ModelForm):
             self.cleaned_data["discrepancies"] = discrepancy_string
 
         return self.cleaned_data
+
+
+class CSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label="Select a CSV file to upload",
+        help_text="The file should only be a previously exported IBP CSV file.",
+    )
