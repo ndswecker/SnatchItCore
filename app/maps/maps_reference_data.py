@@ -1763,7 +1763,7 @@ SPECIES: dict = {
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
-            "plumage_dimorphism": False
+            "plumage_dimorphism": False,
         },
         "pyle_second_edition_page": 501,
     },
@@ -1778,7 +1778,7 @@ SPECIES: dict = {
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
-            "plumage_dimorphism": True
+            "plumage_dimorphism": True,
         },
         "pyle_second_edition_page": 429,
     },
@@ -1793,7 +1793,7 @@ SPECIES: dict = {
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
-            "plumage_dimorphism": True
+            "plumage_dimorphism": True,
         },
         "pyle_second_edition_page": 594,
     },
@@ -1808,7 +1808,7 @@ SPECIES: dict = {
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
-            "plumage_dimorphism": False
+            "plumage_dimorphism": False,
         },
         "pyle_second_edition_page": 531,
     },
