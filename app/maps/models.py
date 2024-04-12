@@ -48,7 +48,6 @@ class CaptureRecord(BaseModel):
             MinValueValidator(100000000, message="Band number must be at least 9 digits long."),
             MaxValueValidator(999999999, message="Band number must be less than 10 digits."),
         ],
-        default=123456789,
         null=True,
         blank=True,
     )
