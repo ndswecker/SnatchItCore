@@ -1,9 +1,9 @@
+import plotly.express as px
 from django.db.models import Count
 from django.views.generic import TemplateView
-import plotly.express as px
 
-from maps.models import CaptureRecord
 from maps.maps_reference_data import SPECIES
+from maps.models import CaptureRecord
 
 
 class BirdsView(TemplateView):
@@ -17,9 +17,9 @@ class BirdsView(TemplateView):
         return context
 
     def get_chart_species_capture_count(self):
-        data = CaptureRecord.objects.values('species_number').annotate(capture_count=Count('species_number'))
-        x_values = [SPECIES[d['species_number']]["alpha_code"] for d in data]
-        y_values = [d['capture_count'] for d in data]
+        data = CaptureRecord.objects.values("species_number").annotate(capture_count=Count("species_number"))
+        x_values = [SPECIES[d["species_number"]]["alpha_code"] for d in data]
+        y_values = [d["capture_count"] for d in data]
 
         fig = px.bar(
             x=x_values,
@@ -42,9 +42,9 @@ class BirdsView(TemplateView):
         return fig.to_html()
 
     def get_chart_sex_capture_count(self):
-        data = CaptureRecord.objects.values('sex').annotate(capture_count=Count('sex'))
-        x_values = [d['sex'] for d in data]
-        y_values = [d['capture_count'] for d in data]
+        data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
+        x_values = [d["sex"] for d in data]
+        y_values = [d["capture_count"] for d in data]
 
         fig = px.bar(
             x=x_values,
@@ -67,9 +67,9 @@ class BirdsView(TemplateView):
         return fig.to_html()
 
     def get_chart_age_capture_count(self):
-        data = CaptureRecord.objects.values('age_annual').annotate(capture_count=Count('age_annual'))
-        x_values = [d['age_annual'] for d in data]
-        y_values = [d['capture_count'] for d in data]
+        data = CaptureRecord.objects.values("age_annual").annotate(capture_count=Count("age_annual"))
+        x_values = [d["age_annual"] for d in data]
+        y_values = [d["capture_count"] for d in data]
 
         fig = px.bar(
             x=x_values,
@@ -101,9 +101,9 @@ class NetsView(TemplateView):
         return context
 
     def get_chart_net_capture_count(self):
-        data = CaptureRecord.objects.values('net').annotate(capture_count=Count('net'))
-        x_values = [d['net'] for d in data]
-        y_values = [d['capture_count'] for d in data]
+        data = CaptureRecord.objects.values("net").annotate(capture_count=Count("net"))
+        x_values = [d["net"] for d in data]
+        y_values = [d["capture_count"] for d in data]
 
         fig = px.bar(
             x=x_values,
