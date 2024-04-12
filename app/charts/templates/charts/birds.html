@@ -1,0 +1,14 @@
+{% extends "charts/base.html" %}
+
+{% block title %}Birds{% endblock %}
+
+{% block content %}
+  <div class="container">
+    {% include "charts/partials/nav.html" %}
+    <h1 class="text-center">Birds</h1>
+
+    <div class="w-75 m-auto">{{ chart_species_capture_count|safe }}</div>
+    <div class="w-25 m-auto">{{ chart_sex_capture_count|safe }}</div>
+    <div class="w-50 m-auto">{{ chart_age_capture_count|safe }}</div>
+  </div>
+{% endblock %}
