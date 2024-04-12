@@ -16,6 +16,189 @@ STATION_LOCATIONS: dict = {
 }
 
 SPECIES: dict = {
+    -1: {
+        "common_name": "Plain Chachalaca",
+        "scientific_name": "Ortalis vetula",
+        "alpha_code": "PLCH",
+        "species_number": -1,
+        "band_sizes": [],
+        "wing_chord_range": (0, 0),
+        "WRP_groups": [],
+        "sexing_criteria": {},
+        "pyle_second_edition_page": 0,
+    },
+    -2: {
+        "common_name": "Chukar",
+        "scientific_name": "Alectoris chukar",
+        "alpha_code": "CHUK",
+        "species_number": -2,
+        "band_sizes": [],
+        "wing_chord_range": (0, 0),
+        "WRP_groups": [],
+        "sexing_criteria": {},
+        "pyle_second_edition_page": 0,
+    },
+    -3: {
+        "common_name": "Himalayan Snowcock",
+        "scientific_name": "Tetraogallus himalayensis",
+        "alpha_code": "HISN",
+        "species_number": -3,
+        # ... additional properties ...
+    },
+    -4: {
+        "common_name": "Gray Partridge",
+        "scientific_name": "Perdix perdix",
+        "alpha_code": "GRAP",
+        "species_number": -4,
+        # ... additional properties ...
+    },
+    -5: {
+        "common_name": "Ring-necked Pheasant",
+        "scientific_name": "Phasianus colchicus",
+        "alpha_code": "RNEP",
+        "species_number": -5,
+        # ... additional properties ...
+    },
+    -6: {
+        "common_name": "Common Peafowl",
+        "scientific_name": "Pavo cristatus",
+        "alpha_code": "CPEA",
+        "species_number": -6,
+        # ... additional properties ...
+    },
+    -7: {
+        "common_name": "Ruffed Grouse",
+        "scientific_name": "Bonasa umbellus",
+        "alpha_code": "RUGR",
+        "species_number": -7,
+        # ... additional properties ...
+    },
+    -8: {
+        "common_name": "Greater Sage-Grouse",
+        "scientific_name": "Centrocercus urophasianus",
+        "alpha_code": "GRSG",
+        "species_number": -8,
+        # ... additional properties ...
+    },
+    -9: {
+        "common_name": "Spruce Grouse",
+        "scientific_name": "Falcipennis canadensis",
+        "alpha_code": "SPGR",
+        "species_number": -9,
+        # ... additional properties ...
+    },
+    -10: {
+        "common_name": "Willow Ptarmigan",
+        "scientific_name": "Lagopus lagopus",
+        "alpha_code": "WIPT",
+        "species_number": -10,
+        # ... additional properties ...
+    },
+    -11: {
+        "common_name": "Rock Ptarmigan",
+        "scientific_name": "Lagopus muta",
+        "alpha_code": "ROPT",
+        "species_number": -11,
+        # ... additional properties ...
+    },
+    -12: {
+        "common_name": "White-tailed Ptarmigan",
+        "scientific_name": "Lagopus leucura",
+        "alpha_code": "WTPT",
+        "species_number": -12,
+        # ... additional properties ...
+    },
+    -13: {
+        "common_name": "Ruffed Grouse",
+        "scientific_name": "Bonasa umbellus",
+        "alpha_code": "RUGR",
+        "species_number": -13,
+        # ... additional properties ...
+    },
+    -14: {
+        "common_name": "Dusky Grouse",
+        "scientific_name": "Dendragapus obscurus",
+        "alpha_code": "DUGR",
+        "species_number": -14,
+        # ... additional properties ...
+    },
+    -15: {
+        "common_name": "Sooty Grouse",
+        "scientific_name": "Dendragapus fuliginosus",
+        "alpha_code": "SOGR",
+        "species_number": -15,
+        # ... additional properties ...
+    },
+    -16: {
+        "common_name": "Sharp-tailed Grouse",
+        "scientific_name": "Tympanuchus phasianellus",
+        "alpha_code": "STGR",
+        "species_number": -16,
+        # ... additional properties ...
+    },
+    -17: {
+        "common_name": "Greater Prairie-Chicken",
+        "scientific_name": "Tympanuchus cupido",
+        "alpha_code": "GRPC",
+        "species_number": -17,
+        # ... additional properties ...
+    },
+    -18: {
+        "common_name": "Lesser Prairie-Chicken",
+        "scientific_name": "Tympanuchus pallidicinctus",
+        "alpha_code": "LEPC",
+        "species_number": -18,
+        # ... additional properties ...
+    },
+    -19: {
+        "common_name": "Wild Turkey",
+        "scientific_name": "Meleagris gallopavo",
+        "alpha_code": "WITU",
+        "species_number": -19,
+        # ... additional properties ...
+    },
+    -20: {
+        "common_name": "Wild Turkey",
+        "scientific_name": "Meleagris gallopavo",
+        "alpha_code": "WITU",
+        "species_number": -20,
+        # ... additional properties ...
+    },
+    -21: {
+        "common_name": "Scaled Quail",
+        "scientific_name": "Callipepla squamata",
+        "alpha_code": "SCQU",
+        "species_number": -21,
+        # ... additional properties ...
+    },
+    -22: {
+        "common_name": "California Quail",
+        "scientific_name": "Callipepla californica",
+        "alpha_code": "CAQU",
+        "species_number": -22,
+        # ... additional properties ...
+    },
+    -23: {
+        "common_name": "Gambel's Quail",
+        "scientific_name": "Callipepla gambelii",
+        "alpha_code": "GAQU",
+        "species_number": -23,
+        # ... additional properties ...
+    },
+    -24: {
+        "common_name": "Northern Bobwhite",
+        "scientific_name": "Colinus virginianus",
+        "alpha_code": "NOBO",
+        "species_number": -24,
+        # ... additional properties ...
+    },
+    -25: {
+        "common_name": "Montezuma Quail",
+        "scientific_name": "Cyrtonyx montezumae",
+        "alpha_code": "MOQU",
+        "species_number": -25,
+        # ... additional properties ...
+    },
     5810: {
         "common_name": "Song Sparrow",
         "scientific_name": "Melospiza melodia",
@@ -1569,6 +1752,66 @@ SPECIES: dict = {
         },
         "pyle_second_edition_page": 510,
     },
+    5850: {
+        "common_name": "Fox Sparrow",
+        "scientific_name": "Passerella iliaca",
+        "alpha_code": "FOSP",
+        "species_number": 5850,
+        "band_sizes": ["1A", "1B"],
+        "wing_chord_range": (73, 92),
+        "WRP_groups": [3],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
+        "pyle_second_edition_page": 501,
+    },
+    7630: {
+        "common_name": "Varied Thrush",
+        "scientific_name": "Ixoreus naevius",
+        "alpha_code": "VATH",
+        "species_number": 5850,
+        "band_sizes": ["2"],
+        "wing_chord_range": (118, 134),
+        "WRP_groups": [3],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": True,
+        },
+        "pyle_second_edition_page": 429,
+    },
+    6450: {
+        "common_name": "Nashville Warbler",
+        "scientific_name": "Leiothlypis ruficapilla",
+        "alpha_code": "NAWA",
+        "species_number": 6450,
+        "band_sizes": ["0A", "0"],
+        "wing_chord_range": (52, 64),
+        "WRP_groups": [3, 8],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": True,
+        },
+        "pyle_second_edition_page": 594,
+    },
+    5830: {
+        "common_name": "Lincoln's Sparrow",
+        "scientific_name": "Melospiza lincolnii",
+        "alpha_code": "LISP",
+        "species_number": 5830,
+        "band_sizes": ["1", "0"],
+        "wing_chord_range": (54, 69),
+        "WRP_groups": [8],
+        "sexing_criteria": {
+            "female_by_BP": True,
+            "male_by_CP": True,
+            "plumage_dimorphism": False,
+        },
+        "pyle_second_edition_page": 531,
+    },
 }
 
 WRP_GROUPS: dict = {
@@ -1584,7 +1827,6 @@ WRP_GROUPS: dict = {
             "FCF",
             "SPB",
             "DCB",
-            "DPB",
             "MFCF",
             "MSPB",
         ],
@@ -1595,7 +1837,6 @@ WRP_GROUPS: dict = {
             "FPJ",
             "FCJ",
             "FPF",
-            "FCF",
             "MFCF",
             "MSPB",
         ],
@@ -1669,7 +1910,7 @@ WRP_GROUPS: dict = {
     },
 }
 
-DISPOSTIONS = {
+DISPOSTIONS: dict = {
     "N": {
         "maps": {
             "description": "New Bird",
@@ -1715,6 +1956,10 @@ DISPOSTIONS = {
             "description": "Unbanded Bird",
             "code": "U",
         },
+        "usgs": {
+            "description": "Unbanded, not used",
+            "code": "none",
+        },
     },
     "C": {
         "maps": {
@@ -1728,8 +1973,8 @@ DISPOSTIONS = {
     },
 }
 
-AGES_ANNUAL = {
-    "4": {
+AGES_ANNUAL: dict = {
+    4: {
         "maps": {
             "code": "4",
             "description": "Local (incapable of sustained flight)",
@@ -1738,8 +1983,9 @@ AGES_ANNUAL = {
             "code": "L",
             "description": "Local",
         },
+        "allowed_wrp_codes": ["FPJ"],
     },
-    "2": {
+    2: {
         "maps": {
             "code": "2",
             "description": "Hatch Year (HY)",
@@ -1748,8 +1994,9 @@ AGES_ANNUAL = {
             "code": "HY",
             "description": "Hatching Year",
         },
+        "allowed_wrp_codes": ["FPJ", "FCJ", "FPF", "FCF"],
     },
-    "1": {
+    1: {
         "maps": {
             "code": "1",
             "description": "After Hatch Year (AHY)",
@@ -1758,8 +2005,9 @@ AGES_ANNUAL = {
             "code": "AHY",
             "description": "After Hatching Year",
         },
+        "allowed_wrp_codes": ["MFCF", "MFPA", "MFCA", "MSPB"],
     },
-    "5": {
+    5: {
         "maps": {
             "code": "5",
             "description": "Second Year (SY)",
@@ -1768,8 +2016,9 @@ AGES_ANNUAL = {
             "code": "SY",
             "description": "Second Year",
         },
+        "allowed_wrp_codes": ["FCF", "FPA", "FCA", "FCU", "SPB"],
     },
-    "6": {
+    6: {
         "maps": {
             "code": "6",
             "description": "After Second Year (ASY)",
@@ -1778,8 +2027,9 @@ AGES_ANNUAL = {
             "code": "ASY",
             "description": "After Second Year",
         },
+        "allowed_wrp_codes": ["DPA", "MDCA", "DCA", "DPB", "DCB", "DCU"],
     },
-    "7": {
+    7: {
         "maps": {
             "code": "7",
             "description": "Third Year (TY)",
@@ -1788,8 +2038,9 @@ AGES_ANNUAL = {
             "code": "TY",
             "description": "Third Year",
         },
+        "allowed_wrp_codes": ["MSCB", "SCB", "DPA", "DCA", "MTCB", "TCB", "4PB"],
     },
-    "8": {
+    8: {
         "maps": {
             "code": "8",
             "description": "After Third Year (ATY)",
@@ -1798,8 +2049,9 @@ AGES_ANNUAL = {
             "code": "ATY",
             "description": "After Third Year",
         },
+        "allowed_wrp_codes": ["DPB", "DCB", "DCU"],
     },
-    "0": {
+    0: {
         "maps": {
             "code": "0",
             "description": "Indeterminable Age",
@@ -1808,8 +2060,9 @@ AGES_ANNUAL = {
             "code": "U",
             "description": "Unknown",
         },
+        "allowed_wrp_codes": ["UCU"],
     },
-    "9": {
+    9: {
         "maps": {
             "code": "9",
             "description": "Not attempted",
@@ -1818,10 +2071,94 @@ AGES_ANNUAL = {
             "code": "U",
             "description": "Unknown",  # Assuming 'U' is equivalent to 'Not attempted'
         },
+        "allowed_wrp_codes": ["UCU"],
     },
 }
 
-HOW_AGE_DETERMINED = {
+AGES_WRP: dict = {
+    "FPJ": {
+        "description": "First prejuvenile molt",
+        "detail": "(FPJ) First prejuvenile molt",
+    },
+    "FCJ": {
+        "description": "First cycle juvenile plumage",
+        "detail": "(FCJ) First cycle juvenile plumage",
+    },
+    "FPF": {
+        "description": "First preformative molt",
+        "detail": "(FPF) First preformative molt",
+    },
+    "FCF": {
+        "description": "First cycle formative plumage",
+        "detail": "(FCF) First cycle formative plumage",
+    },
+    "MFCF": {
+        "description": "Minimum first cycle formative",
+        "detail": "(M-FCF) Minimum first cycle formative",
+    },
+    "FPA": {
+        "description": "First prealternate molt",
+        "detail": "(FPA) First prealternate molt",
+    },
+    "MFPA": {
+        "description": "Minimum first cycle prealternate",
+        "detail": "(M-FPA) Minimum first cycle prealternate",
+    },
+    "FCA": {
+        "description": "First cycle alternate plumage",
+        "detail": "(FCA) First cycle alternate plumage",
+    },
+    "MFCA": {
+        "description": "Minimum first cycle alternate",
+        "detail": "(M-FCA) Minimum first cycle alternate",
+    },
+    "SPB": {
+        "description": "Second prebasic molt",
+        "detail": "(SPB) Second prebasic molt",
+    },
+    "MSPB": {
+        "description": "Minimum second prebasic molt",
+        "detail": "(M-SPB) Minimum second prebasic molt",
+    },
+    "SCB": {
+        "description": "Second cycle basic plumage",
+        "detail": "(SCB) Second cycle basic plumage",
+    },
+    "DPB": {
+        "description": "Definitive prebasic molt",
+        "detail": "(DPB) Definitive prebasic molt",
+    },
+    "DCB": {
+        "description": "Definitive cycle basic plumage",
+        "detail": "(DCB) Definitive cycle basic plumage",
+    },
+    "DPA": {
+        "description": "Definitive prealternate molt",
+        "detail": "(DPA) Definitive prealternate molt",
+    },
+    "DCA": {
+        "description": "Definitive cycle alternate plumage",
+        "detail": "(DCA) Definitive cycle alternate plumage",
+    },
+    "TPB": {
+        "description": "Third prebasic molt",
+        "detail": "(TPB) Third prebasic molt",
+    },
+    "FCU": {
+        "description": "First cycle unknown plumage",
+        "detail": "(FCU) First cycle unknown plumage",
+    },
+    "DCU": {
+        "description": "Definitive cycle unknown plumage",
+        "detail": "(DCU) Definitive cycle unknown plumage",
+    },
+    "UCU": {
+        "description": "Unknown cycle unknown plumage",
+        "detail": "(UCU) Unknown cycle unknown plumage",
+    },
+}
+
+HOW_AGE_DETERMINED: dict = {
     "S": {
         "maps": {
             "code": "S",
@@ -1952,52 +2289,50 @@ HOW_AGE_DETERMINED = {
     },
 }
 
-SEXES = (
-    {
-        "M": {
-            "maps": {
-                "code": "M",
-                "description": "Male",
-            },
-            "usgs": {
-                "code": "M",
-                "description": "Male",
-            },
+SEXES: dict = {
+    "M": {
+        "maps": {
+            "code": "M",
+            "description": "Male",
         },
-        "F": {
-            "maps": {
-                "code": "F",
-                "description": "Female",
-            },
-            "usgs": {
-                "code": "F",
-                "description": "Female",
-            },
-        },
-        "U": {
-            "maps": {
-                "code": "U",
-                "description": "Unknown",
-            },
-            "usgs": {
-                "code": "U",
-                "description": "Unknown",
-            },
-        },
-        "X": {
-            "maps": {
-                "code": "X",
-                "description": "Not Attempted",
-            },
-            "usgs": {
-                "code": "U",
-                "description": "Unknown",
-            },
+        "usgs": {
+            "code": "M",
+            "description": "Male",
         },
     },
-)
+    "F": {
+        "maps": {
+            "code": "F",
+            "description": "Female",
+        },
+        "usgs": {
+            "code": "F",
+            "description": "Female",
+        },
+    },
+    "U": {
+        "maps": {
+            "code": "U",
+            "description": "Unknown",
+        },
+        "usgs": {
+            "code": "U",
+            "description": "Unknown",
+        },
+    },
+    "X": {
+        "maps": {
+            "code": "X",
+            "description": "Not Attempted",
+        },
+        "usgs": {
+            "code": "U",
+            "description": "Unknown",
+        },
+    },
+}
 
-BREEDING_STATUSES = {
+BREEDING_STATUSES: dict = {
     "Cn": {
         "code": "Cn",
         "description": "Confirmed Breeder. Carrying Nesting Material",
@@ -2036,12 +2371,12 @@ BREEDING_STATUSES = {
     "Ps": {
         "code": "Ps",
         "description": "Probable Breeder. Song/drumming",
-        "rank": 4
+        "rank": 4,
     },
     "Ob": {
         "code": "Ob",
         "description": "Observed. Banded/Captured",
-        "rank": 3
+        "rank": 3,
     },
     "Oe": {
         "code": "Oe",

@@ -56,14 +56,6 @@ class Migration(migrations.Migration):
                     "species_number",
                     models.IntegerField(
                         choices=[
-                            (1320, "MALL - Mallard"),
-                            (1350, "GADW - Gadwall"),
-                            (1440, "WODU - Wood Duck"),
-                            (1720, "CANG - Canada Goose"),
-                            (1900, "AMBI - American Bittern"),
-                            (1940, "GBHE - Great Blue Heron"),
-                            (2120, "VIRA - Virginia Rail"),
-                            (2730, "KILL - Killdeer"),
                             (3120, "BTPI - Band-tailed Pigeon"),
                             (3159, "ECDO - Eurasian Collared-Dove"),
                             (3160, "MODO - Mourning Dove"),
@@ -115,6 +107,8 @@ class Migration(migrations.Migration):
                             (5600, "CHSP - Chipping Sparrow"),
                             (5671, "ORJU - Oregon Junco"),
                             (5810, "SOSP - Song Sparrow"),
+                            (5830, "LISP - Lincoln's Sparrow"),
+                            (5850, "FOSP - Fox Sparrow"),
                             (5880, "SPTO - Spotted Towhee"),
                             (5960, "BHGR - Black-headed Grosbeak"),
                             (5990, "LAZB - Lazuli Bunting"),
@@ -130,6 +124,7 @@ class Migration(migrations.Migration):
                             (6270, "WAVI - Warbling Vireo"),
                             (6292, "CAVI - Cassin's Vireo"),
                             (6320, "HUVI - Hutton's Vireo"),
+                            (6450, "NAWA - Nashville Warbler"),
                             (6460, "OCWA - Orange-crowned Warbler"),
                             (6520, "YEWA - Yellow Warbler"),
                             (6550, "MYWA - Myrtle Warbler"),
@@ -153,19 +148,10 @@ class Migration(migrations.Migration):
                             (7580, "SWTH - Swainson's Thrush"),
                             (7590, "HETH - Hermit Thrush"),
                             (7610, "AMRO - American Robin"),
+                            (7630, "VATH - Varied Thrush"),
                             (7670, "WEBL - Western Bluebird"),
                         ],
                         default=5810,
-                        validators=[
-                            django.core.validators.MinValueValidator(
-                                1000,
-                                message="Species number must be at least 4 digits long.",
-                            ),
-                            django.core.validators.MaxValueValidator(
-                                9999,
-                                message="Species number must be less than 5 digits.",
-                            ),
-                        ],
                     ),
                 ),
                 (
@@ -194,7 +180,6 @@ class Migration(migrations.Migration):
                     "band_number",
                     models.IntegerField(
                         blank=True,
-                        default=123456789,
                         null=True,
                         validators=[
                             django.core.validators.MinValueValidator(
@@ -286,6 +271,7 @@ class Migration(migrations.Migration):
                             ("FCF", "(FCF) First cycle formative plumage"),
                             ("MFCF", "(M-FCF) Minimum first cycle formative"),
                             ("FPA", "(FPA) First prealternate molt"),
+                            ("MFPA", "(M-FPA) Minimum first cycle prealternate"),
                             ("FCA", "(FCA) First cycle alternate plumage"),
                             ("MFCA", "(M-FCA) Minimum first cycle alternate"),
                             ("SPB", "(SPB) Second prebasic molt"),
@@ -754,7 +740,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "capture_time",
-                    models.DateTimeField(default=django.utils.timezone.now),
+                    models.DateTimeField(
+                        blank=True, default=django.utils.timezone.now, null=True
+                    ),
                 ),
                 (
                     "hold_time",

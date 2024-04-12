@@ -1,0 +1,12 @@
+{% extends "charts/base.html" %}
+
+{% block title %}Nets{% endblock %}
+
+{% block content %}
+  <div class="container">
+    {% include "charts/partials/nav.html" %}
+    <h1 class="text-center">Nets</h1>
+
+    <div class="w-75 m-auto">{{ chart_net_capture_count|safe }}</div>
+  </div>
+{% endblock %}

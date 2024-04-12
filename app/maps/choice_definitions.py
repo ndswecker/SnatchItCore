@@ -10,7 +10,9 @@ CAPTURE_CODE_CHOICES = [
     ("A", "(A) Added Band"),
 ]
 
-SPECIES_CHOICES = [(k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(REFERENCE_DATA.SPECIES.items())]
+SPECIES_CHOICES = [
+    (k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(REFERENCE_DATA.SPECIES.items()) if k > 2730
+]
 
 AGE_ANNUAL_CHOICES = [
     (4, "4 - Local (incapable of sustained flight)"),
@@ -31,6 +33,7 @@ AGE_WRP_CHOICES = [
     ("FCF", "(FCF) First cycle formative plumage"),
     ("MFCF", "(M-FCF) Minimum first cycle formative"),
     ("FPA", "(FPA) First prealternate molt"),
+    ("MFPA", "(M-FPA) Minimum first cycle prealternate"),
     ("FCA", "(FCA) First cycle alternate plumage"),
     ("MFCA", "(M-FCA) Minimum first cycle alternate"),
     ("SPB", "(SPB) Second prebasic molt"),

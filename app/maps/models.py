@@ -33,10 +33,6 @@ class CaptureRecord(BaseModel):
     )
 
     species_number = models.IntegerField(
-        validators=[
-            MinValueValidator(1000, message="Species number must be at least 4 digits long."),
-            MaxValueValidator(9999, message="Species number must be less than 5 digits."),
-        ],
         choices=SPECIES_CHOICES,
         default=5810,
     )
@@ -52,7 +48,6 @@ class CaptureRecord(BaseModel):
             MinValueValidator(100000000, message="Band number must be at least 9 digits long."),
             MaxValueValidator(999999999, message="Band number must be less than 10 digits."),
         ],
-        default=123456789,
         null=True,
         blank=True,
     )
@@ -251,6 +246,8 @@ class CaptureRecord(BaseModel):
 
     capture_time = models.DateTimeField(
         default=timezone.now,
+        null=True,
+        blank=True,
     )
 
     hold_time = models.DecimalField(

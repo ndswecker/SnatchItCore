@@ -3,3 +3,5 @@ Django
 Django-Allauth
 Django-Environ
 Django-Select2
+Pandas
+Plotly

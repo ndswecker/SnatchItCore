@@ -4,6 +4,7 @@
 
 {% block extra_css %}
     <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
 
 {% block title %}Enter Bird{% endblock %}
@@ -11,7 +12,7 @@
 {% block content %}
 <div class="container-fluid m-1 p-1">
     <div class="">
-        <h1 class="text-center">Enter Bird Record</h1>
+        <h1 class="text-center">{% block formTitle %}Enter Bird Record{% endblock %}</h1>
         {% for field in form %}
             {% if field.errors %}
                 <div class="alert alert-danger" role="alert">
@@ -35,13 +36,28 @@
         {% crispy form form.helper %}
     </div>
 </div>
+
+{% include "maps/partials/generic_modal.html" with modal_id="cpModal" modal_title="Cloacal Protuberance Scores" modal_image_src="/static/img/cloacal_protuberance.png" modal_alt_text="Cloacal Protuberance" %}
+{% include "maps/partials/generic_modal.html" with modal_id="bpModal" modal_title="Brood Patch Scores" modal_image_src="/static/img/brood_patch.png" modal_alt_text="Brood Patch" %}
+{% include "maps/partials/generic_modal.html" with modal_id="ffWearModal" modal_title="Flight Feather Wear" modal_image_src="/static/img/feather_wear.png" modal_alt_text="Feather Wear" %}
+{% include "maps/partials/generic_modal.html" with modal_id="fatModal" modal_title="Fat Scores" modal_image_src="/static/img/fat.jpg" modal_alt_text="Fat Scores" %}
+{% include "maps/partials/generic_modal.html" with modal_id="skullModal" modal_title="Skull Scores" modal_image_src="/static/img/skull_full.gif" modal_alt_text="Skull Scores" %}
+
 {% endblock %}
 
 {% block extra_js %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script src="{% static 'js/mini_pyle.js' %}"></script>
+    <script src="{% static 'js/help_images.js' %}"></script>
     <script src="{% static 'js/capture_code.js' %}"></script>
     <script src="{% static 'js/error_alert.js' %}"></script>
+
+    {% block time_picker_js %}
+        <script src="{% static 'js/time_picker.js' %}"></script>
+    {% endblock %}
+
 {% endblock %}
+
