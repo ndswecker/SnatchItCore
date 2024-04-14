@@ -1,10 +1,12 @@
 from django.contrib import messages
+from allauth.account.views import SignupView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 
 from users.forms import EmailChangeForm
+from users.forms import FirstLastSignupForm
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
@@ -21,3 +23,11 @@ class EmailChangeView(LoginRequiredMixin, FormView):
         self.request.user.save()
         messages.success(self.request, "Your email has been updated.")
         return super().form_valid(form)
+ 
+class CustomSignupView(SignupView):
+    template_name = "account/signup.html"
+    form_class = FirstLastSignupForm
+
+    def form_valid(self, form):
+        user = form.save(self.request)
+        return super(CustomSignupView, self).form_valid(form)
