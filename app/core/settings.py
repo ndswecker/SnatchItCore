@@ -193,3 +193,5 @@ ACCOUNT_FORMS = {
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ACCOUNT_CHANGE_EMAIL = True
+
+ACCOUNT_ADAPTER = "users.adapters.UserAdapter"
