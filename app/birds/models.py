@@ -2,38 +2,37 @@ from django.db import models
 from common.models import BaseModel
 
 class Bird(BaseModel):
-    common_name = models.CharField(max_length=255)
-    scientific_name = models.CharField(max_length=255)
-    bbl_species_number = models.IntegerField()
-    aou_species_number = models.IntegerField()
-    alpha_code = models.CharField(max_length=4)
-    band_sizes = models.ManyToManyField("BandSize", related_name="birds")
+    common = models.CharField(max_length=255)
+    scientific = models.CharField(max_length=255)
+    number_bbl = models.IntegerField()
+    number_aou = models.IntegerField()
+    alpha_bbl = models.CharField(max_length=4)
+    alpha_aou = models.CharField(max_length=4)
+    bands = models.ManyToManyField("Band", related_name="birds")
     wrp_groups = models.ManyToManyField("WRPGroup", related_name="birds")
     page_number = models.IntegerField()
+    wing_min = models.IntegerField(null=True, blank=True)
+    wing_max = models.IntegerField(null=True, blank=True)
+    wing_min_female = models.IntegerField(null=True, blank=True)
+    wing_max_female = models.IntegerField(null=True, blank=True)
+    wing_min_male = models.IntegerField(null=True, blank=True)
+    wing_max_male = models.IntegerField(null=True, blank=True)
 
-class WingchordRange(BaseModel):
-    bird = models.ForeignKey(Bird, related_name="wing_chords", on_delete=models.CASCADE)
-    species_min = models.IntegerField(null=True, blank=True)
-    species_max = models.IntegerField(null=True, blank=True)
-    female_min = models.IntegerField(null=True, blank=True)
-    female_max = models.IntegerField(null=True, blank=True)
-    male_min = models.IntegerField(null=True, blank=True)
-    male_max = models.IntegerField(null=True, blank=True)
+class Band(BaseModel):
+    size = models.CharField(max_length=2)
 
-class BandSize(BaseModel):
-    band_size = models.CharField(max_length=2)
-
-class WRPGroup(BaseModel):
-    group_number = models.IntegerField(unique=True)
+class GroupWRP(BaseModel):
+    number = models.IntegerField(unique=True)
     description = models.TextField()
-    applicable_ages = models.ManyToManyField("WRPAge", related_name="wrp_groups")
+    # age = models.ForeignKey("AgeWRP", related_name="wrp_groups", on_delete=models.CASCADE)
+    applicable_ages = models.ManyToManyField("AgeWRP", related_name="wrp_groups")
 
-class WRPAge(BaseModel):
+class AgeWRP(BaseModel):
     code = models.CharField(max_length=4, unique=True)
     description = models.TextField()
-    age_annual = models.ForeignKey("AnnualAge", related_name="wrp_ages", on_delete=models.CASCADE)
+    annual = models.ForeignKey("AgeAnnual", related_name="wrp_ages", on_delete=models.CASCADE)
 
-class AnnualAge(BaseModel):
-    BBL_code = models.CharField(max_length=3, unique=True)
-    MAPS_code = models.IntegerField()
+class AgeAnnual(BaseModel):
+    bbl = models.CharField(max_length=3, unique=True)
+    maps = models.IntegerField()
     description = models.TextField()
