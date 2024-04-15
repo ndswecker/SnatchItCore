@@ -2,7 +2,7 @@ from django.db import models
 from common.models import BaseModel
 
 class Bird(BaseModel):
-    # Fields that are required for all birds
+    # Fields applicable to all birds
     common = models.CharField(
         max_length=255,
         help_text="The common name of the bird as determined by the AOU.",
@@ -28,7 +28,12 @@ class Bird(BaseModel):
     page_number = models.IntegerField(
         help_text="The Second Edition Pyle page number of the bird. Could be part 1 or part 2.",
     )
-    wrp_groups = models.ManyToManyField("GroupWRP", related_name="birds")
+
+    wrp_groups = models.ManyToManyField(
+        "GroupWRP", 
+        on_delete=models.CASCADE,
+        related_name="birds"
+    )
 
     # Fields that are required for all birds that are banded
     bands = models.ManyToManyField(
@@ -62,18 +67,30 @@ class Bird(BaseModel):
     sex_by_exp_culmen = models.BooleanField(null=True, blank=True)
     sex_by_tarsus = models.BooleanField(null=True, blank=True)
 
+    class Meta:
+        ordering = ("number_bbl")
+
 class Band(BaseModel):
     size = models.CharField(max_length=2)
+    comment = models.CharField(max_length=255)
 
 class BirdBandSize(BaseModel):
     """
-    Represents he band sizes applicable to a bird, with specific preferences 
+    Represents the band sizes applicable to a bird, with specific preferences 
     based on species and sex. The model links birds to their possible 
     band sizes and orders the sizes by preference.
     """
 
-    bird = models.ForeignKey("Bird", related_name="band_sizes", on_delete=models.CASCADE)
-    band = models.ForeignKey("Band", related_name="bird_sizes", on_delete=models.CASCADE)
+    bird = models.ForeignKey(
+        "Bird", 
+        on_delete=models.CASCADE,
+        related_name="band_sizes", 
+    )
+    band = models.ForeignKey(
+        "Band", 
+        on_delete=models.CASCADE,
+        related_name="birds", 
+    )
     sex = models.CharField(
         choices = [
             ("M", "Male"),
@@ -81,7 +98,7 @@ class BirdBandSize(BaseModel):
             ("U", "Unisex"),
         ],
         default = 'U',
-    ),
+    )
     order = models.IntegerField(
         help_text="A lower number means the band is more suitable for the bird.",
     )
@@ -91,21 +108,46 @@ class BirdBandSize(BaseModel):
         ordering = ("bird", "order")
 
 class GroupWRP(BaseModel):
+    """
+    Wolfe-Ryder-Pyle (WRP) groups are a way to group birds by similar molt strategies.
+    Within each group there are a set of acceptable ages that can be assigned to a bird of that group.
+    """
     number = models.IntegerField(unique=True)
     description = models.TextField()
-    ages = models.ManyToManyField("AgeWRP", related_name="wrp_groups")
+    ages = models.ManyToManyField(
+        "AgeWRP", 
+        related_name="wrp_groups",
+        help_text="The set of acceptable ages for a bird of this group.",
+    )
+
+    class Meta:
+        ordering = ("number",)
 
 class AgeWRP(BaseModel):
-    code = models.CharField(max_length=4, unique=True)
+    code = models.CharField(
+        unique=True,
+        max_length=4, 
+        help_text="The 3 or 4 letter WRP age code of the bird.",
+    )
     description = models.TextField()
-    annual = models.ForeignKey("AgeAnnual", related_name="wrp_ages", on_delete=models.CASCADE)
+    annual = models.ForeignKey(
+        "AgeAnnual", 
+        on_delete=models.CASCADE,
+        related_name="wrp_ages", 
+    )
 
 class AgeAnnual(BaseModel):
-    bbl = models.CharField(max_length=3, unique=True)
-    maps = models.IntegerField()
+    bbl = models.CharField(
+        max_length=3, 
+        unique=True,
+        help_text="The 2 or 3 letter calendar age code of the bird as used by the BBL.",
+    )
+    maps = models.IntegerField(
+        help_text="The integer code used to age a bird by the MAPS protocol",
+    )
     description = models.TextField()
 
-# Specific to Flycatchers, and perhaps other birds
+# Specific to Flycatchers, and perhaps a few rare other birds
 class MorphologyExtended(BaseModel):
     bird = models.OneToOneField("Bird", related_name="morphology", on_delete=models.CASCADE)
     upper_parts = models.CharField(max_length=255)
