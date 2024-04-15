@@ -1,10 +1,12 @@
 from django.contrib import messages
+from allauth.account.views import SignupView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 
 from users.forms import EmailChangeForm
+from users.forms import FirstLastSignupForm
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):

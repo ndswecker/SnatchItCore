@@ -18,6 +18,20 @@ class FirstLastSignupForm(SignupForm):
         validators=[MinLengthValidator(2)],
         widget=forms.TextInput(attrs={"placeholder": "Last Name"}),
     )
+    initials = forms.CharField(
+        required=True,
+        max_length=3,
+        validators=[MinLengthValidator(3)],
+        widget=forms.TextInput(attrs={"placeholder": "Initials"}),
+    )
+
+    def clean_initials(self):
+        initials = self.cleaned_data["initials"].upper()
+
+        if User.objects.filter(initials=initials).exists():
+            raise forms.ValidationError("Initials already in use. Please choose another.")
+
+        return initials
 
 
 class EmailChangeForm(forms.ModelForm):
