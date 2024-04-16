@@ -2,6 +2,7 @@ import csv
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from birds.models import AgeWRP, AgeAnnual
+from birds.serializers import parse_agewrps_from_csv
 
 class Command(BaseCommand):
     help = "Loads data from CSV into AgeWRP model"
@@ -11,27 +12,7 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        csv_file = options["csv_file"]
-        try:
-            with open(csv_file, newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
-                for row in reader:
-                    age_wrps = AgeWRP.objects.create(
-                        code=row["code"],
-                        sequence=int(row["sequence"]),
-                        description=row["description"],
-                        status=row["status"].lower()  # Assuming status in CSV is either 'current' or 'discontinued'
-                    )
-
-                    # Handle ManyToMany relation for `annuals`
-                    annual_ids = row.get("annuals", "")
-                    if annual_ids:  # Only process if annual_ids is not empty
-                        for annual_id in annual_ids.split(","):
-                            if annual_id.strip():
-                                annual, _ = AgeAnnual.objects.get_or_create(number=int(annual_id.strip()))
-                                age_wrps.annuals.add(annual)
-
-            self.stdout.write(self.style.SUCCESS("Data loaded successfully"))
-        except Exception as e:
-            self.stdout.write(self.style.ERROR(f"Error loading data: {e}"))
-            raise e
+        csv_file_path = options["csv_file"]
+        age_wrps = parse_agewrps_from_csv(csv_file_path)
+        AgeWRP.objects.bulk_create(age_wrps, ignore_conflicts=True) # Assume all AgeWRP objects are ready to be saved without annuals
+        self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(age_wrps)} AgeWRP objects"))
