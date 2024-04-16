@@ -13,6 +13,8 @@ class Taxon(models.Model):
     )
 
     number_bbl = models.IntegerField(
+        null=True,
+        blank=True,
         help_text="The species number of the bird as determined by the BBL.",
     )
 
@@ -26,16 +28,26 @@ class Taxon(models.Model):
     )
 
     alpha_aou = models.CharField(
+        null=True,
+        blank=True,
         max_length=4,
         help_text="The alpha code of the bird as determined by the AOU.",
     )
 
+    taxonomic_order = models.IntegerField(
+        help_text="The taxonomic order of the bird as determined by the BBL.",
+    )
+
     page_number = models.IntegerField(
+        null=True,
+        blank=True,
         help_text="The Second Edition Pyle page number of the bird. Could be part 1 or part 2.",
     )
 
     wrp_groups = models.ManyToManyField(
         "GroupWRP", 
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
         related_name="birds"
     )
@@ -43,6 +55,8 @@ class Taxon(models.Model):
     # Fields that are required for all birds that are banded
     bands = models.ManyToManyField(
         "Band",
+        null=True,
+        blank=True,
         related_name="birds",
         help_text="The acceptable band sizes for the bird listed in order of suitability.",
     )
@@ -91,7 +105,7 @@ class Taxon(models.Model):
     p6_emarginated = models.BooleanField(null=True, blank=True)
 
     class Meta:
-        ordering = ("number_bbl")
+        ordering = ("number_aou",)
 
 class Band(models.Model):
     size = models.CharField(max_length=2)
@@ -109,11 +123,13 @@ class BandAllocation(models.Model):
         on_delete=models.CASCADE,
         related_name="band_sizes", 
     )
+
     band = models.ForeignKey(
         "Band", 
         on_delete=models.CASCADE,
         related_name="birds", 
     )
+
     sex = models.CharField(
         choices = [
             ("M", "Male"),
@@ -122,6 +138,7 @@ class BandAllocation(models.Model):
         ],
         default = 'U',
     )
+
     priority = models.IntegerField(
         help_text="A lower number means the band is more suitable for the bird.",
     )
@@ -136,7 +153,11 @@ class GroupWRP(models.Model):
     Within each group there are a set of acceptable ages that can be assigned to a bird of that group.
     """
     number = models.IntegerField(unique=True)
-    description = models.TextField()
+
+    explanation = models.TextField(
+        help_text="A longer explanation of the molt sequence.",
+    )
+
     ages = models.ManyToManyField(
         "AgeWRP", 
         related_name="wrp_groups",
@@ -146,26 +167,58 @@ class GroupWRP(models.Model):
     class Meta:
         ordering = ("number",)
 
+
 class AgeWRP(models.Model):
+    STATUS_CHOICES = [
+        ("current", "Current"),
+        ("discontinued", "Discontinued"),
+    ]
     code = models.CharField(
         unique=True,
         max_length=4, 
         help_text="The 3 or 4 letter WRP age code of the bird.",
     )
-    description = models.TextField()
-    annual = models.ForeignKey(
-        "AgeAnnual", 
-        on_delete=models.CASCADE,
-        related_name="wrp_ages", 
+
+    sequence = models.IntegerField(
+        help_text="The order progression by life cycle stage. Lower numbers are younger birds.",
     )
 
+    description = models.CharField(
+        max_length=255,
+        help_text="A 3 to 4 word description for the the 3 to 4 letter WRP group code.",
+    )
+
+    explanation = models.TextField(
+        help_text="A longer explanation of the WRP group code, its meaning, and examples.",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="current",
+        help_text="The current usage of the age code.",
+    )
+
+    annuals = models.ManyToManyField(
+        "AgeAnnual", 
+        related_name="wrp_ages",
+        help_text="The set of annual ages that can be assigned to a bird of this WRP age code.",
+    )
+
+    class Meta:
+        ordering = ("sequence",)
+
+
 class AgeAnnual(models.Model):
-    bbl = models.CharField(
+    number = models.IntegerField(
+        help_text="The integer code used to age a bird by the MAPS protocol",
+    )
+
+    alpha = models.CharField(
         max_length=3, 
         unique=True,
         help_text="The 2 or 3 letter calendar age code of the bird as used by the BBL.",
     )
-    maps = models.IntegerField(
-        help_text="The integer code used to age a bird by the MAPS protocol",
-    )
-    description = models.TextField()
+
+    description = models.CharField(max_length=255)
+    explanation = models.TextField()
