@@ -1,7 +1,6 @@
-import csv
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from birds.models import AgeWRP, AgeAnnual
+from birds.models import AgeWRP
 from birds.serializers import parse_agewrps_from_csv
 
 class Command(BaseCommand):
@@ -13,6 +12,21 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         csv_file_path = options["csv_file"]
-        age_wrps = parse_agewrps_from_csv(csv_file_path)
-        AgeWRP.objects.bulk_create(age_wrps, ignore_conflicts=True) # Assume all AgeWRP objects are ready to be saved without annuals
-        self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(age_wrps)} AgeWRP objects"))
+        try:
+            AgeWRP.objects.all().delete()
+            age_wrps_data = parse_agewrps_from_csv(csv_file_path)
+            
+            # Create AgeWRP objects and link annuals atomically
+            for data in age_wrps_data:
+                age_wrp = AgeWRP.objects.create(
+                    code=data["code"],
+                    sequence=data["sequence"],
+                    description=data["description"],
+                    status=data["status"],
+                )
+                for annual in data["annuals"]:
+                    age_wrp.annuals.add(annual)
+
+            self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(age_wrps_data)} AgeWRP objects from {csv_file_path}"))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
