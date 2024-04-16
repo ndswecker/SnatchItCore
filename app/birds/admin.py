@@ -16,6 +16,7 @@ class AgeAnnualAdmin(admin.ModelAdmin):
     search_fields = ("number", "alpha")
     ordering = ("number",)
 
+
 class AgeWRPAdmin(admin.ModelAdmin):
     list_display = ("code", "description")
     search_fields = ("number", "alpha")
