@@ -41,6 +41,7 @@ LOCAL_APPS = [
     "users.apps.UsersConfig",
     "maps.apps.MapsConfig",
     "netting.apps.NettingConfig",
+    "birds.apps.BirdsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

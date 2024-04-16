@@ -35,6 +35,8 @@ class Taxon(models.Model):
     )
 
     taxonomic_order = models.IntegerField(
+        null=True,
+        blank=True,
         help_text="The taxonomic order of the bird as determined by the BBL.",
     )
 
@@ -46,18 +48,14 @@ class Taxon(models.Model):
 
     wrp_groups = models.ManyToManyField(
         "GroupWRP", 
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
         related_name="birds"
     )
 
     # Fields that are required for all birds that are banded
     bands = models.ManyToManyField(
         "Band",
-        null=True,
         blank=True,
-        related_name="birds",
+        related_name="taxa",
         help_text="The acceptable band sizes for the bird listed in order of suitability.",
     )
 
@@ -109,7 +107,11 @@ class Taxon(models.Model):
 
 class Band(models.Model):
     size = models.CharField(max_length=2)
-    comment = models.CharField(max_length=255)
+    comment = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+    )
 
 class BandAllocation(models.Model):
     """
@@ -127,7 +129,7 @@ class BandAllocation(models.Model):
     band = models.ForeignKey(
         "Band", 
         on_delete=models.CASCADE,
-        related_name="birds", 
+        related_name="allocations", 
     )
 
     sex = models.CharField(
@@ -137,6 +139,7 @@ class BandAllocation(models.Model):
             ("U", "Unisex"),
         ],
         default = 'U',
+        max_length = 10,
     )
 
     priority = models.IntegerField(
@@ -189,6 +192,8 @@ class AgeWRP(models.Model):
     )
 
     explanation = models.TextField(
+        null=True,
+        blank=True,
         help_text="A longer explanation of the WRP group code, its meaning, and examples.",
     )
 
@@ -222,3 +227,6 @@ class AgeAnnual(models.Model):
 
     description = models.CharField(max_length=255)
     explanation = models.TextField()
+
+    def __str__(self):
+        return f"{self.number} {self.alpha}"
