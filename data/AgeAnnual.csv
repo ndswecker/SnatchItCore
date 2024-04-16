@@ -1,0 +1,10 @@
+number,alpha,description,explanation
+0,U,Unknown,"A bird that cannot be placed in any classes below . Except in cases where data were not recorded or have been lost during the nesting season, ONLY BIRDS BANDED AFTER THE BREEDING SEASON AND BEFORE JANUARY 1 CAN BE CORRECTLY CODED U."
+1,AHY,After Hatching Year,"A bird known to have hatched before the calendar year of banding; year of hatch otherwise unknown. Example: Banded 1997 - Hatched before January 1, 1997. Birds that would have been coded U on December 31 graduate to class AHY on January 1."
+2,HY,Hatching Year,A bird capable of sustained flight and known to have hatched during the calendar year in which it was banded. Example: Banded 1997 - Hatched 1997.
+3,J,Juvenile,"OBSOLETE, old code used for nestling or recent fledgling, probably mostly translatable to age L but can not be certain. Code still exists in database with old records."
+4,L,Local,A nestling or young bird incapable of sustained flight. After a young bird achieves sustained flight it becomes age HY until December 31.
+5,SY,Second Year,A bird known to have hatched in the calendar year preceding the year of banding and in its second calendar year of life. Example: Banded 1997 - Hatched 1996.
+6,ASY,After Second Year,A bird known to have hatched earlier than the calendar year preceeding the year of banding; year of hatch otherwise unknown. Example: Banded 1997 - Hatched 1995 or earlier.
+7,TY,Third Year,"A bird known to have hatched in the calendar year two years prior to the year of banding, now in its third calendar year of life. Example: Banded 1997 - Hatched 1995."
+8,ATY,After Third Year,"A bird known to have hatched prior to two years prior to the year of banding, now in at least its fourth calendar year of life. Example: Banded 1997 - Hatched 1994 or earlier."

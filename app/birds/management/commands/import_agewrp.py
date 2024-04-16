@@ -1,7 +1,7 @@
-import csv
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from birds.models import AgeWRP, AgeAnnual
+from birds.models import AgeWRP
+from birds.serializers import parse_agewrps_from_csv
 
 class Command(BaseCommand):
     help = "Loads data from CSV into AgeWRP model"
@@ -11,27 +11,22 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        csv_file = options["csv_file"]
+        csv_file_path = options["csv_file"]
         try:
-            with open(csv_file, newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
-                for row in reader:
-                    age_wrps = AgeWRP.objects.create(
-                        code=row["code"],
-                        sequence=int(row["sequence"]),
-                        description=row["description"],
-                        status=row["status"].lower()  # Assuming status in CSV is either 'current' or 'discontinued'
-                    )
+            AgeWRP.objects.all().delete()
+            age_wrps_data = parse_agewrps_from_csv(csv_file_path)
+            
+            # Create AgeWRP objects and link annuals atomically
+            for data in age_wrps_data:
+                age_wrp = AgeWRP.objects.create(
+                    code=data["code"],
+                    sequence=data["sequence"],
+                    description=data["description"],
+                    status=data["status"],
+                )
+                for annual in data["annuals"]:
+                    age_wrp.annuals.add(annual)
 
-                    # Handle ManyToMany relation for `annuals`
-                    annual_ids = row.get("annuals", "")
-                    if annual_ids:  # Only process if annual_ids is not empty
-                        for annual_id in annual_ids.split(","):
-                            if annual_id.strip():
-                                annual, _ = AgeAnnual.objects.get_or_create(number=int(annual_id.strip()))
-                                age_wrps.annuals.add(annual)
-
-            self.stdout.write(self.style.SUCCESS("Data loaded successfully"))
+            self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(age_wrps_data)} AgeWRP objects from {csv_file_path}"))
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"Error loading data: {e}"))
-            raise e
+            self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
