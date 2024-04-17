@@ -1,5 +1,8 @@
 import csv
 from birds.models import AgeAnnual
+from birds.models import AgeWRP
+from birds.models import Band
+from birds.models import GroupWRP
 
 def parse_agewrps_from_csv(csv_file_path):
     age_wrps = []
@@ -63,3 +66,32 @@ def parse_bands_from_csv(csv_file_path):
             bands.append(band_data)
 
     return bands
+
+def parse_groupwrps_from_csv(csv_file_path):
+    group_wrps = []
+    age_wrp_cache = {}  # Cache to store and reuse AgeWRP objects
+
+    with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            # Prepare data for GroupWRP
+            group_wrp_data = {
+                "number": int(row["number"]),
+                "explanation": row["explanation"],
+                "ages": []
+            }
+            
+            # Handle age WRP IDs, assume they are comma-separated
+            age_wrp_ids = row.get("ages", "")
+            if age_wrp_ids:
+                for age_wrp_id in age_wrp_ids.split(","):
+                    if age_wrp_id.strip():
+                        if age_wrp_id not in age_wrp_cache:
+                            # Assume AgeWRP exists, or create a mechanism to handle new entries
+                            age_wrp, created = AgeWRP.objects.get_or_create(code=age_wrp_id.strip())
+                            age_wrp_cache[age_wrp_id] = age_wrp
+                        group_wrp_data["ages"].append(age_wrp_cache[age_wrp_id])
+
+            group_wrps.append(group_wrp_data)
+
+    return group_wrps

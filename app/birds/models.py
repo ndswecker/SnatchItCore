@@ -213,6 +213,9 @@ class AgeWRP(models.Model):
     class Meta:
         ordering = ("sequence",)
 
+    def __str__(self):
+        return self.code
+
 
 class AgeAnnual(models.Model):
     number = models.IntegerField(

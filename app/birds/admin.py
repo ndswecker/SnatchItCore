@@ -2,6 +2,7 @@ from django.contrib import admin
 from birds.models import Band
 from birds.models import AgeAnnual
 from birds.models import AgeWRP
+from birds.models import GroupWRP
 
 
 class BandAdmin(admin.ModelAdmin):
@@ -22,7 +23,13 @@ class AgeWRPAdmin(admin.ModelAdmin):
     search_fields = ("number", "alpha")
     ordering = ("sequence",)
 
+class GroupWRPAdmin(admin.ModelAdmin):
+    list_display = ("number",)
+    search_fields = ("number", "ages")
+    ordering = ("number",)
+
 
 admin.site.register(Band, BandAdmin)
 admin.site.register(AgeAnnual, AgeAnnualAdmin)
 admin.site.register(AgeWRP, AgeWRPAdmin)
+admin.site.register(GroupWRP, GroupWRPAdmin)

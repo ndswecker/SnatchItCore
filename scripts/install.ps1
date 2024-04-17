@@ -28,3 +28,11 @@ python app\manage.py migrate
 
 # python app\manage.py createsuperuser --username user --email user@email.com --noinput
 python app\manage.py loaddata users-dev
+
+# Load data
+Write-Host "Loading initial data..."
+python app\manage.py import_bands .\data\Bands.csv
+python app\manage.py import_ageannuals .\data\AgeAnnuals.csv
+python app\manage.py import_agewrps .\data\AgeWRPs.csv
+python app\manage.py import_groupwrps .\data\GroupWRPs.csv
+Write-Host "Data loaded successfully."
