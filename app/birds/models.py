@@ -15,7 +15,7 @@ class Taxon(models.Model):
     number = models.IntegerField(
         help_text="The species number of the bird as determined by SnatchItCore (BBL preferenced).",
     )
-    
+
     number_bbl = models.IntegerField(
         null=True,
         blank=True,
@@ -61,12 +61,15 @@ class Taxon(models.Model):
 
     wrp_groups = models.ManyToManyField(
         "GroupWRP", 
+        null=True,
+        blank=True,
         related_name="birds"
     )
 
     # Fields that are required for all birds that are banded
     bands = models.ManyToManyField(
         "Band",
+        null=True,
         blank=True,
         related_name="taxa",
         help_text="The acceptable band sizes for the bird listed in order of suitability.",
@@ -98,7 +101,11 @@ class Taxon(models.Model):
     sex_by_tarsus = models.BooleanField(null=True, blank=True)
 
     # Fields for extended morphology (Flycatchers and a few other species)
-    upper_parts = models.CharField(max_length=255)
+    upper_parts = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255
+    )
     wg_minus_tl_min = models.IntegerField(null=True, blank=True)
     wg_minus_tl_max = models.IntegerField(null=True, blank=True)
     bill_nares_min = models.FloatField(null=True, blank=True)

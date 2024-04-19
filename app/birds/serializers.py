@@ -95,3 +95,21 @@ def parse_groupwrps_from_csv(csv_file_path):
             group_wrps.append(group_wrp_data)
 
     return group_wrps
+
+def parse_species_from_csv(csv_file_path):
+    species = []
+
+    with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            # Prepare data for Species
+            species_data = {
+                "number": int(row["number"]),
+                "alpha": row["alpha"],
+                "common": row["common"],
+                "scientific": row["scientific"],
+                "taxonomic_order": row["taxonomic_order"],
+            }
+            species.append(species_data)
+
+    return species
