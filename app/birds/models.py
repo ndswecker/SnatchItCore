@@ -12,6 +12,10 @@ class Taxon(models.Model):
         help_text="The scientific name of the bird as determined by the AOU.",
     )
 
+    number = models.IntegerField(
+        help_text="The species number of the bird as determined by SnatchItCore (BBL preferenced).",
+    )
+    
     number_bbl = models.IntegerField(
         null=True,
         blank=True,
@@ -19,10 +23,19 @@ class Taxon(models.Model):
     )
 
     number_aou = models.IntegerField(
+        null=True,
+        blank=True,
         help_text="The species number of the bird as determined by the AOU.",
     )
 
+    alpha = models.CharField(
+        max_length=4,
+        help_text="The alpha code of the bird used by SnatchItCore (BBL preferenced).",
+    )
+
     alpha_bbl = models.CharField(
+        null=True,
+        blank=True,
         max_length=4,
         help_text="The alpha code of the bird as determined by the BBL.",
     )
@@ -105,6 +118,10 @@ class Taxon(models.Model):
     class Meta:
         ordering = ("number_aou",)
 
+    def __str__(self):
+        return self.alpha_aou
+    
+
 class Band(models.Model):
     size = models.CharField(max_length=2)
     comment = models.CharField(
@@ -112,6 +129,13 @@ class Band(models.Model):
         blank=True,
         max_length=255,
     )
+
+    class Meta:
+        ordering = ("size",)
+
+    def __str__(self):
+        return self.size
+
 
 class BandAllocation(models.Model):
     """
@@ -149,6 +173,7 @@ class BandAllocation(models.Model):
     class Meta:
         unique_together = ("bird", "band", "sex", "priority")
         ordering = ("bird", "priority")
+
 
 class GroupWRP(models.Model):
     """
