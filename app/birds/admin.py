@@ -1,5 +1,6 @@
 from django.contrib import admin
 from birds.models import Band
+from birds.models import Taxon
 from birds.models import AgeAnnual
 from birds.models import AgeWRP
 from birds.models import GroupWRP
@@ -28,8 +29,14 @@ class GroupWRPAdmin(admin.ModelAdmin):
     search_fields = ("number", "ages")
     ordering = ("number",)
 
+class TaxonAdmin(admin.ModelAdmin):
+    list_display = ("common", "alpha", "number")
+    search_fields = ("common", "alpha")
+    ordering = ("taxonomic_order",)
+
 
 admin.site.register(Band, BandAdmin)
 admin.site.register(AgeAnnual, AgeAnnualAdmin)
 admin.site.register(AgeWRP, AgeWRPAdmin)
 admin.site.register(GroupWRP, GroupWRPAdmin)
+admin.site.register(Taxon, TaxonAdmin)

@@ -13,6 +13,7 @@ class Taxon(models.Model):
     )
 
     number = models.IntegerField(
+        default=0,
         help_text="The species number of the bird as determined by SnatchItCore (BBL preferenced).",
     )
 
@@ -29,6 +30,7 @@ class Taxon(models.Model):
     )
 
     alpha = models.CharField(
+        default="TEMP",
         max_length=4,
         help_text="The alpha code of the bird used by SnatchItCore (BBL preferenced).",
     )
@@ -61,7 +63,6 @@ class Taxon(models.Model):
 
     wrp_groups = models.ManyToManyField(
         "GroupWRP", 
-        null=True,
         blank=True,
         related_name="birds"
     )
@@ -69,7 +70,6 @@ class Taxon(models.Model):
     # Fields that are required for all birds that are banded
     bands = models.ManyToManyField(
         "Band",
-        null=True,
         blank=True,
         related_name="taxa",
         help_text="The acceptable band sizes for the bird listed in order of suitability.",
@@ -126,7 +126,7 @@ class Taxon(models.Model):
         ordering = ("number_aou",)
 
     def __str__(self):
-        return self.alpha_aou
+        return self.alpha
     
 
 class Band(models.Model):

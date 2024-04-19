@@ -37,4 +37,5 @@ python app/manage.py import_bands ./data/Bands.csv
 python app/manage.py import_ageannuals ./data/AgeAnnuals.csv
 python app/manage.py import_agewrps ./data/AgeWRPs.csv
 python app/manage.py import_groupwrps ./data/GroupWRPs.csv
+python app/manage.py import_species ./data/TaxonBBL.csv
 echo "Data loaded successfully."
