@@ -1,4 +1,5 @@
 import csv
+import re
 from birds.models import AgeAnnual
 from birds.models import AgeWRP
 from birds.models import Band
@@ -106,10 +107,54 @@ def parse_species_from_csv(csv_file_path):
             species_data = {
                 "number": int(row["number"]),
                 "alpha": row["alpha"],
-                "common": row["common"],
+                "common": row["common"].strip().replace("*", ""),
                 "scientific": row["scientific"],
                 "taxonomic_order": row["taxonomic_order"],
             }
             species.append(species_data)
 
     return species
+
+def parse_band_allocations_from_csv(csv_file_path):
+    band_allocations = []
+
+    # Regex pattern to correctly extract band sizes and differentiate between M and F
+    # It captures 'M:' or 'F:' followed by any number of band sizes separated by commas
+    band_size_pattern = re.compile(r"(M|F):\s*((?:\d+[A-Z]?(?:, )?)*)")
+
+    with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            species_number = int(row["number"])
+            band_sizes = row["band_size"]
+            priority = 0
+            
+            # First, check for and handle specific 'M:' or 'F:' entries
+            sex_specific_matches = band_size_pattern.findall(band_sizes)
+            if sex_specific_matches:
+                for sex_prefix, bands in sex_specific_matches:
+                    for band in bands.split(', '):
+                        if band:  # Ensure the band entry is not empty
+                            band_allocations.append({
+                                "bird": species_number,
+                                "band": band.strip(),
+                                "sex": sex_prefix.lower(),  # 'm' or 'f'
+                                "priority": priority
+                            })
+                            priority += 1
+                # Remove the processed parts from the band_sizes string
+                band_sizes = band_size_pattern.sub('', band_sizes)
+            
+            # Handle the remaining bands which are unisex
+            for band in band_sizes.split(','):
+                band = band.strip()
+                if band:  # Ensure the band entry is not empty
+                    band_allocations.append({
+                        "bird": species_number,
+                        "band": band,
+                        "sex": "u",  # Unisex
+                        "priority": priority
+                    })
+                    priority += 1
+    
+    return band_allocations

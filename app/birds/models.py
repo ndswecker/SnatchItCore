@@ -181,6 +181,9 @@ class BandAllocation(models.Model):
         unique_together = ("bird", "band", "sex", "priority")
         ordering = ("bird", "priority")
 
+    def __str__(self):
+        return f"{self.bird} {self.band}"
+
 
 class GroupWRP(models.Model):
     """
