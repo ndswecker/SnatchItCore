@@ -31,11 +31,5 @@ python3 app/manage.py migrate
 # python3 app/manage.py createsuperuser --username user --email user@email.com --noinput
 python3 app/manage.py loaddata users-dev
 
-# Load data
-echo "Loading initial data..."
-python app/manage.py import_bands ./data/Bands.csv
-python app/manage.py import_ageannuals ./data/AgeAnnuals.csv
-python app/manage.py import_agewrps ./data/AgeWRPs.csv
-python app/manage.py import_groupwrps ./data/GroupWRPs.csv
-python app/manage.py import_species ./data/TaxonBBL.csv
-echo "Data loaded successfully."
+# Load bird data
+python app/manage.py load_all_bird_data

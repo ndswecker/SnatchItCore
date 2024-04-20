@@ -1524,15 +1524,15 @@ SPECIES: dict = {
         "scientific_name": "Patagioenas fasciata",
         "alpha_code": "BTPI",
         "species_number": 3120,
-        "band_sizes": [],
+        "band_sizes": ["5", "5A"],
         "wing_chord_range": (),
-        "WRP_groups": [],
+        "WRP_groups": [3, 4, 5],
         "sexing_criteria": {
             "female_by_BP": True,
             "male_by_CP": True,
             "plumage_dimorphism": False,
         },
-        "pyle_second_edition_page": 0,
+        "pyle_second_edition_page": 46,
     },
     2730: {
         "common_name": "Killdeer",
