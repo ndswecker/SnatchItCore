@@ -26,4 +26,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Set species to band relationships..."))
         call_command("setup_taxon_band_relationships")
 
+        self.stdout.write(self.style.SUCCESS("Set species details from reference data"))
+        call_command("setup_taxon_relationships")
+
         self.stdout.write(self.style.SUCCESS("Successfully loaded all data"))

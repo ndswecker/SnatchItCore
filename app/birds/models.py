@@ -205,6 +205,9 @@ class GroupWRP(models.Model):
     class Meta:
         ordering = ("number",)
 
+    def __str__(self):
+        return str(self.number)
+
 
 class AgeWRP(models.Model):
     STATUS_CHOICES = [
