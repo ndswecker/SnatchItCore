@@ -8,31 +8,55 @@ from birds.models import GroupWRP
 def parse_agewrps_from_csv(csv_file_path):
     age_wrps = []
     annual_cache = {}  # Cache to store and reuse AgeAnnual objects
+    errors = []
 
-    with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            # Prepare data for AgeWRP
-            age_wrp_data = {
-                "code": row["code"],
-                "sequence": int(row["sequence"]),
-                "description": row["description"],
-                "status": row["status"].lower(),
-                "annuals": []
-            }
+    try:
+        with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    age_wrp_data = {
+                        "code": row["code"],
+                        "sequence": int(row["sequence"]),
+                        "description": row["description"],
+                        "status": row["status"].lower(),
+                        "annuals": []
+                    }
+                
+                    # Handle annual IDs, assume they are comma-separated
+                    annual_ids = row.get("annuals", "")
+                    if annual_ids:
+                        for annual_id in annual_ids.split(","):
+                            annual_id = annual_id.strip()  # Strip whitespace from annual ID
+                            if annual_id:  # Proceed if the ID is not empty after stripping
+                                if annual_id not in annual_cache:  # Check if the ID is not already cached
+                                    annual = AgeAnnual.objects.get(number=int(annual_id))  # Fetch the AgeAnnual object
+                                    annual_cache[annual_id] = annual  # Cache it
+                                age_wrp_data["annuals"].append(annual_cache[annual_id])  # Append the AgeAnnual object to the data
+
+                    age_wrps.append(age_wrp_data)
+                                
+                except ValueError as e:
+                    errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: {e}")
+                except KeyError as e:
+                    errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: Missing expected column {e}")
+                except AgeAnnual.DoesNotExist as e:
+                    errors.append(f"Error parsing AgeWRP data in row {reader.line_num} for a non valid age annual: {e}")
+                except Exception as e:
+                    errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: {e}")
             
-            # Handle annual IDs, assume they are comma-separated
-            annual_ids = row.get("annuals", "")
-            if annual_ids:
-                for annual_id in annual_ids.split(","):
-                    if annual_id.strip():
-                        if annual_id not in annual_cache:
-                            # Assume AgeAnnual exists, or create a mechanism to handle new entries
-                            annual, created = AgeAnnual.objects.get_or_create(number=int(annual_id.strip()))
-                            annual_cache[annual_id] = annual
-                        age_wrp_data["annuals"].append(annual_cache[annual_id])
 
-            age_wrps.append(age_wrp_data)
+    except FileNotFoundError as e:
+        print(f"File {csv_file_path} was not found: {e}")
+    except csv.Error as e:
+        print(f"An error occurred while reading and parsing the CSV file: {e}")
+
+    if errors:
+        print("The following errors occurred while parsing AgeWRP data:")
+        for error in errors:
+            print(error)
+    else :
+        print("Successfully parsed all AgeWRP data with no errors found")
 
     return age_wrps
 
