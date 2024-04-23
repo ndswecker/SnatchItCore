@@ -38,18 +38,34 @@ def parse_agewrps_from_csv(csv_file_path):
 
 def parse_ageannuals_from_csv(csv_file_path):
     age_annuals = []
+    errors = []
 
-    with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            # Prepare data for AgeAnnual
-            age_annual_data = {
-                "number": int(row["number"]),
-                "alpha": row["alpha"],
-                "description": row["description"],
-                "explanation": row["explanation"],
-            }
-            age_annuals.append(age_annual_data)
+    try:
+        with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    age_annual_data = {
+                        "number": int(row["number"]),
+                        "alpha": row["alpha"],
+                        "description": row["description"],
+                        "explanation": row["explanation"],
+                    }
+                    age_annuals.append(age_annual_data)
+                except ValueError as e:
+                    errors.append(f"Error parsing AgeAnnual data in row {reader.line_num}: {e}")
+                except KeyError as e:
+                    errors.append(f"Error parsing AgeAnnual data in row {reader.line_num}: Missing expected column {e}")
+
+    except csv.Error as e:
+        print(f"An error occurred while reading and parsing the CSV file: {e}")
+    except FileNotFoundError as e:
+        print(f"File {csv_file_path} was not found: {e}")
+
+    if errors:
+        print("The following errors occurred while parsing AgeAnnual data:")
+        for error in errors:
+            print(error)
 
     return age_annuals
 
