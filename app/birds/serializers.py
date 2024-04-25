@@ -96,15 +96,18 @@ def parse_ageannuals_from_csv(csv_file_path):
 def parse_bands_from_csv(csv_file_path):
     bands = []
 
-    with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            # Prepare data for Band
-            band_data = {
-                "size": row["size"],
-                "comment": row["comment"],
-            }
-            bands.append(band_data)
+    try:
+        with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                # Prepare data for Band
+                band_data = {
+                    "size": row["size"],
+                    "comment": row["comment"],
+                }
+                bands.append(band_data)
+    except FileNotFoundError as e:
+        print(f"While attempting to parse bands sizes, file {csv_file_path} was not found: {e}")
 
     return bands
 
