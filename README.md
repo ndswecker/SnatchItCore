@@ -21,7 +21,7 @@ SnatchIt is packed with features designed to support ornithologists and bird ban
 
 ## Installation
 
-To install SnatchIt, ensure you have Python version 3.10 or higher installed on your machine. 
+To install SnatchIt, ensure you have Python version 3.10 or higher installed on your machine.
 
 Then, execute the appropriate installation script for your operating system:
 

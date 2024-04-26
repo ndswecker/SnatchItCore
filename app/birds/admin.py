@@ -1,9 +1,11 @@
 from django.contrib import admin
-from birds.models import Band, BandAllocation
-from birds.models import Taxon
+
 from birds.models import AgeAnnual
 from birds.models import AgeWRP
+from birds.models import Band
+from birds.models import BandAllocation
 from birds.models import GroupWRP
+from birds.models import Taxon
 
 
 class BandAdmin(admin.ModelAdmin):
@@ -43,10 +45,12 @@ class BandAllocationAdmin(admin.ModelAdmin):
 
     def get_taxon_alpha(self, obj):
         return obj.bird.alpha
+
     get_taxon_alpha.short_description = "Species Alpha"
 
     def get_taxon_common(self, obj):
         return obj.bird.common
+
     get_taxon_common.short_description = "Species Common Name"
 
     ordering = ("bird",)

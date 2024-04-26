@@ -18,7 +18,7 @@ CSV headers:
 
 #### WRP Ages
 ```/data/AgeWRPs.csv```
-CSV headers 
+CSV headers
 1. "code"
 2. "sequence"
 3. "description"
@@ -27,7 +27,7 @@ CSV headers
 
 #### WRP Groups
 ```/data/GroupWRPs.csv```
-CSV headers 
+CSV headers
 1. "number"
 2. "explanation"
 3. "ages"
@@ -49,7 +49,7 @@ CSV headers
 
 #### Band Allocations for each taxon
 ```/data/BandAllocations.csv```
-CSV headers 
+CSV headers
 1. "number"
 2. "alpha"
 3. "common"
@@ -59,11 +59,11 @@ CSV headers
 ### Taxon field population
 Currently using the python dictionary in the maps directory. Will need to update a more mature approach.
 
-```/maps/maps_reference_data.py SPECIES``` 
+```/maps/maps_reference_data.py SPECIES```
 
 Uses the species dictionary to update the Taxon
 1. wing chord ranges
 2. sex related wing chord ranges
 3. sexing criteria
 4. page number in the second edition of pyle
-5. M2M relationship with Taxon and GroupWRP   
+5. M2M relationship with Taxon and GroupWRP
