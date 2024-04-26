@@ -1,9 +1,7 @@
 from django.core.management.base import BaseCommand
-from django.core.management.base import CommandParser
 from django.db import transaction
 
 from birds.models import Taxon
-from birds.serializers import parse_band_allocations_from_csv
 from birds.serializers import parse_species_from_csv
 
 

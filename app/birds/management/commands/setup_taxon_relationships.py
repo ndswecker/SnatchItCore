@@ -33,13 +33,13 @@ class Command(BaseCommand):
                         taxon.page_number = data["pyle_second_edition_page"]
                         taxon.save()
 
-                    # Asign unisex wing chord range
+                    # Assign unisex wing chord range
                     if "wing_chord_range" in data and len(data["wing_chord_range"]) == 2:
                         taxon.wing_min = data["wing_chord_range"][0]
                         taxon.wing_max = data["wing_chord_range"][1]
                         taxon.save()
 
-                    # Asign sex specific wing chord ranges
+                    # Assign sex specific wing chord ranges
                     if "wing_chord_range_by_sex" in data:
                         if "female" in data["wing_chord_range_by_sex"]:
                             taxon.wing_female_min = data["wing_chord_range_by_sex"]["female"][0]

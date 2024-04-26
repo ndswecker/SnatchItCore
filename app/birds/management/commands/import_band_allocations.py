@@ -1,7 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
-from django.core.management.base import CommandParser
-from django.db import IntegrityError
 from django.db import transaction
 
 from birds.models import Band
