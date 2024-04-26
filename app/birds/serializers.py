@@ -215,7 +215,7 @@ def parse_band_allocations_from_csv(csv_file_path):
                                         "band": band.strip(),
                                         "sex": sex_prefix.lower(),  # 'm' or 'f'
                                         "priority": priority,
-                                    }
+                                    },
                                 )
                                 priority += 1
                     # Remove the processed parts from the band_sizes string
@@ -232,7 +232,7 @@ def parse_band_allocations_from_csv(csv_file_path):
                                 "band": band,
                                 "sex": "u",  # Unisex
                                 "priority": priority,
-                            }
+                            },
                         )
                         priority += 1
     except FileNotFoundError as e:

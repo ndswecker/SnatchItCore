@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 )
 
             self.stdout.write(
-                self.style.SUCCESS(f"Successfully loaded {len(bands_data)} Band objects from {csv_file_path}")
+                self.style.SUCCESS(f"Successfully loaded {len(bands_data)} Band objects from {csv_file_path}"),
             )
         except IntegrityError as e:
             self.stdout.write(self.style.ERROR(f"An error occurred while attempting to load a Band object: {e}"))

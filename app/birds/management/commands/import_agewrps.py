@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     age_wrp.annuals.add(annual)
 
             self.stdout.write(
-                self.style.SUCCESS(f"Successfully loaded {len(age_wrps_data)} AgeWRP objects from {csv_file_path}")
+                self.style.SUCCESS(f"Successfully loaded {len(age_wrps_data)} AgeWRP objects from {csv_file_path}"),
             )
         except IntegrityError as e:
             self.stdout.write(self.style.ERROR(f"An error occurred while attempting to load an AgeWRP object: {e}"))

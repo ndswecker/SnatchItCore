@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 )
 
             self.stdout.write(
-                self.style.SUCCESS(f"Successfully loaded {len(species_data)} Species objects from {csv_file_path}")
+                self.style.SUCCESS(f"Successfully loaded {len(species_data)} Species objects from {csv_file_path}"),
             )
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))

@@ -30,7 +30,7 @@ class Command(BaseCommand):
                 group_wrp.ages.set(data["ages"])  # Set many-to-many field
 
             self.stdout.write(
-                self.style.SUCCESS(f"Successfully loaded {len(group_wrps_data)} GroupWRP objects from {csv_file_path}")
+                self.style.SUCCESS(f"Successfully loaded {len(group_wrps_data)} GroupWRP objects from {csv_file_path}"),
             )
         except IntegrityError as e:
             self.stdout.write(self.style.ERROR(f"An error occurred while attempting ito import WRP groups: {e}"))

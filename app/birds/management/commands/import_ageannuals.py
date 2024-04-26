@@ -29,10 +29,9 @@ class Command(BaseImportCommand):
                     description=data["description"],
                     explanation=data["explanation"],
                 )
-                total_count += 1
             except IntegrityError as e:
                 self.stdout.write(
-                    self.style.ERROR(f"Database integrity error for record {data['number']} - {data['alpha']}: {e}")
+                    self.style.ERROR(f"Database integrity error for record {data['number']} - {data['alpha']}: {e}"),
                 )
                 error_count += 1
             except DataError as e:
@@ -40,12 +39,14 @@ class Command(BaseImportCommand):
                 error_count += 1
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f"An error occurred for record {data['number']} - {data['alpha']}: {e}")
+                    self.style.ERROR(f"An error occurred for record {data['number']} - {data['alpha']}: {e}"),
                 )
                 error_count += 1
+            else:
+                total_count += 1
 
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully loaded {total_count} AgeAnnual objects from {csv_file_path}")
+            self.style.SUCCESS(f"Successfully loaded {total_count} AgeAnnual objects from {csv_file_path}"),
         )
 
         if error_count > 0:
