@@ -1,7 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from birds.serializers import parse_bands_from_csv
+from django.db.utils import DataError
+from django.db.utils import IntegrityError
+
 from birds.models import Band
+from birds.serializers import parse_bands_from_csv
+
 
 class Command(BaseCommand):
     help = "Loads the data from CSV into Band model"
@@ -23,6 +27,12 @@ class Command(BaseCommand):
                     comment=data["comment"],
                 )
 
-            self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(bands_data)} Band objects from {csv_file_path}"))
+            self.stdout.write(
+                self.style.SUCCESS(f"Successfully loaded {len(bands_data)} Band objects from {csv_file_path}")
+            )
+        except IntegrityError as e:
+            self.stdout.write(self.style.ERROR(f"An error occurred while attempting to load a Band object: {e}"))
+        except DataError as e:
+            self.stdout.write(self.style.ERROR(f"An error occurred while attempting to load a Band object: {e}"))
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
+            self.stdout.write(self.style.ERROR(f"An error occurred while attempting to laod a Band object: {e}"))

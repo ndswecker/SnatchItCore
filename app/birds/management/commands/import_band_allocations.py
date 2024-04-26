@@ -1,34 +1,58 @@
-from django.core.management.base import BaseCommand, CommandParser
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandParser
+from django.db import IntegrityError
 from django.db import transaction
 
-from birds.serializers import parse_band_allocations_from_csv
-from birds.models import BandAllocation
 from birds.models import Band
+from birds.models import BandAllocation
 from birds.models import Taxon
+from birds.serializers import parse_band_allocations_from_csv
+
 
 class Command(BaseCommand):
     help = "Loads band allocation data from CSV"
 
     def add_arguments(self, parser):
         parser.add_argument("csv_file", type=str, help="The CSV file to load data")
-    
+
     def handle(self, *args, **options):
         csv_file_path = options["csv_file"]
         band_allocations = parse_band_allocations_from_csv(csv_file_path)
 
+        rejected_birds = []
+        rejected_bands = []
+
         with transaction.atomic():
             for bands in band_allocations:
-                taxon = Taxon.objects.filter(number=bands["bird"]).first()
-                if not taxon:
-                    self.stdout.write(self.style.ERROR(f"Taxon with number {bands['bird']} not found"))
+                # Not all birds in this csv are appropriate for this dataset
+                try:
+                    taxon = Taxon.objects.get(number=bands["bird"])
+                    band = Band.objects.get(size=bands["band"])
+                    BandAllocation.objects.create(
+                        bird=taxon,
+                        band=band,
+                        sex=bands["sex"],
+                        priority=bands["priority"],
+                    )
+                except ObjectDoesNotExist as e:
+                    if "Taxon" in str(e):
+                        rejected_birds.append(bands["alpha"])
+                    else:
+                        rejected_bands.append(bands["bird"])
                     continue
-                
-                band, created = Band.objects.get_or_create(size=bands["band"])
 
-                BandAllocation.objects.create(
-                    bird=taxon,
-                    band=band,
-                    sex=bands["sex"],
-                    priority=bands["priority"],
-                )
-        self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(band_allocations)} BandAllocation objects from {csv_file_path}"))
+        if rejected_birds:
+            self.stdout.write(
+                self.style.WARNING(f"Failed to load BandAllocation objects for the following birds: {rejected_birds}")
+            )
+        if rejected_bands:
+            self.stdout.write(
+                self.style.WARNING(f"Failed to load BandAllocation objects for the following bands: {rejected_bands}")
+            )
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully loaded {len(band_allocations)} BandAllocation objects from {csv_file_path}"
+            )
+        )

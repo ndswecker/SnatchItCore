@@ -1,8 +1,11 @@
-from django.core.management.base import BaseCommand, CommandParser
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandParser
 from django.db import transaction
+
+from birds.models import Taxon
 from birds.serializers import parse_band_allocations_from_csv
 from birds.serializers import parse_species_from_csv
-from birds.models import Taxon
+
 
 class Command(BaseCommand):
     help = "Loads the data from BBL CSV into Species model"
@@ -29,6 +32,8 @@ class Command(BaseCommand):
                     taxonomic_order=data["taxonomic_order"],
                 )
 
-            self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(species_data)} Species objects from {csv_file_path}"))
+            self.stdout.write(
+                self.style.SUCCESS(f"Successfully loaded {len(species_data)} Species objects from {csv_file_path}")
+            )
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))

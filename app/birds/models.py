@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Taxon(models.Model):
     # Fields applicable to all birds
     common = models.CharField(
@@ -62,9 +63,9 @@ class Taxon(models.Model):
     )
 
     wrp_groups = models.ManyToManyField(
-        "GroupWRP", 
+        "GroupWRP",
         blank=True,
-        related_name="birds"
+        related_name="birds",
     )
 
     # Fields that are required for all birds that are banded
@@ -104,7 +105,7 @@ class Taxon(models.Model):
     upper_parts = models.CharField(
         null=True,
         blank=True,
-        max_length=255
+        max_length=255,
     )
     wg_minus_tl_min = models.IntegerField(null=True, blank=True)
     wg_minus_tl_max = models.IntegerField(null=True, blank=True)
@@ -127,7 +128,7 @@ class Taxon(models.Model):
 
     def __str__(self):
         return self.alpha
-    
+
 
 class Band(models.Model):
     size = models.CharField(max_length=2)
@@ -146,31 +147,31 @@ class Band(models.Model):
 
 class BandAllocation(models.Model):
     """
-    Represents the band sizes applicable to a bird, with specific preferences 
-    based on species and sex. The model links birds to their possible 
+    Represents the band sizes applicable to a bird, with specific preferences
+    based on species and sex. The model links birds to their possible
     band sizes and orders the sizes by preference.
     """
 
     bird = models.ForeignKey(
-        "Taxon", 
+        "Taxon",
         on_delete=models.CASCADE,
-        related_name="band_sizes", 
+        related_name="band_sizes",
     )
 
     band = models.ForeignKey(
-        "Band", 
+        "Band",
         on_delete=models.CASCADE,
-        related_name="allocations", 
+        related_name="allocations",
     )
 
     sex = models.CharField(
-        choices = [
+        choices=[
             ("M", "Male"),
             ("F", "Female"),
             ("U", "Unisex"),
         ],
-        default = 'U',
-        max_length = 10,
+        default="U",
+        max_length=10,
     )
 
     priority = models.IntegerField(
@@ -190,6 +191,7 @@ class GroupWRP(models.Model):
     Wolfe-Ryder-Pyle (WRP) groups are a way to group birds by similar molt strategies.
     Within each group there are a set of acceptable ages that can be assigned to a bird of that group.
     """
+
     number = models.IntegerField(unique=True)
 
     explanation = models.TextField(
@@ -197,7 +199,7 @@ class GroupWRP(models.Model):
     )
 
     ages = models.ManyToManyField(
-        "AgeWRP", 
+        "AgeWRP",
         related_name="wrp_groups",
         help_text="The set of acceptable ages for a bird of this group.",
     )
@@ -216,7 +218,7 @@ class AgeWRP(models.Model):
     ]
     code = models.CharField(
         unique=True,
-        max_length=4, 
+        max_length=4,
         help_text="The 3 or 4 letter WRP age code of the bird.",
     )
 
@@ -243,7 +245,7 @@ class AgeWRP(models.Model):
     )
 
     annuals = models.ManyToManyField(
-        "AgeAnnual", 
+        "AgeAnnual",
         related_name="wrp_ages",
         help_text="The set of annual ages that can be assigned to a bird of this WRP age code.",
     )
@@ -261,7 +263,7 @@ class AgeAnnual(models.Model):
     )
 
     alpha = models.CharField(
-        max_length=3, 
+        max_length=3,
         unique=True,
         help_text="The 2 or 3 letter calendar age code of the bird as used by the BBL.",
     )

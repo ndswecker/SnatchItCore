@@ -1,5 +1,6 @@
-from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
     help = "Loads all data from CSV files into the database"
@@ -28,5 +29,5 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("Set species details from reference data"))
         call_command("setup_taxon_relationships")
- 
+
         self.stdout.write(self.style.SUCCESS("Successfully loaded all data"))
