@@ -9,7 +9,7 @@ from maps.maps_reference_data import SPECIES
 class Command(BaseCommand):
     help = "Set up wrp relationships and various details for each taxon"
 
-    def handle (self, *args, **options):
+    def handle(self, *args, **options):
         rejected_taxons, rejected_groups = self.process_taxons()
         self.report_results(rejected_taxons, rejected_groups)
 
@@ -18,13 +18,13 @@ class Command(BaseCommand):
             return Taxon.objects.get(number=data["species_number"])
         except Taxon.DoesNotExist:
             return None
-        
+
     def get_group(self, number):
         try:
             return GroupWRP.objects.get(number=number)
         except GroupWRP.DoesNotExist:
             return None
-        
+
     def process_taxon_groups(self, taxon, data, rejected_groups):
         taxon.wrp_groups.clear()
         for group_number in data["WRP_groups"]:
@@ -43,7 +43,7 @@ class Command(BaseCommand):
     def update_page_number(self, taxon, data):
         if "pyle_second_edition_page" in data:
             taxon.page_number = data["pyle_second_edition_page"]
-    
+
     def update_wing_chords(self, taxon, data):
         # Unisexed wing chord range assignments
         wing_chord_range = data.get("wing_chord_range")
@@ -64,7 +64,7 @@ class Command(BaseCommand):
             taxon.sex_by_cp = criteria["male_by_CP"]
         if "plumage_dimorphism" in criteria:
             taxon.sex_by_plumage = criteria["plumage_dimorphism"]
-    
+
     def process_taxons(self):
         rejected_taxons = []
         rejected_groups = []
@@ -80,8 +80,9 @@ class Command(BaseCommand):
 
     def report_results(self, rejected_taxons, rejected_groups):
         if rejected_taxons:
-            self.stdout.write(self.style.WARNING(f"Failed to set up taxon relationships for the following {rejected_taxons}"))
+            self.stdout.write(
+                self.style.WARNING(f"Failed to set up taxon relationships for the following {rejected_taxons}")
+            )
         if rejected_groups:
             self.stdout.write(self.style.WARNING(f"Failed to recognize WRP groups: {rejected_groups}"))
-        self.stdout.write(self.style.SUCCESS("All WRP group relationships have been set up successfully."))   
-
+        self.stdout.write(self.style.SUCCESS("All WRP group relationships have been set up successfully."))
