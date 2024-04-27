@@ -69,13 +69,13 @@ class Command(BaseCommand):
         rejected_taxons = []
         rejected_groups = []
         with transaction.atomic():
-            for species_id, data in SPECIES.items():
-                taxon = self.get_taxon(data)
+            for value in SPECIES.values():
+                taxon = self.get_taxon(value)
                 if taxon:
-                    self.process_taxon_groups(taxon, data, rejected_groups)
-                    self.update_taxon_details(taxon, data)
+                    self.process_taxon_groups(taxon, value, rejected_groups)
+                    self.update_taxon_details(taxon, value)
                 else:
-                    rejected_taxons.append(data["common_name"])
+                    rejected_taxons.append(value["common_name"])
         return rejected_taxons, rejected_groups
 
     def report_results(self, rejected_taxons, rejected_groups):
