@@ -9,7 +9,6 @@ from birds.models import GroupWRP
 
 def parse_agewrps_from_csv(csv_file_path):
     age_wrps = []
-    annual_cache = {}  # Cache to store and reuse AgeAnnual objects
     errors = []
 
     try:
@@ -22,32 +21,14 @@ def parse_agewrps_from_csv(csv_file_path):
                         "sequence": int(row["sequence"]),
                         "description": row["description"],
                         "status": row["status"].lower(),
-                        "annuals": [],
+                        "annuals": [int(annual_id.strip()) for annual_id in row.get("annuals", "").split(",") if annual_id.strip()],
                     }
-
-                    # Handle annual IDs, assume they are comma-separated
-                    annual_ids = row.get("annuals", "")
-                    if annual_ids:
-                        for annual_id in annual_ids.split(","):
-                            annual_id = annual_id.strip()  # Strip whitespace from annual ID
-                            if annual_id:  # Proceed if the ID is not empty after stripping
-                                if annual_id not in annual_cache:  # Check if the ID is not already cached
-                                    annual = AgeAnnual.objects.get(number=int(annual_id))  # Fetch the AgeAnnual object
-                                    annual_cache[annual_id] = annual  # Cache it
-                                # Append the AgeAnnual object to the data
-                                age_wrp_data["annuals"].append(annual_cache[annual_id])
-
                     age_wrps.append(age_wrp_data)
-
                 except ValueError as e:
                     errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: {e}")
                 except KeyError as e:
                     errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: Missing expected column {e}")
-                except AgeAnnual.DoesNotExist as e:
-                    errors.append(f"Error parsing AgeWRP data in row {reader.line_num} for a non valid age annual: {e}")
-                except Exception as e:
-                    errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: {e}")
-
+                
     except FileNotFoundError as e:
         print(f"File {csv_file_path} was not found: {e}")
     except csv.Error as e:
@@ -57,8 +38,6 @@ def parse_agewrps_from_csv(csv_file_path):
         print("The following errors occurred while parsing AgeWRP data:")
         for error in errors:
             print(error)
-    else:
-        print("Successfully parsed all AgeWRP data with no errors found")
 
     return age_wrps
 

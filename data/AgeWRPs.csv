@@ -5,7 +5,7 @@ FPX,3,first preauxiliary formative molt,current,
 FCX,4,first cycle auxiliary formative plumage,current,
 FPF,5,first preformative molt,current,2
 MFPF,6,minimum first preformative molt,current,"1, 2"
-FCF,7,first cycle formative plumage,current,"1, 2"
+FCF,7,first cycle formative plumage,current,"2, 5"
 MFCF,8,minimum first cycle formative plumage,current,"1, 2"
 HFCF,9,hatching season first cycle formative plumage,current,2
 AFCF,10,after hatching season first cycle formative plumage,current,1
