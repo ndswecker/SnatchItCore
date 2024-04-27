@@ -1,12 +1,6 @@
 import csv
 import re
 
-from birds.models import AgeAnnual
-from birds.models import AgeWRP
-from birds.models import Band
-from birds.models import GroupWRP
-
-
 def parse_agewrps_from_csv(csv_file_path):
     age_wrps = []
     errors = []
@@ -97,46 +91,40 @@ def parse_bands_from_csv(csv_file_path):
 
 def parse_groupwrps_from_csv(csv_file_path):
     group_wrps = []
-    age_wrp_cache = {}  # Cache to store and reuse AgeWRP objects
-    missing_age_wrps = []  # List to store missing AgeWRP codes
+    errors = []
 
     try:
         with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                # Prepare data for GroupWRP
-                group_wrp_data = {
-                    "number": int(row["number"]),
-                    "explanation": row["explanation"],
-                    "ages": [],
-                }
-
-                # Handle age WRP IDs, assume they are comma-separated
-                age_wrp_ids = row.get("ages", "")
-                if age_wrp_ids:
-                    for age_wrp_id in age_wrp_ids.split(","):
-                        clean_id = age_wrp_id.strip()  # Strip whitespace from age WRP ID
-                        if clean_id:  # Proceed if the ID is not empty after stripping
-                            if clean_id not in age_wrp_cache:
-                                try:
-                                    age_wrp = AgeWRP.objects.get(code=clean_id)
-                                    age_wrp_cache[clean_id] = age_wrp
-                                except AgeWRP.DoesNotExist:
-                                    missing_age_wrps.append(clean_id)
-                                    continue  # Skip this ID and move to the next one
-                            group_wrp_data["ages"].append(age_wrp_cache[clean_id].id)
-
-                group_wrps.append(group_wrp_data)
+                try:
+                    age_wrp_ids = [
+                        clean_id.strip()
+                        for clean_id in row.get("ages", "").split(",")
+                        if clean_id.strip()
+                    ]
+                    group_wrp_data = {
+                        "number": int(row["number"]),
+                        "explanation": row["explanation"],
+                        "ages": age_wrp_ids,
+                    }
+                    group_wrps.append(group_wrp_data)
+                except ValueError as e:
+                    errors.append(f"Error parsing group WRP data in row {reader.line_num}: {e}")
+                except KeyError as e:
+                    errors.append(f"Error parsing group WRP data in row {reader.line_num}: Missing expected column {e}")
+    
     except FileNotFoundError as e:
         print(f"While attempting to parse group WRP data, file {csv_file_path} was not found: {e}")
     except csv.Error as e:
         print(f"A CSV error occurred while parsing group WRP data: {e}")
 
-    if missing_age_wrps:
-        print(f"The following AgeWRP codes were not found in the database: {missing_age_wrps}")
+    if errors:
+        print("The following errors occurred while parsing group WRP data:")
+        for error in errors:
+            print(error)
 
     return group_wrps
-
 
 def parse_species_from_csv(csv_file_path):
     species = []
