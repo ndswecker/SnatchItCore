@@ -1,18 +1,15 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from birds.management.commands.base_import_command import BaseImportCommand
 from birds.models import Band
 from birds.models import BandAllocation
 from birds.models import Taxon
 from birds.serializers import parse_band_allocations_from_csv
 
 
-class Command(BaseCommand):
+class Command(BaseImportCommand):
     help = "Loads band allocation data from CSV"
-
-    def add_arguments(self, parser):
-        parser.add_argument("csv_file", type=str, help="The CSV file to load data")
 
     def handle(self, *args, **options):
         csv_file_path = options["csv_file"]

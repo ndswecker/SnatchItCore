@@ -152,57 +152,57 @@ def parse_species_from_csv(csv_file_path):
 
     return species
 
+def parse_band_sizes(species_number, alpha, band_sizes):
+    bands = []
+    last_sex = None  # Track the last processed sex
+
+    # Split into lines assuming M: and F: are on separate lines
+    lines = band_sizes.split("\n")
+    for line in lines:
+        line = line.strip()  # Ensure there's no leading/trailing whitespace
+        if line.startswith("M:") or line.startswith("F:"):
+            sex = line[:1].lower()  # Correctly get 'm' or 'f'
+            sizes = line[2:].split(",")  # Extract sizes after 'M: ' or 'F: '
+            # Reset priority if sex changes
+            if sex != last_sex:
+                priority = 0
+                last_sex = sex
+        else:
+            sex = "u"  # Unisex
+            sizes = line.split(",")
+            if sex != last_sex:
+                priority = 0
+                last_sex = sex
+
+        for size in sizes:
+            size = size.strip()
+            if size:  # Ensure the size is not empty
+                bands.append({
+                    "bird": species_number,
+                    "alpha": alpha,
+                    "band": size,
+                    "sex": sex,
+                    "priority": priority,
+                })
+                priority += 1
+    return bands
 
 def parse_band_allocations_from_csv(csv_file_path):
     band_allocations = []
-
-    # Regex pattern to correctly extract band sizes and differentiate between M and F
-    # It captures 'M:' or 'F:' followed by any number of band sizes separated by commas
-    band_size_pattern = re.compile(r"(M|F):\s*((?:\d+[A-Z]?(?:, )?)*)")
 
     try:
         with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 species_number = int(row["number"])
-                band_sizes = row["band_size"]
                 alpha = row["alpha"]
-                priority = 0
+                band_sizes = row["band_size"]
+                species_bands = parse_band_sizes(species_number, alpha, band_sizes)
+                band_allocations.extend(species_bands)
 
-                # First, check for and handle specific 'M:' or 'F:' entries
-                sex_specific_matches = band_size_pattern.findall(band_sizes)
-                if sex_specific_matches:
-                    for sex_prefix, bands in sex_specific_matches:
-                        for band in bands.split(", "):
-                            if band:  # Ensure the band entry is not empty
-                                band_allocations.append(
-                                    {
-                                        "bird": species_number,
-                                        "alpha": alpha,
-                                        "band": band.strip(),
-                                        "sex": sex_prefix.lower(),  # 'm' or 'f'
-                                        "priority": priority,
-                                    },
-                                )
-                                priority += 1
-                    # Remove the processed parts from the band_sizes string
-                    band_sizes = band_size_pattern.sub("", band_sizes)
-
-                # Handle the remaining bands which are unisex
-                for band in band_sizes.split(","):
-                    band = band.strip()
-                    if band:  # Ensure the band entry is not empty
-                        band_allocations.append(
-                            {
-                                "bird": species_number,
-                                "alpha": alpha,
-                                "band": band,
-                                "sex": "u",  # Unisex
-                                "priority": priority,
-                            },
-                        )
-                        priority += 1
     except FileNotFoundError as e:
-        print(f"While attempting to parse band allocations, file {csv_file_path} was not found: {e}")
+        print(f"File not found: {csv_file_path} - {e}")
+    except csv.Error as e:
+        print(f"CSV reading error: {e}")
 
     return band_allocations

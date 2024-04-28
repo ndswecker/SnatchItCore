@@ -40,7 +40,7 @@ class TaxonAdmin(admin.ModelAdmin):
 
 
 class BandAllocationAdmin(admin.ModelAdmin):
-    list_display = ("bird", "band")
+    list_display = ("bird", "sex", "band", "priority")
     search_fields = ("bird__alpha", "bird__common", "band__size")
 
     def get_taxon_alpha(self, obj):

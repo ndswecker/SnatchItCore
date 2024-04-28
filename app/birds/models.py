@@ -166,11 +166,11 @@ class BandAllocation(models.Model):
 
     sex = models.CharField(
         choices=[
-            ("M", "Male"),
-            ("F", "Female"),
-            ("U", "Unisex"),
+            ("m", "Male"),
+            ("f", "Female"),
+            ("u", "Unisex"),
         ],
-        default="U",
+        default="u",
         max_length=10,
     )
 
