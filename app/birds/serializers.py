@@ -186,7 +186,7 @@ def parse_band_sizes(species_number, alpha, band_sizes):
                         "band": size,
                         "sex": sex,
                         "priority": priority,
-                    }
+                    },
                 )
                 priority += 1
     return bands
