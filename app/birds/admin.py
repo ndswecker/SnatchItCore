@@ -43,18 +43,15 @@ class BandAllocationAdmin(admin.ModelAdmin):
     list_display = ("bird", "sex", "band", "priority")
     search_fields = ("bird__alpha", "bird__common", "band__size")
 
+    @admin.display(description="Species Alpha")
     def get_taxon_alpha(self, obj):
         return obj.bird.alpha
 
-    get_taxon_alpha.short_description = "Species Alpha"
-
+    @admin.display(description="Species Common Name")
     def get_taxon_common(self, obj):
         return obj.bird.common
 
-    get_taxon_common.short_description = "Species Common Name"
-
     ordering = ("bird",)
-
     list_filter = ("bird__alpha", "band__size")
 
 

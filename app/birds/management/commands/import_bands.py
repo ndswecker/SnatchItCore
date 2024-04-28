@@ -35,4 +35,4 @@ class Command(BaseCommand):
         except DataError as e:
             self.stdout.write(self.style.ERROR(f"An error occurred while attempting to load a Band object: {e}"))
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"An error occurred while attempting to laod a Band object: {e}"))
+            self.stdout.write(self.style.ERROR(f"An error occurred while attempting to load a Band object: {e}"))

@@ -1,4 +1,3 @@
-from django.db import transaction
 from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
@@ -20,7 +19,7 @@ class Command(BaseImportCommand):
                 status=data["status"],
             )
             return age_wrp
-        except (IntegrityError, DataError) as e:
+        except (IntegrityError, DataError):
             failed_wrps.append(data["code"])
             return None
 
@@ -32,7 +31,7 @@ class Command(BaseImportCommand):
             if number not in cache:
                 try:
                     cache[number] = AgeAnnual.objects.get(number=number)
-                except AgeAnnual.DoesNotExist as e:
+                except AgeAnnual.DoesNotExist:
                     failed_annuals.append(number)
                     continue
             annual_ages.append(cache[number])

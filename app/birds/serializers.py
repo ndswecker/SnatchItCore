@@ -1,5 +1,4 @@
 import csv
-import re
 
 
 def parse_agewrps_from_csv(csv_file_path):
