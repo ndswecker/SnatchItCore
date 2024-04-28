@@ -1,6 +1,7 @@
 import csv
 import re
 
+
 def parse_agewrps_from_csv(csv_file_path):
     age_wrps = []
     errors = []
@@ -15,14 +16,18 @@ def parse_agewrps_from_csv(csv_file_path):
                         "sequence": int(row["sequence"]),
                         "description": row["description"],
                         "status": row["status"].lower(),
-                        "annuals": [int(annual_id.strip()) for annual_id in row.get("annuals", "").split(",") if annual_id.strip()],
+                        "annuals": [
+                            int(annual_id.strip())
+                            for annual_id in row.get("annuals", "").split(",")
+                            if annual_id.strip()
+                        ],
                     }
                     age_wrps.append(age_wrp_data)
                 except ValueError as e:
                     errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: {e}")
                 except KeyError as e:
                     errors.append(f"Error parsing AgeWRP data in row {reader.line_num}: Missing expected column {e}")
-                
+
     except FileNotFoundError as e:
         print(f"File {csv_file_path} was not found: {e}")
     except csv.Error as e:
@@ -98,11 +103,7 @@ def parse_groupwrps_from_csv(csv_file_path):
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
-                    age_wrp_ids = [
-                        clean_id.strip()
-                        for clean_id in row.get("ages", "").split(",")
-                        if clean_id.strip()
-                    ]
+                    age_wrp_ids = [clean_id.strip() for clean_id in row.get("ages", "").split(",") if clean_id.strip()]
                     group_wrp_data = {
                         "number": int(row["number"]),
                         "explanation": row["explanation"],
@@ -113,7 +114,7 @@ def parse_groupwrps_from_csv(csv_file_path):
                     errors.append(f"Error parsing group WRP data in row {reader.line_num}: {e}")
                 except KeyError as e:
                     errors.append(f"Error parsing group WRP data in row {reader.line_num}: Missing expected column {e}")
-    
+
     except FileNotFoundError as e:
         print(f"While attempting to parse group WRP data, file {csv_file_path} was not found: {e}")
     except csv.Error as e:
@@ -125,6 +126,7 @@ def parse_groupwrps_from_csv(csv_file_path):
             print(error)
 
     return group_wrps
+
 
 def parse_species_from_csv(csv_file_path):
     species = []
@@ -152,6 +154,7 @@ def parse_species_from_csv(csv_file_path):
 
     return species
 
+
 def parse_band_sizes(species_number, alpha, band_sizes):
     bands = []
     last_sex = None  # Track the last processed sex
@@ -177,15 +180,18 @@ def parse_band_sizes(species_number, alpha, band_sizes):
         for size in sizes:
             size = size.strip()
             if size:  # Ensure the size is not empty
-                bands.append({
-                    "bird": species_number,
-                    "alpha": alpha,
-                    "band": size,
-                    "sex": sex,
-                    "priority": priority,
-                })
+                bands.append(
+                    {
+                        "bird": species_number,
+                        "alpha": alpha,
+                        "band": size,
+                        "sex": sex,
+                        "priority": priority,
+                    }
+                )
                 priority += 1
     return bands
+
 
 def parse_band_allocations_from_csv(csv_file_path):
     band_allocations = []

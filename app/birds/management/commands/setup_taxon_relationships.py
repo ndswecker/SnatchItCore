@@ -81,7 +81,7 @@ class Command(BaseCommand):
     def report_results(self, rejected_taxons, rejected_groups):
         if rejected_taxons:
             self.stdout.write(
-                self.style.WARNING(f"Failed to set up taxon relationships for the following {rejected_taxons}")
+                self.style.WARNING(f"Failed to set up taxon relationships for the following {rejected_taxons}"),
             )
         if rejected_groups:
             self.stdout.write(self.style.WARNING(f"Failed to recognize WRP groups: {rejected_groups}"))

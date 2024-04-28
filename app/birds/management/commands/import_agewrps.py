@@ -1,10 +1,10 @@
-from birds.management.commands.base_import_command import BaseImportCommand
 from django.db import transaction
 from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
-from birds.models import AgeWRP
+from birds.management.commands.base_import_command import BaseImportCommand
 from birds.models import AgeAnnual
+from birds.models import AgeWRP
 from birds.serializers import parse_agewrps_from_csv
 
 
@@ -23,7 +23,7 @@ class Command(BaseImportCommand):
         except (IntegrityError, DataError) as e:
             failed_wrps.append(data["code"])
             return None
-        
+
     def link_annuals_to_wrp(self, age_wrp, annual_ids, cache):
         failed_annuals = []
         annual_ages = []
@@ -38,7 +38,7 @@ class Command(BaseImportCommand):
             annual_ages.append(cache[number])
         age_wrp.annuals.set(annual_ages)
         return failed_annuals
-    
+
     def report_results(self, csv_file_path, success_count, failed_wrps, failed_annuals):
         self.stdout.write(
             self.style.SUCCESS(f"Successfully loaded {success_count} AgeWRP objects from {csv_file_path}"),
@@ -68,5 +68,5 @@ class Command(BaseImportCommand):
             if age_wrp:
                 success_count += 1
                 failed_annuals += self.link_annuals_to_wrp(age_wrp, data["annuals"], annual_cache)
-        
+
         self.report_results(csv_file_path, success_count, failed_wrps, failed_annuals)

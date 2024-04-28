@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from birds.management.commands.base_import_command import BaseImportCommand
 from django.db import transaction
 from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
+from birds.management.commands.base_import_command import BaseImportCommand
 from birds.models import AgeWRP
 from birds.models import GroupWRP
 from birds.serializers import parse_groupwrps_from_csv
@@ -21,7 +21,7 @@ class Command(BaseImportCommand):
             return group_wrp, None
         except (IntegrityError, DataError) as e:
             return None, str(e)
-        
+
     def link_ages_to_group_wrp(self, group_wrp, age_codes):
         failed_ages = []
         age_wrps = []
@@ -34,7 +34,7 @@ class Command(BaseImportCommand):
         group_wrp.ages.set(age_wrps)
 
         return failed_ages
-    
+
     def report_results(self, success_count, failed_groups, failed_ages):
         if success_count:
             self.stdout.write(
