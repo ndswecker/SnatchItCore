@@ -16,9 +16,3 @@ class TaxonView(FormView):
         context = self.get_context_data()
         context["selected_taxon"] = form.cleaned_data["taxon"]
         return self.render_to_response(context)
-    
-    def get_context_data(self, **kwargs: Any) -> Any:
-        context = super().get_context_data(**kwargs)
-        if "selected_taxon" not in context:
-            context["selected_taxon"] = None
-        return context
