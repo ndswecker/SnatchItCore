@@ -30,3 +30,6 @@ python3 app/manage.py migrate
 
 # python3 app/manage.py createsuperuser --username user --email user@email.com --noinput
 python3 app/manage.py loaddata users-dev
+
+# Load bird data
+python app/manage.py load_all_bird_data
