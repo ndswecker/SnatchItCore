@@ -1,0 +1,39 @@
+{% extends 'birds/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}Taxon Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Select a Taxon</h1>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">View Taxon Details</button>
+    </form>
+
+    {% if selected_taxon %}
+    <div class="mt-5">
+        <h2>Taxon Details:</h2>
+        <p><strong>Common Name:</strong> {{ selected_taxon.common }}</p>
+        <p><strong>Scientific Name:</strong> {{ selected_taxon.scientific }}</p>
+        <p><strong>Number (SnatchItCore):</strong> {{ selected_taxon.number }}</p>
+        <p><strong>Alpha Code:</strong> {{ selected_taxon.alpha }}</p>
+        <p><strong>Taxonomic Order:</strong> {{ selected_taxon.taxonomic_order }}</p>
+        <p><strong>Wing Span Min:</strong> {{ selected_taxon.wing_min }}</p>
+        <p><strong>Wing Span Max:</strong> {{ selected_taxon.wing_max }}</p>
+        <!-- Add more fields as needed -->
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="{% static 'js/taxons.js' %}"></script>
+{% endblock %}

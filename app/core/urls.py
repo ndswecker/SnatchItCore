@@ -19,4 +19,5 @@ urlpatterns = [
     path("maps/", include("maps.urls"), name="maps"),
     path("netting/", include("netting.urls"), name="netting"),
     path("users/", include("users.urls"), name="users"),
+    path("birds/", include("birds.urls"), name="birds"),
 ]
