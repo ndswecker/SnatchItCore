@@ -10,18 +10,28 @@ from birds.serializers import parse_agewrps_from_csv
 class Command(BaseImportCommand):
     help = "Loads data from CSV into AgeWRP model"
 
-    def create_age_wrps(self, data, failed_wrps):
-        try:
-            age_wrp = AgeWRP.objects.create(
-                code=data["code"],
-                sequence=data["sequence"],
-                description=data["description"],
-                status=data["status"],
-            )
-            return age_wrp
-        except (IntegrityError, DataError):
-            failed_wrps.append(data["code"])
-            return None
+    def create_age_wrps(self, age_wrps_data):
+        success_count = 0
+        annual_cache = {}
+        failed_wrps = []
+        failed_annuals = []
+
+        # For each AgeWRP data object, create an AgeWRP object
+        for data in age_wrps_data:
+            try:
+                age_wrp = AgeWRP.objects.create(
+                    code=data["code"],
+                    sequence=data["sequence"],
+                    description=data["description"],
+                    status=data["status"],
+                )
+                success_count += 1
+                # If successful, add the annuals to the AgeWRP object
+                failed_annuals.extend(self.link_annuals_to_wrp(age_wrp, data["annuals"], annual_cache))
+            except (IntegrityError, DataError):
+                failed_wrps.append(data["code"])
+
+        return success_count, failed_wrps, failed_annuals
 
     def link_annuals_to_wrp(self, age_wrp, annual_ids, cache):
         failed_annuals = []
@@ -57,15 +67,6 @@ class Command(BaseImportCommand):
         AgeWRP.objects.all().delete()
         age_wrps_data = parse_agewrps_from_csv(csv_file_path)
 
-        success_count = 0
-        failed_wrps = []
-        failed_annuals = []
-        annual_cache = {}
-
-        for data in age_wrps_data:
-            age_wrp = self.create_age_wrps(data, failed_wrps)
-            if age_wrp:
-                success_count += 1
-                failed_annuals += self.link_annuals_to_wrp(age_wrp, data["annuals"], annual_cache)
+        success_count, failed_wrps, failed_annuals = self.create_age_wrps(age_wrps_data)
 
         self.report_results(csv_file_path, success_count, failed_wrps, failed_annuals)
