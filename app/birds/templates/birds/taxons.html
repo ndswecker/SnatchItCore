@@ -19,21 +19,59 @@
 
     {% if selected_taxon %}
     <div class="mt-5">
-        <h2>Taxon Details:</h2>
-        <p><strong>Common Name:</strong> {{ selected_taxon.common }}</p>
-        <p><strong>Scientific Name:</strong> {{ selected_taxon.scientific }}</p>
-        <p><strong>Number (SnatchItCore):</strong> {{ selected_taxon.number }}</p>
-        <p><strong>Alpha Code:</strong> {{ selected_taxon.alpha }}</p>
-        <p><strong>Page Number:</strong> {{selected_taxon.page_number}}</p>
-        <p><strong>Wing Chord Range: </strong>({{ selected_taxon.wing_min }} - {{selected_taxon.wing_max}})</p>
-        <div>
-            <p><strong>Band Allocations:</strong></p>
-            {% for sex, bands in bands_by_sex.items %}
-                {% if bands %}
-                    <p><strong>{{ sex }}:</strong> {{ bands|join:", " }}</p>
-                {% endif %}
-            {% endfor %}
+        <div class="mt-2">
+            <h4>Taxon Details:</h4>
+            <div class="ms-3">
+                <span><strong>{{ selected_taxon.common }}</strong> (<i>{{ selected_taxon.scientific }}</i>) </span><br>
+                <span><strong>{{ selected_taxon.alpha }}</strong> (<i>sp.# {{ selected_taxon.number }}, </i>) 
+                    <strong>page #:</strong> {{selected_taxon.page_number}}</span>
+            </div>
         </div>
+
+        <div class="mt-2">
+            <h4>Band Sizes:</h4>
+            <div class="ms-3">
+                {% for sex, bands in bands_by_sex.items %}
+                    {% if bands %}
+                        <span><strong>{{ sex }}:</strong> [{{ bands|join:", " }}]</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <h4>Wing Chord Ranges:</h4>
+            {% if wing_chords %}
+            <table class="table">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Sex</th>
+                        <th scope="col">Min</th>
+                        <th scope="col">Max</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, values in wing_chords.items %}
+                    <tr class="{{ forloop.counter|divisibleby:2|yesno:'table-secondary,' }}">
+                        <td>{{ key }}</td>
+                        <td>{{ values.0 }}</td>
+                        <td>{{ values.1 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        
+        <div class="mt-2">
+            <h4>Sexing Criteria:</h4>
+            <div class="ms-3">
+                {% for key, value in sexing_criteria.items %}
+                <span>Can be sexed by {{ key }}?: <strong>{{ value }}</strong></span><br>
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
     {% endif %}
 </div>
