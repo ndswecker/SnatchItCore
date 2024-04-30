@@ -5,5 +5,5 @@ from . import views
 app_name = "birds"
 
 urlpatterns = [
-    path(route="taxons/", view=views.TaxonView.as_view(), name="taxons"),
+    path(route="", view=views.TaxonView.as_view(), name="taxons"),
 ]

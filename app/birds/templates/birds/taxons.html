@@ -24,10 +24,16 @@
         <p><strong>Scientific Name:</strong> {{ selected_taxon.scientific }}</p>
         <p><strong>Number (SnatchItCore):</strong> {{ selected_taxon.number }}</p>
         <p><strong>Alpha Code:</strong> {{ selected_taxon.alpha }}</p>
-        <p><strong>Taxonomic Order:</strong> {{ selected_taxon.taxonomic_order }}</p>
-        <p><strong>Wing Span Min:</strong> {{ selected_taxon.wing_min }}</p>
-        <p><strong>Wing Span Max:</strong> {{ selected_taxon.wing_max }}</p>
-        <!-- Add more fields as needed -->
+        <p><strong>Page Number:</strong> {{selected_taxon.page_number}}</p>
+        <p><strong>Wing Chord Range: </strong>({{ selected_taxon.wing_min }} - {{selected_taxon.wing_max}})</p>
+        <div>
+            <p><strong>Band Allocations:</strong></p>
+            {% for sex, bands in bands_by_sex.items %}
+                {% if bands %}
+                    <p><strong>{{ sex }}:</strong> {{ bands|join:", " }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 </div>
