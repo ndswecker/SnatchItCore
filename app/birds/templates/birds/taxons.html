@@ -22,9 +22,9 @@
         <div class="mt-2">
             <h4>Taxon Details:</h4>
             <div class="ms-3">
-                <span><strong>{{ selected_taxon.common }}</strong> (<i>{{ selected_taxon.scientific }}</i>) </span><br>
-                <span><strong>{{ selected_taxon.alpha }}</strong> (<i>sp.# {{ selected_taxon.number }}, </i>)
-                    <strong>page #:</strong> {{selected_taxon.page_number}}</span>
+                <p class="mb-0"><strong>{{ selected_taxon.common }}</strong> (<i>{{ selected_taxon.scientific }}</i>) </p>
+                <p class="mb-0"><strong>{{ selected_taxon.alpha }}</strong> (<i>sp.# {{ selected_taxon.number }}, </i>)
+                    <strong>page #:</strong> {{selected_taxon.page_number}}</p>
             </div>
         </div>
 
@@ -43,10 +43,10 @@
             <h4>WRP Groups and Ages</h4>
             <div class="ms-3">
                 {% if wrp_data.wrp_groups %}
-                <p><strong>WRP Groups:</strong> {{ wrp_data.wrp_groups|join:", " }}</p>
+                <p class="mb-0"><strong>WRP Groups:</strong> {{ wrp_data.wrp_groups|join:", " }}</p>
                 {% endif %}
                 {% if wrp_data.wrp_ages %}
-                <p><strong>WRP Ages:</strong> {{ wrp_data.wrp_ages|join:", " }}</p>
+                <p class="mb-0"><strong>WRP Ages:</strong> {{ wrp_data.wrp_ages|join:", " }}</p>
                 {% endif %}
             </div>
         </div>
@@ -79,7 +79,7 @@
             <h4>Sexing Criteria:</h4>
             <div class="ms-3">
                 {% for key, value in sexing_criteria.items %}
-                <span>Can be sexed by {{ key }}?: <strong>{{ value }}</strong></span><br>
+                <p class="mb-0">Can be sexed by {{ key }}?: <strong>{{ value }}</strong></p>
                 {% endfor %}
             </div>
         </div>
