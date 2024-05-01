@@ -130,7 +130,7 @@ FLIGHT_FEATHER_MOLT_CHOICES = [
 FLIGHT_FEATHER_WEAR_CHOICES = [
     (0, "0 - None (pale halo)"),
     (1, "1 - Slight"),
-    (2, "2 - Light (little fraying & vey nicks)"),
+    (2, "2 - Light (little fraying & few nicks)"),
     (3, "3 - Moderate (some fraying & chipping)"),
     (4, "4 - Heavy (worn & frayed, tips worn off)"),
     (5, "5 - Excessive (ragged, torn, broken rachis)"),
