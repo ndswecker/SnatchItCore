@@ -12,6 +12,6 @@ class TaxonSelectForm(forms.Form):
     taxon = CustomLabelModelChoiceField(
         queryset=Taxon.objects.all().order_by("alpha"),
         empty_label="Select a taxon",
-        label="Taxon",
+        label="Taxon (species or subspecies)",
         widget=forms.Select(attrs={"class": "form-control", "id": "id_taxon"}),
     )
