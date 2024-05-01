@@ -14,7 +14,7 @@
     <form method="post" novalidate>
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">View Taxon Details</button>
+        <button type="submit" class="btn btn-lg btn-primary w-100 rounded-0">View Taxon Details</button>
     </form>
 
     {% if selected_taxon %}
