@@ -1,0 +1,95 @@
+{% extends 'birds/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}Taxon Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Select a Taxon</h1>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-lg btn-primary w-100 rounded-0">View Taxon Details</button>
+    </form>
+
+    {% if selected_taxon %}
+    <div class="mt-5">
+        <div class="mt-2">
+            <h4>Taxon Details:</h4>
+            <div class="ms-3">
+                <p class="mb-0"><strong>{{ selected_taxon.common }}</strong> (<i>{{ selected_taxon.scientific }}</i>) </p>
+                <p class="mb-0"><strong>{{ selected_taxon.alpha }}</strong> (<i>sp.# {{ selected_taxon.number }}, </i>)
+                    <strong>page #:</strong> {{selected_taxon.page_number}}</p>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <h4>Band Sizes:</h4>
+            <div class="ms-3">
+                {% for sex, bands in bands_by_sex.items %}
+                    {% if bands %}
+                        <span><strong>{{ sex }}:</strong> [{{ bands|join:", " }}]</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <h4>WRP Groups and Ages</h4>
+            <div class="ms-3">
+                {% if wrp_data.wrp_groups %}
+                <p class="mb-0"><strong>WRP Groups:</strong> {{ wrp_data.wrp_groups|join:", " }}</p>
+                {% endif %}
+                {% if wrp_data.wrp_ages %}
+                <p class="mb-0"><strong>WRP Ages:</strong> {{ wrp_data.wrp_ages|join:", " }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <h4>Wing Chord Ranges:</h4>
+            {% if wing_chords %}
+            <table class="table">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Sex</th>
+                        <th scope="col">Min</th>
+                        <th scope="col">Max</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, values in wing_chords.items %}
+                    <tr class="{{ forloop.counter|divisibleby:2|yesno:'table-secondary,' }}">
+                        <td>{{ key }}</td>
+                        <td>{{ values.0 }}</td>
+                        <td>{{ values.1 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+        <div class="mt-2">
+            <h4>Sexing Criteria:</h4>
+            <div class="ms-3">
+                {% for key, value in sexing_criteria.items %}
+                <p class="mb-0">Can be sexed by {{ key }}?: <strong>{{ value }}</strong></p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="{% static 'js/taxons.js' %}"></script>
+{% endblock %}

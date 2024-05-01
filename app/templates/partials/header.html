@@ -15,7 +15,8 @@
         {% if user.is_authenticated %}
           {% if perms.maps.add_capturerecord %}
             <li class="nav-item"><a class="nav-link" href="{% url 'maps:create_capture_record' %}">Create Record</a></li>
-          {% endif %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'birds:taxons' %}">Species</a></li>
+            {% endif %}
           {% if perms.maps.view_capturerecord %}
             <li class="nav-item"><a class="nav-link" href="{% url 'maps:list_capture_records' %}">Records</a></li>
           {% endif %}
