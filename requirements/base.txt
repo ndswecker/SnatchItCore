@@ -1,7 +1,9 @@
 Crispy-Bootstrap5
 Django
 Django-Allauth
+Django-Allauth-UI
 Django-Environ
 Django-Select2
+Django-Widget-Tweaks
 Pandas
 Plotly
