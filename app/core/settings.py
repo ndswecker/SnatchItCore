@@ -27,14 +27,11 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    "allauth_ui",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
     "crispy_bootstrap5",
     "crispy_forms",
     "django_select2",
-    "widget_tweaks",
 ]
 
 LOCAL_APPS = [

@@ -1,15 +1,16 @@
 {% extends "account/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Change Password{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
   <div class="container mt-3">
     <form method="post">
-      <h1>Change Password</h1>
+      <h1>Sign Up</h1>
       {% csrf_token %}
       {{ form|crispy }}
-      <input class="btn btn-lg btn-primary w-100 rounded-1" type="submit" value="Change Password">
+      <p>Have an account? <a href="{% url 'account_login' %}">Log In</a></p>
+      <input type="submit" value="Sign Up">
     </form>
   </div>
 {% endblock %}
