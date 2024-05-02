@@ -211,3 +211,43 @@ def parse_band_allocations_from_csv(csv_file_path):
         print(f"CSV reading error: {e}")
 
     return band_allocations
+
+def parse_morphometrics_from_csv(csv_file_path):
+    morphometrics = []
+    errors = []
+
+    try:
+        with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    morphometric_data = {
+                        "number": int(row["species_id"]),
+                        "alpha": row["alpha"],
+                        "common": row["common"],
+                        "wing_female_min": int(row["wing_female_min"]),
+                        "wing_female_max": int(row["wing_female_max"]),
+                        "wing_male_min": int(row["wing_male_min"]),
+                        "wing_male_max": int(row["wing_male_max"]),
+                        "tail_female_min": int(row["tail_female_min"]),
+                        "tail_female_max": int(row["tail_female_max"]),
+                        "tail_male_min": int(row["tail_male_min"]),
+                        "tail_male_max": int(row["tail_male_max"]),
+                    }
+                    morphometrics.append(morphometric_data)
+                except ValueError as e:
+                    errors.append(f"Error parsing morphometric data in row {reader.line_num}: {e}")
+                except KeyError as e:
+                    errors.append(f"Error parsing morphometric data in row {reader.line_num}: Missing expected column {e}")
+
+    except FileNotFoundError as e:
+        print(f"While attempting to parse morphometric data, file {csv_file_path} was not found: {e}")
+    except csv.Error as e:
+        print(f"A CSV error occurred while parsing morphometric data: {e}")
+
+    if errors:
+        print("The following errors occurred while parsing morphometric data:")
+        for error in errors:
+            print(error)
+
+    return morphometrics
