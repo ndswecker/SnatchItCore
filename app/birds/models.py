@@ -79,12 +79,20 @@ class Taxon(models.Model):
     # Fields that are required for almost all birds that are banded
     wing_min = models.IntegerField(null=True, blank=True)
     wing_max = models.IntegerField(null=True, blank=True)
+    tail_min = models.IntegerField(null=True, blank=True)
+    tail_max = models.IntegerField(null=True, blank=True)
 
     # Fields that are required for birds that can be sexed by wing chord
     wing_female_min = models.IntegerField(null=True, blank=True)
     wing_female_max = models.IntegerField(null=True, blank=True)
     wing_male_min = models.IntegerField(null=True, blank=True)
     wing_male_max = models.IntegerField(null=True, blank=True)
+
+    # Fields that are required for birds that can be sexed by tail length
+    tail_female_min = models.IntegerField(null=True, blank=True)
+    tail_female_max = models.IntegerField(null=True, blank=True)
+    tail_male_min = models.IntegerField(null=True, blank=True)
+    tail_male_max = models.IntegerField(null=True, blank=True)    
 
     # Fields that are often listed in pyle for species and sex determination
     exp_culmen_min = models.FloatField(null=True, blank=True)

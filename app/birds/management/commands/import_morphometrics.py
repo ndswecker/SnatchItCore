@@ -20,11 +20,10 @@ class Command(BaseImportCommand):
                 taxon.wing_female_max = data["wing_female_max"]
                 taxon.wing_male_min = data["wing_male_min"]
                 taxon.wing_male_max = data["wing_male_max"]
-                # Not yet implemented in the Taxon model, need to add tail fields
-                # taxon.tail_female_min = data["tail_female_min"]
-                # taxon.tail_female_max = data["tail_female_max"]
-                # taxon.tail_male_min = data["tail_male_min"]
-                # taxon.tail_male_max = data["tail_male_max"]
+                taxon.tail_female_min = data["tail_female_min"]
+                taxon.tail_female_max = data["tail_female_max"]
+                taxon.tail_male_min = data["tail_male_min"]
+                taxon.tail_male_max = data["tail_male_max"]
                 taxon.save()
                 updated_count += 1
             except Taxon.DoesNotExist:
