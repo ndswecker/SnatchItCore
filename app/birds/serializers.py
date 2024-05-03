@@ -222,17 +222,17 @@ def parse_morphometrics_from_csv(csv_file_path):
             for row in reader:
                 try:
                     morphometric_data = {
-                        "number": int(row["species_id"]),
-                        "alpha": row["alpha"],
-                        "common": row["common"],
-                        "wing_female_min": int(row["wing_female_min"]),
-                        "wing_female_max": int(row["wing_female_max"]),
-                        "wing_male_min": int(row["wing_male_min"]),
-                        "wing_male_max": int(row["wing_male_max"]),
-                        "tail_female_min": int(row["tail_female_min"]),
-                        "tail_female_max": int(row["tail_female_max"]),
-                        "tail_male_min": int(row["tail_male_min"]),
-                        "tail_male_max": int(row["tail_male_max"]),
+                        "number": int(row.get("species_id", "0")),
+                        "alpha": row.get("alpha", ""),
+                        "common": row.get("common", ""),
+                        "wing_female_min": int(row.get("wing_female_min", "0")),
+                        "wing_female_max": int(row.get("wing_female_max", "0")),
+                        "wing_male_min": int(row.get("wing_male_min", "0")),
+                        "wing_male_max": int(row.get("wing_male_max", "0")),
+                        "tail_female_min": int(row.get("tail_female_min", "0")),
+                        "tail_female_max": int(row.get("tail_female_max", "0")),
+                        "tail_male_min": int(row.get("tail_male_min", "0")),
+                        "tail_male_max": int(row.get("tail_male_max", "0")),
                     }
                     morphometrics.append(morphometric_data)
                 except ValueError as e:

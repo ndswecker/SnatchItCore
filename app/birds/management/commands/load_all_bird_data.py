@@ -30,4 +30,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Set species details from reference data"))
         call_command("setup_taxon_relationships")
 
+        self.stdout.write(self.style.SUCCESS("Loading all morphometric data..."))
+        call_command("import_morphometrics", "./data/Morphometrics.csv")
+
         self.stdout.write(self.style.SUCCESS("Successfully loaded all data"))
