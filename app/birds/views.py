@@ -57,14 +57,13 @@ class TaxonView(FormView):
             wing_chord_data["Male"] = (taxon.wing_male_min, taxon.wing_male_max)
 
         # Check if general taxon tail data exists
-        
 
         return wing_chord_data
-    
+
     def get_morphometrics(self, taxon: Taxon):
         morphometrics = {
             "wing": {"All": {}, "Female": {}, "Male": {}},
-            "tail": {"All": {}, "Female": {}, "Male": {}}
+            "tail": {"All": {}, "Female": {}, "Male": {}},
         }
 
         # Populate wing data

@@ -20,7 +20,8 @@ class Command(BaseImportCommand):
             Band(
                 size=data["size"],
                 comment=data["comment"],
-            ) for data in bands_data
+            )
+            for data in bands_data
         ]
 
         try:
