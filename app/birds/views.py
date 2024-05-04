@@ -60,7 +60,7 @@ class TaxonView(FormView):
 
         return wing_chord_data
 
-    def get_morphometrics(self, taxon: Taxon):
+    def get_morphometrics(self, taxon):
         morphometrics = {
             "wing": {"All": {}, "Female": {}, "Male": {}},
             "tail": {"All": {}, "Female": {}, "Male": {}},
