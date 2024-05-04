@@ -225,14 +225,14 @@ def parse_morphometrics_from_csv(csv_file_path):
                         "number": int(row.get("species_id", "0")),
                         "alpha": row.get("alpha", ""),
                         "common": row.get("common", ""),
-                        "wing_female_min": int(row.get("wing_female_min", "0")),
-                        "wing_female_max": int(row.get("wing_female_max", "0")),
-                        "wing_male_min": int(row.get("wing_male_min", "0")),
-                        "wing_male_max": int(row.get("wing_male_max", "0")),
-                        "tail_female_min": int(row.get("tail_female_min", "0")),
-                        "tail_female_max": int(row.get("tail_female_max", "0")),
-                        "tail_male_min": int(row.get("tail_male_min", "0")),
-                        "tail_male_max": int(row.get("tail_male_max", "0")),
+                        "wing_female_min": _safe_int(row.get("wing_female_min", "0")),
+                        "wing_female_max": _safe_int(row.get("wing_female_max", "0")),
+                        "wing_male_min": _safe_int(row.get("wing_male_min", "0")),
+                        "wing_male_max": _safe_int(row.get("wing_male_max", "0")),
+                        "tail_female_min": _safe_int(row.get("tail_female_min", "0")),
+                        "tail_female_max": _safe_int(row.get("tail_female_max", "0")),
+                        "tail_male_min": _safe_int(row.get("tail_male_min", "0")),
+                        "tail_male_max": _safe_int(row.get("tail_male_max", "0")),
                     }
                     morphometrics.append(morphometric_data)
                 except ValueError as e:
@@ -251,3 +251,12 @@ def parse_morphometrics_from_csv(csv_file_path):
             print(error)
 
     return morphometrics
+
+def _safe_int(value):
+    try:
+        return int(value)
+    except ValueError:
+        try:
+            return int(round(float(value)))
+        except ValueError:
+            return None
