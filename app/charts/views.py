@@ -11,15 +11,23 @@ class BirdsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["chart_species_capture_count"] = self.get_chart_species_capture_count()
-        context["chart_sex_capture_count"] = self.get_chart_sex_capture_count()
-        context["chart_age_capture_count"] = self.get_chart_age_capture_count()
+        date = self.request.GET.get("date", None)
+        context["chart_species_capture_count"] = self.get_chart_species_capture_count(date)
+        context["chart_sex_capture_count"] = self.get_chart_sex_capture_count(date)
+        context["chart_age_capture_count"] = self.get_chart_age_capture_count(date)
         return context
 
-    def get_chart_species_capture_count(self):
-        data = CaptureRecord.objects.values("species_number").annotate(capture_count=Count("species_number"))
+    def get_chart_species_capture_count(self, date=None):
+        if date:
+            data = CaptureRecord.objects.filter(capture_time__date=date).values("species_number").annotate(capture_count=Count("species_number"))
+        else:
+            data = CaptureRecord.objects.values("species_number").annotate(capture_count=Count("species_number"))
+
         x_values = [SPECIES[d["species_number"]]["alpha_code"] for d in data]
         y_values = [d["capture_count"] for d in data]
+
+        if not (x_values and y_values):
+            return ""
 
         fig = px.bar(
             x=x_values,
@@ -41,10 +49,17 @@ class BirdsView(TemplateView):
         )
         return fig.to_html()
 
-    def get_chart_sex_capture_count(self):
-        data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
+    def get_chart_sex_capture_count(self, date=None):
+        if date:
+            data = CaptureRecord.objects.filter(capture_time__date=date).values("sex").annotate(capture_count=Count("sex"))
+        else:
+            data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
+
         x_values = [d["sex"] for d in data]
         y_values = [d["capture_count"] for d in data]
+
+        if not (x_values and y_values):
+            return ""
 
         fig = px.bar(
             x=x_values,
@@ -66,10 +81,17 @@ class BirdsView(TemplateView):
         )
         return fig.to_html()
 
-    def get_chart_age_capture_count(self):
-        data = CaptureRecord.objects.values("age_annual").annotate(capture_count=Count("age_annual"))
+    def get_chart_age_capture_count(self, date=None):
+        if date:
+            data = CaptureRecord.objects.filter(capture_time__date=date).values("age_annual").annotate(capture_count=Count("age_annual"))
+        else:
+            data = CaptureRecord.objects.values("age_annual").annotate(capture_count=Count("age_annual"))
+
         x_values = [d["age_annual"] for d in data]
         y_values = [d["capture_count"] for d in data]
+
+        if not (x_values and y_values):
+            return ""
 
         fig = px.bar(
             x=x_values,
@@ -97,13 +119,21 @@ class NetsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["chart_net_capture_count"] = self.get_chart_net_capture_count()
+        date = self.request.GET.get("date", None)
+        context["chart_net_capture_count"] = self.get_chart_net_capture_count(date)
         return context
 
-    def get_chart_net_capture_count(self):
-        data = CaptureRecord.objects.values("net").annotate(capture_count=Count("net"))
+    def get_chart_net_capture_count(self, date=None):
+        if date:
+            data = CaptureRecord.objects.filter(capture_time__date=date).values("net").annotate(capture_count=Count("net"))
+        else:
+            data = CaptureRecord.objects.values("net").annotate(capture_count=Count("net"))
+
         x_values = [d["net"] for d in data]
         y_values = [d["capture_count"] for d in data]
+
+        if not (x_values and y_values):
+            return ""
 
         fig = px.bar(
             x=x_values,
