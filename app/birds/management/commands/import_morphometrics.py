@@ -6,6 +6,7 @@ from birds.management.commands.base_import_command import BaseImportCommand
 from birds.models import Taxon
 from birds.serializers import parse_morphometrics_from_csv
 
+
 class Command(BaseImportCommand):
     help = "Loads data from CSV into Taxon model"
 
@@ -31,9 +32,9 @@ class Command(BaseImportCommand):
             except IntegrityError as e:
                 failed_morphometrics.append(f"Database error for Taxon number {data['number']}: {e}")
         return updated_count, failed_morphometrics
-    
+
     def handle(self, *args, **options):
-        csv_file_path = options['csv_file']
+        csv_file_path = options["csv_file"]
         morphometrics_data = parse_morphometrics_from_csv(csv_file_path)
 
         with transaction.atomic():
@@ -43,4 +44,6 @@ class Command(BaseImportCommand):
             self.stdout.write(self.style.SUCCESS(f"Successfully updated {updated_count} Taxon objects"))
 
         if failed_morphometrics:
-            self.stdout.write(self.style.WARNING(f"Failed to update the following Taxon objects: {failed_morphometrics}"))
+            self.stdout.write(
+                self.style.WARNING(f"Failed to update the following Taxon objects: {failed_morphometrics}")
+            )

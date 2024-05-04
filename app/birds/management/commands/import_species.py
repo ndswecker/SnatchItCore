@@ -25,7 +25,8 @@ class Command(BaseImportCommand):
                 number=data["number"],
                 number_bbl=data["number"],
                 taxonomic_order=data["taxonomic_order"],
-            ) for data in species_data
+            )
+            for data in species_data
         ]
 
         try:

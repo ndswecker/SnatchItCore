@@ -92,7 +92,7 @@ class Taxon(models.Model):
     tail_female_min = models.IntegerField(null=True, blank=True)
     tail_female_max = models.IntegerField(null=True, blank=True)
     tail_male_min = models.IntegerField(null=True, blank=True)
-    tail_male_max = models.IntegerField(null=True, blank=True)    
+    tail_male_max = models.IntegerField(null=True, blank=True)
 
     # Fields that are often listed in pyle for species and sex determination
     exp_culmen_min = models.FloatField(null=True, blank=True)

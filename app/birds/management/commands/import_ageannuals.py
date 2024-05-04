@@ -17,7 +17,7 @@ class Command(BaseImportCommand):
                 number=data["number"],
                 alpha=data["alpha"],
                 description=data["description"],
-                explanation=data["explanation"]
+                explanation=data["explanation"],
             )
             for data in age_annuals_data
         ]
@@ -25,7 +25,7 @@ class Command(BaseImportCommand):
         try:
             AgeAnnual.objects.bulk_create(age_annuals)  # Bulk insert new data
             self.stdout.write(
-                self.style.SUCCESS(f"Successfully loaded {len(age_annuals)} AgeAnnual objects from {csv_file_path}")
+                self.style.SUCCESS(f"Successfully loaded {len(age_annuals)} AgeAnnual objects from {csv_file_path}"),
             )
         except ValidationError as e:
             self.stdout.write(self.style.ERROR(f"A validation error occurred: {e}"))

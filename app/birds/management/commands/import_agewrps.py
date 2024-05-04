@@ -23,7 +23,8 @@ class Command(BaseImportCommand):
                     sequence=data["sequence"],
                     description=data["description"],
                     status=data["status"],
-                ) for data in age_wrps_data
+                )
+                for data in age_wrps_data
             ]
             AgeWRP.objects.bulk_create(new_age_wrps)
 

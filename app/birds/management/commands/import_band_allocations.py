@@ -42,9 +42,21 @@ class Command(BaseImportCommand):
         BandAllocation.objects.bulk_create(new_band_allocations)
 
         if rejected_birds:
-            self.stdout.write(self.style.WARNING(f"Failed to load BandAllocation objects for the following birds:\n {', '.join(map(str, rejected_birds))}"))
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Failed to load BandAllocation objects for the following birds:\n {', '.join(map(str, rejected_birds))}"
+                )
+            )
 
         if rejected_bands:
-            self.stdout.write(self.style.WARNING(f"Failed to load BandAllocation objects for the following bands: {', '.join(rejected_bands)}"))
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Failed to load BandAllocation objects for the following bands: {', '.join(rejected_bands)}"
+                )
+            )
 
-        self.stdout.write(self.style.SUCCESS( f"Successfully loaded {len(new_band_allocations)} BandAllocation objects from {csv_file_path}"))
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully loaded {len(new_band_allocations)} BandAllocation objects from {csv_file_path}"
+            )
+        )

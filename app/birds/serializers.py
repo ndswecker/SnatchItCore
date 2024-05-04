@@ -10,7 +10,9 @@ def parse_agewrps_from_csv(csv_file_path):
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
-                    annuals_list = [int(annual.strip()) for annual in row.get("annuals", "").split(",") if annual.strip()]
+                    annuals_list = [
+                        int(annual.strip()) for annual in row.get("annuals", "").split(",") if annual.strip()
+                    ]
                     age_wrp_data = {
                         "code": row["code"],
                         "sequence": int(row["sequence"]),
@@ -216,6 +218,7 @@ def parse_band_allocations_from_csv(csv_file_path):
 
     return band_allocations
 
+
 def parse_morphometrics_from_csv(csv_file_path):
     morphometrics = []
     errors = []
@@ -242,7 +245,9 @@ def parse_morphometrics_from_csv(csv_file_path):
                 except ValueError as e:
                     errors.append(f"Error parsing morphometric data in row {reader.line_num}: {e}")
                 except KeyError as e:
-                    errors.append(f"Error parsing morphometric data in row {reader.line_num}: Missing expected column {e}")
+                    errors.append(
+                        f"Error parsing morphometric data in row {reader.line_num}: Missing expected column {e}"
+                    )
 
     except FileNotFoundError as e:
         print(f"While attempting to parse morphometric data, file {csv_file_path} was not found: {e}")
@@ -255,6 +260,7 @@ def parse_morphometrics_from_csv(csv_file_path):
             print(error)
 
     return morphometrics
+
 
 def _safe_int(value):
     try:
