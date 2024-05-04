@@ -18,7 +18,9 @@ class TaxonView(FormView):
         selected_taxon = form.cleaned_data["taxon"]
         context["selected_taxon"] = selected_taxon
         context["bands_by_sex"] = self.get_band_allocations_by_sex(selected_taxon)
-        context["wing_chords"] = self.get_wing_chord_data(selected_taxon)
+        # Temporarily remove wing chord datat in favor of morphometrics
+        # context["wing_chords"] = self.get_wing_chord_data(selected_taxon)
+        context["morphometrics"] = self.get_morphometrics(selected_taxon)
         context["sexing_criteria"] = self.get_sexing_criteria(selected_taxon)
         context["wrp_data"] = self.get_wrp_data(selected_taxon)
 
@@ -53,7 +55,44 @@ class TaxonView(FormView):
         if taxon.wing_male_min and taxon.wing_male_max:
             wing_chord_data["Male"] = (taxon.wing_male_min, taxon.wing_male_max)
 
+        # Check if general taxon tail data exists
+        
+
         return wing_chord_data
+    
+    def get_morphometrics(self, taxon: Taxon):
+        morphometrics = {
+            "wing": {},
+            "tail": {},
+        }
+        # Wing chord data
+        # Check if the general taxon wing chord data exists
+        if taxon.wing_min and taxon.wing_max:
+            morphometrics["wing"]["All"] = (taxon.wing_min, taxon.wing_max)
+
+        # Check if the female taxon wing chord data exists
+        if taxon.wing_female_min and taxon.wing_female_max:
+            morphometrics["wing"]["Female"] = (taxon.wing_female_min, taxon.wing_female_max)
+
+        # Check if the male taxon wing chord data exists
+        if taxon.wing_male_min and taxon.wing_male_max:
+            morphometrics["wing"]["Male"] = (taxon.wing_male_min, taxon.wing_male_max)
+
+        # Tail data
+        # Check if general taxon tail data exists
+        if taxon.tail_min and taxon.tail_max:
+            morphometrics["tail"]["All"] = (taxon.tail_min, taxon.tail_max)
+
+        # Female taxon tail data
+        # Check if the female taxon tail chord data exists
+        if taxon.tail_female_min and taxon.tail_female_max:
+            morphometrics["tail"]["Female"] = (taxon.tail_female_min, taxon.tail_female_max)
+
+        # Check if the male taxon tail chord data exists
+        if taxon.tail_male_min and taxon.tail_male_max:
+            morphometrics["tail"]["Male"] = (taxon.tail_male_min, taxon.tail_male_max)
+
+        return morphometrics
 
     def get_sexing_criteria(self, taxon):
         criteria = {
