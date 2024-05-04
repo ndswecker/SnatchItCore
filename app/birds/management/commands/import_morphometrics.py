@@ -27,7 +27,7 @@ class Command(BaseImportCommand):
                 taxon.save()
                 updated_count += 1
             except Taxon.DoesNotExist:
-                failed_morphometrics.append(data["alpha"])
+                failed_morphometrics.append(data["common"])
             except IntegrityError as e:
                 failed_morphometrics.append(f"Database error for Taxon number {data['number']}: {e}")
         return updated_count, failed_morphometrics
@@ -43,4 +43,4 @@ class Command(BaseImportCommand):
             self.stdout.write(self.style.SUCCESS(f"Successfully updated {updated_count} Taxon objects"))
 
         if failed_morphometrics:
-            self.stdout.write(self.style.ERROR(f"Failed to update the following Taxon objects: {', '.join(failed_morphometrics)}"))
+            self.stdout.write(self.style.WARNING(f"Failed to update the following Taxon objects: {failed_morphometrics}"))
