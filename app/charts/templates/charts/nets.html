@@ -7,6 +7,12 @@
     {% include "charts/partials/nav.html" %}
     <h1 class="text-center">Nets</h1>
 
+    <form method="get">
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date">
+      <input type="submit" value="Submit">
+    </form>
+
     <div class="w-75 m-auto">{{ chart_net_capture_count|safe }}</div>
   </div>
 {% endblock %}
