@@ -1,5 +1,4 @@
 from django.db import transaction
-from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
 from birds.management.commands.base_import_command import BaseImportCommand
@@ -45,5 +44,5 @@ class Command(BaseImportCommand):
 
         if failed_morphometrics:
             self.stdout.write(
-                self.style.WARNING(f"Failed to update the following Taxon objects: {failed_morphometrics}")
+                self.style.WARNING(f"Failed to update the following Taxon objects: {failed_morphometrics}"),
             )

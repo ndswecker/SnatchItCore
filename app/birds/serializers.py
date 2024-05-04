@@ -246,7 +246,7 @@ def parse_morphometrics_from_csv(csv_file_path):
                     errors.append(f"Error parsing morphometric data in row {reader.line_num}: {e}")
                 except KeyError as e:
                     errors.append(
-                        f"Error parsing morphometric data in row {reader.line_num}: Missing expected column {e}"
+                        f"Error parsing morphometric data in row {reader.line_num}: Missing expected column {e}",
                     )
 
     except FileNotFoundError as e:
