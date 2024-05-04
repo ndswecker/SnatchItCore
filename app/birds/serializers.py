@@ -154,14 +154,16 @@ def parse_species_from_csv(csv_file_path):
     return species
 
 
-def parse_band_sizes(species_number, alpha, band_sizes):
+def parse_band_sizes(taxon_data):
     bands = []
     last_sex = None  # Track the last processed sex
+    priority = 0  # Track the priority of the band size
 
     # Split into lines assuming M: and F: are on separate lines
-    lines = band_sizes.split("\n")
+    lines = taxon_data["band_sizes"].split("\n")
     for line in lines:
         line = line.strip()  # Ensure there's no leading/trailing whitespace
+        # Check if the line starts with 'M: ' or 'F: ' to handle sex specific sizes
         if line.startswith("M:") or line.startswith("F:"):
             sex = line[:1].lower()  # Correctly get 'm' or 'f'
             sizes = line[2:].split(",")  # Extract sizes after 'M: ' or 'F: '
@@ -169,6 +171,7 @@ def parse_band_sizes(species_number, alpha, band_sizes):
             if sex != last_sex:
                 priority = 0
                 last_sex = sex
+        # If the line doesn't start with 'M: ' or 'F: ', it's unisex sizes
         else:
             sex = "u"  # Unisex
             sizes = line.split(",")
@@ -181,8 +184,9 @@ def parse_band_sizes(species_number, alpha, band_sizes):
             if size:  # Ensure the size is not empty
                 bands.append(
                     {
-                        "bird": species_number,
-                        "alpha": alpha,
+                        "bird": taxon_data["number"],
+                        "alpha": taxon_data["alpha"],
+                        "common": taxon_data["common"],
                         "band": size,
                         "sex": sex,
                         "priority": priority,
@@ -199,10 +203,13 @@ def parse_band_allocations_from_csv(csv_file_path):
         with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                species_number = int(row["number"])
-                alpha = row["alpha"]
-                band_sizes = row["band_size"]
-                species_bands = parse_band_sizes(species_number, alpha, band_sizes)
+                taxon_data = {
+                    "number": int(row["number"]),
+                    "alpha": row["alpha"],
+                    "common": row["common"],
+                    "band_sizes": row["band_size"],
+                }
+                species_bands = parse_band_sizes(taxon_data)
                 band_allocations.extend(species_bands)
 
     except FileNotFoundError as e:

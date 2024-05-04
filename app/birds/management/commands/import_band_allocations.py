@@ -24,7 +24,7 @@ class Command(BaseImportCommand):
                 try:
                     taxon = Taxon.objects.get(number=bands["bird"])
                 except ObjectDoesNotExist:
-                    rejected_birds.append(bands["bird"])
+                    rejected_birds.append(bands["common"])
                     continue
                 try:
                     band = Band.objects.get(size=bands["band"])
