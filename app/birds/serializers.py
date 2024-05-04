@@ -10,16 +10,13 @@ def parse_agewrps_from_csv(csv_file_path):
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
+                    annuals_list = [int(annual.strip()) for annual in row.get("annuals", "").split(",") if annual.strip()]
                     age_wrp_data = {
                         "code": row["code"],
                         "sequence": int(row["sequence"]),
                         "description": row["description"],
                         "status": row["status"].lower(),
-                        "annuals": [
-                            int(annual_id.strip())
-                            for annual_id in row.get("annuals", "").split(",")
-                            if annual_id.strip()
-                        ],
+                        "annuals": annuals_list,
                     }
                     age_wrps.append(age_wrp_data)
                 except ValueError as e:
