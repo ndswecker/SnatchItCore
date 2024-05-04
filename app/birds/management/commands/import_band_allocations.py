@@ -1,6 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
-
 from birds.management.commands.base_import_command import BaseImportCommand
 from birds.models import Band
 from birds.models import BandAllocation
@@ -15,40 +12,39 @@ class Command(BaseImportCommand):
         csv_file_path = options["csv_file"]
         band_allocations = parse_band_allocations_from_csv(csv_file_path)
 
-        rejected_birds = []
-        rejected_bands = []
+        # Prepare caches for Taxon and Band objects to avoid repeated queries
+        taxon_cache = {taxon.number: taxon for taxon in Taxon.objects.all()}
+        band_cache = {band.size: band for band in Band.objects.all()}
 
-        with transaction.atomic():
-            for bands in band_allocations:
-                # Not all birds in this csv are appropriate for this dataset
-                try:
-                    taxon = Taxon.objects.get(number=bands["bird"])
-                except ObjectDoesNotExist:
-                    rejected_birds.append(bands["common"])
-                    continue
-                try:
-                    band = Band.objects.get(size=bands["band"])
-                except ObjectDoesNotExist:
-                    rejected_bands.append(bands["band"])
-                    continue
-                BandAllocation.objects.create(
+        new_band_allocations = []
+        rejected_birds = set()
+        rejected_bands = set()
+
+        for allocation in band_allocations:
+            taxon = taxon_cache.get(allocation["bird"])
+            if not taxon:
+                rejected_birds.add(allocation["common"])
+                continue
+            band = band_cache.get(allocation["band"])
+            if not band:
+                rejected_bands.add(allocation["band"])
+                continue
+
+            new_band_allocations.append(
+                BandAllocation(
                     bird=taxon,
                     band=band,
-                    sex=bands["sex"],
-                    priority=bands["priority"],
-                )
+                    sex=allocation["sex"],
+                    priority=allocation["priority"],
+                ),
+            )
+
+        BandAllocation.objects.bulk_create(new_band_allocations)
 
         if rejected_birds:
-            self.stdout.write(
-                self.style.WARNING(f"Failed to load BandAllocation objects for the following birds: {rejected_birds}"),
-            )
-        if rejected_bands:
-            self.stdout.write(
-                self.style.WARNING(f"Failed to load BandAllocation objects for the following bands: {rejected_bands}"),
-            )
+            self.stdout.write(self.style.WARNING(f"Failed to load BandAllocation objects for the following birds:\n {', '.join(map(str, rejected_birds))}"))
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully loaded {len(band_allocations)} BandAllocation objects from {csv_file_path}",
-            ),
-        )
+        if rejected_bands:
+            self.stdout.write(self.style.WARNING(f"Failed to load BandAllocation objects for the following bands: {', '.join(rejected_bands)}"))
+
+        self.stdout.write(self.style.SUCCESS( f"Successfully loaded {len(new_band_allocations)} BandAllocation objects from {csv_file_path}"))
