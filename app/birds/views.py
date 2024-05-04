@@ -23,6 +23,7 @@ class TaxonView(FormView):
         context["morphometrics"] = self.get_morphometrics(selected_taxon)
         context["sexing_criteria"] = self.get_sexing_criteria(selected_taxon)
         context["wrp_data"] = self.get_wrp_data(selected_taxon)
+        context["sexes"] = ["All", "Female", "Male"]
 
         return self.render_to_response(context)
 
@@ -62,35 +63,25 @@ class TaxonView(FormView):
     
     def get_morphometrics(self, taxon: Taxon):
         morphometrics = {
-            "wing": {},
-            "tail": {},
+            "wing": {"All": {}, "Female": {}, "Male": {}},
+            "tail": {"All": {}, "Female": {}, "Male": {}}
         }
-        # Wing chord data
-        # Check if the general taxon wing chord data exists
+
+        # Populate wing data
         if taxon.wing_min and taxon.wing_max:
-            morphometrics["wing"]["All"] = (taxon.wing_min, taxon.wing_max)
-
-        # Check if the female taxon wing chord data exists
+            morphometrics["wing"]["All"] = {"min": taxon.wing_min, "max": taxon.wing_max}
         if taxon.wing_female_min and taxon.wing_female_max:
-            morphometrics["wing"]["Female"] = (taxon.wing_female_min, taxon.wing_female_max)
-
-        # Check if the male taxon wing chord data exists
+            morphometrics["wing"]["Female"] = {"min": taxon.wing_female_min, "max": taxon.wing_female_max}
         if taxon.wing_male_min and taxon.wing_male_max:
-            morphometrics["wing"]["Male"] = (taxon.wing_male_min, taxon.wing_male_max)
+            morphometrics["wing"]["Male"] = {"min": taxon.wing_male_min, "max": taxon.wing_male_max}
 
-        # Tail data
-        # Check if general taxon tail data exists
+        # Populate tail data
         if taxon.tail_min and taxon.tail_max:
-            morphometrics["tail"]["All"] = (taxon.tail_min, taxon.tail_max)
-
-        # Female taxon tail data
-        # Check if the female taxon tail chord data exists
+            morphometrics["tail"]["All"] = {"min": taxon.tail_min, "max": taxon.tail_max}
         if taxon.tail_female_min and taxon.tail_female_max:
-            morphometrics["tail"]["Female"] = (taxon.tail_female_min, taxon.tail_female_max)
-
-        # Check if the male taxon tail chord data exists
+            morphometrics["tail"]["Female"] = {"min": taxon.tail_female_min, "max": taxon.tail_female_max}
         if taxon.tail_male_min and taxon.tail_male_max:
-            morphometrics["tail"]["Male"] = (taxon.tail_male_min, taxon.tail_male_max)
+            morphometrics["tail"]["Male"] = {"min": taxon.tail_male_min, "max": taxon.tail_male_max}
 
         return morphometrics
 
