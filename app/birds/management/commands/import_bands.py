@@ -1,32 +1,31 @@
-from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.db.utils import DataError
 from django.db.utils import IntegrityError
 
 from birds.models import Band
 from birds.serializers import parse_bands_from_csv
+from birds.management.commands.base_import_command import BaseImportCommand
 
 
-class Command(BaseCommand):
+class Command(BaseImportCommand):
     help = "Loads the data from CSV into Band model"
-
-    def add_arguments(self, parser):
-        parser.add_argument("csv_file", type=str, help="The CSV file to load data from")
 
     @transaction.atomic
     def handle(self, *args, **options):
         csv_file_path = options["csv_file"]
+        Band.objects.all().delete()
+        bands_data = parse_bands_from_csv(csv_file_path)
+
+        bands = [
+            Band(
+                size=data["size"],
+                comment=data["comment"],
+            )
+            for data in bands_data
+        ]
+
         try:
-            Band.objects.all().delete()
-            bands_data = parse_bands_from_csv(csv_file_path)
-
-            # Create Band objects
-            for data in bands_data:
-                Band.objects.create(
-                    size=data["size"],
-                    comment=data["comment"],
-                )
-
+            Band.objects.bulk_create(bands)
             self.stdout.write(
                 self.style.SUCCESS(f"Successfully loaded {len(bands_data)} Band objects from {csv_file_path}"),
             )

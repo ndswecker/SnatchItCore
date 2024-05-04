@@ -52,27 +52,44 @@
         </div>
 
         <div class="mt-2">
-            <h4>Wing Chord Ranges:</h4>
-            {% if wing_chords %}
+            <h4>Morphometrics:</h4>
             <table class="table">
                 <thead>
                     <tr class="table-secondary">
                         <th scope="col">Sex</th>
-                        <th scope="col">Min</th>
-                        <th scope="col">Max</th>
+                        <th scope="col">Wing Min</th>
+                        <th scope="col">Wing Max</th>
+                        <th scope="col">Tail Min</th>
+                        <th scope="col">Tail Max</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for key, values in wing_chords.items %}
-                    <tr class="{{ forloop.counter|divisibleby:2|yesno:'table-secondary,' }}">
-                        <td>{{ key }}</td>
-                        <td>{{ values.0 }}</td>
-                        <td>{{ values.1 }}</td>
+                    <!-- Row for All -->
+                    <tr>
+                        <td>All</td>
+                        <td>{{ morphometrics.wing.All.min }}</td>
+                        <td>{{ morphometrics.wing.All.max }}</td>
+                        <td>{{ morphometrics.tail.All.min }}</td>
+                        <td>{{ morphometrics.tail.All.max }}</td>
                     </tr>
-                    {% endfor %}
+                    <!-- Row for Female -->
+                    <tr>
+                        <td>Female</td>
+                        <td>{{ morphometrics.wing.Female.min }}</td>
+                        <td>{{ morphometrics.wing.Female.max }}</td>
+                        <td>{{ morphometrics.tail.Female.min }}</td>
+                        <td>{{ morphometrics.tail.Female.max }}</td>
+                    </tr>
+                    <!-- Row for Male -->
+                    <tr>
+                        <td>Male</td>
+                        <td>{{ morphometrics.wing.Male.min }}</td>
+                        <td>{{ morphometrics.wing.Male.max }}</td>
+                        <td>{{ morphometrics.tail.Male.min }}</td>
+                        <td>{{ morphometrics.tail.Male.max }}</td>
+                    </tr>
                 </tbody>
             </table>
-            {% endif %}
         </div>
 
         <div class="mt-2">

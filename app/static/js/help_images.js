@@ -20,5 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initModal('label[for="id_ff_wear"]', 'ffWearModal');
     initModal('label[for="id_fat"]', 'fatModal');
     initModal('label[for="id_skull"]', 'skullModal');
+    initModal('label[for="id_age_WRP"]', 'ageWRPModal');
     // Add more as needed
 });

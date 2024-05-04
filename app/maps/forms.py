@@ -63,6 +63,7 @@ class CaptureRecordForm(forms.ModelForm):
         self.fields["skull"].label = "Skull ℹ"
         self.fields["juv_body_plumage"].label = "Juvenile Only"
         self.fields["body_plumage"].label = "Body Plum."
+        self.fields["age_WRP"].label = "WRP ℹ"
         self.fields["capture_year_day"].initial = timezone.now().date()
         self.fields["input_time"].initial = timezone.now().time().replace(second=0, microsecond=0)
         self.fields["capture_time"].initial = timezone.now()

@@ -10,16 +10,15 @@ def parse_agewrps_from_csv(csv_file_path):
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
+                    annuals_list = [
+                        int(annual.strip()) for annual in row.get("annuals", "").split(",") if annual.strip()
+                    ]
                     age_wrp_data = {
                         "code": row["code"],
                         "sequence": int(row["sequence"]),
                         "description": row["description"],
                         "status": row["status"].lower(),
-                        "annuals": [
-                            int(annual_id.strip())
-                            for annual_id in row.get("annuals", "").split(",")
-                            if annual_id.strip()
-                        ],
+                        "annuals": annuals_list,
                     }
                     age_wrps.append(age_wrp_data)
                 except ValueError as e:
@@ -154,14 +153,16 @@ def parse_species_from_csv(csv_file_path):
     return species
 
 
-def parse_band_sizes(species_number, alpha, band_sizes):
+def parse_band_sizes(taxon_data):
     bands = []
     last_sex = None  # Track the last processed sex
+    priority = 0  # Track the priority of the band size
 
     # Split into lines assuming M: and F: are on separate lines
-    lines = band_sizes.split("\n")
+    lines = taxon_data["band_sizes"].split("\n")
     for line in lines:
         line = line.strip()  # Ensure there's no leading/trailing whitespace
+        # Check if the line starts with 'M: ' or 'F: ' to handle sex specific sizes
         if line.startswith("M:") or line.startswith("F:"):
             sex = line[:1].lower()  # Correctly get 'm' or 'f'
             sizes = line[2:].split(",")  # Extract sizes after 'M: ' or 'F: '
@@ -169,6 +170,7 @@ def parse_band_sizes(species_number, alpha, band_sizes):
             if sex != last_sex:
                 priority = 0
                 last_sex = sex
+        # If the line doesn't start with 'M: ' or 'F: ', it's unisex sizes
         else:
             sex = "u"  # Unisex
             sizes = line.split(",")
@@ -181,8 +183,9 @@ def parse_band_sizes(species_number, alpha, band_sizes):
             if size:  # Ensure the size is not empty
                 bands.append(
                     {
-                        "bird": species_number,
-                        "alpha": alpha,
+                        "bird": taxon_data["number"],
+                        "alpha": taxon_data["alpha"],
+                        "common": taxon_data["common"],
                         "band": size,
                         "sex": sex,
                         "priority": priority,
@@ -199,10 +202,13 @@ def parse_band_allocations_from_csv(csv_file_path):
         with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                species_number = int(row["number"])
-                alpha = row["alpha"]
-                band_sizes = row["band_size"]
-                species_bands = parse_band_sizes(species_number, alpha, band_sizes)
+                taxon_data = {
+                    "number": int(row["number"]),
+                    "alpha": row["alpha"],
+                    "common": row["common"],
+                    "band_sizes": row["band_size"],
+                }
+                species_bands = parse_band_sizes(taxon_data)
                 band_allocations.extend(species_bands)
 
     except FileNotFoundError as e:
@@ -211,3 +217,56 @@ def parse_band_allocations_from_csv(csv_file_path):
         print(f"CSV reading error: {e}")
 
     return band_allocations
+
+
+def parse_morphometrics_from_csv(csv_file_path):
+    morphometrics = []
+    errors = []
+
+    try:
+        with open(csv_file_path, newline="", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                try:
+                    morphometric_data = {
+                        "number": int(row.get("species_id", "0")),
+                        "alpha": row.get("alpha", ""),
+                        "common": row.get("common", ""),
+                        "wing_female_min": _safe_int(row.get("wing_female_min", "0")),
+                        "wing_female_max": _safe_int(row.get("wing_female_max", "0")),
+                        "wing_male_min": _safe_int(row.get("wing_male_min", "0")),
+                        "wing_male_max": _safe_int(row.get("wing_male_max", "0")),
+                        "tail_female_min": _safe_int(row.get("tail_female_min", "0")),
+                        "tail_female_max": _safe_int(row.get("tail_female_max", "0")),
+                        "tail_male_min": _safe_int(row.get("tail_male_min", "0")),
+                        "tail_male_max": _safe_int(row.get("tail_male_max", "0")),
+                    }
+                    morphometrics.append(morphometric_data)
+                except ValueError as e:
+                    errors.append(f"Error parsing morphometric data in row {reader.line_num}: {e}")
+                except KeyError as e:
+                    errors.append(
+                        f"Error parsing morphometric data in row {reader.line_num}: Missing expected column {e}",
+                    )
+
+    except FileNotFoundError as e:
+        print(f"While attempting to parse morphometric data, file {csv_file_path} was not found: {e}")
+    except csv.Error as e:
+        print(f"A CSV error occurred while parsing morphometric data: {e}")
+
+    if errors:
+        print("The following errors occurred while parsing morphometric data:")
+        for error in errors:
+            print(error)
+
+    return morphometrics
+
+
+def _safe_int(value):
+    try:
+        return int(value)
+    except ValueError:
+        try:
+            return int(round(float(value)))
+        except ValueError:
+            return None
