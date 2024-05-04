@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 from maps.forms import CaptureRecordForm
 
+
 class CaptureRecordFormTest(TestCase):
 
     def test_valid_form_submission(self):
