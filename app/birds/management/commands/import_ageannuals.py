@@ -9,6 +9,8 @@ class Command(BaseImportCommand):
     help = "Loads the data from CSV into AgeAnnual model"
 
     def handle(self, *args, **options):
+        AgeAnnual.objects.all().delete()
+
         csv_file_path = options["csv_file"]
         age_annuals_data = parse_ageannuals_from_csv(csv_file_path)
 

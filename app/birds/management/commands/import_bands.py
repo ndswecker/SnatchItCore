@@ -12,8 +12,9 @@ class Command(BaseImportCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        csv_file_path = options["csv_file"]
         Band.objects.all().delete()
+
+        csv_file_path = options["csv_file"]
         bands_data = parse_bands_from_csv(csv_file_path)
 
         bands = [

@@ -46,12 +46,12 @@ class Command(BaseImportCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        GroupWRP.objects.all().delete()
+
         csv_file_path = options["csv_file"]
         group_wrps_data = parse_groupwrps_from_csv(csv_file_path)
         failed_groups = []
         failed_ages = []
-
-        GroupWRP.objects.all().delete()
 
         for data in group_wrps_data:
             group_wrp, error = self.create_group_wrp(data)
