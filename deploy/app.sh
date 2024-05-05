@@ -19,4 +19,3 @@ sed -i "s/<SECRET_KEY>/$SECRET_KEY/g" /srv/web/.env
 /srv/web/venv/bin/python3 /srv/web/app/manage.py setup_taxon_band_relationships
 /srv/web/venv/bin/python3 /srv/web/app/manage.py import_morphometrics /srv/web/data/Morphometrics.csv
 /srv/web/venv/bin/python3 /srv/web/app/manage.py setup_taxon_relationships
-
