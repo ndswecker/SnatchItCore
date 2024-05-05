@@ -9,6 +9,8 @@ class Command(BaseImportCommand):
     help = "Loads band allocation data from CSV"
 
     def handle(self, *args, **options):
+        BandAllocation.objects.all().delete()
+        
         csv_file_path = options["csv_file"]
         band_allocations = parse_band_allocations_from_csv(csv_file_path)
 

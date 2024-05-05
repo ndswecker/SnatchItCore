@@ -10,13 +10,15 @@ class Command(BaseImportCommand):
     help = "Loads data from CSV into AgeWRP model"
 
     def handle(self, *args, **options):
+        AgeWRP.objects.all().delete()
+
+        annuals = AgeAnnual.objects.all()
+
         csv_file_path = options["csv_file"]
         age_wrps_data = parse_agewrps_from_csv(csv_file_path)
-        annuals = AgeAnnual.objects.all()
         annual_cache = {annual.number: annual for annual in annuals}
 
         with transaction.atomic():
-            AgeWRP.objects.all().delete()
             new_age_wrps = [
                 AgeWRP(
                     code=data["code"],
