@@ -63,6 +63,6 @@
   @media screen and (max-width: 600px) {
     /* Example adjustments, you may need to customize further */
     .chart-container {
-      margin: 20px auto;
+      margin: 5px auto;
     }
   }

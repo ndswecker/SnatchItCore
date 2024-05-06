@@ -73,6 +73,11 @@ class BirdsView(TemplateView):
 
         fig.update_traces(textfont_size=20, textangle=0, textposition="inside")
 
+        # set config display mode bar to false to hide the bar
+        config = {
+            "staticPlot": True,
+        }
+
         fig.update_layout(
             title={
                 "font_size": 22,
@@ -87,7 +92,7 @@ class BirdsView(TemplateView):
             yaxis_title="",
         )
 
-        return fig.to_html()
+        return fig.to_html(config=config)
 
 
     def get_chart_sex_capture_count(self, date_range=None):
