@@ -1,4 +1,6 @@
 {% extends "charts/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}Birds{% endblock %}
 
@@ -7,14 +9,32 @@
     {% include "charts/partials/nav.html" %}
     <h1 class="text-center">Birds</h1>
 
-    <form method="get">
-      <label for="date">Date:</label>
-      <input type="date" id="date" name="date">
-      <input type="submit" value="Submit">
+    <form method="get" id="date-form">
+      {{ date_form.as_p }}
+      <input 
+        type="submit" 
+        value="Submit"
+        class="btn btn-primary"
+      >
+      <input
+        type="button" 
+        value="Clear Dates" 
+        class="btn btn-danger"
+        onclick="clearDates()">
     </form>
 
     <div class="chart-container">{{ chart_species_capture_count|safe }}</div>
     <div class="chart-container">{{ chart_sex_capture_count|safe }}</div>
     <div class="chart-container">{{ chart_age_capture_count|safe }}</div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function clearDates() {
+    document.getElementById("id_start").value = "";
+    document.getElementById("id_end").value = "";
+    document.getElementById("date-form").submit();
+  }
+</script>
 {% endblock %}
