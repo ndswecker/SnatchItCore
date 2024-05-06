@@ -53,3 +53,16 @@
     display: flex;
     flex-direction: row;
 }
+
+/* Ensure charts take full width */
+.chart-container {
+    width: 100%;
+  }
+  
+  /* Adjust charts for mobile screens */
+  @media screen and (max-width: 600px) {
+    /* Example adjustments, you may need to customize further */
+    .chart-container {
+      margin: 20px auto;
+    }
+  }
