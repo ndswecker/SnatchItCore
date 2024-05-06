@@ -41,12 +41,32 @@
 
 ### Verify Production is Updatable Remotely
 
-1. Clone the production VM.
+1. Create a machine image of the production vm instance
+1. Create instance
+1. Update nginx
+    ```
+    sudo nano /etc/nginx/conf.d/app.conf
+    sudo systemctl restart nginx
+    sudo systemctl daemon-reload
+    ```
+1. Test that the browser is serving the app at the IP
 1. Test updating the production clone:
 
     ```shell
+    cd /srv/web/
+    sudo git pull
+    sudo git checkout dev
     sudo bash /srv/web/deploy/update.sh
     ```
 
-1. SSH into the production VM.
-1. Run the update script.
+1. Delete test machine image
+
+### Apply all changes to production environment
+1. Merge Dev into Main
+    ```shell
+    cd /srv/web/
+    sudo git pull
+    sudo git checkout main
+    sudo bash /srv/web/deploy/update.sh
+    ```
+
