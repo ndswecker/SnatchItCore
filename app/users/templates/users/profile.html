@@ -13,7 +13,7 @@
     {% endif %}
     <h1>Profile</h1>
     <p>Welcome, {{ user.first_name }} {{ user.last_name }}!</p>
-    <p><a href="{% url 'users:email_change' %}">Update Email</a></p>
-    <p><a href="{% url 'account_change_password' %}">Change Password</a></p>
+    <p><a href="{% url 'users:email_change' %}" class="btn btn-lg btn-primary w-100 rounded-1">Update Email</a></p>
+    <p><a href="{% url 'account_change_password' %}" class="btn btn-lg btn-primary w-100 rounded-1">Change Password</a></p>
   </div>
 {% endblock %}

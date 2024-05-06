@@ -10,7 +10,7 @@
       <p>Current Email: {{ user.email }}</p>
       {% csrf_token %}
       {{ form|crispy }}
-      <input type="submit" value="Change Email">
+      <input class="btn btn-lg btn-primary w-100 rounded-1" type="submit" value="Change Email">
     </form>
   </div>
 {% endblock %}

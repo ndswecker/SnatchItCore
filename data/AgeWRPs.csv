@@ -1,0 +1,130 @@
+code,sequence,description,status,annuals
+FPJ,1,first prejuvenile molt,current,4
+FCJ,2,first cycle juvenile plumage,current,2
+FPX,3,first preauxiliary formative molt,current,
+FCX,4,first cycle auxiliary formative plumage,current,
+FPF,5,first preformative molt,current,2
+MFPF,6,minimum first preformative molt,current,"1, 2"
+FCF,7,first cycle formative plumage,current,"2, 5"
+MFCF,8,minimum first cycle formative plumage,current,"1, 2"
+HFCF,9,hatching season first cycle formative plumage,current,2
+AFCF,10,after hatching season first cycle formative plumage,current,1
+FPA,11,first prealternate molt,current,1
+MFPA,12,minimum first prealternate molt,current,1
+FCA,13,first cycle alternate plumage,current,5
+MFCA,14,minimum first cycle alternate plumage,current,1
+FPS,15,first presupplemental molt,current,
+MFPS,16,minimum first presupplemental molt,current,
+FCS,17,first cycle supplemental plumage,current,
+MFCS,18,mimimum first cycle supplemental plumage,current,
+FCU,19,first cycle unknown plumage,current,"1, 2"
+FPU,20,first cycle molt in progress unknown plumage,current,"1, 2"
+FUJ,21,first cycle unknown molt status juvenile plumage,current,2
+FUX,22,first cycle unknown molt status auxiliary formative plumage,current,
+FUF,23,first cycle unknown molt status formative plumage,current,
+FUA,24,first cycle unknown molt status alternate plumage,current,
+FUS,25,first cycle unknown molt status supplemental plumage,current,
+FUU,26,first cycle unknown molt status unknown plumage,current,
+SPB,27,second cycle prebasic molt,current,5
+MSPB,28,minimum second cycle prebasic molt,current,1
+SCB,29,second cycle basic plumage,current,5
+MSCB,30,minimum second cycle basic plumage,current,1
+SPA,31,second cycle prealternate molt,current,6
+MSPA,32,minimum second cycle prealternate molt,current,6
+SCA,33,second cycle alternate plumage,current,6
+MSCA,34,minimum second cycle alternate plumage,current,6
+SPS,35,second cycle presupplemental molt,current,
+MSPS,36,minimum second cycle presupplemental molt,current,
+SCS,37,second cycle supplemental plumage,current,
+MSCS,38,minimum second cycle supplemental plumage,current,
+SCU,39,second cycle unknown plumage,current,
+SPU,40,second cycle molt in progress unknown plumage,current,
+SUB,41,second cycle unknown molt status basic plumage,current,
+SUA,42,second cycle unknown molt status alternate plumage,current,
+SUS,43,second cycle unknown molt status supplemental plumage,current,
+SUU,44,second cycle unknown molt status unknown plumage,current,
+TPB,45,third cycle prebasic molt,current,7
+MTPB,46,minimum third cycle prebasic molt,current,7
+TCB,47,third cycle basic plumage,current,"7, 8"
+MTCB,48,minimum third cycle basic plumage,current,
+TPA,49,third cycle prealternate molt,current,
+TCA,50,third cycle alternate plumage,current,
+TCU,51,third cycle unknown plumage,current,
+TPU,52,third cycle molt in progress unknown plumage,current,
+TUB,53,third cycle unknown molt status basic plumage,current,
+TUA,54,third cycle unknown molt status alternate plumage,current,
+TUU,55,third cycle unknown molt status unknown plumage,current,
+DPB,56,definitive cycle prebasic molt,current,"5, 6"
+DCB,57,definitive cycle prebasic plumage,current,6
+DPA,58,definitive cycle prealternate molt,current,6
+DCA,59,definitive cycle alternate plumage,current,6
+DPS,60,definitive cycle presupplemental molt,current,
+DCS,61,definitive cycle supplemental plumage,current,
+DCU,62,definitive cycle unknown plumage,current,6
+DPU,63,definitive cycle molt in progress unknown plumage,current,6
+DUB,64,definitive cycle unknown molt status basic plumage,current,
+DUA,65,definitive cycle unknown molt status alternate plumage,current,
+DUS,66,definitive cycle unknown molt status supplemental plumage,current,
+DUU,67,definitive cycle unknown molt status unknown plumage,current,
+4PB,68,fourth cycle prebasic molt,current,
+M4PB,69,minimum fourth cycle prebasic molt,current,
+4CB,70,fourth cycle basic plumage,current,
+M4CB,71,minimum fourth cycle basic plumage,current,
+4CU,72,fourth cycle unknown plumage,current,
+4PU,73,fourth cycle molt in progress unknown plumage,current,
+4UB,74,fourth cycle unknown molt status basic plumage,current,
+4UU,75,fourth cycle unknown molt status unknown plumage,current,
+5PB,76,fifth cycle prebasic molt,current,
+M5PB,77,minimum fifth cycle prebasic molt,current,
+5CB,78,fifth cycle basic plumage,current,
+M5CB,79,minimum fifth cycle basic plumage,current,
+5CU,80,fifth cycle unknown plumage,current,
+5PU,81,fifth cycle molt in progress unknown plumage,current,
+5UB,82,fifth cycle unknown molt status basic plumage,current,
+5UU,83,fifth cycle unknown molt status unknown plumage,current,
+6PB,84,sixth cycle prebasic molt,current,
+M6PB,85,minimum sixth cycle prebasic molt,current,
+6CB,86,sixth cycle basic plumage,current,
+M6CB,87,minimum sixth cycle basic plumage,current,
+6CU,88,sixth cycle unknown plumage,current,
+6PU,89,sixth cycle molt in progress unknown plumage,current,
+6UB,90,sixth cycle unknown molt status basic plumage,current,
+6UU,91,sixth cycle unknown molt status unknown plumage,current,
+7PB,92,seventh cycle prebasic molt,current,
+M7PB,93,minimum seventh cycle prebasic molt,current,
+7CB,94,seventh cycle basic plumage,current,
+M7CB,95,minimum seventh cycle basic plumage,current,
+7CU,96,seventh cycle unknown pluage,current,
+7PU,97,seventh cycle molt in progress unknown plumage,current,
+7UB,98,seventh cycle unknown molt status basic plumage,current,
+7UU,99,seventh cycle unknown molt status unknown plumage,current,
+8PB,100,eighth cycle prebasic molt,current,
+M8PB,101,minimum eighth cycle prebasic molt,current,
+8CB,102,eighth cycle basic plumage,current,
+M8CB,103,minimum eighth cycle basic plumage,current,
+8CU,104,eighth cycle unknown plumage,current,
+8PU,105,eighth cycle molt in progress unknown plumage,current,
+8UB,106,eighth cycle unknown molt status basic plumage,current,
+8UU,107,eighth cycle unknown molt status unknown plumage,current,
+9PB,108,ninth cycle prebasic molt,current,
+M9PB,109,minimum ninth cycle prebasic molt,current,
+9CB,110,ninth cycle basic plumage,current,
+M9CB,111,minimum ninth cycle basic plumage,current,
+9CU,112,ninth cycle unknown plumage,current,
+9PU,113,ninth cycle molt in progress unknown plumage,current,
+9UB,114,ninth cycle unknown molt status basic plumage,current,
+9UU,115,ninth cycle unknown molt status unknown plumage,current,
+UPB,116,unknown cycle undergoing prebasic molt,current,
+UCB,117,unknown cycle basic plumage,current,
+UCA,118,unknown cycle alternate plumage,current,
+UPA,119,unknown cycle undergoing prealternate molt,current,
+UCU,120,unknown cycle unknown plumage,current,
+UPU,121,unknown cycle molt in progress unknown age,current,
+UUU,122,unknown cycle unknown molt status unknown age,current,
+FAS,999,"First Cycle, After Supplemental Plumage",discontinued,
+FAJ,999,After first cycle juvenal,discontinued,
+5AB,999,"After fifth cycle, basic plumage",discontinued,
+UAJ,999,"Unknown Cycle, After Juvenile Plumage",discontinued,
+SAB,999,"After second cycle, basic plumage",discontinued,
+4AB,999,"After fourth cycle, basic plumage",discontinued,
+TAB,999,"After third cycle, basic plumage",discontinued,

@@ -41,6 +41,7 @@ LOCAL_APPS = [
     "users.apps.UsersConfig",
     "maps.apps.MapsConfig",
     "netting.apps.NettingConfig",
+    "birds.apps.BirdsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -193,3 +194,5 @@ ACCOUNT_FORMS = {
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ACCOUNT_CHANGE_EMAIL = True
+
+ACCOUNT_ADAPTER = "users.adapters.UserAdapter"
