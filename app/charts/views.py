@@ -66,12 +66,17 @@ class BirdsView(TemplateView):
                 "x": "Capture Count",  # Update labels accordingly
                 "y": "Species",         # Update labels accordingly
             },
-            text_auto=True,
+            text=[f"{y} ({x})" for x, y in zip(x_values, y_values)], 
             color=colors,
             orientation="h",  # Set orientation to horizontal
         )
 
-        fig.update_traces(textfont_size=20, textangle=0, textposition="inside")
+        fig.update_traces(
+            textfont_size=30, 
+            textangle=0, 
+            textposition="inside",
+            textfont=dict(color="white", weight="bold"),
+        )
 
         # set config display mode bar to false to hide the bar
         config = {
@@ -88,8 +93,11 @@ class BirdsView(TemplateView):
             barmode="relative",
             bargap=0.2,
             height=100 + 25 * y_values_count,
-            margin=dict(l=0, r=0, t=100, b=0),
+            margin=dict(l=0, r=0, t=50, b=0, pad=10),
             yaxis_title="",
+            yaxis=dict(
+                showticklabels=False,
+            ),
         )
 
         return fig.to_html(config=config)

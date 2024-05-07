@@ -9,19 +9,21 @@
     {% include "charts/partials/nav.html" %}
     <h1 class="text-center">Birds</h1>
 
-    <form method="get" id="date-form">
-      {{ date_form.as_p }}
-      <input 
-        type="submit" 
-        value="Submit"
-        class="btn btn-primary"
-      >
-      <input
-        type="button" 
-        value="Clear Dates" 
-        class="btn btn-danger"
-        onclick="clearDates()">
-    </form>
+    <div class=m-3>
+      <form method="get" id="date-form">
+        {{ date_form.as_p }}
+        <input 
+          type="submit" 
+          value="Submit"
+          class="btn btn-primary"
+        >
+        <input
+          type="button" 
+          value="Clear Dates" 
+          class="btn btn-danger"
+          onclick="clearDates()">
+      </form>
+    </div>
 
     <div class="w-100">{{ chart_species_capture_count|safe }}</div>
     <div class="chart-container">{{ chart_sex_capture_count|safe }}</div>
