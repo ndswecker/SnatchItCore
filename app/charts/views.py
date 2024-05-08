@@ -1,5 +1,6 @@
 import plotly.express as px
 from django.db.models import Count
+from django.db.models.functions import TruncDate
 from django.views.generic import TemplateView
 
 from django.utils.html import format_html
@@ -27,18 +28,28 @@ class BirdsView(TemplateView):
             end_date = parse_date(end_date_str)
             date_range = (start_date, end_date)
 
-        context["chart_species_capture_count"] = self.get_chart_species_capture_count(date_range)
-        context["chart_sex_capture_count"] = self.get_chart_sex_capture_count(date_range)
-        context["chart_age_capture_count"] = self.get_chart_age_capture_count(date_range)
+        # Make a preset config for the charts
+        config = {
+            "staticPlot": True,
+        }
+
+        context["chart_species_capture_count"] = self.get_chart_species_capture_count(date_range, config)
+        context["chart_sex_capture_count"] = self.get_chart_sex_capture_count(date_range, config)
+        context["chart_age_capture_count"] = self.get_chart_age_capture_count(date_range, config)
+        context["chart_days_capture_count"] = self.get_chart_days_capture_count(date_range, config)
 
         return context
 
 
-    def get_chart_species_capture_count(self, date_range=None):
+    def get_chart_species_capture_count(self, date_range=None, config=None):
         if date_range:
             start_date, end_date = date_range
             data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("species_number").annotate(capture_count=Count("species_number"))
-            title = f"Species Captured from {start_date} to {end_date}"
+            # Format the dates to be MM/DD
+            abrv_start_date = start_date.strftime("%m/%d")
+            abrv_end_date = end_date.strftime("%m/%d")
+
+            title = f"Species Captured {abrv_start_date} - {abrv_end_date}"
         else:
             data = CaptureRecord.objects.values("species_number").annotate(capture_count=Count("species_number"))
             title = "Species Capture Count"
@@ -48,27 +59,31 @@ class BirdsView(TemplateView):
 
         # Get the number of y_values that will be displayed in the chart
         y_values_count = len(y_values)
+        
 
         # Get the capture count of the 5th most captured species
+        # This will be used to determine if a species is in the top 5 or not
+        # More than 5 species might be considered in the top 5 if they have the same capture count as the 5th most captured species
         top_five_lower_count = sorted(x_values, reverse=True)[4]
-        print(top_five_lower_count)
 
         if not (x_values and y_values):
             return ""
         
         colors = ["Top 5" if count >= top_five_lower_count else "other" for count in x_values]
+        # color_map = {"Top 5": "red", "other": "blue"}
 
         fig = px.bar(
-            x=x_values,  # Use capture count as x-values
-            y=y_values,  # Use species code as y-values
+            x=x_values,
+            y=y_values,
             title=title,
             labels={
-                "x": "Capture Count",  # Update labels accordingly
-                "y": "Species",         # Update labels accordingly
+                "x": f"Capture Count ({sum(x_values)})",
+                "y": "Species",
             },
             text=[f"{y} ({x})" for x, y in zip(x_values, y_values)], 
             color=colors,
-            orientation="h",  # Set orientation to horizontal
+            # color_discrete_map=color_map,
+            orientation="h",
         )
 
         fig.update_traces(
@@ -77,11 +92,6 @@ class BirdsView(TemplateView):
             textposition="inside",
             textfont=dict(color="white", weight="bold"),
         )
-
-        # set config display mode bar to false to hide the bar
-        config = {
-            "staticPlot": True,
-        }
 
         fig.update_layout(
             title={
@@ -103,7 +113,7 @@ class BirdsView(TemplateView):
         return fig.to_html(config=config)
 
 
-    def get_chart_sex_capture_count(self, date_range=None):
+    def get_chart_sex_capture_count(self, date_range=None, config=None):
         if date_range:
             start_date, end_date = date_range
             data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("sex").annotate(capture_count=Count("sex"))
@@ -113,8 +123,12 @@ class BirdsView(TemplateView):
         x_values = [d["sex"] for d in data]
         y_values = [d["capture_count"] for d in data]
 
+        print(x_values)
+
         if not (x_values and y_values):
             return ""
+        
+        # color_map = {"F": "red", "M": "blue", "U": "green"}
 
         fig = px.bar(
             x=x_values,
@@ -125,24 +139,52 @@ class BirdsView(TemplateView):
                 "y": "Capture Count",
             },
             text_auto=True,
+            color=x_values,
+            # color_discrete_map=color_map,
         )
-        fig.update_traces(textfont_size=14, textangle=0, textposition="inside")
+
+        fig.update_traces(
+            textfont=dict(
+                color="white", 
+                weight="bold"
+            ), 
+            textangle=0, 
+            textposition="inside"
+        )
+
         fig.update_layout(
             title={
                 "font_size": 22,
                 "xanchor": "center",
                 "x": 0.5,
             },
+            showlegend=False,
+            margin=dict(l=0, r=0, t=50, b=0, pad=10),
+            yaxis_title="",
+            xaxis_title="",
         )
-        return fig.to_html()
 
-    def get_chart_age_capture_count(self, date_range=None):
+        return fig.to_html(config=config)
+
+    def get_chart_age_capture_count(self, date_range=None, config=None):
         if date_range:
             start_date, end_date = date_range
             data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("age_annual").annotate(capture_count=Count("age_annual"))
-            # data = CaptureRecord.objects.filter(capture_time__date=date).values("age_annual").annotate(capture_count=Count("age_annual"))
         else:
             data = CaptureRecord.objects.values("age_annual").annotate(capture_count=Count("age_annual"))
+
+        age_code_map = {
+            4: "L",
+            2: "HY",
+            1: "AHY",
+            5: "SY",
+            6: "ASY",
+            7: "TY",
+            8: "ATY",
+            0: "U",
+            9: "U",
+        }
+        data = [{"age_annual": age_code_map.get(item["age_annual"], "Unknown"), "capture_count": item["capture_count"]} for item in data]
 
         x_values = [d["age_annual"] for d in data]
         y_values = [d["capture_count"] for d in data]
@@ -158,18 +200,87 @@ class BirdsView(TemplateView):
                 "x": "Age",
                 "y": "Capture Count",
             },
+            color=x_values,
             text_auto=True,
         )
-        fig.update_traces(textfont_size=14, textangle=0, textposition="inside")
+        fig.update_traces(
+            textfont_size=14, 
+            textangle=0, 
+            textposition="inside",
+            textfont=dict(color="white", weight="bold"),
+        )
         fig.update_layout(
             title={
                 "font_size": 22,
                 "xanchor": "center",
                 "x": 0.5,
             },
+            showlegend=False,
+            barmode="relative",
+            margin=dict(l=0, r=0, t=50, b=0, pad=10),
+            yaxis_title="",
+            xaxis_title="",
         )
-        return fig.to_html()
+        return fig.to_html(config=config)
+    
+    def get_chart_days_capture_count(self, date_range=None, config=None):
+        if date_range:
+            start_date, end_date = date_range
+            # Truncate the capture time to extract only the date part
+            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]) \
+                .annotate(capture_day=TruncDate('capture_time')) \
+                .values("capture_day") \
+                .annotate(capture_count=Count("id"))
+        else:
+            data = CaptureRecord.objects.annotate(capture_day=TruncDate('capture_time')) \
+                .values("capture_day") \
+                .annotate(capture_count=Count("id"))
 
+        x_values = [d["capture_count"] for d in data]  # Use capture count as x-values
+        y_values = [d["capture_day"] for d in data]  # Use capture day as y-values
+
+        if not (x_values and y_values):
+            return ""
+
+        fig = px.bar(
+            x=x_values,
+            y=y_values,
+            title="Capture Count by Day",
+            labels={
+                "x": "Capture Count",
+                "y": "Capture Day",
+            },
+            text_auto=True,
+            orientation="h",  # Set orientation to horizontal
+        )
+
+        fig.update_traces(
+            textfont=dict(
+                color="white", 
+                weight="bold",
+                size=22,
+            ),
+            textangle=0, 
+            textposition="inside"
+        )
+
+        fig.update_layout(
+            title={
+                "font_size": 22,
+                "xanchor": "center",
+                "x": 0.5,
+            },
+            showlegend=False,
+            barmode="relative",
+            bargap=0.2,
+            height=100 + 30 * len(y_values),
+            margin=dict(l=0, r=0, t=50, b=0, pad=10),
+            yaxis_title="",
+            xaxis_title="",
+            yaxis_tickformat='%m-%d',  # Format y-axis to display only the date part
+        )
+        return fig.to_html(config=config)
+        
 
 class NetsView(TemplateView):
     template_name = "charts/nets.html"
