@@ -34,13 +34,12 @@ class BirdsView(TemplateView):
         context["date_form"] = date_form
         date_range = None
 
-        start_date_str = self.request.GET.get("start")
-        end_date_str = self.request.GET.get("end")
-
-        if start_date_str and end_date_str:
-            start_date = parse_date(start_date_str)
-            end_date = parse_date(end_date_str)
-            date_range = (start_date, end_date)
+        date_range_str = self.request.GET.get("date_range")
+        if date_range_str:
+            dates = date_range_str.split(" to ")
+            if len(dates) == 2:
+                start_date, end_date = [parse_date(date) for date in dates]
+                date_range = (start_date, end_date)
 
         context["color_array"] = self.color_array
         context["capture_count_total"] = self.get_total_capture_count(date_range)
@@ -53,7 +52,6 @@ class BirdsView(TemplateView):
         return context
 
 
-    # Method to get the number of the total capture count for all captures in the current date range
     def get_total_capture_count(self, date_range=None):
         if date_range:
             start_date, end_date = date_range
@@ -71,21 +69,16 @@ class BirdsView(TemplateView):
         else:
             data = CaptureRecord.objects.values("species_number").annotate(capture_count=Count("species_number"))
 
-        x_values = [d["capture_count"] for d in data]  # Use capture count as x-values for horizontal bars
+        x_values = [d["capture_count"] for d in data]
         y_values = [SPECIES[d["species_number"]]["alpha_code"] for d in data]
 
-        # Get the capture count of the 5th most captured species
-        # This will be used to determine if a species is in the top 5 or not
-        # More than 5 species might be considered in the top 5 if they have the same capture count as the 5th most captured species
-        top_five_lower_count = sorted(x_values, reverse=True)[4]
-
-        if not (x_values and y_values):
-            return ""
+        if not (x_values):
+            return "No data available for the selected date range."
         
-        colors = ["Top 5" if count >= top_five_lower_count else "other" for count in x_values]
-        # map the colors to the color_array
-        color_map = {value: self.color_array[i] for i, value in enumerate(sorted(set(colors)))}
-
+        sorted_x_values = sorted(x_values, reverse=True)
+        cuttoff_index = max(int(len(sorted_x_values) * 0.25) - 1, 0)
+        top_25_percent_lower_count = sorted_x_values[cuttoff_index] if sorted_x_values else 0
+        colors = [self.color_array[0] if x >= top_25_percent_lower_count else self.color_array[1] for x in x_values]
         bar_thickness = 30
         chart_height = 100 + bar_thickness * len(y_values)
 
@@ -97,13 +90,12 @@ class BirdsView(TemplateView):
                 "x": "Capture Count",
                 "y": "Species",
             },
-            text=[f"{y} ({x})" for x, y in zip(x_values, y_values)], 
-            color=colors,
-            color_discrete_map=color_map,
+            text=[f"{y} ({x})" for x, y in zip(x_values, y_values)],
             orientation="h",
         )
 
         fig.update_traces(
+            marker_color=colors,
             textangle=0, 
             textposition="auto",
             textfont={
@@ -327,7 +319,6 @@ class BirdsView(TemplateView):
                 "x": "Capture Count",
                 "y": "Capture Day",
             },
-            # text_auto=True,
             text=[f"{y} ({x})" for x, y in zip(x_values, y_values)],
             color=y_values,
             color_discrete_map=color_map,
@@ -385,8 +376,6 @@ class BirdsView(TemplateView):
         x_values = [d["capture_count"] for d in data]
         y_values = [str(d["net"]) for d in data]
 
-        print(y_values)
-
         if not (x_values and y_values):
             return ""
         
@@ -394,7 +383,6 @@ class BirdsView(TemplateView):
         chart_height = 100 + bar_thickness * len(y_values)
         
         color_map = {str(net): self.color_array[i % len(self.color_array)] for i, net in enumerate(sorted(y_values))}
-        print(color_map)
         
         fig = px.bar(
             x=x_values,
@@ -404,9 +392,9 @@ class BirdsView(TemplateView):
                 "x": "Capture Count",
                 "y": "Nets",
             },
-            text=[f"net:{net} ({count})" for net, count in zip(y_values, x_values)],  # Correctly format text
-            color=y_values,  # Ensure color uses categorical values
-            color_discrete_map=color_map,  # Use the color map
+            text=[f"net:{net} ({count})" for net, count in zip(y_values, x_values)],
+            color=y_values,
+            color_discrete_map=color_map,
             orientation="h",
         )
 

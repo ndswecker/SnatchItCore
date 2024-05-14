@@ -1,11 +1,8 @@
 from django import forms
 
 class DateForm(forms.Form):
-    start = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date"}),
+    date_range = forms.CharField(
+        widget=forms.TextInput(attrs={"type": "date"}),
         required=False,
     )
-    end = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date"}), 
-        required=False,
-    )
+    

@@ -13,31 +13,15 @@
     <div class="date-container">
       <h3 class="text-center">Filter by Date Range</h2>
       <form method="get" id="date-form" class="row g-3">
-        <!-- Row 1: Start Date -->
-        <div class="col-4">
-          <label for="id_start" class="form-label">Start Date:</label>
-        </div>
-        <div class="col-8">
+        <div class="col-12">
           <input 
-            type="date" 
-            id="id_start" 
-            name="start" 
+            type="text" 
+            id="id_date_range" 
+            name="date_range" 
             class="form-control" 
-            value="{{ date_form.start.value|default_if_none:'' }}">
-        </div>
-
-        <!-- Row 2: End Date -->
-        <div class="col-4">
-          <label for="id_end" class="form-label">End Date:</label>
-        </div>
-        <div class="col-8">
-          <input 
-            type="date" 
-            id="id_end" 
-            name="end" 
-            class="form-control" 
-            value="{{ date_form.end.value|default_if_none:'' }}">
-        </div>
+            placeholder="Select Date Range" 
+            value="{{ date_form.date_range.value|default_if_none:'' }}">
+        </div>        
 
         <!-- Row 3: Buttons -->
         <div class="col-4">
@@ -81,10 +65,16 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+  flatpickr("#id_date_range", {
+    mode: "range",
+    dateFormat: "Y-m-d",
+  });
+
   function clearDates() {
-    document.getElementById("id_start").value = "";
-    document.getElementById("id_end").value = "";
+    flatpickrInstance = flatpickr("#id_date_range"); 
+    flatpickrInstance.clear();
     document.getElementById("date-form").submit();
   }
 </script>
+
 {% endblock %}
