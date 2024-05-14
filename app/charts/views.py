@@ -48,7 +48,7 @@ class BirdsView(TemplateView):
         context["chart_net_capture_count"] = self.get_chart_net_capture_count(date_range)
 
         return context
-    
+
     def get_date_range(self, request):
         date_range_str = request.GET.get("date_range")
         if date_range_str:
@@ -74,17 +74,22 @@ class BirdsView(TemplateView):
             capture_count = CaptureRecord.objects.count()
 
         return capture_count
-    
+
     # Get all days for which there are capture records in the database
     def get_all_capture_days(self):
         # Truncate datetime to date and retrieve unique dates, formatted as strings
-        capture_days = CaptureRecord.objects.annotate(
-            capture_day=TruncDate('capture_time')
-        ).order_by('capture_day').values_list('capture_day', flat=True).distinct()
+        capture_days = (
+            CaptureRecord.objects.annotate(
+                capture_day=TruncDate("capture_time"),
+            )
+            .order_by("capture_day")
+            .values_list("capture_day", flat=True)
+            .distinct()
+        )
 
         # Format each date as 'YYYY-MM-DD'
-        formatted_capture_days = [day.strftime('%Y-%m-%d') for day in capture_days if day]
-        
+        formatted_capture_days = [day.strftime("%Y-%m-%d") for day in capture_days if day]
+
         return formatted_capture_days
 
     def get_chart_species_capture_count(self, date_range=None):
