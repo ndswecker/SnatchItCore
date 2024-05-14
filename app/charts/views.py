@@ -1,7 +1,10 @@
 import plotly.express as px
 from django.db.models import Count
+from django.db.models import DateField
+from django.db.models.functions import Trunc
 from django.db.models.functions import TruncDate
 from django.views.generic import TemplateView
+from datetime import timedelta
 
 from django.utils.dateparse import parse_date
 
@@ -33,17 +36,11 @@ class BirdsView(TemplateView):
 
         date_form = DateForm(self.request.GET)
         context["date_form"] = date_form
-        date_range = None
-
-        date_range_str = self.request.GET.get("date_range")
-        if date_range_str:
-            dates = date_range_str.split(" to ")
-            if len(dates) == 2:
-                start_date, end_date = (parse_date(date) for date in dates)
-                date_range = (start_date, end_date)
+        date_range = self.get_date_range(self.request)
 
         context["color_array"] = self.color_array
         context["capture_count_total"] = self.get_total_capture_count(date_range)
+        context["capture_days"] = self.get_all_capture_days()
         context["chart_species_capture_count"] = self.get_chart_species_capture_count(date_range)
         context["chart_sex_capture_count"] = self.get_chart_sex_capture_count(date_range)
         context["chart_age_capture_count"] = self.get_chart_age_capture_count(date_range)
@@ -51,6 +48,23 @@ class BirdsView(TemplateView):
         context["chart_net_capture_count"] = self.get_chart_net_capture_count(date_range)
 
         return context
+    
+    def get_date_range(self, request):
+        date_range_str = request.GET.get("date_range")
+        if date_range_str:
+            dates = date_range_str.split(" to ")
+            if len(dates) == 1:
+                # Only one date provided, use the same date as start and end
+                start_date = parse_date(dates[0])
+                if start_date:
+                    end_date = start_date + timedelta(days=1)  # Set end_date to the next day for inclusive filtering
+                    return (start_date, end_date)
+            elif len(dates) == 2:
+                # Two dates provided, parse both
+                start_date, end_date = (parse_date(date) for date in dates)
+                if start_date and end_date:
+                    return (start_date, end_date)
+        return None
 
     def get_total_capture_count(self, date_range=None):
         if date_range:
@@ -60,6 +74,18 @@ class BirdsView(TemplateView):
             capture_count = CaptureRecord.objects.count()
 
         return capture_count
+    
+    # Get all days for which there are capture records in the database
+    def get_all_capture_days(self):
+        # Truncate datetime to date and retrieve unique dates, formatted as strings
+        capture_days = CaptureRecord.objects.annotate(
+            capture_day=TruncDate('capture_time')
+        ).order_by('capture_day').values_list('capture_day', flat=True).distinct()
+
+        # Format each date as 'YYYY-MM-DD'
+        formatted_capture_days = [day.strftime('%Y-%m-%d') for day in capture_days if day]
+        
+        return formatted_capture_days
 
     def get_chart_species_capture_count(self, date_range=None):
         figure_title = "Capture Count by Species"

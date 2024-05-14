@@ -12,6 +12,7 @@
 
     <div class="date-container">
       <h3 class="text-center">Filter by Date Range</h2>
+      <p class="text-muted text-center" style="font-size: smaller;">To select a date range, choose a start and end date. To select a single day, tap the same date twice.</p>
       <form method="get" id="date-form" class="row g-3">
         <div class="col-12">
           <input
@@ -64,17 +65,7 @@
 
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-  flatpickr("#id_date_range", {
-    mode: "range",
-    dateFormat: "Y-m-d",
-  });
-
-  function clearDates() {
-    flatpickrInstance = flatpickr("#id_date_range");
-    flatpickrInstance.clear();
-    document.getElementById("date-form").submit();
-  }
-</script>
-
+<script src="{% static 'js/chart_date_picker.js' %}"></script>"
+{{ capture_days|json_script:"specialDates" }}
 {% endblock %}
+
