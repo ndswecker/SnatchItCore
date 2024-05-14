@@ -1,7 +1,5 @@
 import plotly.express as px
 from django.db.models import Count
-from django.db.models import DateField
-from django.db.models.functions import Trunc
 from django.db.models.functions import TruncDate
 from django.views.generic import TemplateView
 from datetime import timedelta
@@ -21,7 +19,7 @@ class BirdsView(TemplateView):
         "#003f5c",  # navy
         "#ff7c43",  # orange
         "#2f4b7c",  # blue
-        "#d45087",  # fuschia
+        "#d45087",  # fuchsia
         "#665191",  # plum
         "#f95d6a",  # melon
         "#a05195",  # purple
