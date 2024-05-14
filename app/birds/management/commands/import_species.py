@@ -13,7 +13,7 @@ class Command(BaseImportCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         Taxon.objects.all().delete()
-        
+
         csv_file_path = options["csv_file"]
         species_data = parse_species_from_csv(csv_file_path)
 

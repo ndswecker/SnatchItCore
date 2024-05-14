@@ -14,36 +14,36 @@
       <h3 class="text-center">Filter by Date Range</h2>
       <form method="get" id="date-form" class="row g-3">
         <div class="col-12">
-          <input 
-            type="text" 
-            id="id_date_range" 
-            name="date_range" 
-            class="form-control" 
-            placeholder="Select Date Range" 
+          <input
+            type="text"
+            id="id_date_range"
+            name="date_range"
+            class="form-control"
+            placeholder="Select Date Range"
             value="{{ date_form.date_range.value|default_if_none:'' }}">
-        </div>        
+        </div>
 
         <!-- Row 3: Buttons -->
         <div class="col-4">
           <input
-            type="button" 
-            value="Clear" 
+            type="button"
+            value="Clear"
             class="btn w-100"
             style="
-              background-color: {{ color_array.2 }}; 
+              background-color: {{ color_array.2 }};
               color: {{ color_array.1 }};
-              font-weight: bold;  
+              font-weight: bold;
             "
             onclick="clearDates()">
         </div>
         <div class="col-8">
-          <input 
-            type="submit" 
+          <input
+            type="submit"
             value="Submit"
             style="
-              background-color: {{ color_array.3 }}; 
+              background-color: {{ color_array.3 }};
               color: {{ color_array.0 }};
-              font-weight: bold;  
+              font-weight: bold;
             "
             class="btn w-100">
         </div>
@@ -71,7 +71,7 @@
   });
 
   function clearDates() {
-    flatpickrInstance = flatpickr("#id_date_range"); 
+    flatpickrInstance = flatpickr("#id_date_range");
     flatpickrInstance.clear();
     document.getElementById("date-form").submit();
   }

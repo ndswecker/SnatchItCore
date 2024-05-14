@@ -9,18 +9,19 @@ from maps.maps_reference_data import SPECIES
 from maps.models import CaptureRecord
 from .forms import DateForm
 
+
 class BirdsView(TemplateView):
     template_name = "charts/birds.html"
 
     color_array = [
-        "#ffa600", # yellow
-        "#003f5c", # navy
-        "#ff7c43", # orange
-        "#2f4b7c", # blue
-        "#d45087", # fuschia
-        "#665191", # plum
-        "#f95d6a", # melon
-        "#a05195", # purple
+        "#ffa600",  # yellow
+        "#003f5c",  # navy
+        "#ff7c43",  # orange
+        "#2f4b7c",  # blue
+        "#d45087",  # fuschia
+        "#665191",  # plum
+        "#f95d6a",  # melon
+        "#a05195",  # purple
     ]
 
     config = {
@@ -38,7 +39,7 @@ class BirdsView(TemplateView):
         if date_range_str:
             dates = date_range_str.split(" to ")
             if len(dates) == 2:
-                start_date, end_date = [parse_date(date) for date in dates]
+                start_date, end_date = (parse_date(date) for date in dates)
                 date_range = (start_date, end_date)
 
         context["color_array"] = self.color_array
@@ -51,21 +52,24 @@ class BirdsView(TemplateView):
 
         return context
 
-
     def get_total_capture_count(self, date_range=None):
         if date_range:
             start_date, end_date = date_range
             capture_count = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).count()
         else:
             capture_count = CaptureRecord.objects.count()
-        
+
         return capture_count
 
     def get_chart_species_capture_count(self, date_range=None):
         figure_title = "Capture Count by Species"
         if date_range:
             start_date, end_date = date_range
-            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("species_number").annotate(capture_count=Count("species_number"))
+            data = (
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                .values("species_number")
+                .annotate(capture_count=Count("species_number"))
+            )
         else:
             data = CaptureRecord.objects.values("species_number").annotate(capture_count=Count("species_number"))
 
@@ -74,7 +78,7 @@ class BirdsView(TemplateView):
 
         if not (x_values):
             return "No data available for the selected date range."
-        
+
         sorted_x_values = sorted(x_values, reverse=True)
         cuttoff_index = max(int(len(sorted_x_values) * 0.25) - 1, 0)
         top_25_percent_lower_count = sorted_x_values[cuttoff_index] if sorted_x_values else 0
@@ -96,7 +100,7 @@ class BirdsView(TemplateView):
 
         fig.update_traces(
             marker_color=colors,
-            textangle=0, 
+            textangle=0,
             textposition="auto",
             textfont={
                 "weight": "bold",
@@ -122,7 +126,7 @@ class BirdsView(TemplateView):
                 "r": 0,
                 "t": 30,
                 "b": 0,
-                "pad": 10
+                "pad": 10,
             },
             yaxis_title="",
             xaxis_title="",
@@ -134,12 +138,15 @@ class BirdsView(TemplateView):
 
         return fig.to_html(config=self.config)
 
-
     def get_chart_sex_capture_count(self, date_range=None):
         figure_title = "Capture Count by Sex"
         if date_range:
             start_date, end_date = date_range
-            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("sex").annotate(capture_count=Count("sex"))
+            data = (
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                .values("sex")
+                .annotate(capture_count=Count("sex"))
+            )
         else:
             data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
 
@@ -148,7 +155,7 @@ class BirdsView(TemplateView):
 
         if not (x_values and y_values):
             return ""
-        
+
         unique_sexes = sorted(set(x_values))
         color_map = {sex: self.color_array[i % len(self.color_array)] for i, sex in enumerate(unique_sexes)}
 
@@ -168,8 +175,8 @@ class BirdsView(TemplateView):
         fig.update_traces(
             textfont={
                 "weight": "bold",
-            }, 
-            textangle=0, 
+            },
+            textangle=0,
             textposition="inside",
         )
 
@@ -190,7 +197,7 @@ class BirdsView(TemplateView):
                 "r": 0,
                 "t": 30,
                 "b": 0,
-                "pad": 10
+                "pad": 10,
             },
             yaxis_title="",
             xaxis_title="",
@@ -206,7 +213,11 @@ class BirdsView(TemplateView):
         figure_title = "Capture Count by Age"
         if date_range:
             start_date, end_date = date_range
-            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("age_annual").annotate(capture_count=Count("age_annual"))
+            data = (
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                .values("age_annual")
+                .annotate(capture_count=Count("age_annual"))
+            )
         else:
             data = CaptureRecord.objects.values("age_annual").annotate(capture_count=Count("age_annual"))
 
@@ -221,14 +232,17 @@ class BirdsView(TemplateView):
             0: "U",
             9: "U",
         }
-        data = [{"age_annual": age_code_map.get(item["age_annual"], "Unknown"), "capture_count": item["capture_count"]} for item in data]
+        data = [
+            {"age_annual": age_code_map.get(item["age_annual"], "Unknown"), "capture_count": item["capture_count"]}
+            for item in data
+        ]
 
         x_values = [d["age_annual"] for d in data]
         y_values = [d["capture_count"] for d in data]
 
         if not (x_values and y_values):
             return ""
-        
+
         unique_ages = sorted(set(x_values))
         color_map = {age: self.color_array[i % len(self.color_array)] for i, age in enumerate(unique_ages)}
 
@@ -246,11 +260,11 @@ class BirdsView(TemplateView):
         )
 
         fig.update_traces(
-            textangle=0, 
+            textangle=0,
             textposition="inside",
             textfont={
                 "weight": "bold",
-            }
+            },
         )
 
         fig.update_layout(
@@ -271,7 +285,7 @@ class BirdsView(TemplateView):
                 "r": 0,
                 "t": 30,
                 "b": 0,
-                "pad": 10
+                "pad": 10,
             },
             yaxis_title="",
             xaxis_title="",
@@ -282,32 +296,35 @@ class BirdsView(TemplateView):
         )
 
         return fig.to_html(config=self.config)
-    
-    def get_chart_days_capture_count(self, date_range=None,):
+
+    def get_chart_days_capture_count(self, date_range=None):
         figure_title = "Capture Count by Day"
         if date_range:
             start_date, end_date = date_range
-            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]) \
-                .annotate(capture_day=TruncDate('capture_time')) \
-                .values("capture_day") \
-                .annotate(capture_count=Count("id")) \
+            data = (
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                .annotate(capture_day=TruncDate("capture_time"))
+                .values("capture_day")
+                .annotate(capture_count=Count("id"))
                 .order_by("capture_day")
+            )
         else:
-            data = CaptureRecord.objects.annotate(capture_day=TruncDate('capture_time')) \
-                .values("capture_day") \
-                .annotate(capture_count=Count("id")) \
+            data = (
+                CaptureRecord.objects.annotate(capture_day=TruncDate("capture_time"))
+                .values("capture_day")
+                .annotate(capture_count=Count("id"))
                 .order_by("capture_day")
+            )
 
         x_values = [d["capture_count"] for d in data]
         y_values = [d["capture_day"].strftime("%m/%d") for d in data]
 
-
         if not (x_values and y_values):
             return ""
-        
+
         # For each day, set the color map to the color_array
         color_map = {day: self.color_array[i % len(self.color_array)] for i, day in enumerate(sorted(set(y_values)))}
-        
+
         bar_thickness = 40
         chart_height = 100 + bar_thickness * len(y_values)
 
@@ -329,8 +346,8 @@ class BirdsView(TemplateView):
             textfont={
                 "weight": "bold",
             },
-            textangle=0, 
-            textposition="inside"
+            textangle=0,
+            textposition="inside",
         )
 
         fig.update_layout(
@@ -352,11 +369,11 @@ class BirdsView(TemplateView):
                 "r": 0,
                 "t": 30,
                 "b": 0,
-                "pad": 10
+                "pad": 10,
             },
             yaxis_title="",
             xaxis_title="",
-            yaxis_tickformat='%m-%d',
+            yaxis_tickformat="%m-%d",
             yaxis={
                 "side": "right",
                 "showticklabels": False,
@@ -364,12 +381,16 @@ class BirdsView(TemplateView):
         )
 
         return fig.to_html(config=self.config)
-    
+
     def get_chart_net_capture_count(self, date_range=None):
         figure_title = "Capture Count by Net"
         if date_range:
             start_date, end_date = date_range
-            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("net").annotate(capture_count=Count("net"))
+            data = (
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                .values("net")
+                .annotate(capture_count=Count("net"))
+            )
         else:
             data = CaptureRecord.objects.values("net").annotate(capture_count=Count("net"))
 
@@ -378,12 +399,12 @@ class BirdsView(TemplateView):
 
         if not (x_values and y_values):
             return ""
-        
+
         bar_thickness = 40
         chart_height = 100 + bar_thickness * len(y_values)
-        
+
         color_map = {str(net): self.color_array[i % len(self.color_array)] for i, net in enumerate(sorted(y_values))}
-        
+
         fig = px.bar(
             x=x_values,
             y=y_values,
@@ -402,8 +423,8 @@ class BirdsView(TemplateView):
             textfont={
                 "weight": "bold",
             },
-            textangle=0, 
-            textposition="auto"
+            textangle=0,
+            textposition="auto",
         )
 
         fig.update_layout(
@@ -425,7 +446,7 @@ class BirdsView(TemplateView):
                 "r": 0,
                 "t": 30,
                 "b": 0,
-                "pad": 10
+                "pad": 10,
             },
             yaxis_title="",
             xaxis_title="",
