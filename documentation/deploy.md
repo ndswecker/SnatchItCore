@@ -69,4 +69,3 @@
     sudo git checkout main
     sudo bash /srv/web/deploy/update.sh
     ```
-
