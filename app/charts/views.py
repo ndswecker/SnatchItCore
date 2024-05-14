@@ -3,7 +3,6 @@ from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.views.generic import TemplateView
 
-from django.utils.html import format_html
 from django.utils.dateparse import parse_date
 
 from maps.maps_reference_data import SPECIES
@@ -18,14 +17,15 @@ class BirdsView(TemplateView):
         "#003f5c", # navy
         "#ff7c43", # orange
         "#2f4b7c", # blue
-        "d45087", # fuschia
+        "#d45087", # fuschia
         "#665191", # plum
         "#f95d6a", # melon
         "#a05195", # purple
     ]
+
     config = {
-            "staticPlot": True,
-        }
+        "staticPlot": True,
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,6 +48,7 @@ class BirdsView(TemplateView):
         context["chart_sex_capture_count"] = self.get_chart_sex_capture_count(date_range)
         context["chart_age_capture_count"] = self.get_chart_age_capture_count(date_range)
         context["chart_days_capture_count"] = self.get_chart_days_capture_count(date_range)
+        context["chart_net_capture_count"] = self.get_chart_net_capture_count(date_range)
 
         return context
 
@@ -93,7 +94,7 @@ class BirdsView(TemplateView):
             y=y_values,
             title=figure_title,
             labels={
-                "x": f"Capture Count ({sum(x_values)})",
+                "x": "Capture Count",
                 "y": "Species",
             },
             text=[f"{y} ({x})" for x, y in zip(x_values, y_values)], 
@@ -105,7 +106,9 @@ class BirdsView(TemplateView):
         fig.update_traces(
             textangle=0, 
             textposition="auto",
-            textfont=dict(weight="bold"),
+            textfont={
+                "weight": "bold",
+            },
         )
 
         fig.update_layout(
@@ -122,12 +125,19 @@ class BirdsView(TemplateView):
             showlegend=False,
             barmode="relative",
             height=chart_height,
-            margin=dict(l=0, r=0, t=30, b=0, pad=10),
+            margin={
+                "l": 0,
+                "r": 0,
+                "t": 30,
+                "b": 0,
+                "pad": 10
+            },
             yaxis_title="",
-            yaxis=dict(
-                side="right",
-                showticklabels=False,
-            ),
+            xaxis_title="",
+            yaxis={
+                "side": "right",
+                "showticklabels": False,
+            },
         )
 
         return fig.to_html(config=self.config)
@@ -160,15 +170,15 @@ class BirdsView(TemplateView):
             },
             color=x_values,
             color_discrete_map=color_map,
+            text_auto=True,
         )
 
         fig.update_traces(
-            textfont=dict(
-                color="white", 
-                weight="bold"
-            ), 
+            textfont={
+                "weight": "bold",
+            }, 
             textangle=0, 
-            textposition="inside"
+            textposition="inside",
         )
 
         fig.update_layout(
@@ -183,13 +193,19 @@ class BirdsView(TemplateView):
                 "pad": {"b": 0, "t": 0},
             },
             showlegend=False,
-            margin=dict(l=0, r=0, t=30, b=0, pad=10),
+            margin={
+                "l": 0,
+                "r": 0,
+                "t": 30,
+                "b": 0,
+                "pad": 10
+            },
             yaxis_title="",
             xaxis_title="",
-            yaxis=dict(
-                side="right",
-                ticklabelposition="inside top",
-            ),
+            yaxis={
+                "side": "right",
+                "ticklabelposition": "inside top",
+            },
         )
 
         return fig.to_html(config=self.config)
@@ -240,7 +256,9 @@ class BirdsView(TemplateView):
         fig.update_traces(
             textangle=0, 
             textposition="inside",
-            textfont=dict(weight="bold"),
+            textfont={
+                "weight": "bold",
+            }
         )
 
         fig.update_layout(
@@ -256,13 +274,19 @@ class BirdsView(TemplateView):
             },
             showlegend=False,
             barmode="relative",
-            margin=dict(l=0, r=0, t=30, b=0, pad=10),
+            margin={
+                "l": 0,
+                "r": 0,
+                "t": 30,
+                "b": 0,
+                "pad": 10
+            },
             yaxis_title="",
             xaxis_title="",
-            yaxis=dict(
-                side="right",
-                ticklabelposition="inside top",
-            ),
+            yaxis={
+                "side": "right",
+                "ticklabelposition": "inside top",
+            },
         )
 
         return fig.to_html(config=self.config)
@@ -311,9 +335,9 @@ class BirdsView(TemplateView):
         )
 
         fig.update_traces(
-            textfont=dict(
-                weight="bold",
-            ),
+            textfont={
+                "weight": "bold",
+            },
             textangle=0, 
             textposition="inside"
         )
@@ -331,58 +355,96 @@ class BirdsView(TemplateView):
             },
             showlegend=False,
             barmode="relative",
-            bargap=0.2,
             height=chart_height,
-            margin=dict(l=0, r=0, t=30, b=0, pad=10),
+            margin={
+                "l": 0,
+                "r": 0,
+                "t": 30,
+                "b": 0,
+                "pad": 10
+            },
             yaxis_title="",
             xaxis_title="",
             yaxis_tickformat='%m-%d',
-            yaxis=dict(
-                side="right",
-                showticklabels=False,
-            ),
+            yaxis={
+                "side": "right",
+                "showticklabels": False,
+            },
         )
 
         return fig.to_html(config=self.config)
-        
-
-class NetsView(TemplateView):
-    template_name = "charts/nets.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date = self.request.GET.get("date", None)
-        context["chart_net_capture_count"] = self.get_chart_net_capture_count(date)
-        return context
-
-    def get_chart_net_capture_count(self, date=None):
-        if date:
-            data = CaptureRecord.objects.filter(capture_time__date=date).values("net").annotate(capture_count=Count("net"))
+    
+    def get_chart_net_capture_count(self, date_range=None):
+        figure_title = "Capture Count by Net"
+        if date_range:
+            start_date, end_date = date_range
+            data = CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date]).values("net").annotate(capture_count=Count("net"))
         else:
             data = CaptureRecord.objects.values("net").annotate(capture_count=Count("net"))
 
-        x_values = [d["net"] for d in data]
-        y_values = [d["capture_count"] for d in data]
+        x_values = [d["capture_count"] for d in data]
+        y_values = [str(d["net"]) for d in data]
+
+        print(y_values)
 
         if not (x_values and y_values):
             return ""
-
+        
+        bar_thickness = 40
+        chart_height = 100 + bar_thickness * len(y_values)
+        
+        color_map = {str(net): self.color_array[i % len(self.color_array)] for i, net in enumerate(sorted(y_values))}
+        print(color_map)
+        
         fig = px.bar(
             x=x_values,
             y=y_values,
-            title="Net Capture Count",
+            title=figure_title,
             labels={
-                "x": "Net",
-                "y": "Capture Count",
+                "x": "Capture Count",
+                "y": "Nets",
             },
-            text_auto=True,
+            text=[f"net:{net} ({count})" for net, count in zip(y_values, x_values)],  # Correctly format text
+            color=y_values,  # Ensure color uses categorical values
+            color_discrete_map=color_map,  # Use the color map
+            orientation="h",
         )
-        fig.update_traces(textfont_size=14, textangle=0, textposition="inside")
+
+        fig.update_traces(
+            textfont={
+                "weight": "bold",
+            },
+            textangle=0, 
+            textposition="auto"
+        )
+
         fig.update_layout(
             title={
-                "font_size": 22,
-                "xanchor": "center",
-                "x": 0.5,
+                "font": {
+                    "size": 18,
+                },
+                "xanchor": "left",
+                "yanchor": "top",
+                "x": 0,
+                "y": 1,
+                "pad": {"b": 0, "t": 0},
+            },
+            showlegend=False,
+            barmode="relative",
+            height=chart_height,
+            margin={
+                "l": 0,
+                "r": 0,
+                "t": 30,
+                "b": 0,
+                "pad": 10
+            },
+            yaxis_title="",
+            xaxis_title="",
+            yaxis={
+                "side": "right",
+                "showticklabels": False,
             },
         )
-        return fig.to_html()
+
+        return fig.to_html(config=self.config)

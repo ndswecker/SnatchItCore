@@ -1,27 +1,68 @@
 {% extends "charts/base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{% endblock %}
 
 {% block title %}Birds{% endblock %}
 
 {% block content %}
   <div class="container">
-    {% include "charts/partials/nav.html" %}
-    <h1 class="text-center">Birds</h1>
 
-    <div class=m-3>
-      <form method="get" id="date-form">
-        {{ date_form.as_p }}
-        <input 
-          type="submit" 
-          value="Submit"
-          class="btn btn-primary"
-        >
-        <input
-          type="button" 
-          value="Clear Dates" 
-          class="btn btn-danger"
-          onclick="clearDates()">
+    <div class="date-container">
+      <h3 class="text-center">Filter by Date Range</h2>
+      <form method="get" id="date-form" class="row g-3">
+        <!-- Row 1: Start Date -->
+        <div class="col-4">
+          <label for="id_start" class="form-label">Start Date:</label>
+        </div>
+        <div class="col-8">
+          <input 
+            type="date" 
+            id="id_start" 
+            name="start" 
+            class="form-control" 
+            value="{{ date_form.start.value|default_if_none:'' }}">
+        </div>
+
+        <!-- Row 2: End Date -->
+        <div class="col-4">
+          <label for="id_end" class="form-label">End Date:</label>
+        </div>
+        <div class="col-8">
+          <input 
+            type="date" 
+            id="id_end" 
+            name="end" 
+            class="form-control" 
+            value="{{ date_form.end.value|default_if_none:'' }}">
+        </div>
+
+        <!-- Row 3: Buttons -->
+        <div class="col-4">
+          <input
+            type="button" 
+            value="Clear" 
+            class="btn w-100"
+            style="
+              background-color: {{ color_array.2 }}; 
+              color: {{ color_array.1 }};
+              font-weight: bold;  
+            "
+            onclick="clearDates()">
+        </div>
+        <div class="col-8">
+          <input 
+            type="submit" 
+            value="Submit"
+            style="
+              background-color: {{ color_array.3 }}; 
+              color: {{ color_array.0 }};
+              font-weight: bold;  
+            "
+            class="btn w-100">
+        </div>
       </form>
     </div>
 
@@ -29,14 +70,16 @@
       <h2 class="text-center">Total Captures: {{ capture_count_total }}</h2>
     </div>
 
+    <div class="chart-container">{{ chart_days_capture_count|safe }}</div>
     <div class="chart-container">{{ chart_species_capture_count|safe }}</div>
     <div class="chart-container">{{ chart_sex_capture_count|safe }}</div>
     <div class="chart-container">{{ chart_age_capture_count|safe }}</div>
-    <div class="chart-container">{{ chart_days_capture_count|safe }}</div>
+    <div class="chart-container">{{ chart_net_capture_count|safe }}</div>
   </div>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
   function clearDates() {
     document.getElementById("id_start").value = "";

@@ -54,15 +54,17 @@
     flex-direction: row;
 }
 
-/* Ensure charts take full width */
 .chart-container {
     width: 100%;
-  }
-  
-  /* Adjust charts for mobile screens */
-  @media screen and (max-width: 600px) {
-    /* Example adjustments, you may need to customize further */
-    .chart-container {
-      margin: 5px auto;
-    }
-  }
+    margin-top: 30px;
+}
+
+.date-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 2px solid;
+    border-color: var(--bs-gray-500);
+    border-radius: 5px;
+    background-color: var(--bs-light);
+}
