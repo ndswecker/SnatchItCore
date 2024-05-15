@@ -1,11 +1,11 @@
 ## Test Deployment of Dev
 
-### Verify that Dev is Deployable 
+### Verify that Dev is Deployable
 
 1. Merge all branches into Dev.
 1. Squash Migrations
     1. Delete all new migrations
-    2. make migrations 
+    2. make migrations
         ```
         python .\app\manage.py makemigrations
         ```
@@ -69,4 +69,3 @@
     sudo git checkout main
     sudo bash /srv/web/deploy/update.sh
     ```
-
