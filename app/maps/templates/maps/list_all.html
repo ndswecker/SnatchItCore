@@ -17,7 +17,7 @@
         <th scope="col">Capture Time</th>
         <th scope="col">Band Number</th>
         <th scope="col">Species</th>
-        <th scope="col">Bander Initials</th>
+        <th scope="col">Bander<br>Scribe</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
@@ -27,11 +27,11 @@
         <td>{{ record.capture_time|date:"m/d H:i" }}</td>
         <td class="band-number">{{ record.band_number }}</td>
         <td>{{ SPECIES|get_alpha_code:record.species_number }}</td>
-        <td>{{ record.bander_initials }}</td>
+        <td>{{ record.bander_initials }}/<br>{{ record.scribe_initials }}</td>
         <td>
           <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">View</a>
-          {% if record.user == request.user %}
-            | <a href="{% url 'maps:edit_capture_record' pk=record.pk %}">Edit</a>
+          {% if request.user.initials == record.bander_initials or request.user.initials == record.scribe_initials%}
+          | <a href="{% url 'maps:edit_capture_record' pk=record.pk %}">Edit</a>
           {% endif %}
         </td>
       </tr>
