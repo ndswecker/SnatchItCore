@@ -54,7 +54,17 @@ class CaptureRecordForm(forms.ModelForm):
     discrepancies = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def __init__(self, *args, **kwargs):
+        # Optional keyword argument to set fields as non-editable
+        readonly = kwargs.pop("readonly", False)
         super().__init__(*args, **kwargs)
+
+        if readonly:
+            for field_name in self.fields:
+                field = self.fields[field_name]
+                field.widget.attrs['disabled'] = 'disabled'
+            # hide the submit button
+            
+
 
         self.fields["cloacal_protuberance"].label = "CP ℹ"
         self.fields["brood_patch"].label = "BP ℹ"

@@ -15,17 +15,32 @@
             <h1 class="text-center">Capture Record Details</h1>
         </div>
         <div class="card-body record-card">
-            <!-- Basic Information Section -->
-            <div class="card field-set-card odd-set">
-              <div class="card-header">Basic Information</div>
-              <div class="card-body">
-                <p><strong>Species:</strong> {{ species_name }}</p>
-                <p><strong>Band Number:</strong> {{ capture_record.band_number }}</p>
-                <p><strong>DB ID:</strong> {{ capture_record.id }}</p>
-                <p><strong>Code:</strong> {{ capture_record.capture_code }}</p>
-                <p><strong>Band Size:</strong> {{ capture_record.band_size }}</p>
+            <!-- Location Date & Time -->
+            <div class="fieldset-container odd-set">
+              <div class="card-header">Location Date & Time</div>
+              <div class="card-body row">
+                  <div class="col-3">
+                      <label for="net">Net</label>
+                      <input type="text" id="net" class="form-control" value="{{ capture_record.net }}" readonly>
+                  </div>
+                  <div class="col-4">
+                      <label for="station">Station</label>
+                      <input type="text" id="station" class="form-control" value="{{ capture_record.station }}" readonly>
+                  </div>
+                  <div class="col-5">
+                      <label for="bander_initials">Bander Initials</label>
+                      <input type="text" id="bander_initials" class="form-control" value="{{ capture_record.bander_initials }}" readonly>
+                  </div>
+                  <div class="col-6">
+                      <label for="date">Date</label>
+                      <input type="text" id="date" class="form-control" value="{{ capture_record.capture_time|date:'N j, Y' }}" readonly>
+                  </div>
+                  <div class="col-6">
+                      <label for="time">Time</label>
+                      <input type="text" id="time" class="form-control" value="{{ capture_record.capture_time|time:'P' }}" readonly>
+                  </div>
               </div>
-            </div>
+          </div>
 
             <!-- Age and Sex Details Section -->
             <div class="card field-set-card even-set">

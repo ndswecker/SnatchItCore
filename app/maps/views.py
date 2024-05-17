@@ -75,15 +75,25 @@ class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
 
 
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
-    template_name = "maps/detail.html"
-    model = CaptureRecord
-    context_object_name = "capture_record"
+    # template_name = "maps/detail.html"
+    # model = CaptureRecord
+    # context_object_name = "capture_record"
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     species_info = REFERENCE_DATA.SPECIES[self.object.species_number]
+    #     context["species_name"] = species_info["common_name"]
+    #     return context
+
+    template_name = "maps/update_bird.html"
+    model = CaptureRecord
+    form_class = CaptureRecordForm
+    
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        species_info = REFERENCE_DATA.SPECIES[self.object.species_number]
-        context["species_name"] = species_info["common_name"]
+        context= super().get_context_data(**kwargs)
+        context["form"] = CaptureRecordForm(instance=self.object, readonly=True)
         return context
+
 
 
 class ListCaptureRecordView(LoginRequiredMixin, ListView):
