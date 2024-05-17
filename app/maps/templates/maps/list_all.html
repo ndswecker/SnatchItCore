@@ -5,7 +5,7 @@
 {% block title %}All Capture Records{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <h1 class="text-center">View All Capture Records</h1>
 
   <!-- Search input field -->
@@ -15,8 +15,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Capture Time</th>
-        <th scope="col">Band Number</th>
+        <th scope="col">Time</th>
+        <th scope="col">Band</th>
         <th scope="col">Species</th>
         <th scope="col">Bander/<br>Scribe</th>
         <th scope="col">Actions</th>
@@ -27,7 +27,7 @@
       <tr class="{{ forloop.counter|divisibleby:2|yesno:'table-secondary,' }}">
         <td>{{ record.capture_time|date:"m/d H:i" }}</td>
         <td class="band-number">{{ record.band_number }}</td>
-        <td class="species">{{ SPECIES|get_alpha_code:record.species_number }}</td>
+        <td class="species">{{record.alpha_code}}</td>
         <td>{{ record.bander_initials }}/<br>{{ record.scribe_initials }}</td>
         <td>
           <a href="{% url 'maps:detail_capture_record' pk=record.pk %}">View</a>
