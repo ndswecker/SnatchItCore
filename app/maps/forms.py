@@ -61,10 +61,7 @@ class CaptureRecordForm(forms.ModelForm):
         if readonly:
             for field_name in self.fields:
                 field = self.fields[field_name]
-                field.widget.attrs['disabled'] = 'disabled'
-            # hide the submit button
-            
-
+                field.disabled = True
 
         self.fields["cloacal_protuberance"].label = "CP ℹ"
         self.fields["brood_patch"].label = "BP ℹ"
@@ -190,8 +187,9 @@ class CaptureRecordForm(forms.ModelForm):
                 css_class="fieldset-container even-set",
             ),
             "is_validated",
-            Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
+        if not readonly:
+            self.helper.add_input(Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"))
 
     class Meta:
         model = CaptureRecord

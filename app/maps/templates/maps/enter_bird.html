@@ -22,6 +22,9 @@
         {% endif %}
     {% endfor %}
 
+    {% if pk %}
+    <a href="{% url 'maps:edit_capture_record' pk=capture_record.pk %}" class="btn btn-primary">Edit Record</a>
+    {% endif %}
     <button
         type="button"
         id="view-species-info-popover"

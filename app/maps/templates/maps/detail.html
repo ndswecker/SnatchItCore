@@ -1,131 +1,19 @@
-{% extends 'maps/base.html' %}
+{% extends "maps/enter_bird.html" %}
 {% load static %}
-{% load tz %}
 
-{% block extra_css %}
-  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block title %}Capture Record Detail{% endblock %}
+{% block title %}Detail{% endblock %}
+{% block formTitle %}Capture Record Details{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card ">
-        <div class="card-header">
-            <h1 class="text-center">Capture Record Details</h1>
+    {{ block.super }}
+    {% if request.user.initials == form.instance.bander_initials or request.user.initials == form.instance.scribe_initials %}
+        <div class="container mb-3">
+            <a href="{% url 'maps:edit_capture_record' pk=form.instance.pk %}" class="btn btn-info">Edit Details</a>
         </div>
-        <div class="card-body record-card">
-            <!-- Location Date & Time -->
-            <div class="fieldset-container odd-set">
-              <div class="card-header">Location Date & Time</div>
-              <div class="card-body row">
-                  <div class="col-3">
-                      <label for="net">Net</label>
-                      <input type="text" id="net" class="form-control" value="{{ capture_record.net }}" readonly>
-                  </div>
-                  <div class="col-4">
-                      <label for="station">Station</label>
-                      <input type="text" id="station" class="form-control" value="{{ capture_record.station }}" readonly>
-                  </div>
-                  <div class="col-5">
-                      <label for="bander_initials">Bander Initials</label>
-                      <input type="text" id="bander_initials" class="form-control" value="{{ capture_record.bander_initials }}" readonly>
-                  </div>
-                  <div class="col-6">
-                      <label for="date">Date</label>
-                      <input type="text" id="date" class="form-control" value="{{ capture_record.capture_time|date:'N j, Y' }}" readonly>
-                  </div>
-                  <div class="col-6">
-                      <label for="time">Time</label>
-                      <input type="text" id="time" class="form-control" value="{{ capture_record.capture_time|time:'P' }}" readonly>
-                  </div>
-              </div>
-          </div>
-
-            <!-- Age and Sex Details Section -->
-            <div class="card field-set-card even-set">
-              <div class="card-header">Age Details</div>
-              <div class="card-body">
-                <p><strong>Age Annual:</strong> {{ capture_record.age_annual }}</p>
-                <p><strong>Age WRP:</strong> {{ capture_record.age_WRP }}</p>
-                <p><strong>How Aged 1:</strong> {{ capture_record.how_aged_1 }}</p>
-                <p><strong>How Aged 2:</strong> {{ capture_record.how_aged_2 }}</p>
-              </div>
-            </div>
-
-            <div class="card field-set-card odd-set">
-              <div class="card-header">Sex Details</div>
-              <div class="card-body">
-                <p><strong>Sex:</strong> {{ capture_record.sex }}</p>
-                <p><strong>Cloacal Direction:</strong> {{ capture_record.cloacal_direction }}</p>
-                <p><strong>How Sexed 1:</strong> {{ capture_record.how_sexed_1 }}</p>
-                <p><strong>How Sexed 2:</strong> {{ capture_record.how_sexed_2 }}</p>
-              </div>
-            </div>
-
-            <!-- Physical Features Section -->
-            <div class="card field-set-card even-set">
-              <div class="card-header">Physical Features</div>
-              <div class="card-body">
-                <p><strong>SK:</strong> {{ capture_record.skull|default:"N/A" }}</p>
-                <p><strong>Fat:</strong> {{ capture_record.fat|default:"N/A" }}</p>
-                <p><strong>CP:</strong> {{ capture_record.cloacal_protuberance|default:"N/A" }}</p>
-                <p><strong>BP:</strong> {{ capture_record.brood_patch|default:"N/A" }}</p>
-                <p><strong>FF Molt:</strong> {{ capture_record.ff_molt|default:"N/A" }}</p>
-                <p><strong>FF Wear:</strong> {{ capture_record.ff_wear|default:"N/A" }}</p>
-                <p><strong>Juv Body Plumage:</strong> {{ capture_record.juv_body_plumage|default:"N/A" }}</p>
-              </div>
-            </div>
-
-            <!-- Molt Limits and Plumage Section -->
-            <div class="card field-set-card odd-set">
-              <div class="card-header">Molt Limits and Plumage</div>
-              <div class="card-body">
-                <p><strong>Primary Coverts:</strong> {{ capture_record.primary_coverts|default:"N/A" }}</p>
-                <p><strong>Secondary Coverts:</strong> {{ capture_record.secondary_coverts|default:"N/A" }}</p>
-                <p><strong>Primaries:</strong> {{ capture_record.primaries|default:"N/A" }}</p>
-                <p><strong>Secondaries:</strong> {{ capture_record.secondaries|default:"N/A" }}</p>
-                <p><strong>Tertials:</strong> {{ capture_record.tertials|default:"N/A" }}</p>
-                <p><strong>Rectrices:</strong> {{ capture_record.rectrices|default:"N/A" }}</p>
-                <p><strong>Alula:</strong> {{ capture_record.alula|default:"N/A" }}</p>
-                <p><strong>Body Plumage:</strong> {{ capture_record.body_plumage|default:"N/A" }}</p>
-                <p><strong>Non Feather:</strong> {{ capture_record.non_feather|default:"N/A" }}</p>
-              </div>
-            </div>
-
-            <!-- Details and Effort Section -->
-            <div class="card field-set-card even-set">
-              <div class="card-header">Details and Effort</div>
-              <div class="card-body">
-                <p><strong>Wing Chord:</strong> {{ capture_record.wing_chord|default:"N/A" }}</p>
-                <p><strong>Body Mass:</strong> {{ capture_record.body_mass|default:"N/A" }}</p>
-                <p><strong>Status:</strong> {{ capture_record.status|default:"N/A" }}</p>
-                <p><strong>Disposition:</strong> {{ capture_record.disposition|default:"N/A" }}</p>
-              </div>
-            </div>
-
-            <div class="card field-set-card odd-set">
-              <div class="card-header">Station and Date</div>
-              <div class="card-body">
-                <p><strong>Station:</strong> {{ capture_record.station }}</p>
-                <p><strong>Date:</strong> {{ capture_record.capture_time|date:"N j, Y" }}</p>
-                <p><strong>Time:</strong> {{ capture_record.capture_time|time:"P" }}</p>
-                <p><strong>Hold Time(min):</strong> {{ capture_record.hold_time }}</p>
-                <p><strong>Scribe:</strong> {{ capture_record.scribe }}</p>
-              </div>
-            </div>
-
-            <div class="card field-set-card even-set">
-              <div class="card-header">Notes</div>
-              <div class="card-body">
-                <p><strong>Note:</strong> {{ capture_record.note|default:"N/A" }}</p>
-              </div>
-            </div>
-
-        </div>
-        <div class="card-footer text-muted">
-            <a href="{% url 'maps:edit_capture_record' pk=capture_record.pk %}" class="btn btn-primary">Edit Record</a>
-        </div>
-    </div>
-</div>
+    {% endif %}
 {% endblock %}
+
+{% block time_picker_js %}
+    <script src="{% static 'js/update_time_picker.js' %}"></script>
+{% endblock %}
+

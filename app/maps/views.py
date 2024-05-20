@@ -10,6 +10,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+from django.db.models import Q
 
 import maps.maps_reference_data as REFERENCE_DATA
 from .forms import CaptureRecordForm
@@ -63,34 +64,40 @@ class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
     template_name = "maps/update_bird.html"
     success_url = reverse_lazy("maps:list_capture_records")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header"] = "Edit Capture Record"
+        return context
+
     def get_queryset(self):
-        # Ensure that only the records created by the logged-in user can be edited.
-        # This overrides the default queryset to apply this restriction.
+        # Get the base queryset from the super class
         queryset = super().get_queryset()
-        return queryset.filter(user=self.request.user)
+        # Filter the queryset to include only those records where the logged-in user's
+        # initials match either the bander_initials or scribe_initials fields in the record.
+        user_initials = self.request.user.initials
+        queryset = queryset.filter(
+            Q(bander_initials=user_initials) | Q(scribe_initials=user_initials)
+        )
+        return queryset
 
     def form_valid(self, form):
+        # Save the form and then redirect to the detail view
+        self.object = form.save()
         messages.success(self.request, "Capture record updated successfully.")
-        return super().form_valid(form)
+        # Redirect to the detail view of the record just edited
+        return redirect(reverse_lazy('maps:detail_capture_record', kwargs={'pk': self.object.pk}))
 
 
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
-    # template_name = "maps/detail.html"
-    # model = CaptureRecord
-    # context_object_name = "capture_record"
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     species_info = REFERENCE_DATA.SPECIES[self.object.species_number]
-    #     context["species_name"] = species_info["common_name"]
-    #     return context
-
-    template_name = "maps/update_bird.html"
+    template_name = "maps/detail.html"
     model = CaptureRecord
     form_class = CaptureRecordForm
+    context_object_name = "capture_record"
     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
+        print(self.object.pk)
+        context["header"] = "Capture Record Details"
         context["form"] = CaptureRecordForm(instance=self.object, readonly=True)
         return context
 
