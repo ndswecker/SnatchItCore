@@ -100,7 +100,6 @@ class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
         return context
 
 
-
 class ListCaptureRecordView(LoginRequiredMixin, ListView):
     template_name = "maps/list_all.html"
     model = CaptureRecord
