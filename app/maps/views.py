@@ -75,7 +75,7 @@ class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
         # initials match either the bander_initials or scribe_initials fields in the record.
         user_initials = self.request.user.initials
         queryset = queryset.filter(
-            Q(bander_initials=user_initials) | Q(scribe_initials=user_initials)
+            Q(bander_initials=user_initials) | Q(scribe_initials=user_initials),
         )
         return queryset
 
@@ -84,7 +84,7 @@ class EditCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
         self.object = form.save()
         messages.success(self.request, "Capture record updated successfully.")
         # Redirect to the detail view of the record just edited
-        return redirect(reverse_lazy('maps:detail_capture_record', kwargs={'pk': self.object.pk}))
+        return redirect(reverse_lazy("maps:detail_capture_record", kwargs={"pk": self.object.pk}))
 
 
 class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
@@ -92,9 +92,9 @@ class DetailCaptureRecordView(LoginRequiredMixin, DetailView):
     model = CaptureRecord
     form_class = CaptureRecordForm
     context_object_name = "capture_record"
-    
+
     def get_context_data(self, **kwargs):
-        context= super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         print(self.object.pk)
         context["form"] = CaptureRecordForm(instance=self.object, readonly=True)
         return context
