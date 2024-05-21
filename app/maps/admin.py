@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.contrib import messages
 from django.http import HttpResponse
 
+from django.db import models
+
 from maps.models import CaptureRecord
 from maps.serializers import IBPSerializer
 from maps.serializers import USGSSerializer
@@ -30,6 +32,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
     actions = [
         "export_csv_usgs",
         "export_csv_ibp",
+        "export_csv_simple",
     ]
 
     @admin.action(description="Export selected records to a USGS CSV")
@@ -76,6 +79,20 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         for obj in queryset:
             writer.writerow(IBPSerializer(obj).serialize().values())
 
+        return response
+    
+    @admin.action(description="Export records to SnatchItCore csv")
+    def export_csv_simple(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = f"attachment; filename={datetime.datetime.utcnow().strftime('%Y-%m-%d %H-%M-%S')}_SnatchItCore.csv"
+        writer = csv.writer(response)
+        # Get model field names; adjusting for foreign keys
+        field_names = [field.name if not isinstance(field, models.ForeignKey) else field.name + '_id' for field in CaptureRecord._meta.get_fields(include_parents=False)]
+        writer.writerow(field_names)
+        for obj in queryset:
+            # Get the values of the model fields
+            row = [getattr(obj, field) for field in field_names]
+            writer.writerow(row)
         return response
 
 
