@@ -35,20 +35,22 @@ class CreateCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, Creat
         return initial
 
     def get(self, request, *args, **kwargs):
-        # Set start time in session when the form is first loaded
+        # Set start time in session when the form is first loaded. This will be used to calculate the time held
         request.session["form_start_time"] = timezone.now().isoformat()
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         # Retrieve start time from session and convert it back to a datetime object
-        start_time_str = self.request.session.pop("form_start_time", None)
+        start_time_str = self.request.session.get("form_start_time", None)
         start_time = timezone.datetime.fromisoformat(start_time_str)
 
         submission_time = timezone.now()
 
         # Calculate time held and set it on the instance before saving
+        # Ensure that the time held is in minutes with precision to two decimal places
         time_held = submission_time - start_time
-        form.instance.hold_time = time_held.total_seconds() / 60
+        minutes_held = time_held.total_seconds() / 60
+        form.instance.hold_time = round(minutes_held, 2)
 
         form.instance.user = self.request.user
         form.instance.scribe_initials = self.request.user.initials
