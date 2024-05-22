@@ -41,7 +41,7 @@ class CreateCaptureRecordView(LoginRequiredMixin, PermissionRequiredMixin, Creat
 
     def form_valid(self, form):
         # Retrieve start time from session and convert it back to a datetime object
-        start_time_str = self.request.session.get("form_start_time", None)
+        start_time_str = self.request.session.pop("form_start_time")
         start_time = timezone.datetime.fromisoformat(start_time_str)
 
         submission_time = timezone.now()
