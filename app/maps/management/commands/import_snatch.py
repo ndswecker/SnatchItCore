@@ -13,17 +13,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         data = self.parse_capture_records_from_csv(options["csv_file"])
-        capture_records = [
-            CaptureRecord(**record) for record in data
-        ]    
+        capture_records = [CaptureRecord(**record) for record in data]
 
         CaptureRecord.objects.bulk_create(capture_records)
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully loaded {len(capture_records)} CaptureRecord objects from {options['csv_file']}"),
+            self.style.SUCCESS(
+                f"Successfully loaded {len(capture_records)} CaptureRecord objects from {options['csv_file']}"
+            ),
         )
 
     def parse_capture_records_from_csv(self, csv_file_path):
-        with open(csv_file_path, "r") as csv_file:
+        with open(csv_file_path) as csv_file:
             reader = csv.DictReader(csv_file)
             capture_records = []
             for row in reader:
@@ -48,7 +48,9 @@ class Command(BaseCommand):
                         "how_sexed_2": row["how_sexed_2"].strip() or None,
                         "cloacal_direction": row["cloacal_direction"].strip() or None,
                         "skull": int(row["skull"]) if row["skull"].strip() else None,
-                        "cloacal_protuberance": int(row["cloacal_protuberance"]) if row["cloacal_protuberance"].strip() else None,
+                        "cloacal_protuberance": (
+                            int(row["cloacal_protuberance"]) if row["cloacal_protuberance"].strip() else None
+                        ),
                         "brood_patch": int(row["brood_patch"]) if row["brood_patch"].strip() else None,
                         "fat": int(row["fat"]) if row["fat"].strip() else None,
                         "body_molt": int(row["body_molt"]) if row["body_molt"].strip() else None,
@@ -67,7 +69,11 @@ class Command(BaseCommand):
                         "wing_chord": int(row["wing_chord"]) if row["wing_chord"].strip() else None,
                         "body_mass": Decimal(row["body_mass"]) if row["body_mass"].strip() else None,
                         "status": int(row["status"]) if row["status"].strip() else None,
-                        "capture_time": datetime.strptime(row["capture_time"], "%Y-%m-%d %H:%M:%S%z") if row["capture_time"].strip() else None,
+                        "capture_time": (
+                            datetime.strptime(row["capture_time"], "%Y-%m-%d %H:%M:%S%z")
+                            if row["capture_time"].strip()
+                            else None
+                        ),
                         "hold_time": Decimal(row["hold_time"]) if row["hold_time"].strip() else None,
                         "station": row["station"].strip(),
                         "net": int(row["net"]) if row["net"].strip() else None,
