@@ -32,7 +32,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
     actions = [
         "export_csv_usgs",
         "export_csv_ibp",
-        "export_csv_simple",
+        "export_csv_snatchitcore",
     ]
 
     @admin.action(description="Export selected records to a USGS CSV")
@@ -82,7 +82,7 @@ class CaptureRecordAdmin(admin.ModelAdmin):
         return response
 
     @admin.action(description="Export records to SnatchItCore csv")
-    def export_csv_simple(self, request, queryset):
+    def export_csv_snatchitcore(self, request, queryset):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = (
             f"attachment; filename={datetime.datetime.utcnow().strftime('%Y-%m-%d %H-%M-%S')}_SnatchItCore.csv"

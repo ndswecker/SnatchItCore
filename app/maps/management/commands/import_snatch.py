@@ -27,7 +27,6 @@ class Command(BaseCommand):
             capture_records = []
             for row in reader:
                 if not any(value.strip() for value in row.values()):
-                    print("End of file reached. Exiting...")
                     break
                 try:
                     capture_record = {
@@ -85,10 +84,8 @@ class Command(BaseCommand):
                         "discrepancies": row["discrepancies"].strip() or None,
                         "is_validated": row["is_validated"].strip().upper() == "TRUE",
                     }
-                    print(capture_record)
                     capture_records.append(capture_record)
                 except Exception as e:
-                    print(f"An error occurred: {e}")
                     continue
 
         return capture_records

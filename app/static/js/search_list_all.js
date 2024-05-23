@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tr = table.getElementsByTagName("tr");
 
     function filterTable() {
-        console.log('filtering table');
         const bandFilter = bandInput.value.toUpperCase();
         const speciesFilter = speciesInput.value.toUpperCase();
         const participantFilter = participantInput.value.toUpperCase();
