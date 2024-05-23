@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 import csv
 from decimal import Decimal
-from django.utils import timezone
 from datetime import datetime
 
 from maps.models import CaptureRecord
@@ -18,7 +17,7 @@ class Command(BaseCommand):
         CaptureRecord.objects.bulk_create(capture_records)
         self.stdout.write(
             self.style.SUCCESS(
-                f"Successfully loaded {len(capture_records)} CaptureRecord objects from {options['csv_file']}"
+                f"Successfully loaded {len(capture_records)} CaptureRecord objects",
             ),
         )
 
@@ -49,7 +48,9 @@ class Command(BaseCommand):
                         "cloacal_direction": row["cloacal_direction"].strip() or None,
                         "skull": int(row["skull"]) if row["skull"].strip() else None,
                         "cloacal_protuberance": (
-                            int(row["cloacal_protuberance"]) if row["cloacal_protuberance"].strip() else None
+                            int(row["cloacal_protuberance"])
+                            if row["cloacal_protuberance"].strip()
+                            else None  # noqa E501
                         ),
                         "brood_patch": int(row["brood_patch"]) if row["brood_patch"].strip() else None,
                         "fat": int(row["fat"]) if row["fat"].strip() else None,
