@@ -54,7 +54,14 @@ class CaptureRecordForm(forms.ModelForm):
     discrepancies = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def __init__(self, *args, **kwargs):
+        # Optional keyword argument to set fields as non-editable
+        readonly = kwargs.pop("readonly", False)
         super().__init__(*args, **kwargs)
+
+        if readonly:
+            for field_name in self.fields:
+                field = self.fields[field_name]
+                field.disabled = True
 
         self.fields["cloacal_protuberance"].label = "CP ℹ"
         self.fields["brood_patch"].label = "BP ℹ"
@@ -180,8 +187,9 @@ class CaptureRecordForm(forms.ModelForm):
                 css_class="fieldset-container even-set",
             ),
             "is_validated",
-            Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"),
         )
+        if not readonly:
+            self.helper.add_input(Submit("submit", "Submit", css_class="btn btn-lg btn-primary w-100"))
 
     class Meta:
         model = CaptureRecord

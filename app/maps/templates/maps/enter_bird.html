@@ -10,31 +10,32 @@
 {% block title %}Enter Bird{% endblock %}
 
 {% block content %}
-<div class="container-fluid m-1 p-1">
-    <div class="">
-        <h1 class="text-center">{% block formTitle %}Enter Bird Record{% endblock %}</h1>
-        {% for field in form %}
-            {% if field.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {% for error in field.errors %}
-                        <a href="#{{ field.auto_id }}" class="alert-link text-decoration-none">{{ error }}</a>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endfor %}
+<div class="container">
+    <h1 class="text-center">{% block form_title %}Enter Bird Record{% endblock %}</h1>
+    {% for field in form %}
+        {% if field.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in field.errors %}
+                    <a href="#{{ field.auto_id }}" class="alert-link text-decoration-none">{{ error }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
 
-        <button
-            type="button"
-            id="view-species-info-popover"
-            class="btn btn-lg btn-danger w-100"
-            data-bs-toggle="popover"
-            data-bs-placement="bottom"
-            title="Species Info">
-            Mini Pyle
-        </button>
+    {% if pk %}
+    <a href="{% url 'maps:edit_capture_record' pk=capture_record.pk %}" class="btn btn-primary">Edit Record</a>
+    {% endif %}
+    <button
+        type="button"
+        id="view-species-info-popover"
+        class="btn btn-lg btn-danger w-100"
+        data-bs-toggle="popover"
+        data-bs-placement="bottom"
+        title="Species Info">
+        Mini Pyle
+    </button>
 
-        {% crispy form form.helper %}
-    </div>
+    {% crispy form form.helper %}
 </div>
 
 {% include "maps/partials/generic_modal.html" with modal_id="cpModal" modal_title="Cloacal Protuberance Scores" modal_image_src="/static/img/cloacal_protuberance.png" modal_alt_text="Cloacal Protuberance" %}
