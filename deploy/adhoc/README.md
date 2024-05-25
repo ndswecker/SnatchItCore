@@ -28,6 +28,7 @@ sudo bash /srv/web/venv/bin/python3 /srv/web/app/manage.py dumpdata -o ~/snatchi
 1. Use Filezilla
 
 ## Install
+
 1. Clone repo to pi
 
 ```shell
