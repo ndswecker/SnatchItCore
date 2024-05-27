@@ -18,7 +18,7 @@ cat /srv/web/.env
 1. Dump data
 
 ```shell
-sudo bash /srv/web/venv/bin/python3 /srv/web/app/manage.py dumpdata -o ~/snatchitcore.json
+sudo -E /srv/web/venv/bin/python3 /srv/web/app/manage.py dumpdata -o ~/snatchitcore.json
 ```
 
 1. Download the file using Google Cloud SSH client
