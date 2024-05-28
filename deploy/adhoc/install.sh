@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+source /srv/web/deploy/postgres.sh
+
 apt install python3-venv -y
 
 python3 -m venv /srv/web/venv
 /srv/web/venv/bin/python3 -m pip install pip setuptools wheel --upgrade --no-cache-dir
 /srv/web/venv/bin/python3 -m pip install -r /srv/web/requirements/prod.txt --upgrade --no-cache-dir
 
-/srv/web/venv/bin/python3 /srv/web/app/manage.py collectstatic
+/srv/web/venv/bin/python3 /srv/web/app/manage.py collectstatic --noinput
 /srv/web/venv/bin/python3 /srv/web/app/manage.py migrate
 /srv/web/venv/bin/python3 /srv/web/app/manage.py import_bands /srv/web/data/Bands.csv
 /srv/web/venv/bin/python3 /srv/web/app/manage.py import_ageannuals /srv/web/data/AgeAnnuals.csv
