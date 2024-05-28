@@ -55,5 +55,5 @@ sudo bash /srv/web/deploy/adhoc/install.sh
 1. Insert data from prod
 
 ```shell
-sudo bash /srv/web/venv/bin/python3 /srv/web/app/manage.py loaddata ~/snatchitcore.json
+sudo /srv/web/venv/bin/python3 /srv/web/app/manage.py loaddata ~/snatchitcore.json
 ```
