@@ -21,7 +21,7 @@ python3 -m venv /srv/web/venv
 /srv/web/venv/bin/python3 /srv/web/app/manage.py setup_taxon_relationships
 
 cp /srv/web/deploy/adhoc/django.service /etc/systemd/system/django.service
-cp /srv/web/deploy/adhoc/django.timer /etc/systemd/system/django.socket
+cp /srv/web/deploy/adhoc/django.timer /etc/systemd/system/django.timer
 systemctl daemon-reload
 systemctl start django.timer
 systemctl enable django.timer
