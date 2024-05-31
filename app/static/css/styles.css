@@ -55,11 +55,6 @@
     flex-direction: row;
 }
 
-.chart-container {
-    width: 100%;
-    margin-top: 30px;
-}
-
 .date-container {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -68,4 +63,43 @@
     border-color: var(--bs-gray-500);
     border-radius: 5px;
     background-color: var(--bs-light);
+}
+
+.chart-container {
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow for a subtle depth */
+    margin-bottom: 20px; /* Add some space between the containers */
+    border: 1px solid #e0e0e0;  /* Subtle border */
+}
+
+.chart-title-container {
+    padding: 10px;
+    text-align: center; /* Center-align the title for better focus */
+    color: #333;  /* A darker shade for better readability */
+    /* background-color: #f7f7f7;  */
+    padding: 10px;  /* Padding for spacing inside the caption box */
+
+}
+
+.chart-title {
+    text-transform: uppercase;
+    font-size: 16px; /* Larger font size for better readability */
+    color: var(--bs-dark); /* Darker text for contrast against light background */
+    margin: 0; /* Remove default margins to control spacing tightly */
+    font-weight: bold; /* Bold text for prominence */
+}
+
+.figure-caption {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
+    color: #333;  /* A darker shade for better readability */
+    background-color: #f7f7f7;  /* Very light gray background */
+    padding: 10px;  /* Padding for spacing inside the caption box */
+    border-top-left-radius: 5px;  /* Smaller radius on the top left corner */
+    border-top-right-radius: 5px;  /* Smaller radius on the top right corner */
+    border-bottom-left-radius: 0;  /* No radius on the bottom left corner */
+    border-bottom-right-radius: 0;  /* No radius on the bottom right corner */
+    border: 1px solid #e0e0e0;  /* Subtle border */
 }
