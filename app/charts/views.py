@@ -116,7 +116,7 @@ class BirdsView(TemplateView):
             {
                 "common_name": taxon_map.get(item["species_number"]),
                 "capture_count": item["capture_count"],
-                "alpha_code": item["alpha_code"]
+                "alpha_code": item["alpha_code"],
             }
             for item in capture_data
         ]
@@ -150,10 +150,12 @@ class BirdsView(TemplateView):
             textangle=0,
             textposition="auto",
             customdata=y_names,
-            hovertemplate="<br>".join([
-                "<b><span style='font-size: 16px;'>%{customdata}</span></b>",  # Apply font size here
-                "<extra></extra>"  # Hides the secondary box in the hover tooltip
-            ])
+            hovertemplate="<br>".join(
+                [
+                    "<b><span style='font-size: 16px;'>%{customdata}</span></b>",  # Apply font size here
+                    "<extra></extra>",  # Hides the secondary box in the hover tooltip
+                ]
+            ),
         )
 
         fig.update_layout(
@@ -179,7 +181,7 @@ class BirdsView(TemplateView):
                 "ticklabelposition": "inside",
                 "tickfont": {
                     "weight": "bold",
-                }
+                },
             },
             dragmode=False,
         )
@@ -192,23 +194,18 @@ class BirdsView(TemplateView):
         if date_range:
             start_date, end_date = date_range
             data = (
-                CaptureRecord.objects
-                .filter(capture_time__date__range=[start_date, end_date])
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
                 .values("sex")
                 .annotate(capture_count=Count("sex"))
             )
         else:
-            data = (
-                CaptureRecord.objects
-                .values("sex")
-                .annotate(capture_count=Count("sex"))
-            )
+            data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
 
         sex_map = {"M": "Male", "F": "Female", "U": "Unkown"}
         labels = [sex_map.get(d["sex"]) for d in data]
         values = [d["capture_count"] for d in data]
 
-        chart_height = 300 
+        chart_height = 300
 
         if not (labels and values):
             return ""
@@ -227,8 +224,8 @@ class BirdsView(TemplateView):
             marker={
                 "line": {
                     "color": "#333",
-                    "width": 1
-                }
+                    "width": 1,
+                },
             },
         )
 
@@ -237,7 +234,7 @@ class BirdsView(TemplateView):
                 "x": 1.05,
                 "xanchor": "left",
                 "y": 0.5,
-                "yanchor": "middle"
+                "yanchor": "middle",
             },
             margin={
                 "l": 10,
@@ -255,30 +252,28 @@ class BirdsView(TemplateView):
         if date_range:
             start_date, end_date = date_range
             data = (
-                CaptureRecord.objects
-                .filter(capture_time__date__range=[start_date, end_date])
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
                 .values("age_annual")
                 .annotate(capture_count=Count("age_annual"))
             )
         else:
-            data = (
-                CaptureRecord.objects
-                .values("age_annual")
-                .annotate(capture_count=Count("age_annual"))
-            )
+            data = CaptureRecord.objects.values("age_annual").annotate(capture_count=Count("age_annual"))
 
         age_codes = {item["age_annual"] for item in data}
         ages = AgeAnnual.objects.filter(number__in=age_codes).values()
-        age_map = {age["number"]: (age["alpha"], age["description"], age["explanation"], age["explanation"]) for age in ages}
+        age_map = {
+            age["number"]: (age["alpha"], age["description"], age["explanation"], age["explanation"]) for age in ages
+        }
 
         enhanced_data = [
             {
-                "age_alpha": age_map.get(item["age_annual"])[0], 
+                "age_alpha": age_map.get(item["age_annual"])[0],
                 "description": age_map.get(item["age_annual"])[1],
-                "explanation": age_map.get(item["age_annual"])[2], 
-                "capture_count": item["capture_count"]
+                "explanation": age_map.get(item["age_annual"])[2],
+                "capture_count": item["capture_count"],
             }
-            for item in data if item["age_annual"] in age_map
+            for item in data
+            if item["age_annual"] in age_map
         ]
 
         def _insert_line_breaks(text, n=50):
@@ -289,7 +284,7 @@ class BirdsView(TemplateView):
 
             for word in words:
                 if current_length + len(word) + 1 > n:  # +1 for the space
-                    lines.append(' '.join(current_line))
+                    lines.append(" ".join(current_line))
                     current_line = [word]
                     current_length = len(word)
                 else:
@@ -297,9 +292,9 @@ class BirdsView(TemplateView):
                     current_length += len(word) + 1  # +1 for the space
 
             if current_line:
-                lines.append(' '.join(current_line))
+                lines.append(" ".join(current_line))
 
-            return '<br>'.join(lines)
+            return "<br>".join(lines)
 
         labels = [d["description"] for d in enhanced_data]
         values = [d["capture_count"] for d in enhanced_data]
@@ -317,7 +312,7 @@ class BirdsView(TemplateView):
             names=labels,
             values=values,
             title=None,
-            template="plotly_white"
+            template="plotly_white",
         )
 
         fig.update_traces(
@@ -327,7 +322,7 @@ class BirdsView(TemplateView):
             marker={
                 "line": {
                     "color": "#333",
-                    "width": 1
+                    "width": 1,
                 },
             },
             customdata=formatted_explanations,
@@ -335,7 +330,7 @@ class BirdsView(TemplateView):
                 "<b>%{label} (%{value})</b><br>"
                 "%{customdata}"
                 "<extra></extra>"  # Hides the secondary box in the hover tooltip
-            )
+            ),
         )
 
         fig.update_layout(
@@ -343,7 +338,7 @@ class BirdsView(TemplateView):
                 "x": 0,
                 "xanchor": "center",
                 "y": 1,
-                "yanchor": "bottom"
+                "yanchor": "bottom",
             },
             margin={
                 "l": 10,
@@ -396,7 +391,7 @@ class BirdsView(TemplateView):
             },
             text=x_values,
             orientation="h",
-            template="plotly_white"
+            template="plotly_white",
         )
 
         fig.update_traces(
@@ -429,7 +424,7 @@ class BirdsView(TemplateView):
                 "ticklabelposition": "inside",
                 "tickfont": {
                     "weight": "bold",
-                }
+                },
             },
         )
 
@@ -467,7 +462,7 @@ class BirdsView(TemplateView):
             },
             text=x_values,
             orientation="h",
-            template="plotly_white"
+            template="plotly_white",
         )
 
         fig.update_traces(
@@ -502,7 +497,7 @@ class BirdsView(TemplateView):
                 "ticklabelposition": "inside",
                 "tickfont": {
                     "weight": "bold",
-                }
+                },
             },
             dragmode=False,
         )
@@ -515,17 +510,12 @@ class BirdsView(TemplateView):
         if date_range:
             start_date, end_date = date_range
             capture_data = (
-                CaptureRecord.objects
-                .filter(capture_time__date__range=[start_date, end_date])
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
                 .values("capture_code")
                 .annotate(capture_count=Count("capture_code"))
             )
         else:
-            capture_data = (
-                CaptureRecord.objects
-                .values("capture_code")
-                .annotate(capture_count=Count("capture_code"))
-            )
+            capture_data = CaptureRecord.objects.values("capture_code").annotate(capture_count=Count("capture_code"))
 
         capture_code_map = {
             "N": "New",
@@ -542,9 +532,9 @@ class BirdsView(TemplateView):
 
         chart_height = 300
 
-        if not(labels and values):
+        if not (labels and values):
             return ""
-        
+
         fig = px.pie(
             names=labels,
             values=values,
@@ -559,8 +549,8 @@ class BirdsView(TemplateView):
             marker={
                 "line": {
                     "color": "#333",
-                    "width": 1
-                }
+                    "width": 1,
+                },
             },
         )
 
@@ -569,7 +559,7 @@ class BirdsView(TemplateView):
                 "x": 0,
                 "xanchor": "center",
                 "y": 1,
-                "yanchor": "bottom"
+                "yanchor": "bottom",
             },
             margin={
                 "l": 10,
