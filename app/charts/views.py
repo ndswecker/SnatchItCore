@@ -281,15 +281,31 @@ class BirdsView(TemplateView):
             for item in data if item["age_annual"] in age_map
         ]
 
-        # Function to insert line breaks every n characters in a string
-        def insert_line_breaks(text, n=50):
-            return '<br>'.join(text[i:i+n] for i in range(0, len(text), n))
+        def _insert_line_breaks(text, n=50):
+            words = text.split()
+            current_length = 0
+            lines = []
+            current_line = []
+
+            for word in words:
+                if current_length + len(word) + 1 > n:  # +1 for the space
+                    lines.append(' '.join(current_line))
+                    current_line = [word]
+                    current_length = len(word)
+                else:
+                    current_line.append(word)
+                    current_length += len(word) + 1  # +1 for the space
+
+            if current_line:
+                lines.append(' '.join(current_line))
+
+            return '<br>'.join(lines)
 
         labels = [d["description"] for d in enhanced_data]
         values = [d["capture_count"] for d in enhanced_data]
         text_labels = [d["age_alpha"] for d in enhanced_data]
         explanations = [d["explanation"] for d in enhanced_data]
-        formatted_explanations = [insert_line_breaks(exp) for exp in explanations]
+        formatted_explanations = [_insert_line_breaks(exp) for exp in explanations]
 
         legend_height = 20 * len(labels) + 40
         chart_height = 300 + legend_height
