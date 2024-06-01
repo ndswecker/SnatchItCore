@@ -29,24 +29,14 @@
           <input
             type="button"
             value="Clear"
-            class="btn w-100"
-            style="
-              background-color: {{ color_array.2 }};
-              color: {{ color_array.1 }};
-              font-weight: bold;
-            "
+            class="btn btn-danger w-100"
             onclick="clearDates()">
         </div>
         <div class="col-8">
           <input
             type="submit"
             value="Submit"
-            style="
-              background-color: {{ color_array.3 }};
-              color: {{ color_array.0 }};
-              font-weight: bold;
-            "
-            class="btn w-100">
+            class="btn btn-primary w-100">
         </div>
       </form>
     </div>
@@ -55,11 +45,96 @@
       <h2 class="text-center">Total Captures: {{ capture_count_total }}</h2>
     </div>
 
-    <div class="chart-container">{{ chart_days_capture_count|safe }}</div>
-    <div class="chart-container">{{ chart_species_capture_count|safe }}</div>
-    <div class="chart-container">{{ chart_sex_capture_count|safe }}</div>
-    <div class="chart-container">{{ chart_age_capture_count|safe }}</div>
-    <div class="chart-container">{{ chart_net_capture_count|safe }}</div>
+    <div class="chart-container">
+      <div class="chart-title-container">
+        <h2 class="chart-title">Captures by Day</h2>
+      </div>      
+      {{ chart_days_capture_count|safe }}
+      <div class="figure-caption">
+        <span><strong>Fig. 1.</strong><i> The number of captures recorded each day over the selected period. 
+          Days are shown in chronological order.</i>
+        </span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title-container">
+        <h2 class="chart-title">Captures by Species</h2>
+      </div>  
+      {{ chart_species_capture_count|safe }}
+      <div class="figure-caption">
+        <span><strong>Fig. 2.</strong> <i>Species are list in taxonomic order 
+          and labeled by their 4-letter alpha codes. Click on each bar to see the species
+          name rather than the alpha code</i></span>
+      </div>
+    </div>
+    
+    <div class="chart-container">
+      <div class="chart-title-container">
+        <h2 class="chart-title">Captures by Sexes</h2>
+      </div>
+      {{ chart_sex_capture_count|safe }}  
+      <div class="figure-caption">
+        <span><strong>Fig. 3.</strong> <i>Sex determinations are made based on a variety of physical 
+          characteristics. However, not all birds can be confidently sexed due to limitations 
+          such as age, lack of sexually dimorphic features, or non-breeding season conditions, 
+          leading to some being classified as 'Unknown'. Adult males often display more 
+          distinctive traits, making their identification more straightforward. Caution 
+          should be exercised when interpreting the relative proportions of males to females, 
+          as apparent discrepancies may arise from these sexing challenges.</i></span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title-container">
+        <h2 class="chart-title">Captures by Age</h2>
+      </div>
+      {{ chart_age_capture_count|safe }}
+      <div class="figure-caption">
+        <span><strong>Fig. 4.</strong> <i>Birds aged using the calendar-year 
+          methodology, highlighting the most frequently encountered age classes. 'Local' 
+          refers to young birds not yet capable of sustained flight, while 'Hatching Year' 
+          denotes birds known to have hatched this year. 'Second Year' 
+          and 'After Second Year' indicate birds in their second calendar year and those older, 
+          respectively. 'After Hatching Year' serves as a broad category for adults whose exact 
+          year of hatching is unknown, emphasizing the bird's maturity without specific age detail.</i></span>
+      </div>
+    </div>
+
+    
+    <div class="chart-container">
+      <div class="chart-title-container">
+        <h2 class="chart-title">Figure 5 - Captures per Net</h2>
+      </div>
+      {{ chart_net_capture_count|safe }}
+      <div class="figure-caption">
+        <span><strong>Fig. 5.</strong> <i>Capture distribution across nets at a 
+          MAPS station, reflecting the total count of birds captured per net. Nets are employed 
+          based on a standardized protocol to ensure optimal coverage and efficient capture 
+          rates, placed in strategic locations to maximize the capture of breeding adults and 
+          dispersing young. Each bar represents the cumulative captures for a specific net, 
+          providing insights into the spatial distribution of captures and potential netting 
+          hotspots within the study area.</i></span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title-container">
+        <h2 class="chart-title">Figure 6 - Captures by Type</h2>
+      </div>
+      {{ chart_capture_code_count|safe }}
+      <div class="figure-caption">
+        <span><strong>Fig. 6.</strong> <i>Distribution of three principal 
+          categories of bird captures: New, Recaptured, and Unbanded. New captures refer to 
+          birds that are banded for the first time. Recaptures involve birds previously banded, 
+          which may include returns (birds banded in the same place on earlier occasions), 
+          repeats (additional captures within the same year), and foreign recaptures (birds 
+          initially banded at a different location). Unbanded birds include those who escaped 
+          before being banded or not suitable for banding, such as escapees or species 
+          not authorized for banding</i></span>
+      </div>
+    </div>
+
   </div>
 {% endblock %}
 
