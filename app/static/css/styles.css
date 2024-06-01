@@ -55,11 +55,6 @@
     flex-direction: row;
 }
 
-.chart-container {
-    width: 100%;
-    margin-top: 30px;
-}
-
 .date-container {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -68,4 +63,42 @@
     border-color: var(--bs-gray-500);
     border-radius: 5px;
     background-color: var(--bs-light);
+}
+
+.chart-container {
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.chart-title-container {
+    padding: 10px;
+    text-align: center;
+    color: #333;
+    padding: 10px;
+
+}
+
+.chart-title {
+    text-transform: uppercase;
+    font-size: 16px;
+    color: var(--bs-dark);
+    margin: 0;
+    font-weight: bold;
+}
+
+.figure-caption {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
+    color: #333;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid #e0e0e0;
 }

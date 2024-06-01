@@ -1,0 +1,10 @@
+[Unit]
+Description=Django Application Service
+After=network.target
+
+[Service]
+ExecStart=/srv/web/venv/bin/python3 /srv/web/app/manage.py runserver 0.0.0.0:80
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

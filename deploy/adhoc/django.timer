@@ -1,0 +1,10 @@
+[Unit]
+Description=Django Application Timer
+
+[Timer]
+OnBootSec=10sec
+Unit=django.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target
