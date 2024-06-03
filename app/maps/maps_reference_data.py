@@ -2394,3 +2394,16 @@ BREEDING_STATUSES: dict = {
         "rank": 0,
     },
 }
+
+PERIODS: dict = {
+    1: {"start_date": "05-01", "end_date": "05-10"},
+    2: {"start_date": "05-11", "end_date": "05-20"},
+    3: {"start_date": "05-21", "end_date": "05-30"},
+    4: {"start_date": "05-31", "end_date": "06-09"},
+    5: {"start_date": "06-10", "end_date": "06-19"},
+    6: {"start_date": "06-20", "end_date": "06-29"},
+    7: {"start_date": "06-30", "end_date": "07-09"},
+    8: {"start_date": "07-10", "end_date": "07-19"},
+    9: {"start_date": "07-20", "end_date": "07-29"},
+    10: {"start_date": "07-30", "end_date": "08-08"}
+}

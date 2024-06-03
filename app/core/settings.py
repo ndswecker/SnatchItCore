@@ -31,6 +31,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "crispy_bootstrap5",
     "crispy_forms",
+    "debug_toolbar",
     "django_select2",
 ]
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
