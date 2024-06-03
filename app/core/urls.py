@@ -21,3 +21,10 @@ urlpatterns = [
     path("users/", include("users.urls"), name="users"),
     path("birds/", include("birds.urls"), name="birds"),
 ]
+
+if settings.DEBUG:
+    urlpatterns.extend(
+        [
+            path("__debug__/", include("debug_toolbar.urls")),
+        ]
+    )

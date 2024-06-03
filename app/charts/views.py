@@ -16,15 +16,42 @@ from .forms import DateForm
 class BirdsView(TemplateView):
     template_name = "charts/birds.html"
 
-    config = {
-        "staticPlot": True,
-    }
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         current_year = date.today().year
-        self.default_start_date = date(current_year, *map(int, PERIODS[1]["start_date"].split('-')))
+        self.default_start_date = date(current_year, *map(int, PERIODS[3]["start_date"].split('-')))
         self.default_end_date = date.today()
+
+        self.default_margins = {"l": 0,"r": 0, "t": 0,"b": 0,"pad": 5,}
+        self.default_pie_height = 300
+        self.default_pie_legend = {
+            "x": 0,
+            "xanchor": "center",
+            "y": 1,
+            "yanchor": "bottom",
+        }
+        self.default_pie_marker = {
+            "line": {
+                "color": "#333",
+                "width": 1,
+            },
+        }
+        self.default_hbar_yaxis = {
+            "title": None,
+            "side": "left",
+            "showticklabels": True,
+            "fixedrange": True,
+            "ticklabelposition": "inside",
+            "tickfont": {
+                "weight": "bold",
+            },
+        }
+        self.default_hbar_xaxis = {
+            "title": None,
+            "fixedrange": True,
+        }
+        self.default_config = {"displayModeBar": False}
+        self.query_set = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -35,15 +62,19 @@ class BirdsView(TemplateView):
         date_form = DateForm(self.request.GET or initial_data)
         context["date_form"] = date_form
         date_range = self.get_date_range(self.request)
+        self.query_set = CaptureRecord.objects.filter(capture_time__date__range=[*date_range])
+        print(self.query_set)
 
         context["capture_count_total"] = self.get_total_capture_count(date_range)
         context["capture_days"] = self.get_all_capture_days()
+
+        context["chart_days_capture_count"] = self.get_chart_days_capture_count(date_range)
         context["chart_species_capture_count"] = self.get_chart_species_capture_count(date_range)
         context["chart_sex_capture_count"] = self.get_chart_sex_capture_count(date_range)
         context["chart_age_capture_count"] = self.get_chart_age_capture_count(date_range)
-        context["chart_days_capture_count"] = self.get_chart_days_capture_count(date_range)
         context["chart_net_capture_count"] = self.get_chart_net_capture_count(date_range)
         context["chart_capture_code_count"] = self.get_chart_capture_code_count(date_range)
+
 
         return context
 
@@ -64,8 +95,7 @@ class BirdsView(TemplateView):
                     return (start_date, end_date)
         else:
             # The default start of maps season period 3
-            return (self.default_start_date, self.default_end_date)
-        
+            return (self.default_start_date, self.default_end_date)     
 
     def get_total_capture_count(self, date_range=None):
         if date_range:
@@ -92,11 +122,76 @@ class BirdsView(TemplateView):
 
         return formatted_capture_days
 
+    def get_chart_days_capture_count(self, date_range=None):
+        if date_range:
+            start_date, end_date = date_range
+            data = (
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                .annotate(capture_day=TruncDate("capture_time"))
+                .values("capture_day")
+                .annotate(capture_count=Count("id"))
+                .order_by("-capture_day")
+            )
+        else:
+            data = (
+                CaptureRecord.objects.annotate(capture_day=TruncDate("capture_time"))
+                .values("capture_day")
+                .annotate(capture_count=Count("id"))
+                .order_by("-capture_day")
+            )
+
+        capture_counts = [d["capture_count"] for d in data]
+        capture_dates = [d["capture_day"].strftime("%m/%d") for d in data]
+
+        if not (capture_counts and capture_dates):
+            return ""
+
+        bar_thickness = 40
+        chart_height = bar_thickness * len(capture_dates) + 100
+
+        fig = px.bar(
+            x=capture_counts,
+            y=capture_dates,
+            title=None,
+            labels={
+                "x": "Capture Count",
+                "y": "Capture Day",
+            },
+            text=capture_counts,
+            orientation="h",
+            template="plotly_white",
+        )
+
+        fig.update_traces(
+            textfont={
+                "weight": "bold",
+            },
+            customdata=capture_dates,
+            hovertemplate=(
+                "<b>Date = %{label}<br>"
+                "Count = %{value}</b>"
+                "<extra></extra>"
+            )
+        )
+
+        fig.update_layout(
+            showlegend=False,
+            barmode="relative",
+            height=chart_height,
+            margin=self.default_margins,
+            xaxis=self.default_hbar_xaxis,
+            yaxis=self.default_hbar_yaxis,
+            dragmode=False,
+        )
+
+        return fig.to_html(config=self.default_config)
+
     def get_chart_species_capture_count(self, date_range=None):
         if date_range:
             start_date, end_date = date_range
             capture_data = (
                 CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                # self.query_set
                 .values("species_number", "alpha_code")
                 .annotate(capture_count=Count("species_number"))
                 .order_by("-species_number")
@@ -104,6 +199,7 @@ class BirdsView(TemplateView):
         else:
             capture_data = (
                 CaptureRecord.objects
+                # self.query_set
                 .values("species_number", "alpha_code")
                 .annotate(capture_count=Count("species_number"))
                 .order_by("-species_number")
@@ -113,35 +209,25 @@ class BirdsView(TemplateView):
         taxons = Taxon.objects.filter(number__in=species_numbers)
         taxon_map = {taxon.number: taxon.common for taxon in taxons}
 
-        enhanced_data = [
-            {
-                "common_name": taxon_map.get(item["species_number"]),
-                "capture_count": item["capture_count"],
-                "alpha_code": item["alpha_code"],
-            }
-            for item in capture_data
-        ]
+        common_names = [taxon_map.get(item["species_number"]) for item in capture_data]
+        capture_counts = [item["capture_count"] for item in capture_data]
+        alpha_codes = [item["alpha_code"] for item in capture_data]
 
-        x_values = [d["capture_count"] for d in enhanced_data]
-        y_values = [d["alpha_code"] for d in enhanced_data]
-        y_names = [d["common_name"] for d in enhanced_data]
-
-        if not (x_values):
+        if not (capture_counts):
             return "No data available for the selected date range."
-
-        title_height = 20
+        
         bar_thickness = 30
-        chart_height = bar_thickness * len(y_values) + title_height
+        chart_height = bar_thickness * len(alpha_codes) + 100
 
         fig = px.bar(
-            x=x_values,
-            y=y_values,
+            x=capture_counts,
+            y=alpha_codes,
             title=None,
             labels={
                 "x": "Capture Count",
                 "y": "Species",
             },
-            text=x_values,
+            text=capture_counts,
             orientation="h",
             template="plotly_white",
         )
@@ -150,7 +236,7 @@ class BirdsView(TemplateView):
             textfont={"weight": "bold"},
             textangle=0,
             textposition="auto",
-            customdata=y_names,
+            customdata=common_names,
             hovertemplate="<br>".join(
                 [
                     "<b><span style='font-size: 16px;'>%{customdata}</span></b>",  # Apply font size here
@@ -163,50 +249,35 @@ class BirdsView(TemplateView):
             showlegend=False,
             barmode="relative",
             height=chart_height,
-            margin={
-                "l": 0,
-                "r": 0,
-                "t": 0,
-                "b": 0,
-                "pad": 0,
-            },
-            xaxis={
-                "title": None,
-                "fixedrange": True,
-            },
-            yaxis={
-                "title": None,
-                "fixedrange": True,
-                "side": "left",
-                "showticklabels": True,
-                "ticklabelposition": "inside",
-                "tickfont": {
-                    "weight": "bold",
-                },
-            },
+            margin=self.default_margins,
+            xaxis=self.default_hbar_xaxis,
+            yaxis=self.default_hbar_yaxis,
             dragmode=False,
         )
 
-        config = {"displayModeBar": False}
-
-        return fig.to_html(config=config)
+        return fig.to_html(config=self.default_config)
 
     def get_chart_sex_capture_count(self, date_range=None):
         if date_range:
             start_date, end_date = date_range
-            data = (
-                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+            capture_data = (
+                CaptureRecord.objects
+                .filter(capture_time__date__range=[start_date, end_date])
                 .values("sex")
                 .annotate(capture_count=Count("sex"))
             )
         else:
-            data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
+            capture_data = (
+                CaptureRecord.objects
+                .values("sex")
+                .annotate(capture_count=Count("sex"))
+            )
 
         sex_map = {"M": "Male", "F": "Female", "U": "Unkown"}
-        labels = [sex_map.get(d["sex"]) for d in data]
-        values = [d["capture_count"] for d in data]
+        labels = [sex_map.get(d["sex"]) for d in capture_data]
+        values = [d["capture_count"] for d in capture_data]
 
-        chart_height = 300
+        legend_height = 20 * len(labels)
 
         if not (labels and values):
             return ""
@@ -220,34 +291,24 @@ class BirdsView(TemplateView):
         )
 
         fig.update_traces(
-            textinfo="percent+label",
+            textinfo="label+value",
             textfont={"weight": "bold"},
-            marker={
-                "line": {
-                    "color": "#333",
-                    "width": 1,
-                },
-            },
+            marker=self.default_pie_marker,
+            hovertemplate=(
+                "<b>Sex = %{label}<br>"
+                "Count = %{value}<br>"
+                "(%{percent})</b>"
+                "<extra></extra>"
+            ),
         )
 
         fig.update_layout(
-            legend={
-                "x": 1.05,
-                "xanchor": "left",
-                "y": 0.5,
-                "yanchor": "middle",
-            },
-            margin={
-                "l": 10,
-                "r": 0,
-                "t": 0,
-                "b": 0,
-                "pad": 10,
-            },
-            height=chart_height,
+            legend=self.default_pie_legend,
+            margin=self.default_margins,
+            height=self.default_pie_height + legend_height,
         )
 
-        return fig.to_html(config=self.config)
+        return fig.to_html(config=self.default_config)
 
     def get_chart_age_capture_count(self, date_range=None):
         if date_range:
@@ -320,12 +381,7 @@ class BirdsView(TemplateView):
             text=text_labels,
             textinfo="percent+text",
             textfont={"weight": "bold"},
-            marker={
-                "line": {
-                    "color": "#333",
-                    "width": 1,
-                },
-            },
+            marker=self.default_pie_marker,
             customdata=formatted_explanations,
             hovertemplate=(
                 "<b>%{label} (%{value})</b><br>"
@@ -335,101 +391,12 @@ class BirdsView(TemplateView):
         )
 
         fig.update_layout(
-            legend={
-                "x": 0,
-                "xanchor": "center",
-                "y": 1,
-                "yanchor": "bottom",
-            },
-            margin={
-                "l": 10,
-                "r": 0,
-                "t": 0,
-                "b": 0,
-                "pad": 10,
-            },
+            legend=self.default_pie_legend,
+            margin=self.default_margins,
             height=chart_height,
         )
 
-        config = {"displayModeBar": False}
-
-        return fig.to_html(config=config)
-
-    def get_chart_days_capture_count(self, date_range=None):
-        if date_range:
-            start_date, end_date = date_range
-            data = (
-                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
-                .annotate(capture_day=TruncDate("capture_time"))
-                .values("capture_day")
-                .annotate(capture_count=Count("id"))
-                .order_by("-capture_day")
-            )
-        else:
-            data = (
-                CaptureRecord.objects.annotate(capture_day=TruncDate("capture_time"))
-                .values("capture_day")
-                .annotate(capture_count=Count("id"))
-                .order_by("-capture_day")
-            )
-
-        x_values = [d["capture_count"] for d in data]
-        y_values = [d["capture_day"].strftime("%m/%d") for d in data]
-
-        if not (x_values and y_values):
-            return ""
-
-        bar_thickness = 40
-        chart_height = bar_thickness * len(y_values)
-
-        fig = px.bar(
-            x=x_values,
-            y=y_values,
-            title=None,
-            labels={
-                "x": "Capture Count",
-                "y": "Capture Day",
-            },
-            text=x_values,
-            orientation="h",
-            template="plotly_white",
-        )
-
-        fig.update_traces(
-            textfont={
-                "weight": "bold",
-            },
-            textangle=0,
-            textposition="auto",
-        )
-
-        fig.update_layout(
-            showlegend=False,
-            barmode="relative",
-            height=chart_height,
-            margin={
-                "l": 0,
-                "r": 0,
-                "t": 0,
-                "b": 0,
-                "pad": 10,
-            },
-            xaxis={
-                "title": None,
-                "fixedrange": True,
-            },
-            yaxis={
-                "title": None,
-                "side": "left",
-                "showticklabels": True,
-                "ticklabelposition": "inside",
-                "tickfont": {
-                    "weight": "bold",
-                },
-            },
-        )
-
-        return fig.to_html(config=self.config)
+        return fig.to_html(config=self.default_config)
 
     def get_chart_net_capture_count(self, date_range=None):
         figure_title = "Capture Count by Net"
@@ -470,8 +437,11 @@ class BirdsView(TemplateView):
             textfont={
                 "weight": "bold",
             },
-            textangle=0,
-            textposition="auto",
+            hovertemplate=(
+                "<b>Net = %{label} <br>"
+                "Count = %{value}</b>"
+                "<extra></extra>"
+            ),
         )
 
         fig.update_layout(
@@ -479,33 +449,13 @@ class BirdsView(TemplateView):
             showlegend=False,
             barmode="relative",
             height=chart_height,
-            margin={
-                "l": 0,
-                "r": 0,
-                "t": 0,
-                "b": 0,
-                "pad": 10,
-            },
-            xaxis={
-                "title": None,
-                "fixedrange": True,
-            },
-            yaxis={
-                "title": None,
-                "side": "left",
-                "showticklabels": True,
-                "fixedrange": True,
-                "ticklabelposition": "inside",
-                "tickfont": {
-                    "weight": "bold",
-                },
-            },
+            margin=self.default_margins,
+            xaxis=self.default_hbar_xaxis,
+            yaxis=self.default_hbar_yaxis,
             dragmode=False,
         )
 
-        config = {"displayModeBar": False}
-
-        return fig.to_html(config=config)
+        return fig.to_html(config=self.default_config)
 
     def get_chart_capture_code_count(self, date_range=None):
         if date_range:
@@ -537,7 +487,7 @@ class BirdsView(TemplateView):
         labels = [capture_code_map.get(d["capture_code"]) for d in capture_data]
         values = [d["capture_count"] for d in capture_data]
 
-        chart_height = 300
+        legend_height = 20 * len(labels) + 40
 
         if not (labels and values):
             return ""
@@ -550,39 +500,21 @@ class BirdsView(TemplateView):
         )
 
         fig.update_traces(
-            customdata=alphas,
             textinfo="label+value",
             textfont={"weight": "bold"},
-            marker={
-                "line": {
-                    "color": "#333",
-                    "width": 1,
-                },
-            },
+            marker=self.default_pie_marker,
             hovertemplate=(
-                "<b>%{customdata} (%{value})</b><br>"
-                "%{percent}"
+                "<b>Type = %{label}<br>"
+                "Count = %{value}<br>"
+                "(%{percent})</b>"
                 "<extra></extra>"
             ),
         )
 
         fig.update_layout(
-            legend={
-                "x": 0,
-                "xanchor": "center",
-                "y": 1,
-                "yanchor": "bottom",
-            },
-            margin={
-                "l": 10,
-                "r": 0,
-                "t": 0,
-                "b": 0,
-                "pad": 10,
-            },
-            height=chart_height,
+            legend=self.default_pie_legend,
+            margin=self.default_margins,
+            height=self.default_pie_height + legend_height,
         )
 
-        config = {"displayModeBar": False}
-
-        return fig.to_html(config=config)
+        return fig.to_html(config=self.default_config)
