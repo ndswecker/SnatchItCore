@@ -62,8 +62,6 @@ class BirdsView(TemplateView):
         date_form = DateForm(self.request.GET or initial_data)
         context["date_form"] = date_form
         date_range = self.get_date_range(self.request)
-        self.query_set = CaptureRecord.objects.filter(capture_time__date__range=[*date_range])
-        print(self.query_set)
 
         context["capture_count_total"] = self.get_total_capture_count(date_range)
         context["capture_days"] = self.get_all_capture_days()
@@ -74,7 +72,6 @@ class BirdsView(TemplateView):
         context["chart_age_capture_count"] = self.get_chart_age_capture_count(date_range)
         context["chart_net_capture_count"] = self.get_chart_net_capture_count(date_range)
         context["chart_capture_code_count"] = self.get_chart_capture_code_count(date_range)
-
 
         return context
 
@@ -191,7 +188,6 @@ class BirdsView(TemplateView):
             start_date, end_date = date_range
             capture_data = (
                 CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
-                # self.query_set
                 .values("species_number", "alpha_code")
                 .annotate(capture_count=Count("species_number"))
                 .order_by("-species_number")
@@ -199,7 +195,6 @@ class BirdsView(TemplateView):
         else:
             capture_data = (
                 CaptureRecord.objects
-                # self.query_set
                 .values("species_number", "alpha_code")
                 .annotate(capture_count=Count("species_number"))
                 .order_by("-species_number")
