@@ -2,12 +2,13 @@ import plotly.express as px
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.views.generic import TemplateView
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.utils.dateparse import parse_date
 
 from birds.models import AgeAnnual
 from maps.models import CaptureRecord
+from maps.maps_reference_data import PERIODS
 from birds.models import Taxon
 from .forms import DateForm
 
@@ -15,29 +16,26 @@ from .forms import DateForm
 class BirdsView(TemplateView):
     template_name = "charts/birds.html"
 
-    color_array = [
-        "#ffa600",  # yellow
-        "#003f5c",  # navy
-        "#ff7c43",  # orange
-        "#2f4b7c",  # blue
-        "#d45087",  # fuchsia
-        "#665191",  # plum
-        "#f95d6a",  # melon
-        "#a05195",  # purple
-    ]
-
     config = {
         "staticPlot": True,
     }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        current_year = date.today().year
+        self.default_start_date = date(current_year, *map(int, PERIODS[1]["start_date"].split('-')))
+        self.default_end_date = date.today()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        date_form = DateForm(self.request.GET)
+        
+        initial_data = {
+            'date_range': f"{self.default_start_date.strftime('%Y-%m-%d')} to {self.default_end_date.strftime('%Y-%m-%d')}"
+        }
+        date_form = DateForm(self.request.GET or initial_data)
         context["date_form"] = date_form
         date_range = self.get_date_range(self.request)
 
-        context["color_array"] = self.color_array
         context["capture_count_total"] = self.get_total_capture_count(date_range)
         context["capture_days"] = self.get_all_capture_days()
         context["chart_species_capture_count"] = self.get_chart_species_capture_count(date_range)
@@ -64,7 +62,10 @@ class BirdsView(TemplateView):
                 start_date, end_date = (parse_date(date) for date in dates)
                 if start_date and end_date:
                     return (start_date, end_date)
-        return None
+        else:
+            # The default start of maps season period 3
+            return (self.default_start_date, self.default_end_date)
+        
 
     def get_total_capture_count(self, date_range=None):
         if date_range:
@@ -102,7 +103,7 @@ class BirdsView(TemplateView):
             )
         else:
             capture_data = (
-                CaptureRecord.objects.values("species_number")
+                CaptureRecord.objects
                 .values("species_number", "alpha_code")
                 .annotate(capture_count=Count("species_number"))
                 .order_by("-species_number")
@@ -510,12 +511,17 @@ class BirdsView(TemplateView):
         if date_range:
             start_date, end_date = date_range
             capture_data = (
-                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
+                CaptureRecord.objects
+                .filter(capture_time__date__range=[start_date, end_date])
                 .values("capture_code")
                 .annotate(capture_count=Count("capture_code"))
             )
         else:
-            capture_data = CaptureRecord.objects.values("capture_code").annotate(capture_count=Count("capture_code"))
+            capture_data = (
+                CaptureRecord.objects
+                .values("capture_code")
+                .annotate(capture_count=Count("capture_code"))
+            )
 
         capture_code_map = {
             "N": "New",
@@ -527,6 +533,7 @@ class BirdsView(TemplateView):
             "A": "Added",
         }
 
+        alphas = [d["capture_code"] for d in capture_data]
         labels = [capture_code_map.get(d["capture_code"]) for d in capture_data]
         values = [d["capture_count"] for d in capture_data]
 
@@ -539,12 +546,12 @@ class BirdsView(TemplateView):
             names=labels,
             values=values,
             title=None,
-            color=labels,
             template="plotly_white",
         )
 
         fig.update_traces(
-            textinfo="percent+label",
+            customdata=alphas,
+            textinfo="label+value",
             textfont={"weight": "bold"},
             marker={
                 "line": {
@@ -552,6 +559,11 @@ class BirdsView(TemplateView):
                     "width": 1,
                 },
             },
+            hovertemplate=(
+                "<b>%{customdata} (%{value})</b><br>"
+                "%{percent}"
+                "<extra></extra>"
+            ),
         )
 
         fig.update_layout(
@@ -571,4 +583,6 @@ class BirdsView(TemplateView):
             height=chart_height,
         )
 
-        return fig.to_html(config=self.config)
+        config = {"displayModeBar": False}
+
+        return fig.to_html(config=config)
