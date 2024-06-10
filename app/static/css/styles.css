@@ -55,6 +55,23 @@
     flex-direction: row;
 }
 
+#id_band_number {
+    padding: 4;
+    letter-spacing: 1em;  
+}
+
+.formatted-display {
+    padding: 0px;
+    color: #333; 
+    text-align: right;
+    font-family: monospace;
+    letter-spacing: 0.8em;
+}
+
+.margin-right-large {
+    margin-right: 10px;  /* Adjust the margin size as needed */
+}
+
 .date-container {
     margin-top: 10px;
     margin-bottom: 10px;
