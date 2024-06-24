@@ -165,8 +165,8 @@ class BirdsView(TemplateView):
             },
             customdata=capture_dates,
             hovertemplate=(
-                "<b>Date = %{label}<br>"
-                "Count = %{value}</b>"
+                "<b>Date: %{label}<br>"
+                "Count: %{value}</b>"
                 "<extra></extra>"
             )
         )
@@ -286,13 +286,15 @@ class BirdsView(TemplateView):
         )
 
         fig.update_traces(
-            textinfo="label+value",
+            textinfo="label+percent",
             textfont={"weight": "bold"},
             marker=self.default_pie_marker,
             hovertemplate=(
-                "<b>Sex = %{label}<br>"
-                "Count = %{value}<br>"
-                "(%{percent})</b>"
+                "<b>"
+                "Sex: %{label}<br>"
+                "Count: %{value}<br>"
+                "Percent: %{percent}"
+                "</b>"
                 "<extra></extra>"
             ),
         )
@@ -379,7 +381,10 @@ class BirdsView(TemplateView):
             marker=self.default_pie_marker,
             customdata=formatted_explanations,
             hovertemplate=(
-                "<b>%{label} (%{value})</b><br>"
+                "<b>"
+                "Age: %{label}<br>"
+                "Count: %{value}<br>"
+                "Percent: %{percent}</b><br>"
                 "%{customdata}"
                 "<extra></extra>"  # Hides the secondary box in the hover tooltip
             ),
@@ -406,7 +411,8 @@ class BirdsView(TemplateView):
             data = CaptureRecord.objects.values("net").annotate(capture_count=Count("net"))
 
         x_values = [d["capture_count"] for d in data]
-        y_values = [f"Net: {d['net']}" for d in data]
+        # y_values = [f"Net: {d['net']}" for d in data]
+        y_values = [f"{d['net']}" for d in data]
 
         if not (x_values and y_values):
             return ""
@@ -433,8 +439,8 @@ class BirdsView(TemplateView):
                 "weight": "bold",
             },
             hovertemplate=(
-                "<b>Net = %{label} <br>"
-                "Count = %{value}</b>"
+                "<b>Net: %{label} <br>"
+                "Count: %{value}</b>"
                 "<extra></extra>"
             ),
         )
@@ -495,13 +501,13 @@ class BirdsView(TemplateView):
         )
 
         fig.update_traces(
-            textinfo="label+value",
+            textinfo="label+percent",
             textfont={"weight": "bold"},
             marker=self.default_pie_marker,
             hovertemplate=(
-                "<b>Type = %{label}<br>"
-                "Count = %{value}<br>"
-                "(%{percent})</b>"
+                "<b>Type: %{label}<br>"
+                "Count: %{value}<br>"
+                "Percent: %{percent}</b>"
                 "<extra></extra>"
             ),
         )
