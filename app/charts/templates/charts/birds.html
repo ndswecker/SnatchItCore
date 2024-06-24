@@ -142,8 +142,8 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="{% static 'js/chart_date_picker.js' %}"></script>
-{{ capture_days|json_script:"specialDates" }}
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="{% static 'js/chart_date_picker.js' %}"></script>
+  {{ capture_days|json_script:"specialDates" }}
 {% endblock %}
 
