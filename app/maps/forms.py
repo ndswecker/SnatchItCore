@@ -20,17 +20,17 @@ class CaptureRecordForm(forms.ModelForm):
 
     # Define each part of the band_number with type "number"
     band_number = forms.CharField(
-        max_length=9, 
+        max_length=9,
         widget=forms.TextInput(
             attrs={
                 "inputmode": "numeric",
                 "class": "band-input",
                 "placeholder": "____-_____",
-            }
+            },
         ),
-        label="Band Number"
+        label="Band Number",
     )
-    
+
     capture_year_day = forms.DateField(
         label="Date",
         widget=forms.DateInput(attrs={"type": "date"}),
@@ -123,7 +123,7 @@ class CaptureRecordForm(forms.ModelForm):
                 Row(
                     Column(
                         HTML('<div id="formatted-band-number" class="formatted-display">####-#####</div>'),
-                        css_class="col-12"
+                        css_class="col-12",
                     ),
                 ),
                 css_class="fieldset-container even-set",

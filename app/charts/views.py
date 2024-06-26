@@ -19,10 +19,10 @@ class BirdsView(TemplateView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         current_year = date.today().year
-        self.default_start_date = date(current_year, *map(int, PERIODS[3]["start_date"].split('-')))
+        self.default_start_date = date(current_year, *map(int, PERIODS[3]["start_date"].split("-")))
         self.default_end_date = date.today()
 
-        self.default_margins = {"l": 0,"r": 0, "t": 0,"b": 0,"pad": 5,}
+        self.default_margins = {"l": 0, "r": 0, "t": 0, "b": 0, "pad": 5}
         self.default_pie_height = 300
         self.default_pie_legend = {
             "x": 0,
@@ -55,9 +55,9 @@ class BirdsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         initial_data = {
-            'date_range': f"{self.default_start_date.strftime('%Y-%m-%d')} to {self.default_end_date.strftime('%Y-%m-%d')}"
+            "date_range": f"{self.default_start_date.strftime('%Y-%m-%d')} to {self.default_end_date.strftime('%Y-%m-%d')}",
         }
         date_form = DateForm(self.request.GET or initial_data)
         context["date_form"] = date_form
@@ -92,7 +92,7 @@ class BirdsView(TemplateView):
                     return (start_date, end_date)
         else:
             # The default start of maps season period 3
-            return (self.default_start_date, self.default_end_date)     
+            return (self.default_start_date, self.default_end_date)
 
     def get_total_capture_count(self, date_range=None):
         if date_range:
@@ -164,11 +164,7 @@ class BirdsView(TemplateView):
                 "weight": "bold",
             },
             customdata=capture_dates,
-            hovertemplate=(
-                "<b>Date: %{label}<br>"
-                "Count: %{value}</b>"
-                "<extra></extra>"
-            )
+            hovertemplate=("<b>Date: %{label}<br>" "Count: %{value}</b>" "<extra></extra>"),
         )
 
         fig.update_layout(
@@ -194,8 +190,7 @@ class BirdsView(TemplateView):
             )
         else:
             capture_data = (
-                CaptureRecord.objects
-                .values("species_number", "alpha_code")
+                CaptureRecord.objects.values("species_number", "alpha_code")
                 .annotate(capture_count=Count("species_number"))
                 .order_by("-species_number")
             )
@@ -210,7 +205,7 @@ class BirdsView(TemplateView):
 
         if not (capture_counts):
             return "No data available for the selected date range."
-        
+
         bar_thickness = 30
         chart_height = bar_thickness * len(alpha_codes) + 100
 
@@ -236,7 +231,7 @@ class BirdsView(TemplateView):
                 [
                     "<b><span style='font-size: 16px;'>%{customdata}</span></b>",  # Apply font size here
                     "<extra></extra>",  # Hides the secondary box in the hover tooltip
-                ]
+                ],
             ),
         )
 
@@ -256,17 +251,12 @@ class BirdsView(TemplateView):
         if date_range:
             start_date, end_date = date_range
             capture_data = (
-                CaptureRecord.objects
-                .filter(capture_time__date__range=[start_date, end_date])
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
                 .values("sex")
                 .annotate(capture_count=Count("sex"))
             )
         else:
-            capture_data = (
-                CaptureRecord.objects
-                .values("sex")
-                .annotate(capture_count=Count("sex"))
-            )
+            capture_data = CaptureRecord.objects.values("sex").annotate(capture_count=Count("sex"))
 
         sex_map = {"M": "Male", "F": "Female", "U": "Unkown"}
         labels = [sex_map.get(d["sex"]) for d in capture_data]
@@ -290,12 +280,7 @@ class BirdsView(TemplateView):
             textfont={"weight": "bold"},
             marker=self.default_pie_marker,
             hovertemplate=(
-                "<b>"
-                "Sex: %{label}<br>"
-                "Count: %{value}<br>"
-                "Percent: %{percent}"
-                "</b>"
-                "<extra></extra>"
+                "<b>" "Sex: %{label}<br>" "Count: %{value}<br>" "Percent: %{percent}" "</b>" "<extra></extra>"
             ),
         )
 
@@ -438,11 +423,7 @@ class BirdsView(TemplateView):
             textfont={
                 "weight": "bold",
             },
-            hovertemplate=(
-                "<b>Net: %{label} <br>"
-                "Count: %{value}</b>"
-                "<extra></extra>"
-            ),
+            hovertemplate=("<b>Net: %{label} <br>" "Count: %{value}</b>" "<extra></extra>"),
         )
 
         fig.update_layout(
@@ -462,17 +443,12 @@ class BirdsView(TemplateView):
         if date_range:
             start_date, end_date = date_range
             capture_data = (
-                CaptureRecord.objects
-                .filter(capture_time__date__range=[start_date, end_date])
+                CaptureRecord.objects.filter(capture_time__date__range=[start_date, end_date])
                 .values("capture_code")
                 .annotate(capture_count=Count("capture_code"))
             )
         else:
-            capture_data = (
-                CaptureRecord.objects
-                .values("capture_code")
-                .annotate(capture_count=Count("capture_code"))
-            )
+            capture_data = CaptureRecord.objects.values("capture_code").annotate(capture_count=Count("capture_code"))
 
         capture_code_map = {
             "N": "New",
@@ -504,12 +480,7 @@ class BirdsView(TemplateView):
             textinfo="label+percent",
             textfont={"weight": "bold"},
             marker=self.default_pie_marker,
-            hovertemplate=(
-                "<b>Type: %{label}<br>"
-                "Count: %{value}<br>"
-                "Percent: %{percent}</b>"
-                "<extra></extra>"
-            ),
+            hovertemplate=("<b>Type: %{label}<br>" "Count: %{value}<br>" "Percent: %{percent}</b>" "<extra></extra>"),
         )
 
         fig.update_layout(
