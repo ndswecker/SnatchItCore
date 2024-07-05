@@ -2405,5 +2405,5 @@ PERIODS: dict = {
     7: {"start_date": "06-30", "end_date": "07-09"},
     8: {"start_date": "07-10", "end_date": "07-19"},
     9: {"start_date": "07-20", "end_date": "07-29"},
-    10: {"start_date": "07-30", "end_date": "08-08"}
+    10: {"start_date": "07-30", "end_date": "08-08"},
 }

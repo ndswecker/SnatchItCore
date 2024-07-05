@@ -57,12 +57,12 @@
 
 #id_band_number {
     padding: 4;
-    letter-spacing: 1em;  
+    letter-spacing: 1em;
 }
 
 .formatted-display {
     padding: 0px;
-    color: #333; 
+    color: #333;
     text-align: right;
     font-family: monospace;
     letter-spacing: 0.8em;

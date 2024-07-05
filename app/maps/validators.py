@@ -408,7 +408,8 @@ def validate_unbanded_has_no_band_number(form_data: dict):
     if form_data.get("capture_code") != "U":
         return
 
-    if form_data.get("band_number") is not None:
+    band_number = form_data.get("band_number")
+    if band_number:
         raise ValidationError(
             {
                 "band_number": "Band number must be left blank for unbanded birds.",

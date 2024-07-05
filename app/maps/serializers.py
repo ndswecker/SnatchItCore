@@ -39,7 +39,7 @@ class USGSSerializer:
         return STATION_LOCATIONS[self.capture_record.station]["BBL_location_id"]
 
     def get_notes(self):
-        return self.capture_record.note or ""
+        return self.capture_record.note.replace("\r\n", ". ").replace("\n", ". ") or ""
 
     def get_capture_method(self):
         return "Mist net"
@@ -268,7 +268,7 @@ class IBPSerializer:
     def get_notes(self):
         alula = self.get_alula()
         cloacal_direction = self.get_cloacal_direction()
-        notes = self.capture_record.note if self.capture_record.note else ""
+        notes = self.capture_record.note.replace("\r\n", ". ").replace("\n", ". ") if self.capture_record.note else ""
         if alula:
             notes += ". " + alula if notes else alula
         if cloacal_direction:
