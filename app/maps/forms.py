@@ -11,6 +11,7 @@ from django import forms
 from django.utils import timezone
 
 from maps.choice_definitions import CAPTURE_CODE_CHOICES
+from maps.choice_definitions import BAND_SIZE_CHOICES
 from maps.maps_reference_data import SPECIES
 from maps.models import CaptureRecord
 from maps.validators import CaptureRecordFormValidator
@@ -31,15 +32,22 @@ class CaptureRecordForm(forms.ModelForm):
         label="Band Number",
     )
 
+    capture_code = forms.ChoiceField(
+        choices=[("", "---")] + CAPTURE_CODE_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    band_size = forms.ChoiceField(
+        choices=[("", "---")] + BAND_SIZE_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"})
+    )
+
     capture_year_day = forms.DateField(
         label="Date",
         widget=forms.DateInput(attrs={"type": "date"}),
         initial=timezone.now().date(),
-    )
-
-    capture_code = forms.ChoiceField(
-        choices=CAPTURE_CODE_CHOICES,
-        required=True,
     )
 
     is_validated = forms.BooleanField(
