@@ -29,7 +29,8 @@ class CaptureRecord(BaseModel):
     capture_code = models.CharField(
         max_length=1,
         choices=CAPTURE_CODE_CHOICES,
-        default="N",
+        null=False,
+        default="",
     )
 
     species_number = models.IntegerField(
