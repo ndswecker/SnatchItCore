@@ -269,11 +269,11 @@ class CaptureRecordForm(forms.ModelForm):
         if bander_initials:
             bander_initials = bander_initials.upper()
         return bander_initials
-    
+
     def clean_note(self):
         # Remove all new lines and replace with end of sentence structure
         return self.cleaned_data.get("note").replace("\r\n", ". ").replace("\n", ". ")
-    
+
     def clean_band_number(self):
         if self.cleaned_data.get("capture_code") == "U":
             return None

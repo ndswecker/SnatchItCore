@@ -59,19 +59,7 @@ $(document).ready(function() {
         $popover = initializePopover(); // Reinitializes the popover for the new species selection.
     });
 
-    // Initialize Choices.js for the species_number field.
-    var speciesSelect = document.getElementById('id_species_number');
-    if (speciesSelect) {
-        var choices = new Choices(speciesSelect, {
-            searchEnabled: true,
-            itemSelectText: '',
-            removeItemButton: true,
-            shouldSort: false,
-        });
-        // Ensure the original select element is visible and focusable
-        // speciesSelect.removeAttribute('hidden');
-        // speciesSelect.removeAttribute('tabindex');
-    }
-
-
+    $("#id_species_number").select2({
+        theme: "bootstrap-5"
+    });
 });
