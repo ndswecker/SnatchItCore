@@ -35,7 +35,8 @@ class CaptureRecord(BaseModel):
 
     species_number = models.IntegerField(
         choices=SPECIES_CHOICES,
-        default=5810,
+        null=False,
+        default="",
     )
 
     band_size = models.CharField(

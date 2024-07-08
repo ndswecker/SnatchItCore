@@ -32,6 +32,16 @@ class CaptureRecordForm(forms.ModelForm):
         label="Band Number",
     )
 
+    SPECIES_CHOICES = [
+        (k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(SPECIES.items()) if k > 2730
+    ]
+
+    species_number = forms.ChoiceField(
+        choices=[("", "---")] + SPECIES_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
     capture_code = forms.ChoiceField(
         choices=[("", "---")] + CAPTURE_CODE_CHOICES,
         required=True,

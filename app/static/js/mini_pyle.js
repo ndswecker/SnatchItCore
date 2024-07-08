@@ -68,6 +68,10 @@ $(document).ready(function() {
             removeItemButton: true,
             shouldSort: false,
         });
+        // Ensure the original select element is visible and focusable
+        // speciesSelect.removeAttribute('hidden');
+        // speciesSelect.removeAttribute('tabindex');
     }
+
 
 });
