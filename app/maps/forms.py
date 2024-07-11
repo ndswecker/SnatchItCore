@@ -32,9 +32,7 @@ class CaptureRecordForm(forms.ModelForm):
         label="Band Number",
     )
 
-    SPECIES_CHOICES = [
-        (k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(SPECIES.items()) if k > 2730
-    ]
+    SPECIES_CHOICES = [(k, f"{v['alpha_code']} - {v['common_name']}") for k, v in sorted(SPECIES.items()) if k > 2730]
 
     species_number = forms.ChoiceField(
         choices=[("", "---")] + SPECIES_CHOICES,
@@ -51,7 +49,7 @@ class CaptureRecordForm(forms.ModelForm):
     band_size = forms.ChoiceField(
         choices=[("", "---")] + BAND_SIZE_CHOICES,
         required=True,
-        widget=forms.Select(attrs={"class": "form-control"})
+        widget=forms.Select(attrs={"class": "form-control"}),
     )
 
     capture_year_day = forms.DateField(
