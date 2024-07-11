@@ -59,6 +59,7 @@ $(document).ready(function() {
         $popover = initializePopover(); // Reinitializes the popover for the new species selection.
     });
 
+    // Added to ensure select2 does not overflow parent in mobile
     $("#id_species_number").select2({
         theme: "bootstrap-5"
     });
